@@ -1,0 +1,342 @@
+libnucleus_la-embexit.lo: embexit.c embexit.h ../ajax/core/ajdefine.h \
+ ../ajax/core/config.h ../ajax/core/ajarch.h /usr/include/sys/types.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h /usr/include/bits/types.h \
+ /usr/include/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/sigset.h \
+ /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/bits/stdio.h ../ajax/core/ajutil.h ../ajax/core/ajdefine.h \
+ ../ajax/core/ajstr.h embsig.h ../ajax/core/ajarr.h ../ajax/core/ajfile.h \
+ ../ajax/core/ajlist.h /usr/include/sys/stat.h /usr/include/bits/stat.h \
+ ../ajax/core/ajlist.h ../ajax/core/ajmatrices.h ../ajax/core/ajseq.h \
+ ../ajax/core/ajseqdata.h ../ajax/core/ajtextdata.h ../ajax/core/ajfile.h \
+ ../ajax/core/ajquerydata.h ../ajax/core/ajtable.h \
+ ../ajax/core/ajfeatdata.h ../ajax/core/ajtime.h /usr/include/xlocale.h \
+ ../ajax/core/ajrefseq.h ../ajax/core/ajrefseqdata.h embdbi.h \
+ ../ajax/core/ajstr.h embgroup.h embindex.h ../ajax/core/ajindex.h \
+ ../ajax/core/ajreg.h ../ajax/pcre/pcre_config.h \
+ ../ajax/pcre/pcre_internal.h /usr/include/ctype.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/limits.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h /usr/include/setjmp.h \
+ /usr/include/bits/setjmp.h /usr/include/stdlib.h \
+ /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+ /usr/include/alloca.h /usr/include/string.h /usr/include/bits/string.h \
+ /usr/include/bits/string2.h ../ajax/pcre/pcreemboss.h \
+ ../ajax/pcre/pcre.h ../ajax/pcre/ucp.h ../ajax/pcre/pcreposix.h \
+ embword.h ../ajax/core/ajseqdata.h ../ajax/core/ajfeat.h \
+ ../ajax/core/ajexcept.h ../ajax/core/ajmem.h ../ajax/core/ajreg.h \
+ ../ajax/core/ajtagval.h ../ajax/core/ajfmt.h ../ajax/core/ajtable.h \
+ embpatlist.h ../ajax/core/ajpat.h ../ajax/ajaxdb/ajtextdb.h \
+ ../ajax/ajaxdb/ajseqdb.h ../ajax/ajaxdb/ajfeatdb.h \
+ ../ajax/ajaxdb/ajobodb.h ../ajax/ajaxdb/ajassemdb.h \
+ ../ajax/ajaxdb/ajrefseqdb.h ../ajax/ajaxdb/ajtaxdb.h \
+ ../ajax/ajaxdb/ajurldb.h ../ajax/ajaxdb/ajvardb.h \
+ ../ajax/ajaxdb/ajxmldb.h ../ajax/ajaxdb/ajresourcedb.h \
+ ../ajax/graphics/ajgraph.h ../plplot/plplot.h ../plplot/plConfig.h \
+ ../plplot/pldll.h ../ajax/graphics/ajgraphstruct.h ../ajax/core/ajmess.h \
+ ../ajax/acd/ajacd.h ../ajax/core/ajrange.h ../ajax/core/ajtranslate.h \
+ ../ajax/core/ajalign.h ../ajax/core/ajmatrices.h ../ajax/core/ajcod.h \
+ ../ajax/core/ajphylo.h ../ajax/core/ajreport.h ../ajax/core/ajmath.h \
+ ../ajax/core/ajassemdata.h ../ajax/core/ajseqbam.h ../ajax/zlib/zlib.h \
+ ../ajax/zlib/zconf.h ../ajax/zlib/zlibemboss.h /usr/include/unistd.h \
+ /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
+ /usr/include/bits/confname.h /usr/include/getopt.h \
+ ../ajax/core/ajbamindex.h ../ajax/core/ajfeatdata.h \
+ ../ajax/core/ajobodata.h ../ajax/core/ajrefseqdata.h \
+ ../ajax/core/ajresourcedata.h ../ajax/core/ajtaxdata.h \
+ ../ajax/core/ajtextdata.h ../ajax/core/ajurldata.h \
+ ../ajax/core/ajresourcedata.h ../ajax/core/ajvardata.h \
+ ../ajax/core/ajxmldata.h ../ajax/core/ajdom.h
+
+embexit.h:
+
+../ajax/core/ajdefine.h:
+
+../ajax/core/config.h:
+
+../ajax/core/ajarch.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/time.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/bits/byteswap.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+../ajax/core/ajutil.h:
+
+../ajax/core/ajdefine.h:
+
+../ajax/core/ajstr.h:
+
+embsig.h:
+
+../ajax/core/ajarr.h:
+
+../ajax/core/ajfile.h:
+
+../ajax/core/ajlist.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
+
+../ajax/core/ajlist.h:
+
+../ajax/core/ajmatrices.h:
+
+../ajax/core/ajseq.h:
+
+../ajax/core/ajseqdata.h:
+
+../ajax/core/ajtextdata.h:
+
+../ajax/core/ajfile.h:
+
+../ajax/core/ajquerydata.h:
+
+../ajax/core/ajtable.h:
+
+../ajax/core/ajfeatdata.h:
+
+../ajax/core/ajtime.h:
+
+/usr/include/xlocale.h:
+
+../ajax/core/ajrefseq.h:
+
+../ajax/core/ajrefseqdata.h:
+
+embdbi.h:
+
+../ajax/core/ajstr.h:
+
+embgroup.h:
+
+embindex.h:
+
+../ajax/core/ajindex.h:
+
+../ajax/core/ajreg.h:
+
+../ajax/pcre/pcre_config.h:
+
+../ajax/pcre/pcre_internal.h:
+
+/usr/include/ctype.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/limits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/usr/include/setjmp.h:
+
+/usr/include/bits/setjmp.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+../ajax/pcre/pcreemboss.h:
+
+../ajax/pcre/pcre.h:
+
+../ajax/pcre/ucp.h:
+
+../ajax/pcre/pcreposix.h:
+
+embword.h:
+
+../ajax/core/ajseqdata.h:
+
+../ajax/core/ajfeat.h:
+
+../ajax/core/ajexcept.h:
+
+../ajax/core/ajmem.h:
+
+../ajax/core/ajreg.h:
+
+../ajax/core/ajtagval.h:
+
+../ajax/core/ajfmt.h:
+
+../ajax/core/ajtable.h:
+
+embpatlist.h:
+
+../ajax/core/ajpat.h:
+
+../ajax/ajaxdb/ajtextdb.h:
+
+../ajax/ajaxdb/ajseqdb.h:
+
+../ajax/ajaxdb/ajfeatdb.h:
+
+../ajax/ajaxdb/ajobodb.h:
+
+../ajax/ajaxdb/ajassemdb.h:
+
+../ajax/ajaxdb/ajrefseqdb.h:
+
+../ajax/ajaxdb/ajtaxdb.h:
+
+../ajax/ajaxdb/ajurldb.h:
+
+../ajax/ajaxdb/ajvardb.h:
+
+../ajax/ajaxdb/ajxmldb.h:
+
+../ajax/ajaxdb/ajresourcedb.h:
+
+../ajax/graphics/ajgraph.h:
+
+../plplot/plplot.h:
+
+../plplot/plConfig.h:
+
+../plplot/pldll.h:
+
+../ajax/graphics/ajgraphstruct.h:
+
+../ajax/core/ajmess.h:
+
+../ajax/acd/ajacd.h:
+
+../ajax/core/ajrange.h:
+
+../ajax/core/ajtranslate.h:
+
+../ajax/core/ajalign.h:
+
+../ajax/core/ajmatrices.h:
+
+../ajax/core/ajcod.h:
+
+../ajax/core/ajphylo.h:
+
+../ajax/core/ajreport.h:
+
+../ajax/core/ajmath.h:
+
+../ajax/core/ajassemdata.h:
+
+../ajax/core/ajseqbam.h:
+
+../ajax/zlib/zlib.h:
+
+../ajax/zlib/zconf.h:
+
+../ajax/zlib/zlibemboss.h:
+
+/usr/include/unistd.h:
+
+/usr/include/bits/posix_opt.h:
+
+/usr/include/bits/environments.h:
+
+/usr/include/bits/confname.h:
+
+/usr/include/getopt.h:
+
+../ajax/core/ajbamindex.h:
+
+../ajax/core/ajfeatdata.h:
+
+../ajax/core/ajobodata.h:
+
+../ajax/core/ajrefseqdata.h:
+
+../ajax/core/ajresourcedata.h:
+
+../ajax/core/ajtaxdata.h:
+
+../ajax/core/ajtextdata.h:
+
+../ajax/core/ajurldata.h:
+
+../ajax/core/ajresourcedata.h:
+
+../ajax/core/ajvardata.h:
+
+../ajax/core/ajxmldata.h:
+
+../ajax/core/ajdom.h:

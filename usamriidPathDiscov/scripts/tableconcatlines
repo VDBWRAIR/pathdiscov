@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+
+%h = map {/(\S*)\s(.*)/; $1 => $2} split(/\n/, `cat $ARGV[1]`);
+
+open $ifile, '<', $ARGV[0];
+while (<$ifile>) {
+	/^(\S*)/;
+	chop;
+	print $_ . "\t" . $h{$1} . "\n";
+}
+close $ifile;

@@ -1,0 +1,217 @@
+libajax_la-ajreport.lo: ajreport.c ajlib.h ajdefine.h config.h ajarch.h \
+ /usr/include/sys/types.h /usr/include/features.h \
+ /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+ /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
+ /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+ /usr/include/time.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/sigset.h \
+ /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/bits/stdio.h ajmem.h ajmess.h ajstr.h /usr/include/setjmp.h \
+ /usr/include/bits/setjmp.h ajfmt.h ajfile.h ajlist.h \
+ /usr/include/sys/stat.h /usr/include/bits/stat.h ajreport.h ajmath.h \
+ ajfeatdata.h ajtextdata.h ajquerydata.h ajtable.h ajseqdata.h ajtime.h \
+ /usr/include/xlocale.h ajutil.h ajreg.h ../../ajax/pcre/pcre_config.h \
+ ../../ajax/pcre/pcre_internal.h /usr/include/ctype.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/limits.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h /usr/include/stdlib.h \
+ /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+ /usr/include/alloca.h /usr/include/string.h /usr/include/bits/string.h \
+ /usr/include/bits/string2.h ../../ajax/pcre/pcreemboss.h \
+ ../../ajax/pcre/pcre.h ../../ajax/pcre/ucp.h ../../ajax/pcre/pcreposix.h \
+ ajseq.h ajrefseq.h ajrefseqdata.h ajfeat.h ajexcept.h ajtagval.h \
+ ajfeatwrite.h /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/float.h \
+ /usr/include/math.h /usr/include/bits/huge_val.h \
+ /usr/include/bits/huge_valf.h /usr/include/bits/huge_vall.h \
+ /usr/include/bits/inf.h /usr/include/bits/nan.h \
+ /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h \
+ /usr/include/bits/mathinline.h
+
+ajlib.h:
+
+ajdefine.h:
+
+config.h:
+
+ajarch.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/time.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/bits/byteswap.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+ajmem.h:
+
+ajmess.h:
+
+ajstr.h:
+
+/usr/include/setjmp.h:
+
+/usr/include/bits/setjmp.h:
+
+ajfmt.h:
+
+ajfile.h:
+
+ajlist.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
+
+ajreport.h:
+
+ajmath.h:
+
+ajfeatdata.h:
+
+ajtextdata.h:
+
+ajquerydata.h:
+
+ajtable.h:
+
+ajseqdata.h:
+
+ajtime.h:
+
+/usr/include/xlocale.h:
+
+ajutil.h:
+
+ajreg.h:
+
+../../ajax/pcre/pcre_config.h:
+
+../../ajax/pcre/pcre_internal.h:
+
+/usr/include/ctype.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/limits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+../../ajax/pcre/pcreemboss.h:
+
+../../ajax/pcre/pcre.h:
+
+../../ajax/pcre/ucp.h:
+
+../../ajax/pcre/pcreposix.h:
+
+ajseq.h:
+
+ajrefseq.h:
+
+ajrefseqdata.h:
+
+ajfeat.h:
+
+ajexcept.h:
+
+ajtagval.h:
+
+ajfeatwrite.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/float.h:
+
+/usr/include/math.h:
+
+/usr/include/bits/huge_val.h:
+
+/usr/include/bits/huge_valf.h:
+
+/usr/include/bits/huge_vall.h:
+
+/usr/include/bits/inf.h:
+
+/usr/include/bits/nan.h:
+
+/usr/include/bits/mathdef.h:
+
+/usr/include/bits/mathcalls.h:
+
+/usr/include/bits/mathinline.h:

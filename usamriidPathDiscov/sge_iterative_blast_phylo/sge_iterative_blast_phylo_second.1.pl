@@ -1,0 +1,136 @@
+#!/usr/bin/perl
+
+use strict;
+use Pod::Usage;
+use Data::Dumper;
+use Getopt::Long;
+
+use FindBin qw($RealBin);
+use lib "$RealBin/../Local_Module";
+# local modules:
+use Verbose_Sys;
+use Parse_ParameterFile;
+
+# declare vars
+my ($command, $j, $i, $k, $output, $pfile, $r, $run_iteration, $path_scripts, $qrls, $boolphylo);
+
+
+
+GetOptions ('iteration_j=i' => \$j,					# j
+			'iteration_i=i' => \$i,					# i
+			'iteration_k=i' => \$k,					# k
+            'paramfile=s' => \$pfile,				# parameter
+            'output=s' => \$output,					# output            
+            'mate=i' => \$r,						# mate
+            'phylo' => \$boolphylo,            		# boolean which controls if you want to do phylo stuff             
+            'run_iteration=i' => \$run_iteration,  	# global # of times you run the script                       
+            'path_scripts=s' => \$path_scripts,		# path to scripts
+            'qrls=s' => \$qrls);					# qrls id              
+            
+if (!(eval "require Parse_ParameterFile"))
+{
+	print "\n[error] The required perl modules cannot be found.\n";
+	exit;
+}
+
+if (!( -s $j.".R1.fasta" )) # if not nonzero
+{
+	print "\n[echo] file ".$j.".R1.fasta empty.\n";
+	exit;	            
+}
+
+# get hash ref
+my $href = &parse_param($pfile);
+# get hash of parameters
+my %hoh=%$href;
+
+# set command
+if ($run_iteration>1)
+{	
+	$command="iterative_blast_phylo_".$run_iteration;	
+}
+else
+{
+	$command="iterative_blast_phylo";
+} 
+
+# get arrays
+my @blast_db_list = split(',',$hoh{$command}{"blast_db_list"});
+my @blast_task_list = split(',',$hoh{$command}{"blast_task_list"});
+my @blast_options_list = split(',',$hoh{$command}{"blast_options_list"});
+
+# print $command,"\n";
+# print $hoh{$command}{"taxonomy_nodes"},"\n";
+
+print "[START]\n";
+print "[echo] get phylogeny counts\n";
+# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
+my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_R".$r."_$j $j.R$r.blast $j.R$r.blast.ann $j.R$r.blast.t2q $j.R$r.blast.phylo $hoh{$command}{\"taxonomy_nodes\"} $hoh{$command}{\"taxonomy_names\"} $blast_db_list[$i]";
+if ($boolphylo)
+{
+	print "[cmd] ",$cmd,"\n";
+	system($cmd);	
+}
+
+my %tmph=();
+open(my $infile, "<", "$j.R$r.blast"); 
+open(my $outfile, ">", "$j.R$r.top.blast");
+while (<$infile>)
+{	
+	my @ln=split; 
+	if (!($tmph{$ln[0]})) {print $outfile $_;} # if no preexisting entry in the hash, print it 
+	$tmph{$ln[0]}=1;			
+}				 		 
+close($infile); 
+close($outfile); 
+
+# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
+my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_R".$r."_$j $j.R$r.top.blast $j.R$r.top.blast.ann $j.R$r.top.blast.t2q $j.R$r.top.blast.phylo $hoh{$command}{\"taxonomy_nodes\"} $hoh{$command}{\"taxonomy_names\"} $blast_db_list[$i]";
+if ($boolphylo)
+{
+	print "[cmd] ",$cmd,"\n";
+	system($cmd);	
+}
+				
+# get reads that didnt blast
+# args: blast output, fasta input
+my $cmd = "$path_scripts/get_unblast_reads.pl $j.R$r.blast $j.R$r.fasta > $j.R$r.noblast.fasta";
+print "[cmd] ",$cmd,"\n";
+system($cmd);
+
+# args: input file, filtering_program_name, output file, 2->fasta, concat
+my $cmd = "$path_scripts/linecount.sh $j.R$r.noblast.fasta $blast_task_list[$i] R$r.count 2 1";
+print "[cmd] ",$cmd,"\n";
+system($cmd);			
+
+system("ln -sf $j.R$r.noblast.fasta $k.R$r.fasta");
+
+# get absolute path to output file
+my $mytmp=`readlink -m $j.R$r.noblast.fasta`;
+chomp $mytmp;
+
+my $cmd = "ln -sf $mytmp $output";
+print "[cmd] ",$cmd,"\n";
+system($cmd);
+
+# get counts per superclass:
+# args: outputdir, 1->R1
+my $cmd = "$path_scripts/prepare_plot_phylo_percents.sh . $r";
+if ($boolphylo)
+{
+	print "[cmd] ",$cmd,"\n";
+	system($cmd);	
+}
+
+# release hold on next job if jid > 0
+if ( $qrls ne "0" )
+{
+	my $qcmd="qsub -V -N qrls.$i -e ./logs -o ./logs -l mem=1G,time=1:: -S /bin/sh -cwd $path_scripts/job_release.sh $qrls";	
+	print "[qcmd] ",$qcmd,"\n";
+	my $qsub_message=`$qcmd`;	
+	print($qsub_message); 
+}
+
+print "[END]\n";
+
+

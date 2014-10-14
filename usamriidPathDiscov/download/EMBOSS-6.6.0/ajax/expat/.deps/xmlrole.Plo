@@ -1,0 +1,20 @@
+xmlrole.lo: xmlrole.c \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h expat_config.h \
+ ../../ajax/core/config.h expat_external.h internal.h xmlrole.h xmltok.h \
+ ascii.h
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h:
+
+expat_config.h:
+
+../../ajax/core/config.h:
+
+expat_external.h:
+
+internal.h:
+
+xmlrole.h:
+
+xmltok.h:
+
+ascii.h:

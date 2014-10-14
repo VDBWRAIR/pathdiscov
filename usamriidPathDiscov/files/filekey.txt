@@ -1,0 +1,139 @@
+***step1***
+
+1.fastq	# R1 fastq file with IDs changed to numbers, dots removed, etc
+1.id	# R1 numerical id to fastq id mapping 
+2.fastq	# R2 fastq file with IDs changed to numbers, dots removed, etc
+2.id	# R2 numerical id to fastq id mapping 
+R1.count	# R1 sequence counts
+R2.count	# R2 sequence counts
+step1.R1	# R1 ouput of step (link)
+step1.R2	# R2 ouput of step (link)
+./logs/sample.date-out.e	# log error
+./logs/sample.date-out.o	# log output
+
+***quality_filter***
+
+quality_filter.R1	# R1 ouput of step (link)
+quality_filter.R2	# R2 ouput of step (link)
+R1.count	# R1 sequence counts
+R1.cut.fastq	# R1 output of cutadapt
+R1.cut2.fastq	# R1 output of cutadapt, second iteration
+R1.prinseq.bad.fastq	# R1 prinseq discards
+R1.prinseq.fastq	# R1 prinseq output
+R2.count	# R2 sequence counts
+R2.cut.fastq
+R2.cut2.fastq
+R2.prinseq.bad.fastq
+R2.prinseq.fastq
+./logs/sample.date-out.e	# log error
+./logs/sample.date-out.o	# log output
+
+***host_map***
+
+host_map_1.R1	# R1 ouput of step (link)
+host_map_1.R2	# R2 ouput of step (link)
+R1.count	# R1 sequence counts
+R2.count	# R2 sequence counts
+./logs/sample.date-out.e
+./logs/sample.date-out.o
+./tmp_1/out.bam	# iteration 1 mapping .bam file
+./tmp_1/out.sam # iteration 1 mapping .sam file
+./tmp_1/R1.paired.fastq	# iteration 1 R1 well paired reads
+./tmp_1/R1.single.fastq	# iteration 1 R1 singletons
+./tmp_1/R1.unmap.fastq # iteration 1 R1 unmapped reads
+./tmp_1/R2.paired.fastq # iteration 1 R2 well paired reads
+./tmp_1/R2.single.fastq # iteration 1 R2 singletons
+./tmp_1/R2.unmap.fastq	# iteration 1 R2 unmapped reads
+./tmp_1/unmap.id	# iteration 1 unmapped read IDs
+./tmp_2/out.bam	# iteration 2
+./tmp_2/out.sam
+./tmp_2/R1.paired.fastq
+./tmp_2/R1.single.fastq
+./tmp_2/R1.unmap.fastq
+./tmp_2/R2.paired.fastq
+./tmp_2/R2.single.fastq
+./tmp_2/R2.unmap.fastq
+./tmp_2/unmap.id
+...
+./tmp_n/...	# iteration n
+
+***ray2_assembly***
+
+1.R1.unmap.fastq	# R1 reads that didnt map to assembly (link)
+1.R2.unmap.fastq	# R2 reads that didnt map to assembly (link)
+assembly.count	# sequence counts
+contig_numreads	# counts of # pairs + singletons that map to each contig (i.e., a pair counts as 1 and a singleton counts as 1) as well # split reads for paired reads only. header: (Contig	count	splitread_count)
+R1.paired.fastq	# input R1 well paired reads
+R1.single.fastq	# input R1 singletons
+R2.paired.fastq	# input R2 well paired reads
+R2.single.fastq	# input R2 singletons
+ray2_assembly_1.fasta	# ouput of step
+./bowtie2_index/contigs.1.bt2	# bowtie index files
+./bowtie2_index/contigs.2.bt2
+./bowtie2_index/contigs.3.bt2
+./bowtie2_index/contigs.4.bt2
+./bowtie2_index/contigs.rev.1.bt2
+./bowtie2_index/contigs.rev.2.bt2
+./bowtie2_mapping/out.bam	# bowtie mapping files
+./bowtie2_mapping/out.sam
+./bowtie2_mapping/paired.unmap.id	# ids of reads that didnt map
+./bowtie2_mapping/R1.unmap.fastq	# R1 reads that didnt map to assembly
+./bowtie2_mapping/R2.unmap.fastq	# R2 reads that didnt map to assembly
+./logs/sample.date-out.e
+./logs/sample.date-out.o
+./results/...	# ray assembly output
+
+***iterative_blast_phylo***
+
+1.R1.blast	# iteration 1 R1 blast output
+1.R1.blast.ann	# iteration 1 R1 blast output annotated (queryid(contig) taxid description) 
+1.R1.blast.phylo	# iteration 1 R1 blast taxid counts (taxid	count	superkingdom	kingdom	class	order	family	genus	species). The count is weighted. I.e., if something blasts degenerately to two things, each counts 1/2.
+1.R1.blast.t2q	# iteration 1 R1 blast taxid to queryid(contig) mapping 
+1.R1.fasta	# input file to step
+1.R1.noblast.fasta	# iteration 1 R1 fasta file of what did not blast
+1.R1.top.blast	# iteration 1 R1 blast output, but the "top" denotes this is restricted to the top hit for each query
+1.R1.top.blast.ann
+1.R1.top.blast.phylo # note: here the count is NOT weighted
+1.R1.top.blast.t2q
+2.R1.blast	# iteration 2 R1 blast output (i.e., 1.R1.noblast.fasta is the input)
+2.R1.blast.ann
+2.R1.blast.phylo
+2.R1.blast.t2q
+2.R1.fasta	# same as 1.R1.noblast.fasta
+2.R1.noblast.fasta
+2.R1.top.blast
+2.R1.top.blast.ann
+2.R1.top.blast.phylo
+2.R1.top.blast.t2q
+3.R1.fasta	# same as 2.R1.noblast.fasta
+iterative_blast_phylo_1.R1	# R1 ouput of step (link)
+R1.count	# R1 sequence counts
+R1.count.superclass	# list the number of elements in the superclass (Viruses	Eukaryota	Bacteria	Unannotated	Archaea) at every iteration - weighted 
+R1.top.count.superclass	# list the number of elements in the superclass (Viruses	Eukaryota	Bacteria	Unannotated	Archaea) at every iteration - not weighted 
+
+./logs/sample.date-out.e
+./logs/sample.date-out.o
+./tmp_R1_1/...	# iteration 1 R1 - contains the split "1.R1.fasta" files for parallel blasting as well as the split output which is concatenated together to make "1.R1.blast"
+./tmp_R1_2/...
+./tmp_R1_3/...
+...
+./tmp_R1_n/...	# iteration n
+
+*** scripts/ ***
+# the following are not modules but the output of various post-run scripts
+
+# scripts/format_iterative_blast_phylo.pl
+
+R1.sample.phylo.txt	# counts of each blast step as it relates to phylogeny (blast_alg	taxid	count	superkingdom	kingdom	class	order	family	genus	species)
+R1.sample.top.phylo.txt
+R1.sample.report.txt
+R1.sample.smallreport.txt
+R1.sample.top.report.txt
+R1.sample.top.smallreport.txt
+R2.sample.phylo.txt
+R2.sample.top.phylo.txt
+R2.sample.report.txt
+R2.sample.smallreport.txt
+R2.sample.top.report.txt
+R2.sample.top.smallreport.txt
+

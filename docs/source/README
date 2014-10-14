@@ -1,0 +1,5 @@
+Run `sphinx-apidoc -o . ../../usamriidPathDiscov' in this directory.
+
+This will generate `modules.rst' and `usamriidPathDiscov.rst'.
+
+Then include `modules.rst' in your `index.rst' file.

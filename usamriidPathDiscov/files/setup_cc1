@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# current path discov pipeline
+PATH=$PATH:/data/columbia/scratch/scripts/my_scripts/pathogen_discov_pipeline/current
+export PERL5LIB=$PERL5LIB:/data/columbia/scratch/scripts/my_scripts/pathogen_discov_pipeline/current/Local_Module
+
+PATH=/data/columbia/scratch/scripts/bin/prinseq-lite-0.20.3:$PATH
+PATH=/data/columbia/scratch/scripts/bin/Ray_program:$PATH
+PATH=/data/columbia/scratch/scripts/bin/CAP3:$PATH
+
+PATH=$PATH:/data/columbia/scratch/scripts/bin/velvet_1.2.03
+PATH=$PATH:/data/columbia/scratch/scripts/bin
+PATH=$PATH:/data/columbia/scratch/scripts/bin/MEGAN_program
+
+# add sff info for converting 454 .sff to .fastq
+PATH=$PATH:/data/software/gsflx/bin
+
+# open mpi
+PATH=$PATH:/usr/lib64/openmpi/bin
+
+# abyss fastx blast etc
+PATH=$PATH:/usr/local/bin
+
+# bwa
+PATH=$PATH:/home/jtl/source/bwa-0.6.1
+
+# samtools 
+PATH=$PATH:/data/software/samtools-0.1.18
+
+# prinseq-lite.pl
+PATH=$PATH:/home/jtl/programs
+
+# necessary?
+export R_LIBS=$R_LIBS:/data/columbia/scratch/scripts/my_R_libraries
+

@@ -1,0 +1,1 @@
+# ./orf_filter.pl --sample test --paramfile ../files/sample.param --outputdir crap/ --logs crap/logs --R1 ../../formike/3.contig.noblast.fasta 
