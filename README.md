@@ -5,24 +5,30 @@
 
 Project Setup
 =============
-To install::
-
-    git clone  https://github.com/VDBWRAIR/usamriidPathDiscov.git
-    cd  usamriidPathDiscov
-    virtualenv  usamriidPathDiscov
-    source usamriidPathDiscov/bin/activate
-    pip install paver
-    python setup.py install
-    deactivate
-    source ~/.bashrc
 
 Instructions
 ------------
-Make sure you have the following dependencies before you run ``python
-setup.py install``::
-    
-   yum install openmpi openmpi-devel;
-   easy_install virtualenv
+
+# Install System Packages
+
+  ```
+  yum install openmpi openmpi-devel git python-devel
+  yum groupinstall Development tools
+  ```
+  
+# To install
+
+  ```
+  git clone  https://github.com/VDBWRAIR/usamriidPathDiscov.git
+  cd  usamriidPathDiscov
+  wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
+  python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
+  source usamriidPathDiscov/bin/activate
+  pip install paver
+  python setup.py install
+  deactivate
+  source ~/.bashrc
+  ```
 
 Using  usamriidPathDiscov
 ------------------------
