@@ -20,7 +20,7 @@ Instructions
 
   ```
   git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
-  cd  usamriidPathDiscov/usamriidPathDiscov
+  cd  usamriidPathDiscov/usamriidPathDiscov/download
   # Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract
   #wget  https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
   wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
