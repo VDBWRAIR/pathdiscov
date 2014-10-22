@@ -19,7 +19,7 @@ Instructions
 # To install
 
   ```
-  git clone  https://github.com/VDBWRAIR/usamriidPathDiscov.git
+  git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
   cd  usamriidPathDiscov/usamriidPathDiscov
   # Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract
   #wget  https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
