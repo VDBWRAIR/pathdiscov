@@ -1,0 +1,52 @@
+# Emacs rope configuration
+.ropeproject
+.project
+.pydevproject
+.settings
+.ruffus_history.sqlite
+
+# pyenv version file
+.python-version
+
+# Python
+*.py[co]
+
+## Packages
+*.egg
+*.swp
+*.egg-info
+*.copy
+dist
+build
+eggs
+parts
+usamriidPathDiscov/bin
+usamriidPathDiscov/lib
+usamriidPathDiscov/include
+copy.autoenv
+usamriidPathDiscov/download/ray
+usamriidPathDiscov/download/EMBOSS-6.6.0
+usamriidPathDiscov/download/RayPlatform
+internal
+var
+sdist
+deb_dist
+develop-eggs
+.installed.cfg
+
+## Installer logs
+pip-log.txt
+
+## Unit test / coverage reports
+.coverage
+.tox
+
+## Translations
+#*.mo
+
+## paver generated files
+# test analyis
+pathDescTest
+
+#Negate, include the file
+

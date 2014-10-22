@@ -1,0 +1,5 @@
+# debug issues:
+
+# if cant find perl module:
+
+# use lib "/path/to/Local_Module";

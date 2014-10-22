@@ -1,0 +1,46 @@
+BLAST db from taxid 
+
+ here's how to do it with a little bit of shell script and awk (you can try out these commands. also, I can do it for you if you don't feel like reading through this ...)
+
+Suppose one of your BLAST hits was to 'gi|371491714|gb|JQ308836.1|' in the nt database (in our case, we'd have a bunch of hits and then we'd do a sort -u on taxid but here's the basic idea)
+
+# get the taxid (or a list of them for multiple entries) --- %T stands for taxid
+
+taxid=$( blastdbcmd -db /data/db/nt -entry 'gi|371491714|gb|JQ308836.1|' -outfmt '%T' )
+
+# create a file of gi's from the whole database s.t. the taxid matches our hit
+# (here i'm taking only the first 10 entries as a test)
+
+blastdbcmd -db /data/db/nt -entry all -outfmt '%g %T' | awk -v taxid=${taxid} '$2==taxid{print $1}' | head > ${taxid}.gi
+
+# make a BLAST database from the subset w these gi's
+
+blastdb_aliastool -db /data/db/nt -gilist ${taxid}.gi -dbtype nucl -out ${taxid}_head_db -title "Testing 123"
+
+I tested it. In this particular case,
+
+$ blastdbcmd -db /data/db/nt -entry all -outfmt '%g %T %t' | awk -v taxid=${taxid} '$2==taxid{print}' | head
+12585 9606 Homo sapiens mRNA for delta-subunit of mitochondrial F1F0 ATP-synthase (clone #1)
+12587 9606 Home sapiens mRNA for delta-subunit of mitochondrial F1F0 ATP-synthase (clone #5)
+12999 9606 H.sapiens deleted mitochondrial mRNA sequence (transcribed in human colon adenocarcinoma cells)
+13683 9606 Human mitochondrial genes for several tRNAs (Phe, Val, Leu) and 12S and 16S ribosomal RNAs
+22816 9606 Human gammaG crystallin gene exon 2 (transcriptionally inactive)
+22921 9606 Human lysosomal alpha-glucosidase gene exon 8
+22934 9606 H.sapiens RNA of 11p15 gene
+22935 9606 H.sapiens DNA for CANP 30K gene
+22936 9606 H.sapiens GSTalpha gene for glutathione S-tranferase exon 2
+22941 9606 Human DNA insert showing sperm-specific hypomethylation (Sp-0.3-8)
+
+So I got a little bit of sequence from 'Homo sapiens mRNA for delta-subunit of mitochondrial F1F0 ATP-synthase':
+
+$ cat mytest.fa
+word
+ccaacgtccggcaggtggacgtgcccacgctgaccggagccttcggcatcctggcggccc
+
+And it BLASTs, as expected, to the new db:
+
+$ blastn -task megablast -db 9606_head_db -outfmt 6 -query mytest.fa -word_size 28
+word    gi|12587|emb|X63423.1|  100.00  60      0       0       1       60      241     300     7e-29    111
+word    gi|12585|emb|X63422.1|  100.00  60      0       0       1       60      241     300     7e-29    111
+
+The only caveat is, for this simple example all these files are supposed to be made in the same dir. i didn't have permission to /data/db so i made links. i'm sure there are some flags that could do the trick equally well ...

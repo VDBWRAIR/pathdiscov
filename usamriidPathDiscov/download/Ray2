@@ -1,0 +1,5 @@
+#!/bin/bash
+THISD=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib
+export PATH=$PATH:/usr/lib64/openmpi/bin
+exec ${THISD}/Ray $@

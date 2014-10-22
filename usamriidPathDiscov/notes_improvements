@@ -1,0 +1,34 @@
+EASY ONES
+
+Pathogen discovery updates
+-for the run_standard.pl switch host mapping to the first step, followed by prinseq
+snap?
+reorder
+-Prinseq and cutadapt step- add in Jasons method of cutting SISPA and illumina adaptors fwd and reverse complement.
+-See if updated version of prinseq affects pipeline, the new version gives the correct low complexity reads, currently using 0.2.2 need to update to 0.2.3
+
+
+-Update the Ray 2 step- allow for parallelization and stop ray from doing the extra junk that it does. Also see if it is possible to add in a flag to have cap3 run after the Ray2 assembley, so it would go
+massively faster
+multiple processor
+option ->
+Ray2 -> Cap3 -> assemble to contigs
+Cat Contig singles -> join 
+Currently using Ray2, need to use Ray2.2 just need to make sure it does not break the pipeline
+-For iterative blast1, could you change the name of the report from R1. to contig instead cause it ends up being the same name as the read report for R1, for examples the files with the same names are: Iterative_blast_phylo_1/reports/R1._.top.report.txt
+and Iterative_blast_phylo_2/reports/R1._.top.report.txt
+
+-In the report add in a tabs for the contig reports to show length of contig and number of reads associated with that contig, attached is an example, contig reads are located in Ray2_assembly_1/contig_numreads.txt
+
+-Add lc method (low complexity read counts) to the stats file, its located in Quality_filter/logs/_-out.e
+
+from prinseq add to stats report
+
+-Also there are a list of files that I always grab, if  you could make symbolic links to these files in the output directory that would be great 
+Iterative_blast_phylo_1/reports/R1._.top.report.txt
+Iterative_blast_phylo_1/reports/R1._.top.phylo.txt
+Iterative_blast_phylo_1/4.R1.fasta (the unblasted contigs)
+Iterative_blast_phylo_2/reports/R1._.top.phylo.txt
+Iterative_blast_phylo_2/reports/R2._.top.phylo.txt
+Ray2_assembly_1/ray2_assembly_1.fasta
+

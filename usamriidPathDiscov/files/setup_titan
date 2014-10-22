@@ -1,0 +1,26 @@
+#!/bin/bash
+
+shares=/ifs/home/c2b2/rr_lab/shares
+
+PATH=$PATH:/nfs/apps/R/2.14.0/bin
+PATH=$PATH:${shares}/scripts
+PATH=$PATH:${shares}/ncbi-blast-2.2.25+/bin
+PATH=$PATH:${shares}/fastx_toolkit/bin
+PATH=$PATH:${shares}/bin
+PATH=$PATH:${shares}/bin/prinseq-lite-0.19.5
+PATH=$PATH:${shares}/bin/cutadapt-1.1/bin
+PATH=$PATH:${shares}/bin/bowtie2-2.0.0-beta7
+PATH=$PATH:${shares}/bin/FastQC
+PATH=$PATH:${shares}/bin/bowtie-0.12.7
+PATH=$PATH:${shares}/bin/velvet_1.2.03
+PATH=$PATH:${shares}/bin/bwa-0.5.9
+PATH=$PATH:${shares}/bin/samtools-0.1.16/bin
+PATH=$PATH:${shares}/bin/openmpi_program/bin
+PATH=$PATH:${shares}/bin/Ray-v2.1.0_program
+
+# for mira and ray
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${shares}/bin/boost_build/lib:${shares}/bin/openmpi_program/lib
+
+PERL5LIB=$PERL5LIB:/ifs/home/c2b2/rr_lab/shares/pathogen_pipeline_scripts/Local_Module 
+
+export PERL5LIB

@@ -1,0 +1,124 @@
+# This is the parameter file for the pathogen discovery pipeline.
+# Every command (or "module", if you like) has its own settings. The settings for a particular module must follow its "command module" line. Otherwise, the order doesn't matter.
+
+# How to use this parameter file:
+# for boolean options, use "yes" or "1" for assent OR "no" or "0" or "-" for dissent (or simply comment out or omit the line).
+# the default settings are generally "no" unless otherwise specified
+
+# note: make sure nt and nr are up-to-date!
+
+# -------------------
+command step1
+
+seq_platform				illumina										# choices are: illumina or 454
+
+# explanation: must be run first --- hence titled step1. this module maps the fastq IDs into simple numerical IDs and processes .sff file if 454
+
+# -------------------
+command quality_filter
+
+cutadapt_options			-g GCCGGAGCTCTGCAGATATC -m 20 --match-read-wildcards								# this should have every flag except the input and output ones
+cutadapt_options2			-g CGCCGTTTCCCAGTAGGTCTC -m 20 --match-read-wildcards								# this should have every flag except the input and output ones
+# prinseq_options			-log -verbose -min_len 50 -ns_max_p 10 -derep 12345 								# this should have every flag except the input and output ones (i.e., don't specify the "-out_good" "-out_bad" or "fastq" flags)
+prinseq_options				-min_len 50 -derep 14 -lc_method dust -lc_threshold 3 -trim_ns_left 1 -trim_ns_right 1 -trim_qual_right 15 	# this should have every flag except the input and output ones (i.e., don't specify the "-out_good" "-out_bad" or "fastq" flags)
+
+# explanation: run up to 2 iterations of cutadapt, if specified, and prinseq, if specified
+
+# -------------------
+command host_map
+# for the "_list" settings, use a comma-delimited list with no spaces
+
+mapper_program_list		bowtie2,bowtie2													# choices are: bwa, bowtie2
+mapper_db_list			/ifs/scratch/c2b2/rr_lab/shares/ref/hg19/bowtie2/genome/hg19,/ifs/scratch/c2b2/rr_lab/shares/ref/hg19/bowtie2/transcriptome/transcriptome_fasta
+mapper_name_list		bowtie2_genome_local,bowtie2_transcript_local								# names that will appear on a graph
+mapper_options_list		--local,--local													# flags for aligner
+
+# explanation: perform a chain of alignments.
+
+# -------------------
+command host_map_2
+# this is the same as host_map --- it just allows you to do it an n-th time
+
+mapper_program_list			bowtie2											# choices are: bwa, bowtie2
+mapper_db_list				/ifs/scratch/c2b2/rr_lab/shares/ref/hg19/bowtie2/genome/hg19				# prefix of aligner indexed database
+mapper_name_list			bowtie2_genome										# names that will appear on a graph
+mapper_options_list														# flags for aligner
+
+# -------------------
+# command host_map_2
+# this is the same as host_map --- it just allows you to do it an n-th time
+
+# mapper_program_list			bwa											# choices are: bwa, bowtie2
+# mapper_db_list			/ifs/scratch/c2b2/rr_lab/shares/ref/hg19/bwa/genome/hg19				# prefix of aligner indexed database
+# mapper_name_list			bwa_genome										# names that will appear on a graph
+# mapper_options_list														# flags for aligner
+
+# -------------------     
+command iterative_blast_phylo
+
+# for the "_list" settings, use a comma-delimited list with no spaces
+
+blast_db_list				/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nt/nt,/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nt/nt,/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nr/nr							# blast db prefix
+blast_task_list				megablast,dc-megablast,blastx								# options are: megablast dc-megablast blastn, blastx
+# blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are 
+blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4			# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
+ninst_list				20,20,40										# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
+taxonomy_names				/ifs/scratch/c2b2/rr_lab/shares/ref/taxdump/names.dmp					# NCBI taxonomy names dump file
+taxonomy_nodes				/ifs/scratch/c2b2/rr_lab/shares/ref/taxdump/nodes.dmp					# NCBI taxonomy nodes dump file
+qtime_list				5,5,10											# qsub time in hours - only for SGE
+qmem_list				8,10,15											# qsub mem in G - only for SGE 
+
+# explanation: perform a chain of blasts. the blast is performed in chunks to speed up the process. note: if you use blastx, make sure the chunks are really small. otherwise, it takes a long time. 
+
+# -------------------     
+command iterative_blast_phylo_2
+# this is the same as iterative_blast_phylo --- it just allows you to do it an n-th time
+
+# for the "_list" settings, use a comma-delimited list with no spaces
+
+blast_db_list				/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nt/nt,/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nt/nt,/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nr/nr							# blast db prefix
+blast_task_list				megablast,dc-megablast,blastx								# options are: megablast dc-megablast blastn, blastx
+# blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are 
+blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4			# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
+ninst_list				20,20,40										# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
+taxonomy_names				/ifs/scratch/c2b2/rr_lab/shares/ref/taxdump/names.dmp					# NCBI taxonomy names dump file
+taxonomy_nodes				/ifs/scratch/c2b2/rr_lab/shares/ref/taxdump/nodes.dmp					# NCBI taxonomy nodes dump file
+qtime_list				5,5,10											# qsub time in hours - only for SGE
+qmem_list				8,10,15											# qsub mem in G - only for SGE 
+
+# explanation: run another instance of the iterative_blast_phylo module. you can run more instances by adding entries in this parameter file for "iterative_blast_3", "iterative_blast_4", etc
+
+# -------------------
+command nohost_blast
+
+ncbi_nt_db				/ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nt/nt					# full path to NCBI nt database prefix
+gi2taxid				/ifs/scratch/c2b2/rr_lab/shares/ref/nt/gi2taxid.txt					# file with col1=gi number, col2=taxid (to make this file: blastdbcmd -db /ifs/scratch/c2b2/rr_lab/shares/ref/blastdb/nt/nt -entry all -outfmt '%g	%T' > gi2taxid.txt)
+num_subset_seq				200											# the number of sequences in the small initial file to be blasted
+blast_type				blastn											# options are: blastn blastx 
+blast_task				megablast										# options are: megablast dc-megablast blastn
+blast_options				-evalue 1e-4 -word_size 28								# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
+ninst					20											# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
+
+# explanation: nohost_blast will blast a subset (determined by "num_subset_seq") of your initial file to nt. it will get the taxid from the hits to nt and use these tax id to make a new database, which it will then blast the full initial file against
+
+# -------------------
+command ray2_assembly
+
+kmer					25											# assembler k-mer
+map2contigs				yes											# if "yes" or "1", map reads back onto assembly
+bowtie2_options			--local										# only nec if map2contigs. Options for the mapper		
+
+# explanation: perform an assembly using Ray
+
+# -------------------
+command ray2_assembly_2
+# this is the same as ray2_assembly --- it just allows you to do it an n-th time
+
+kmer					25											# assembler k-mer
+map2contigs				yes											# if "yes" or "1", map reads back onto assembly
+bowtie2_options			--local										# only nec if map2contigs. Options for the mapper		
+
+# explanation: run another instance of the ray2_assembly module. you can run more instances by adding entries in this parameter file for "ray2_assembly_3", "ray2_assembly_4", etc
+
+
+

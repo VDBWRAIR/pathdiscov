@@ -1,0 +1,72 @@
+If you want to try running the current working version of the pathogen discovery pipeline, this is how to do it. First, make a local copy of the pipeline scripts
+
+$ cp -R /data/columbia/scratch/scripts/my_scripts/pathogen_discov_pipeline/current/* /your/path/yourfolder/
+
+then source the setup file:
+
+$ source /your/path/yourfolder/setup_cc1
+
+( Before you do this, you can change the beginning of the setup file to reflect your new path:
+
+for the lines 
+
+# current path discov pipeline
+PATH=$PATH:/data/columbia/scratch/scripts/my_scripts/pathogen_discov_pipeline/current
+export PERL5LIB=$PERL5LIB:/data/columbia/scratch/scripts/my_scripts/pathogen_discov_pipeline/current/Local_Module      # this adds a homemade perl module that the script needs to find.
+
+replace /data/columbia/scratch/scripts/my_scripts/pathogen_discov_pipeline/current with /your/path/yourfolder/ --- OR, if you like, you can just run it out of the columbia/ dir and change nothing
+
+)
+
+# Next, make a project directory: 
+
+$ mkdir project
+$ cd project
+
+# make internal directories
+
+$ mkdir input logs results logs
+
+# make sample directories
+
+$ mkdir results/sample1 results/sample2 results/sample3
+
+# go into input dir and make a parameter file. You can do this by using the template the program provides:
+
+$ cd input
+$ pathogen.pl --example > param.txt
+
+# the default assumes you're mapping to the human genome + transcriptome and then blasting to nt + nr. You can change the params in the file as you like.
+
+# I recommend that you check out the instructive, if messy, "pathogen.pl --help" and "pathogen.pl --key" for more information. Here's a typical way you might run it:
+
+pathogen.pl --sample sample1 --command step1 quality_filter host_map ray2_assembly iterative_blast_phylo --paramfile param.txt --outputdir ../results/sample1 --R1 /my/data/R1.fastq.gz --R2 /my/data/R2.fastq.gz > ../logs/out1.o 2> ../logs/out1.e &
+
+# This runs everything. However, it may be more prudent to run it one step at a time for the first time:
+
+pathogen.pl --sample sample1 --command step1 --paramfile param.txt --outputdir ../results/sample1 --R1 /my/data/R1.fastq.gz --R2 /my/data/R2.fastq.gz > ../logs/out1.o 2> ../logs/out1.e &
+pathogen.pl --sample sample1 --command step1 quality_filter --paramfile param.txt --outputdir ../results/sample1  > ../logs/out2.o 2> ../logs/out2.e &
+pathogen.pl --sample sample1 --command step1 quality_filter host_map --paramfile param.txt --outputdir ../results/sample1 > ../logs/out3.o 2> ../logs/out3.e &
+pathogen.pl --sample sample1 --command step1 quality_filter host_map ray2_assembly --paramfile param.txt --outputdir ../results/sample1 > ../logs/out4.o 2> ../logs/out4.e &
+pathogen.pl --sample sample1 --command step1 quality_filter host_map ray2_assembly iterative_blast_phylo --paramfile param.txt --outputdir ../results/sample1 > ../logs/out5.o 2> ../logs/out5.e &
+
+---
+
+let me know if you have any problems or permission issues.
+
+notes: (1) I have a MUCH improved blasting script which is finished but i haven't integrated yet (will do soon); (2) I need to produce a key that tells what all the files produced by each module are (will do soon); (3) there's a couple of scripts you run when the whole thing's finished to produced reports, figures, etc. Let me know if you get it running successfully and i'll send you the commands for those
+
+When you are finished, running 
+
+$ ${d}/scripts/graph_counts.sh $outputdir . R1.count R2.count sample-name "step1 quality_filter host_map_1 ray2_assembly_1 iterative_blast_phylo_1" 
+
+# where the last argument is the modules in whatever order you ran them
+
+$ ${d}/scripts/format_iterative_blast_phylo.pl --outputdir . --prefix sample-name --blastdir ${outputdir}/iterative_blast_phylo_1 --blast_list megablast,dc-megablast,blastx
+
+# where the last argument is the iterative blasts in whatever order you ran them
+
+in the cwd will make more finished report files
+
+# where $d is the path to path discov scripts and 
+# where $outputdir is the path to your project output dir
