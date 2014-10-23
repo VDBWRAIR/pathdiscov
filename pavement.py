@@ -82,8 +82,8 @@ options(setup=setup_dict,
             shell_file=path('usamriidPathDiscov/files/settings.sh'),
             shell_file_bk=path('usamriidPathDiscov/files/settings.sh.base'),
             bash_rc =path('usamriidPathDiscov/files/bashrc'),
-            config =path('config.yaml'),
-            config_bk=path('config.yaml.base'),
+            config =path('usamriidPathDiscov/config.yaml'),
+            config_bk =path('config.yaml.base'),
             dist_dir =path('.'),
             param_base =path('usamriidPathDiscov/files/sample.param.base'),
             param_work =path('usamriidPathDiscov/files/sample.param')
@@ -260,7 +260,7 @@ def install_bwa(options):
 @task
 def install_samtools(options):
     """installs the current package"""
-    info("Installing bwa ....\n")
+    info("Installing samtools ....\n")
     currwd = os.getcwd()
     sdir = path(currwd) / options.samtools.sdir
     bindir = path(currwd) / options.samtools.bindir
@@ -384,7 +384,7 @@ def modifyBashRC():
     info(conf_bk)
     sh("cat  %s >  %s" %(conf_bk, conf))
     for line in fileinput.input(conf, inplace=True, backup='.bak'):
-        line = re.sub(r'GENOMEDIR',  dbdir, line.rstrip())
+        line = re.sub(r'GENOMEDIR', dbdir, line.rstrip())
         info(line)
 #@task
 #def installPerlLocalLib():
