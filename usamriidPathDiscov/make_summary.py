@@ -35,7 +35,7 @@ def read_count( countfile ):
             counts[row['name']] = int( v )
         except ValueError as e:
             rv = round(float(v))
-            sys.stderr.write( '{} had a non integer {} and was rounded to {}\n'.format(countfile,v,rv) )
+            sys.stderr.write( '{0} had a non integer {1} and was rounded to {2}\n'.format(countfile,v,rv) )
             counts[row['name']] = rv
     return counts
 
@@ -54,10 +54,9 @@ def r1r2_count( steppath ):
         Merge together counts for R1 and R2 inside of steppath
         Raises MissingProjectFile if < 1 .count file found
     '''
-    print "..." + steppath
-    r1r2 = glob( join( steppath, 'contig*.count' ) )
+    r1r2 = glob( join( steppath, 'R*.count' ) )
     if len(r1r2) == 0:
-        raise MissingProjectFile( '{} did not contain > 1 count files'.format(steppath) )
+        raise MissingProjectFile( '{0} did not contain > 1 count files'.format(steppath) )
     counts = defaultdict( int )
     for f in r1r2:
         rc = read_count( f )
@@ -99,7 +98,7 @@ def contig_info( projdir ):
     contignreadsfile = join( d, 'contig_numreads.txt' )
     info = {}
     if not (exists(contiglenfile) and exists(contignreadsfile)):
-        raise MissingProjectFile( '{} or {} are missing from {}'.format(contiglenfile,contignreadsfile,projdir) )
+        raise MissingProjectFile( '{0} or {1} are missing from {2}'.format(contiglenfile,contignreadsfile,projdir) )
     cl = list( parse_tab_file( contiglenfile, ['contig', 'lenstr'] ) )
     cr = list( parse_tab_file( contignreadsfile, ['contig', 'nreads'] ) )
     # Sort on numeric portion of contig name
@@ -107,9 +106,12 @@ def contig_info( projdir ):
     # Make sure sorted
     cl.sort( key=sortkey )
     cr.sort( key=sortkey )
+    print cl
+    print cr
     # Sometimes one list is not the same length as the other
     for l, nr in itertools.izip_longest( cl, cr, fillvalue={'contig':'','nreads':-1,'lenstr':'contig-c000000 -1 nucleotides'} ):
         contigname = l['contig']
+        print l['lenstr']
         length = l['lenstr'].split()[1]
         nreads = nr['nreads']
         info[contigname] = (length,nreads)
@@ -129,7 +131,7 @@ def contigs_for( projdir, blastcol, blastval ):
     smallreport = glob( join( projdir, 'results', 'iterative_blast_phylo_1', 'reports', '*smallreport*.txt' ) )
     if len( smallreport ) != 1:
         bns = ' '.join( [basename(f) for f in smallreport] )
-        raise MissingProjectFile( '{} only has the following phylo_1 smallreport files: {}'.format(projdir, bns) )
+        raise MissingProjectFile( '{0} only has the following phylo_1 smallreport files: {1}'.format(projdir, bns) )
     smallreport = smallreport[0]
     bi = blast_results_for_( smallreport, blastcol, blastval )
     # Iterate over blast results that are filtered by blastcol and blastval
@@ -180,7 +182,7 @@ def unassembled_report( projdir, kingdom, groupby='family' ):
     smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R*smallreport*.txt' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
-        raise MissingProjectFile( '{} only has the following phylo_2 smallreport files: {}'.format(projdir, bns) )
+        raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )
     merged = {}
     for f in smallreports:
         # Begin with first small report
@@ -259,12 +261,12 @@ def main( args ):
     for p in args.projdir:
         try:
             sys.stderr.write( p + '\n' )
-            s = summary( p, args.filter_column, args.filter_value, args.group_by )
+            s = summary( p, 'superkingdom', 'Viruses', 'family' )
             rows = format_summary( s )
             samplename = basename(p)
             print samplename + ('\n'+samplename).join( rows )
         except Exception as e:
-            sys.stderr.write( 'Skipping {} because {}\n'.format(p,e) )
+            sys.stderr.write( 'Skipping {0} because {1}\n'.format(p,e) )
         sys.stderr.write( '\n' )
 
 def parse_args( args=sys.argv[1:] ):
@@ -276,30 +278,6 @@ def parse_args( args=sys.argv[1:] ):
         'projdir',
         nargs='+',
         help='Project directory path for riidpipeline project'
-    )
-
-    fcd = 'superkingdom'
-    parser.add_argument(
-        '--filter-column',
-        dest='filter_column',
-        default=fcd,
-        help='What column in the blast reports to filter by[Default: {}]'.format(fcd)
-    )
-
-    fcv = 'Viruses'
-    parser.add_argument(
-        '--filter-value',
-        dest='filter_value',
-        default=fcv,
-        help='What value to filter on in the --filter-column[Default: {}]'.format(fcv)
-    )
-
-    gbv = 'family'
-    parser.add_argument(
-        '--group-by',
-        dest='group_by',
-        default=gbv,
-        help='What column to group results by for consolidation[Default: {}]'.format(gbv)
     )
 
     return parser.parse_args( args )

@@ -51,5 +51,11 @@ pip-log.txt
 # test analyis
 pathDescTest
 
+# Ignore downloads
+EMBOSS-6.6.0.tar.gz
+lib64
+man
+virtualenv-1.11.6
+
 #Negate, include the file
 
