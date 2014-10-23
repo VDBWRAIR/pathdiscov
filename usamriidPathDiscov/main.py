@@ -196,37 +196,37 @@ def main():
 
     #helpers.run(options)
 
-    final_out = os.path.abspath(results + "/output")
+    final_out = 'results/output'
     final_out_link = os.path.abspath(project_dir + "/output")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/iterative_blast_phylo_1/reports")
+    final_out = "results/iterative_blast_phylo_1/reports"
     final_out_link = os.path.abspath(project_dir + "/contig_reports")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/iterative_blast_phylo_2/reports")
+    final_out = "results/iterative_blast_phylo_2/reports"
     final_out_link = os.path.abspath(project_dir + "/unassembledread_reports")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/step1/R1.count")
+    final_out = "results/step1/R1.count"
     final_out_link = os.path.abspath(project_dir + "/R1.count")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/step1/R2.count")
+    final_out = "results/step1/R2.count"
     final_out_link = os.path.abspath(project_dir + "/R2.count")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/quality_analysis")
+    final_out = "results/quality_analysis"
     final_out_link = os.path.abspath(project_dir + "/quality_analysis")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/analysis.log")
+    final_out = "results/analysis.log"
     final_out_link = os.path.abspath(project_dir + "/analysis.log")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
