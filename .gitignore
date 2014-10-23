@@ -11,6 +11,9 @@
 # Python
 *.py[co]
 
+# Compiled files
+*.o
+
 ## Packages
 *.egg
 *.swp

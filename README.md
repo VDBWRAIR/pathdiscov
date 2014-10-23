@@ -29,7 +29,6 @@ Instructions
 
     ```
     git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
-    pushd usamriidPathDiscov/usamriidPathDiscov/download
     pushd usamriidPathDiscov/download
     mv ~/Downloads/EMBOSS-6.6.0.tar.gz .
     popd
