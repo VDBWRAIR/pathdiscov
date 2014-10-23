@@ -20,11 +20,11 @@ Instructions
 
   ```
   git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
-  cd  usamriidPathDiscov/usamriidPathDiscov/download
+  pushd usamriidPathDiscov/usamriidPathDiscov/download
   # Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract
-  wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
-  #https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
-  cd ../../
+  #wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
+  wget 'https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz' -0- | tar xzf -
+  popd
   wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
   python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
   source usamriidPathDiscov/bin/activate
