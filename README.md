@@ -18,21 +18,29 @@ Instructions
   
 # To install
 
-  ```
-  git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
-  pushd usamriidPathDiscov/usamriidPathDiscov/download
-  # Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract
-  #wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
-  wget 'https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz' -0- | tar xzf -
-  popd
-  wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-  python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
-  source usamriidPathDiscov/bin/activate
-  pip install paver
-  python setup.py install
-  deactivate
-  source ~/.bashrc
-  ```
+  1. Download Emboss
+
+    At this time you have to manually download the EMBOSS package manually using your browser
+    Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract it after it downloads
+      ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
+      https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
+
+  2. Run installation instructions(you should be able to copy paste this entire section
+
+    ```
+    git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
+    pushd usamriidPathDiscov/usamriidPathDiscov/download
+    pushd usamriidPathDiscov/download
+    mv ~/Downloads/EMBOSS-6.6.0.tar.gz .
+    popd
+    wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
+    python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
+    source usamriidPathDiscov/bin/activate
+    pip install paver
+    python setup.py install
+    deactivate
+    source ~/.bashrc
+    ```
 
 Using  usamriidPathDiscov
 ------------------------
@@ -112,4 +120,4 @@ Authors
 * Mickeal Wiley
 * Jason
 * Dereje Jima
-* Tyghe
+* Tyghe Vallard
