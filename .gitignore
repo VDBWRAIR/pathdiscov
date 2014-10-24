@@ -65,6 +65,7 @@ usamriidPathDiscov/files/settings.sh
 usamriidPathDiscov/files/sample.param.bak
 usamriidPathDiscov/files/settings.sh.bak
 usamriidPathDiscov/files/sample.param
+.vagrant
 
 #Negate, include the file
 

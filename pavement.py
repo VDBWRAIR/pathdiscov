@@ -291,7 +291,7 @@ def getorf(options):
     currwd = os.getcwd()
     src = path(currwd) / options.getorf.src
     sfile = path(currwd) / options.getorf.sfile
-    sh('test -d %s || (cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s;make;make install)' %(sfile, src, sfile, sfile))
+    sh('test -d %s || (cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s --without-x;make;make install)' %(sfile, src, sfile, sfile))
 
 def ensure_line_in_file(filepath, line):
     with open(filepath,'r+') as fh:
