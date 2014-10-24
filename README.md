@@ -20,18 +20,18 @@ Instructions
 
   1. Download Emboss
 
-    At this time you have to manually download the EMBOSS package manually using your browser
-    Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract it after it downloads
-      ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
-      https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
+   At this time you have to manually download the EMBOSS package manually using your browser.
+   
+   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into ~/Downloads using one of the links below:
+   - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
+   - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
 
-  2. Run installation instructions(you should be able to copy paste this entire section
+  2. Run installation instructions(you should be able to copy paste this entire section except where you need to change the username in the first line)
 
     ```
-    git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
-    pushd usamriidPathDiscov/download
-    mv ~/Downloads/EMBOSS-6.6.0.tar.gz .
-    popd
+    git clone https://YOURUSERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
+    cd usamriidPathDiscov
+    mv ~/Downloads/EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
     wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
     python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
     source usamriidPathDiscov/bin/activate
