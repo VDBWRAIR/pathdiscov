@@ -360,10 +360,9 @@ def prepare():
 
 @task
 @needs('doc_html', "minilib", 'prepare', 'setuptools.command.sdist')
-def sdist():
+def install():
     """Build the HTML docs and the tarball."""
     pass
-
 
 @task
 @consume_args
