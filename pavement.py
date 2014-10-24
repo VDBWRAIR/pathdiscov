@@ -316,7 +316,7 @@ def getorf(options):
     binfile = sfile + "/bin/getorf"
     symlink = olink + "/getorf"
     info("install  `EMBOSS getorf` and copy to bin  ....")
-    sh('cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s;make;make install' %(src, sfile, sfile))
+    sh('test -d %s || (cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s;make;make install)' %(sfile, src, sfile, sfile))
     if islink(symlink):
         sh('unlink %s' %(symlink))
     if isfile(binfile):
