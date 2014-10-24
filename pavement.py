@@ -359,8 +359,13 @@ def prepare():
     pass
 
 @task
-@needs('doc_html', "minilib", 'prepare', 'setuptools.command.sdist')
+@needs('prepare')
 def install():
+    pass
+
+@task
+@needs('prepare', 'doc_html', 'setuptools.command.sdist')
+def sdist():
     """Build the HTML docs and the tarball."""
     pass
 
