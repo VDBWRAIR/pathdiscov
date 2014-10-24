@@ -7,6 +7,7 @@ import os
 import sys
 import imp
 import subprocess
+from glob import glob
 #from paver.easy import  *
 
 # Python 2.6 subprocess.check_output compatibility. Thanks Greg Hewgill!
@@ -274,11 +275,25 @@ setup_dict = dict(
         'console_scripts': [
             'usamriidPathDiscov_cli = usamriidPathDiscov.main:main'
         ],
-        # if you have a gui, use this
-        # 'gui_scripts': [
-        #     'usamriidPathDiscov_gui = usamriidPathDiscov.gui:entry_point'
-        # ]
-    }
+    },
+    scripts = [
+        # These all get copied to our installation's bin folder for us
+        'usamriidPathDiscov/download/bwa/bwa',
+        'usamriidPathDiscov/download/samtools/samtools',
+        'usamriidPathDiscov/download/FastQC/fastqc',
+        'usamriidPathDiscov/download/EMBOSS-6.6.0/bin/getorf',
+        'usamriidPathDiscov/download/CAP3/cap3',
+        'usamriidPathDiscov/download/wkhtmltopdf',
+        'usamriidPathDiscov/download/ray/Ray',
+        'usamriidPathDiscov/download/Ray2',
+        'usamriidPathDiscov/download/bowtie2/bowtie2',
+    ] + glob('usamriidPathDiscov/download/bowtie2/bowtie2-*') +
+        glob('usamriidPathDiscov/download/blast-2.2.28/bin/*'),
+    package_data = {
+        # This tells setup.py to copy all items under usamriidPathDiscov/files to
+        #  the site-packages/usamriidPathDiscov/files for us
+        'usamriidPathDiscov': ['files/*'],
+    },
 )
 
 def runTask():
@@ -287,7 +302,6 @@ def runTask():
 
 
 def main():
-    # setup(**setup_dict)
     import os
     try:
         import paver.tasks
@@ -300,7 +314,6 @@ def main():
         import paver.tasks
     paver.tasks.main()
     runTask()
-
 
 if __name__ == '__main__':
     main()
