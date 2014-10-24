@@ -22,14 +22,14 @@ Instructions
 
    At this time you have to manually download the EMBOSS package manually using your browser.
    
-   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract it after it downloads.
+   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into ~/Downloads using one of the links below:
    - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
    - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
 
   2. Run installation instructions(you should be able to copy paste this entire section
 
     ```
-    git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
+    git clone https://github.com/VDBWRAIR/usamriidPathDiscov.git
     pushd usamriidPathDiscov/download
     mv ~/Downloads/EMBOSS-6.6.0.tar.gz .
     popd
