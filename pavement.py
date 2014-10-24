@@ -428,7 +428,7 @@ def install_dependencies():
 
 
 @task
-@needs('install_dependencies', 'source_shell', 'install_bwa', 'install_samtools','refRay','bowtie2','refCAP3' ,'refFastQC','getorf','copyWkhtmltopdf','modifyBashRC','setConfig', 'setParam')
+@needs('install_dependencies', 'modifyBashRC', 'source_shell', 'install_bwa', 'install_samtools','refRay','bowtie2','refCAP3' ,'refFastQC','getorf','copyWkhtmltopdf','setConfig', 'setParam')
 def prepare():
     """Prepare complete environment
     """
