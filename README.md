@@ -19,6 +19,7 @@ Instructions
 # To install
 
   1. Download Emboss
+
    At this time you have to manually download the EMBOSS package manually using your browser
    Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract it after it downloads
    ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
