@@ -78,9 +78,10 @@ R_fastq = os.path.abspath(project_dir + "/input/R.fastq")
 
 # Copy base sample.param.base to sample.param file
 # os.path.abspath("./usamriidPathDiscov/files/sample.param.base")
-baseFile = os.path.abspath(os.path.join(os.path.dirname(__file__), 'files','sample.param.base'))
+CWD = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+baseFile = os.path.join(CWD,'files','sample.param.base')
 # os.path.abspath("./usamriidPathDiscov/files/sample.param")
-sampleParam = os.path.abspath(os.path.join(os.path.dirname(__file__), 'files',"sample.param"))
+sampleParam = os.path.join(CWD,'files',"sample.param")
 tasks.copy_map_file(baseFile, sampleParam)
 # replace some globals in the sample.param file such as db names
 for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):

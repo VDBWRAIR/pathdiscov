@@ -82,7 +82,7 @@ options(setup=setup_dict,
             shell_file=path('usamriidPathDiscov/files/settings.sh'),
             shell_file_bk=path('usamriidPathDiscov/files/settings.sh.base'),
             bash_rc =path('usamriidPathDiscov/files/bashrc'),
-            config =path('usamriidPathDiscov/config.yaml'),
+            config =path('usamriidPathDiscov/files/config.yaml'),
             config_bk =path('config.yaml.base'),
             dist_dir =path('.'),
             param_base =path('usamriidPathDiscov/files/sample.param.base'),
@@ -247,98 +247,65 @@ def source_shell(options):
     currwd = os.getcwd()
     settings= path(currwd) / options.settings.shell_file
     sh('source %s' %(settings) )
+
 @task
 def install_bwa(options):
     """installs the current package"""
-    info("Installing bwa ....\n")
+    info("Compiling BWA...")
     currwd = os.getcwd()
     sdir = path(currwd) / options.bwa.sdir
-    bindir = path(currwd) / options.bwa.bindir
-    sh('cd %s; make ; cp bwa %s; cd %s' % (sdir, bindir, sdir))
-
+    #bindir = path(currwd) / options.bwa.bindir
+    #sh('cd %s; make ; cp bwa %s; cd %s' % (sdir, bindir, sdir))
+    sh('cd %s; make; cd %s' % (sdir, sdir))
 
 @task
 def install_samtools(options):
     """installs the current package"""
-    info("Installing samtools ....\n")
+    info("Compiling samtools....")
     currwd = os.getcwd()
     sdir = path(currwd) / options.samtools.sdir
-    bindir = path(currwd) / options.samtools.bindir
-    sh('cd %s; make ; cp samtools %s; cd %s' % (sdir, bindir, sdir))
+    #bindir = path(currwd) / options.samtools.bindir
+    sh('cd %s; make; cd %s' % (sdir, sdir))
 
 @task
 def refRay(options):
     """Install  Ray assembler """
-    info ("Installing  `Ray`  and copy to the bin dir")
+    info("Compiling Ray Assembler")
     currwd = os.getcwd()
     src = path(currwd) / options.Ray.src
     sfile = path(currwd) / options.Ray.sfile
     sfile2 = path(currwd) / options.Ray.sfile2
     olink = path(currwd) / options.Ray.olink
     if os.path.isdir("/usr/lib64/openmpi/lib"):
-        info("install  `Ray` and copy to bin  ....")
-        sh(' cd %s; tar -xzvf ray.tar.gz; tar -xzvf RayPlatform.tar.gz; export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH; cd %s;make PREFIX=build2000 MPICXX=/usr/lib64/openmpi/bin/mpicxx; cp Ray %s' % (src,sfile, olink))
-        sh('cp %s %s ' %(sfile2, olink))
+        sh('cd %s; test ! -d ray && tar -xzvf ray.tar.gz; test ! -d RayPlatform && tar -xzvf RayPlatform.tar.gz; export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH; cd %s;make PREFIX=build2000 MPICXX=/usr/lib64/openmpi/bin/mpicxx;' % (src,sfile))
     elif os.path.isdir("/usr/lib/openmpi/lib"):
-        info("install  `Ray` and copy to bin  ....")
-        sh(' cd %s; tar -xzvf ray.tar.gz; tar -xzvf RayPlatform.tar.gz; export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH; cd %s;make PREFIX=build2000 MPICXX=/usr/lib64/openmpi/bin/mpicxx; cp Ray %s' % (src,sfile, olink))
-        sh('cp %s %s ' %(sfile2, olink))
-
+        sh('cd %s; test ! -d ray && tar -xzvf ray.tar.gz; test ! -d RayPlatform && tar -xzvf RayPlatform.tar.gz; export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH; cd %s;make PREFIX=build2000 MPICXX=/usr/lib64/openmpi/bin/mpicxx;' % (src,sfile))
     else:
         info("Ray is not installed, ... please install `openmpi and openmpi-devel` and try again")
         sys.exit()
-@task
-def copyWkhtmltopdf(options):
-    """copy cap3 to bin filder"""
-    info("Copy cap3 binary to bin folder")
-    sfile =options.wkhtmltopdf.sfile
-    olink = options.wkhtmltopdf.olink
-    if isfile(sfile):
-        sh('cp %s %s' %(sfile, olink))
-
-@task
-def refCAP3(options):
-    """copy cap3 to bin filder"""
-    info("Copy cap3 binary to bin folder")
-    sfile =options.CAP3.sfile
-    olink = options.CAP3.olink
-    if isfile(sfile):
-        sh('cp %s %s' %(sfile, olink))
 
 @task
 def getorf(options):
     """Install  EMBOSS getorf """
-    info("Installing `getorf` and copy the binary to bin folder")
+    info("Compiling EMBOSS...")
     currwd = os.getcwd()
     src = path(currwd) / options.getorf.src
     sfile = path(currwd) / options.getorf.sfile
-    olink = path(currwd) / options.getorf.olink
-    binfile = sfile + "/bin/getorf"
-    symlink = olink + "/getorf"
-    info("install  `EMBOSS getorf` and copy to bin  ....")
     sh('test -d %s || (cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s;make;make install)' %(sfile, src, sfile, sfile))
-    if islink(symlink):
-        sh('unlink %s' %(symlink))
-    if isfile(binfile):
-        sh('ln -s  %s %s/getorf' %(binfile, olink))
 
-@task
-def bowtie2(options):
-    """copy bowtie to bin filder"""
-    info("Copy bowtie binary to bin folder")
-    sfile =options.bowtie2.sfile
-    olink = options.bowtie2.olink
-    sh('cp %s %s' %(sfile, olink))
-@task
-def refFastQC(options):
-    """copy fastqc to bin filder"""
-    info("Copy fastqc binary to bin folder")
-    sfile = os.path.abspath(options.FASTQC.sfile)
-    olink = os.path.abspath(options.FASTQC.olink)
-    if islink(olink + "/fastqc"):
-        sh ('unlink %s/fastqc' %(olink))
-    if isfile(sfile):
-        sh('ln -s %s %s/fastqc' %(sfile, olink))
+def ensure_line_in_file(filepath, line):
+    with open(filepath,'r+') as fh:
+        found = False
+        # Loop all lines in file
+        for file_line in fh:
+            # If found flag to not do anything
+            if line in file_line:
+                found = True
+                break
+        if not found:
+            # Write the line to the end of the file
+            fh.write(line)
+
 @task
 def modifyBashRC():
     "Append the content of setting.sh to .bashrc"
@@ -362,15 +329,8 @@ def modifyBashRC():
             info(line)
     info(bashrc)
     if isfile(bashrc):
-        sh("cat %s > %s" %(bashrc, bashrcbk))
-        cmd = "grep 'files/settings' %s" %(sfile)
-
-        if not (subprocess.call(cmd, shell=True)): # check if the shell return code is "1" or "0"
-            pass
-        else:
-            #sh("cat %s >> %s" %(sfile, bashrc))
-            info("Source the path information ....")
-            sh("echo 'source %s' >> %s" %(sfile, bashrc))
+        sourceline = 'source %s' % sfile
+        ensure_line_in_file(bashrc, sourceline)
     else:
         info ("Creating a new bashrc file...")
         #sh("cat %s > %s" %(bashrcTemp, bashrc))
@@ -386,49 +346,13 @@ def modifyBashRC():
     for line in fileinput.input(conf, inplace=True, backup='.bak'):
         line = re.sub(r'GENOMEDIR', dbdir, line.rstrip())
         info(line)
-#@task
-#def installPerlLocalLib():
-     #"""installs the current local.lib  package"""
-     #info("Installing bwa ....\n")
-     #currwd = os.getcwd()
-     #sdir = path(currwd) / options.local_lib.sdir
-     #sh("cd %s; perl Makefile.PL --bootstrap ;make test && make install;mkdir -p ~/perl5/bin" % (sdir))
-     #sh("echo [ $SHLVL -eq 1 ] &&  eval '$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)' >>~/.bashrc")
-
-@task
-def setConfig():
-    import glob
-    dist_dir = os.path.abspath(options.settings.dist_dir)
-    info(dist_dir)
-    install_dir =glob.glob(dist_dir +"/usamriidPathDiscov/lib/python*/site-packages/usamriidPathDiscov")
-    install_dir =install_dir[0]
-    info(install_dir)
-    conf = os.path.abspath(options.settings.config)
-    sh("cp %s %s" %(conf, install_dir))
-
-@task
-def setParam():
-    import glob
-    dist_dir = os.path.abspath(options.settings.dist_dir)
-    info(dist_dir)
-    install_dir =glob.glob(dist_dir +"/usamriidPathDiscov/lib/python*/site-packages/usamriidPathDiscov")
-    install_dir =install_dir[0]
-    info(install_dir)
-    sh("mkdir -p %s/files" %(install_dir))
-    install_dir = install_dir + "/files"
-    info(install_dir)
-    param_base = os.path.abspath(options.settings.param_base)
-    param_work = os.path.abspath(options.settings.param_work)
-    sh("cp %s %s" %(param_base, install_dir))
-    sh("cp %s %s" %(param_work, install_dir))
 
 @task
 def install_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
-
 @task
-@needs('install_dependencies', 'modifyBashRC', 'source_shell', 'install_bwa', 'install_samtools','refRay','bowtie2','refCAP3' ,'refFastQC','getorf','copyWkhtmltopdf','setConfig', 'setParam')
+@needs('install_dependencies', 'modifyBashRC', 'source_shell', 'install_bwa', 'install_samtools','refRay','getorf')
 def prepare():
     """Prepare complete environment
     """
