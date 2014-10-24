@@ -13,6 +13,9 @@ Instructions
 
   ```
   yum install openmpi openmpi-devel git python-devel
+  ```
+
+  ```
   yum groupinstall Development tools
   ```
   
@@ -31,7 +34,7 @@ Instructions
     ```
     git clone https://YOURUSERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
     cd usamriidPathDiscov
-    mv ~/Downloads/EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
+    cp ~/Downloads/EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
     wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
     python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
     source usamriidPathDiscov/bin/activate
