@@ -51,11 +51,15 @@ pip-log.txt
 # test analyis
 pathDescTest
 
-# Ignore downloads
+# Project ignores
 EMBOSS-6.6.0.tar.gz
 lib64
 man
 virtualenv-1.11.6
+usamriidPathDiscov/config.yaml
+usamriidPathDiscov/config.yaml.bak
+usamriidPathDiscov/files/settings.sh
+usamriidPathDiscov/files/sample.param.bak
 
 #Negate, include the file
 
