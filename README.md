@@ -12,7 +12,7 @@ Instructions
 # Install System Packages
 
   ```
-  yum install openmpi openmpi-devel git python-devel
+  yum install openmpi openmpi-devel git python-devel zlib-devel
   ```
 
   ```
