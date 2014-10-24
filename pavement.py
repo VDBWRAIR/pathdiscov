@@ -249,20 +249,20 @@ def source_shell(options):
     sh('source %s' %(settings) )
 
 @task
-def install_bwa(options):
+def download_compile_bwa(options):
     """installs the current package"""
     info("Compiling BWA...")
     currwd = os.getcwd()
     sdir = path(currwd) / options.bwa.sdir
-    sh('cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; cd bwa-*; make; cd %s' % (sdir, sdir))
+    sh('which bwa 2>&1 || (cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; mv bwa-* bwa; cd bwa; make; cd %s)' % (sdir, sdir))
 
 @task
-def install_samtools(options):
+def download_compile_samtools(options):
     """installs the current package"""
     info("Compiling samtools....")
     currwd = os.getcwd()
     sdir = path(currwd) / options.samtools.sdir
-    sh('cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; cd samtools-*; make; cd %s' % (sdir, sdir))
+    sh('which samtools 2>&1 || (cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools; make; cd %s)' % (sdir, sdir))
 
 @task
 def refRay(options):
@@ -349,14 +349,14 @@ def install_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
 @task
-@needs('install_dependencies', 'modifyBashRC', 'source_shell', 'install_bwa', 'install_samtools','refRay','getorf')
+@needs('install_dependencies', 'modifyBashRC', 'source_shell', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
 def prepare():
     """Prepare complete environment
     """
     pass
 
 @task
-@needs('prepare')
+@needs('prepare','setuptools.command.install')
 def install():
     pass
 
