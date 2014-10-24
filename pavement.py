@@ -29,14 +29,14 @@ from paver.setuputils import install_distutils_tasks
 
 options(setup=setup_dict,
         bwa=Bunch(
-            sdir=path('usamriidPathDiscov/download/bwa'),
+            sdir=path('usamriidPathDiscov/download'),
             bindir=path('usamriidPathDiscov/bin')
         ),
         minilib=Bunch(
             # extra_files=['doctools','virtual']
         ),
          samtools=Bunch(
-              sdir=path('usamriidPathDiscov/download/samtools'),
+              sdir=path('usamriidPathDiscov/download'),
               bindir=path('usamriidPathDiscov/bin')
           ),
         Ray=Bunch(
@@ -254,9 +254,7 @@ def install_bwa(options):
     info("Compiling BWA...")
     currwd = os.getcwd()
     sdir = path(currwd) / options.bwa.sdir
-    #bindir = path(currwd) / options.bwa.bindir
-    #sh('cd %s; make ; cp bwa %s; cd %s' % (sdir, bindir, sdir))
-    sh('cd %s; make; cd %s' % (sdir, sdir))
+    sh('cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; cd bwa-*; make; cd %s' % (sdir, sdir))
 
 @task
 def install_samtools(options):
@@ -264,8 +262,7 @@ def install_samtools(options):
     info("Compiling samtools....")
     currwd = os.getcwd()
     sdir = path(currwd) / options.samtools.sdir
-    #bindir = path(currwd) / options.samtools.bindir
-    sh('cd %s; make; cd %s' % (sdir, sdir))
+    sh('cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; cd samtools-*; make; cd %s' % (sdir, sdir))
 
 @task
 def refRay(options):
