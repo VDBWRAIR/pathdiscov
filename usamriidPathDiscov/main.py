@@ -10,11 +10,13 @@ import re
 import distutils.spawn
 import fileinput
 from helpers import runCommand
+from pkg_resources import resource_filename
 
 print "Set up command line option handling, logger creation, and load config file"
 options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
-config = yaml.load(open(os.path.join(os.path.dirname(__file__),'config.yaml')).read())
+config_file = resource_filename(__name__, 'files/config.yaml')
+config = yaml.load(open(config_file).read())
 #print yaml.dump(config)
 #THIS = os.path.dirname( os.path.abspath(__file__ ) )
 #path = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0])))
@@ -77,11 +79,9 @@ F_fastq = os.path.abspath(project_dir + "/input/F.fastq")
 R_fastq = os.path.abspath(project_dir + "/input/R.fastq")
 
 # Copy base sample.param.base to sample.param file
-# os.path.abspath("./usamriidPathDiscov/files/sample.param.base")
 CWD = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-baseFile = os.path.join(CWD,'files','sample.param.base')
-# os.path.abspath("./usamriidPathDiscov/files/sample.param")
-sampleParam = os.path.join(CWD,'files',"sample.param")
+baseFile = resource_filename(__name__, 'files/sample.param.base')
+sampleParam = baseFile.replace('.base','')
 tasks.copy_map_file(baseFile, sampleParam)
 # replace some globals in the sample.param file such as db names
 for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):
@@ -90,7 +90,6 @@ for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):
     line = re.sub(r'BLAST_NT',  nt_db, line.rstrip())
     line = re.sub(r'TAX_NODES',  tax_nodes, line.rstrip())
     line = re.sub(r'TAX_NAMES',  tax_names, line.rstrip())
-
     print (line)
 
 

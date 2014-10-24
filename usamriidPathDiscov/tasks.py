@@ -3,12 +3,14 @@ import sys
 import yaml
 import shutil
 from helpers import get_options, make_logger, runCommand, which, run_cmd
+from pkg_resources import resource_filename
 
 options = get_options()
 #logger_proxy, logging_mutex = make_logger(options, __file__)
 #config = yaml.load(open(options.config).read())
 print 'sys.argv[0] =', sys.argv[0]
-config = yaml.load(open(os.path.join(os.path.dirname(__file__),'config.yaml')).read())
+config_file = resource_filename(__name__, 'files/config.yaml')
+config = yaml.load(open(config_file).read())
 #print yaml.dump(config)
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
 blast_unassembled =config['blast_unassembled']
