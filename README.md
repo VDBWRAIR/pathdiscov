@@ -43,8 +43,28 @@ Instructions
     deactivate
     source ~/.bashrc
     ```
+    
+  3. Setup databases under your home directory
 
-  3. Quick Verify of all components
+    1. Setup databases directory
+    
+      ```
+      mkdir -p ~/databases/{humandna,humanrna,ncbi}
+      mkdir -p ~/databases/ncbi/blast/{nt,nr}
+      ```
+      
+    2. You need to have the human dna/rna genome indexed by bowtie
+    
+      You will need to download the human dna and rna fasta files from ensemble or ncbi and then use bowtie to index them.
+      
+      Alternatively you can download our preindexed versions from the releases section and unpack the tar.gz file inside of the ~/databases directory
+      
+    3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
+    
+      More instructions needed, but at a later time
+      You may be able to use the usamriidPathDiscov/usamriidPathDiscov/scripts/update.sh to do this
+
+  4. Quick Verify of all components
 
     ```
     # These should now all be in your path so should work
@@ -61,26 +81,8 @@ To get help::
 ```
    usamriidPathDiscov_cli   -h 
 ```
-Make sure you have indexed database under your  home directory,
-
-example::
-```
-   
-  ~/databases
-  ```
-
-If you extracted the databse to a  different location, make a symbolic link at your home directory::
-
-```
-   ln -s  path_to/databases    ~/databases
-   ```
-
-That is all it needs, the databases are forced to be at your directory
-to make the setting easier.'
 
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension. The name of the fastq file doesn't matters.
-
-
 
 To use::
 
