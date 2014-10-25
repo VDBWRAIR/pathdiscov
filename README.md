@@ -43,8 +43,28 @@ Instructions
     deactivate
     source ~/.bashrc
     ```
+    
+  3. Setup databases under your home directory
 
-  3. Quick Verify of all components
+    1. Setup databases directory
+    
+      ```
+      mkdir -p ~/databases/{humandna,humanrna,ncbi}
+      mkdir -p ~/databases/ncbi/blast/{nt,nr}
+      ```
+      
+    2. You need to have the human dna/rna genome indexed by bowtie
+    
+      You can download pre-built indexes from Illumina's iGenomes page(http://support.illumina.com/sequencing/sequencing_software/igenome.html)
+      You need to put the human dna under ~/databases/humandna and the human rna under ~/databases/humanrna
+      
+    3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
+    
+       ```
+       get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+       ```
+
+  4. Quick Verify of all components
 
     ```
     # These should now all be in your path so should work
@@ -61,26 +81,8 @@ To get help::
 ```
    usamriidPathDiscov_cli   -h 
 ```
-Make sure you have indexed database under your  home directory,
-
-example::
-```
-   
-  ~/databases
-  ```
-
-If you extracted the databse to a  different location, make a symbolic link at your home directory::
-
-```
-   ln -s  path_to/databases    ~/databases
-   ```
-
-That is all it needs, the databases are forced to be at your directory
-to make the setting easier.'
 
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension. The name of the fastq file doesn't matters.
-
-
 
 To use::
 
