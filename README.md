@@ -29,10 +29,10 @@ Instructions
    - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
    - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
 
-  2. Run installation instructions(you should be able to copy paste this entire section except where you need to change the username in the first line)
+  2. Run installation instructions(you should be able to copy paste this entire section)
 
     ```
-    git clone https://YOURUSERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
+    git clone https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git
     cd usamriidPathDiscov
     cp ~/Downloads/EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
     wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
