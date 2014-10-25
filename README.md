@@ -56,6 +56,7 @@ Instructions
     2. You need to have the human dna/rna genome indexed by bowtie
     
       You can download pre-built indexes from Illumina's iGenomes page(http://support.illumina.com/sequencing/sequencing_software/igenome.html)
+      You need to put the human dna under ~/databases/humandna and the human rna under ~/databases/humanrna
       
     3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
     
