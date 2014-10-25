@@ -59,8 +59,9 @@ Instructions
       
     3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
     
-      More instructions needed, but at a later time
-      You may be able to use the usamriidPathDiscov/usamriidPathDiscov/scripts/update.sh to do this
+       ```
+       get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+       ```
 
   4. Quick Verify of all components
 
