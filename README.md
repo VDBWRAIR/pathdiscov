@@ -55,9 +55,7 @@ Instructions
       
     2. You need to have the human dna/rna genome indexed by bowtie
     
-      You will need to download the human dna and rna fasta files from ensemble or ncbi and then use bowtie to index them.
-      
-      Alternatively you can download our preindexed versions from the releases section and unpack the tar.gz file inside of the ~/databases directory
+      You can download pre-built indexes from Illumina's iGenomes page(http://support.illumina.com/sequencing/sequencing_software/igenome.html)
       
     3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
     
