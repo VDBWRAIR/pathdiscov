@@ -44,6 +44,13 @@ Instructions
     source ~/.bashrc
     ```
 
+  3. Quick Verify of all components
+
+    ```
+    apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf )
+    for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
+    ```
+
 Using  usamriidPathDiscov
 ------------------------
 
