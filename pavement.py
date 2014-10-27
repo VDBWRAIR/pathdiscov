@@ -310,30 +310,35 @@ def modifyBashRC():
     import re
     import subprocess
     info("Append path info to your .bashrc ")
-    sfile = os.path.abspath(options.settings.shell_file)
-    sfilebk = os.path.abspath(options.settings.shell_file_bk)
-    sh("cp %s %s" %(sfilebk, sfile))
-    info(sfile)
-    bashrc = os.path.expanduser("~/.bashrc")
-    bashrcbk = os.path.expanduser("~/.bashrc.bak")
-    appdir = os.getcwd()
-    dbdir = os.path.expanduser("~/databases")
-    info(sfile)
-    bashrcTemp = os.path.abspath(options.settings.bash_rc)
-    for line in fileinput.input(sfile, inplace=True, backup='.bak'):
-            line = re.sub(r'CWDAPP',  appdir, line.rstrip())
-            line = re.sub(r'GENOMEDIR',  dbdir, line.rstrip())
-            info(line)
-    info(bashrc)
-    if isfile(bashrc):
-        sourceline = 'source %s' % sfile
-        ensure_line_in_file(bashrc, sourceline)
-    else:
-        info ("Creating a new bashrc file...")
-        #sh("cat %s > %s" %(bashrcTemp, bashrc))
-        sh("cat %s >> %s" %(bashrcTemp, bashrc))
-        sh("echo 'source %s' >> %s" %(sfile, bashrc))
+    #sfile = os.path.abspath(options.settings.shell_file)
+    #sfilebk = os.path.abspath(options.settings.shell_file_bk)
+    #sh("cp %s %s" %(sfilebk, sfile))
+    #info(sfile)
+    #bashrc = os.path.expanduser("~/.bashrc")
+    #bashrcbk = os.path.expanduser("~/.bashrc.bak")
+    #appdir = os.getcwd()
+    #info(sfile)
+    #bashrcTemp = os.path.abspath(options.settings.bash_rc)
+    #for line in fileinput.input(sfile, inplace=True, backup='.bak'):
+            #line = re.sub(r'CWDAPP',  appdir, line.rstrip())
+            #line = re.sub(r'GENOMEDIR',  dbdir, line.rstrip())
+            #info(line)
+    #info(bashrc)
+    #if isfile(bashrc):
+    #    sourceline = 'source %s' % sfile
+    #    ensure_line_in_file(bashrc, sourceline)
+    #else:
+    #    info ("Creating a new bashrc file...")
+    #    #sh("cat %s > %s" %(bashrcTemp, bashrc))
+    #    sh("cat %s >> %s" %(bashrcTemp, bashrc))
+    #    sh("echo 'source %s' >> %s" %(sfile, bashrc))
 
+
+@task
+def setupConfigFile():
+    import fileinput
+    import re
+    dbdir = os.path.expanduser("~/databases")
     info("Set config file ....")
     conf = os.path.abspath(options.settings.config)
     info(conf)
@@ -349,7 +354,7 @@ def install_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
 @task
-@needs('install_dependencies', 'modifyBashRC', 'source_shell', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
+@needs('install_dependencies', 'setupConfigFile', 'source_shell', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
 def prepare():
     """Prepare complete environment
     """

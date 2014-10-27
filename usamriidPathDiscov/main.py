@@ -17,9 +17,7 @@ options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
 config_file = resource_filename(__name__, 'files/config.yaml')
 config = yaml.load(open(config_file).read())
-#print yaml.dump(config)
-#THIS = os.path.dirname( os.path.abspath(__file__ ) )
-#path = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0])))
+
 curdir = os.getcwd()
 os.chdir(curdir)
 # print mydir
@@ -40,6 +38,35 @@ nt_db = config['nt_db']
 tax_nodes = config['tax_nodes']
 tax_names = config['tax_names']
 blast_unassembled = config['blast_unassembled']
+
+##################################################
+#    Setup environ vars                          #
+# All come from old settings.sh                  #
+# Effectively replaces the need to source        #
+#  settings.sh
+##################################################
+# This will be wherever python setup.py install installs to which
+installdir = sys.prefix
+
+os.environ['INNO_PHRED_OFFSET'] = '33'
+os.environ['INNO_SEQUENCE_PLATFORM'] = 'illumina'	# choices are: illumina 454
+os.environ['INNO_NODE_NUM'] = '10'
+os.environ['INNO_BOWTIE_HUMAN_GENOME_DB'] = human_dna
+os.environ['INNO_BOWTIE_HUMAN_TRAN_DB'] = h_sapiens_rna
+os.environ['INNO_BLAST_NT_DB'] = nt_db
+os.environ['INNO_TAX_NODES'] = tax_nodes
+os.environ['INNO_TAX_NAMES'] = tax_names
+
+os.environ['INNO_SCRIPTS_PATH'] = installdir
+os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
+os.environ['R_LIBS'] = os.path.join(installdir, 'scripts')
+os.environ['LD_LIBRARY_PATH'] += '/usr/lib64/openmpi/lib'
+os.environ['PATH'] = installdir + os.pathsep + \
+    os.path.join(installdir,'bin') + os.pathsep + \
+    os.path.join(installdir,'scripts') + \
+    os.pathsep + os.path.join(installdir,'step1') + \
+    os.pathsep + os.environ['PATH']
+
 ##################################################
 #    Seq to process                             #
 #                                                #
@@ -166,6 +193,8 @@ def priStage(input, output):
 
 
 def main():
+    from helpers import which
+    print which('pathogen.pl')
     t0 = time.time()
     print (" Starting time ..... :") + str(t0)
     dir_bak = project_dir + ".bak"
