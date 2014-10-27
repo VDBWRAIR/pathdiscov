@@ -134,7 +134,7 @@ if ($isfasta)
 # print various files, then exit
 if ($example)
 {
-    system("cat $path_scripts/files/sample.param");
+    system("cat $path_scripts/lib/python*/site-packages/usamriidPathDiscov/files/sample.param");
 	exit;
 }
 

@@ -79,7 +79,6 @@ F_fastq = os.path.abspath(project_dir + "/input/F.fastq")
 R_fastq = os.path.abspath(project_dir + "/input/R.fastq")
 
 # Copy base sample.param.base to sample.param file
-CWD = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 baseFile = resource_filename(__name__, 'files/sample.param.base')
 sampleParam = baseFile.replace('.base','')
 tasks.copy_map_file(baseFile, sampleParam)
