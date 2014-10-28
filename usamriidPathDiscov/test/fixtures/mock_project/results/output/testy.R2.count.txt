@@ -1,0 +1,6 @@
+rawfile	12500
+cut_adapt	2847
+prinseq	0
+bowtie2_genome_local	3125
+bowtie2_transcript_local	2919
+ray_1	0

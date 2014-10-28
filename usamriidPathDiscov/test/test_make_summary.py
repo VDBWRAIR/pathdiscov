@@ -95,6 +95,7 @@ class BaseTest(Base):
         mock.update( **blastcols )
         return mock
 
+@attr('current')
 class TestParseTabFile( BaseTest ):
     def setUp( self ):
         super( TestParseTabFile, self ).setUp()
@@ -125,12 +126,13 @@ class TestParseTabFile( BaseTest ):
             sum += int( row['count'] )
         eq_( 658336, sum )
 
+@attr('current')
 class TestReadCount( BaseTest ):
     def setUp( self ):
         super( TestReadCount, self ).setUp()
-        self.iter1r1r2 = sorted( glob( join( self.phylo1, 'R*.count' ) ) )
-        self.iter2r1r2 = sorted( glob( join( self.phylo2, 'R*.count' ) ) )
-        self.step1r1r2 = sorted( glob( join( self.step1, 'R*.count' ) ) )
+        self.iter1r1r2 = sorted( glob( join( self.phylo1, '*.count' ) ) )
+        self.iter2r1r2 = sorted( glob( join( self.phylo2, '*.count' ) ) )
+        self.step1r1r2 = sorted( glob( join( self.step1, '*.count' ) ) )
 
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import read_count
@@ -147,9 +149,6 @@ class TestReadCount( BaseTest ):
         eq_( 6041, r['megablast'] )
         eq_( 5127, r['dc-megablast'] )
 
-        r = self._C( self.iter2r1r2[1] )
-        eq_( 181031, r['input'] )
-
         for f in self.step1r1r2:
             r = self._C( f )
             eq_( 658336, r['rawfile'] )
@@ -162,6 +161,7 @@ class TestReadCount( BaseTest ):
         eq_( 1, r['intval'] )
         eq_( 1, r['floatval'] )
 
+@attr('current')
 class TestTotalReads( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import total_reads
@@ -179,6 +179,7 @@ class TestTotalReads( BaseTest ):
             os.unlink(f)
         self._C( self.mockproj )
 
+@attr('current')
 class TestNonHostNumReads( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import non_host_num_reads
@@ -196,6 +197,7 @@ class TestNonHostNumReads( BaseTest ):
             os.unlink(f)
         self._C( self.mockproj )
 
+@attr('current')
 class TestNumContig( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import num_contig
@@ -214,6 +216,7 @@ class TestNumContig( BaseTest ):
             os.unlink( f )
         self._C( self.mockproj )
 
+@attr('current')
 class TestR1R2Count( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import r1r2_count
@@ -227,7 +230,7 @@ class TestR1R2Count( BaseTest ):
 
     def test_correct_count_phylo2( self ):
         r = self._C( self.phylo2 )
-        eq_( 101898 + 181031, r['input'] )
+        eq_( 101898, r['input'] )
         eq_( 6041, r['megablast'] )
         eq_( 5127, r['dc-megablast'] )
 
@@ -235,10 +238,11 @@ class TestR1R2Count( BaseTest ):
     def test_missing_files( self ):
         r = self._C( self.tdir )
 
+@attr('current')
 class TestParseBlastReport( BaseTest ):
     def setUp( self ):
         super( TestParseBlastReport, self ).setUp()
-        self.blastfile = join( self.phylo1, 'reports', 'R1.mock_project.top.smallreport.txt' )
+        self.blastfile = join( self.phylo1, 'reports', 'contig.mock_project.top.smallreport.txt' )
 
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import parse_blast_report
@@ -264,10 +268,11 @@ class TestParseBlastReport( BaseTest ):
         eq_( 3, len(r), 'Did not filter correctly' )
         eq_( 'c47', r[0]['qseqid'] )
 
+@attr('current')
 class TestBlastResultsFor( BaseTest ):
     def setUp( self ):
         super( TestBlastResultsFor, self ).setUp()
-        self.blastfile = join( self.phylo1, 'reports', 'R1.mock_project.top.smallreport.txt' )
+        self.blastfile = join( self.phylo1, 'reports', 'contig.mock_project.top.smallreport.txt' )
 
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import blast_results_for_
@@ -279,6 +284,7 @@ class TestBlastResultsFor( BaseTest ):
         eq_( 3, len(r), 'Did not filter correctly' )
         eq_( 'c47', r[0]['qseqid'] )
 
+@attr('current')
 class TestContigInfo( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import contig_info
@@ -298,11 +304,11 @@ class TestContigInfo( BaseTest ):
         files = glob( join(self.mockproj, 'results', 'ray2_assembly_1', 'contig*' ) )
         ok_( len(files) > 0, files )
         for f in files:
+            print "Removing " + f
             os.unlink(f)
             assert_raises( MissingProjectFile, self._C, self.mockproj )
             open(f,'w').close()
 
-    @attr('current')
     def test_contig_files_not_same_size( self ):
         from contextlib import nested
         # Sometimes contig_numreads has less contigs than contig.id
@@ -328,6 +334,7 @@ class TestContigInfo( BaseTest ):
         eq_( ('9',-1), r.get( 'c9', False ) )
         eq_( ('10',-1), r.get( 'c10', False ) )
 
+@attr('current')
 class TestContigsFor( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import contigs_for
@@ -370,6 +377,7 @@ class TestContigsFor( BaseTest ):
         for c in r:
             eq_( c['numreads'], -1 )
 
+@attr('current')
 class TestUnassembledReads( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import unassembled_reads
@@ -377,32 +385,26 @@ class TestUnassembledReads( BaseTest ):
 
     def test_correct_value( self ):
         r = self._C( self.mockproj )
-        eq_( 101898 + 181031, r[0] )
+        eq_( 101898, r[0] )
         eq_( 5127, r[1] )
 
+@attr('current')
 class TestGroupBlastBy( BaseTest ):
     def setUp( self ):
         super( TestGroupBlastBy, self ).setUp()
-        self.r1blast = join( self.phylo2, 'reports', 'R1.mock_project.top.smallreport.txt' )
-        self.r2blast = join( self.phylo2, 'reports', 'R2.mock_project.top.smallreport.txt' )
+        self.contigblast = join(self.phylo2,'reports','1.contig.top.blast')
 
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import group_blast_by_
         return group_blast_by_( *args, **kwargs )
 
     def test_superkingdom_family( self ):
-        r = self._C( self.r1blast, 'superkingdom', 'Viruses', 'family' )
+        r = self._C( self.contigblast, 'superkingdom', 'Viruses', 'family' )
         eq_( 2, len(r) )
         eq_( 5, r['Leviviridae']['count'] )
         eq_( 9, r['Rhabdoviridae']['count'] )
 
-        r = self._C( self.r2blast, 'superkingdom', 'Viruses', 'family' )
-        eq_( 4, len(r) )
-        eq_( 9, r['Rhabdoviridae']['count'] )
-        eq_( 4, r['Leviviridae']['count'] )
-        eq_( 2, r['Baculoviridae']['count'] )
-        eq_( 1, r['Microviridae']['count'] )
-
+@attr('current')
 class TestUnassembledReport( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import unassembled_report
@@ -428,18 +430,19 @@ class TestUnassembledReport( BaseTest ):
 
     def test_missing_smallreports( self ):
         self.make_tmp_proj()
-        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R*smallreport*.txt' ) )
+        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
         for f in smreport:
             os.unlink( f )
         assert_raises( MissingProjectFile, self._C, self.mockproj, 'Viruses' )
 
+@attr('current')
 class TestSummary( BaseTest ):
     def setUp( self ):
         super( TestSummary, self ).setUp()
 
         self.make_tmp_proj()
-        self.phylo1files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', 'R*smallreport*.txt' ) )
-        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R*smallreport*.txt' ) )
+        self.phylo1files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', 'contig.*smallreport*.txt' ) )
+        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
         self.step1files = glob( join(self.mockproj, 'results', 'step1', '*.count') )
         self.qualfiles = glob( join(self.mockproj, 'results', 'quality_filter', '*.count') )
         self.contigcountfiles = glob( join(self.mockproj, 'results', 'iterative_blast_phylo_1', '*.count' ) )
@@ -454,7 +457,7 @@ class TestSummary( BaseTest ):
         eq_( 479967, r['nonhostreads'] )
         eq_( 430, r['numcontig'] )
         eq_( 310, r['numblastcontig'] )
-        eq_( 282929, r['numreadsunassembled'] )
+        eq_( 101898, r['numreadsunassembled'] )
         eq_( 5127, r['numblastunassembled'] )
 
         contigs = list( r['contigs'] )
@@ -493,6 +496,7 @@ class TestSummary( BaseTest ):
                 os.unlink( f )
         self._C( self.mockproj, 'superkingdom', 'Viruses' )
 
+@attr('current')
 class TestFormatSummary( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import format_summary
@@ -550,6 +554,7 @@ class TestFormatSummary( BaseTest ):
             count = r.split('\t')[14]
             eq_( e, int(count), 'Count should be {0} but got {1} at index {2}'.format(e,count,i) )
 
+@attr('current')
 class TestFormatDic( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import format_dict
