@@ -6,7 +6,6 @@ APPS=CWDAPP
 DBDIR=GENOMEDIR
 # open mpi
 PATH=/usr/lib64/openmpi/bin:$PATH
-PATH=${APPS}/usamriidPathDiscov/download/blast-2.2.28/bin:$PATH
 #module load openmpi-x86_64
 export INNO_SCRIPTS_PATH=${APPS}/usamriidPathDiscov
 
@@ -52,5 +51,4 @@ PATH=$APPS:$INNO_SCRIPTS_PATH:$INNO_SCRIPTS_PATH/bin:$INNO_SCRIPTS_PATH/scripts:
 export PERL5LIB=$INNO_PATH_PERL_MODULES:$INNO_SCRIPTS_PATH/Local_Module:$PERL5LIB
 
 export R_LIBS=$R_LIBS:$INNO_SCRIPTS_PATH/scripts
-PATH=${APPS}/usamriidPathDiscov/bin/usamriidPathDiscov_cli:$PATH
 export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH

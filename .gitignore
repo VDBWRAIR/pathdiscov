@@ -11,6 +11,9 @@
 # Python
 *.py[co]
 
+# Compiled files
+*.o
+
 ## Packages
 *.egg
 *.swp
@@ -27,6 +30,9 @@ copy.autoenv
 usamriidPathDiscov/download/ray
 usamriidPathDiscov/download/EMBOSS-6.6.0
 usamriidPathDiscov/download/RayPlatform
+usamriidPathDiscov/download/bwa
+usamriidPathDiscov/download/samtools
+usamriidPathDiscov/download/htslib
 internal
 var
 sdist
@@ -47,6 +53,22 @@ pip-log.txt
 ## paver generated files
 # test analyis
 pathDescTest
+
+# Project ignores
+EMBOSS-6.6.0.tar.gz
+lib64
+man
+virtualenv-1.11.6
+usamriidPathDiscov/files/config.yaml
+usamriidPathDiscov/files/config.yaml.bak
+usamriidPathDiscov/config.yaml
+usamriidPathDiscov/config.yaml.bak
+usamriidPathDiscov/config.yaml.base
+usamriidPathDiscov/files/settings.sh
+usamriidPathDiscov/files/sample.param.bak
+usamriidPathDiscov/files/settings.sh.bak
+usamriidPathDiscov/files/sample.param
+.vagrant
 
 #Negate, include the file
 

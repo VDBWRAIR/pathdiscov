@@ -12,27 +12,67 @@ Instructions
 # Install System Packages
 
   ```
-  yum install openmpi openmpi-devel git python-devel
+  yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel
+  ```
+
+  ```
   yum groupinstall Development tools
   ```
   
 # To install
 
-  ```
-  git clone https://USERNAME@github.com/VDBWRAIR/usamriidPathDiscov.git
-  cd  usamriidPathDiscov/usamriidPathDiscov/download
-  # Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo, no need to extract
-  wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
-  #https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
-  cd ../../
-  wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-  python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
-  source usamriidPathDiscov/bin/activate
-  pip install paver
-  python setup.py install
-  deactivate
-  source ~/.bashrc
-  ```
+  1. Download Emboss
+
+   At this time you have to manually download the EMBOSS package manually using your browser.
+   
+   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into ~/Downloads using one of the links below:
+   - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
+   - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
+
+  2. Run installation instructions(you should be able to copy paste this entire section)
+
+    ```
+    git clone https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git
+    cd usamriidPathDiscov
+    cp ~/Downloads/EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
+    wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
+    python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
+    source usamriidPathDiscov/bin/activate
+    pip install paver
+    python setup.py install
+    deactivate
+    source ~/.bashrc
+    ```
+    
+  3. Setup databases under your home directory
+
+    1. Setup databases directory
+    
+      ```
+      mkdir -p ~/databases/{humandna,humanrna,ncbi}
+      mkdir -p ~/databases/ncbi/blast/{nt,nr}
+      ```
+      
+    2. You need to have the human dna/rna genome indexed by bowtie
+    
+      You can download pre-built indexes from Illumina's iGenomes page(http://support.illumina.com/sequencing/sequencing_software/igenome.html)
+      You need to put the human dna under ~/databases/humandna and the human rna under ~/databases/humanrna
+      
+    3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
+    
+       ```
+       get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+       ```
+
+  4. Quick Verify of all components
+
+    ```
+    # These should now all be in your path so should work
+    apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl )
+    for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
+    env | grep -q INNO || echo "INNO environmental variables not setup. Is settings.sh sourced?"
+    env | grep INNO | grep '\/' | awk -F'=' '{printf("%s %s\n",$1, $2)}' | while read var val; do test -e $val || echo "($var) $val does not exit"; done;
+    ```
 
 Using  usamriidPathDiscov
 ------------------------
@@ -41,26 +81,8 @@ To get help::
 ```
    usamriidPathDiscov_cli   -h 
 ```
-Make sure you have indexed database under your  home directory,
-
-example::
-```
-   
-  ~/databases
-  ```
-
-If you extracted the databse to a  different location, make a symbolic link at your home directory::
-
-```
-   ln -s  path_to/databases    ~/databases
-   ```
-
-That is all it needs, the databases are forced to be at your directory
-to make the setting easier.'
 
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension. The name of the fastq file doesn't matters.
-
-
 
 To use::
 
@@ -112,4 +134,4 @@ Authors
 * Mickeal Wiley
 * Jason
 * Dereje Jima
-* Tyghe
+* Tyghe Vallard

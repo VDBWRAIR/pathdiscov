@@ -10,14 +10,14 @@ import re
 import distutils.spawn
 import fileinput
 from helpers import runCommand
+from pkg_resources import resource_filename
 
 print "Set up command line option handling, logger creation, and load config file"
 options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
-config = yaml.load(open(os.path.join(os.path.dirname(__file__),'config.yaml')).read())
-#print yaml.dump(config)
-#THIS = os.path.dirname( os.path.abspath(__file__ ) )
-#path = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0])))
+config_file = resource_filename(__name__, 'files/config.yaml')
+config = yaml.load(open(config_file).read())
+
 curdir = os.getcwd()
 os.chdir(curdir)
 # print mydir
@@ -38,6 +38,35 @@ nt_db = config['nt_db']
 tax_nodes = config['tax_nodes']
 tax_names = config['tax_names']
 blast_unassembled = config['blast_unassembled']
+
+##################################################
+#    Setup environ vars                          #
+# All come from old settings.sh                  #
+# Effectively replaces the need to source        #
+#  settings.sh
+##################################################
+# This will be wherever python setup.py install installs to which
+installdir = sys.prefix
+
+os.environ['INNO_PHRED_OFFSET'] = '33'
+os.environ['INNO_SEQUENCE_PLATFORM'] = 'illumina'	# choices are: illumina 454
+os.environ['INNO_NODE_NUM'] = '10'
+os.environ['INNO_BOWTIE_HUMAN_GENOME_DB'] = human_dna
+os.environ['INNO_BOWTIE_HUMAN_TRAN_DB'] = h_sapiens_rna
+os.environ['INNO_BLAST_NT_DB'] = nt_db
+os.environ['INNO_TAX_NODES'] = tax_nodes
+os.environ['INNO_TAX_NAMES'] = tax_names
+
+os.environ['INNO_SCRIPTS_PATH'] = installdir
+os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
+os.environ['R_LIBS'] = os.path.join(installdir, 'scripts')
+os.environ['LD_LIBRARY_PATH'] += '/usr/lib64/openmpi/lib'
+os.environ['PATH'] = installdir + os.pathsep + \
+    os.path.join(installdir,'bin') + os.pathsep + \
+    os.path.join(installdir,'scripts') + \
+    os.pathsep + os.path.join(installdir,'step1') + \
+    os.pathsep + os.environ['PATH']
+
 ##################################################
 #    Seq to process                             #
 #                                                #
@@ -77,10 +106,8 @@ F_fastq = os.path.abspath(project_dir + "/input/F.fastq")
 R_fastq = os.path.abspath(project_dir + "/input/R.fastq")
 
 # Copy base sample.param.base to sample.param file
-# os.path.abspath("./usamriidPathDiscov/files/sample.param.base")
-baseFile = os.path.abspath(os.path.join(os.path.dirname(__file__), 'files','sample.param.base'))
-# os.path.abspath("./usamriidPathDiscov/files/sample.param")
-sampleParam = os.path.abspath(os.path.join(os.path.dirname(__file__), 'files',"sample.param"))
+baseFile = resource_filename(__name__, 'files/sample.param.base')
+sampleParam = baseFile.replace('.base','')
 tasks.copy_map_file(baseFile, sampleParam)
 # replace some globals in the sample.param file such as db names
 for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):
@@ -89,7 +116,6 @@ for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):
     line = re.sub(r'BLAST_NT',  nt_db, line.rstrip())
     line = re.sub(r'TAX_NODES',  tax_nodes, line.rstrip())
     line = re.sub(r'TAX_NAMES',  tax_names, line.rstrip())
-
     print (line)
 
 
@@ -167,6 +193,8 @@ def priStage(input, output):
 
 
 def main():
+    from helpers import which
+    print which('pathogen.pl')
     t0 = time.time()
     print (" Starting time ..... :") + str(t0)
     dir_bak = project_dir + ".bak"
@@ -196,37 +224,37 @@ def main():
 
     #helpers.run(options)
 
-    final_out = os.path.abspath(results + "/output")
+    final_out = 'results/output'
     final_out_link = os.path.abspath(project_dir + "/output")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/iterative_blast_phylo_1/reports")
+    final_out = "results/iterative_blast_phylo_1/reports"
     final_out_link = os.path.abspath(project_dir + "/contig_reports")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/iterative_blast_phylo_2/reports")
+    final_out = "results/iterative_blast_phylo_2/reports"
     final_out_link = os.path.abspath(project_dir + "/unassembledread_reports")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/step1/R1.count")
+    final_out = "results/step1/R1.count"
     final_out_link = os.path.abspath(project_dir + "/R1.count")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/step1/R2.count")
+    final_out = "results/step1/R2.count"
     final_out_link = os.path.abspath(project_dir + "/R2.count")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/quality_analysis")
+    final_out = "results/quality_analysis"
     final_out_link = os.path.abspath(project_dir + "/quality_analysis")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
 
-    final_out = os.path.abspath(results + "/analysis.log")
+    final_out = "results/analysis.log"
     final_out_link = os.path.abspath(project_dir + "/analysis.log")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")

@@ -39,7 +39,7 @@ include setup.py
 include tox.ini
 include paver-minilib.zip
 include bootstrap.py
-include config.yaml
+#include config.yaml
 include config.yaml.base
 
 
