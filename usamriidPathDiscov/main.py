@@ -60,7 +60,10 @@ os.environ['INNO_TAX_NAMES'] = tax_names
 os.environ['INNO_SCRIPTS_PATH'] = installdir
 os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
 os.environ['R_LIBS'] = os.path.join(installdir, 'scripts')
-os.environ['LD_LIBRARY_PATH'] += '/usr/lib64/openmpi/lib'
+if 'LD_LIBRARY_PATH' not in os.environ:
+        osenviron['LD_LIBRARY_PATH']= '/usr/lib64/openmpi/lib'
+else:
+        os.environ['LD_LIBRARY_PATH'] += '/usr/lib64/openmpi/lib'
 os.environ['PATH'] = installdir + os.pathsep + \
     os.path.join(installdir,'bin') + os.pathsep + \
     os.path.join(installdir,'scripts') + \
