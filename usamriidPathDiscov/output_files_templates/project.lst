@@ -1,0 +1,13 @@
+${projpath}
+${projpath}/input
+${projpath}/input/param.txt
+${projpath}/input/F.fastq
+${projpath}/input/R.fastq
+${projpath}/logs
+${projpath}/analysis.log
+${projpath}/contig_reports
+${projpath}/unassembledread_reports
+${projpath}/output
+${projpath}/quality_analysis
+${projpath}/R1.count
+${projpath}/R2.count

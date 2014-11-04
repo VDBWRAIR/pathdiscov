@@ -1,1 +1,0 @@
-map_2/R2.unmap.fastq
