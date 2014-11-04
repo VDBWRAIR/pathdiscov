@@ -276,7 +276,9 @@ def main():
     runCommand(cmd, "T")
 
     cmd = 'verifyproject %s' % project_dir
-    runCommand(cmd, "T")
+    import subprocess
+    # We want output from this
+    subprocess.Popen(cmd, shell=True).wait()
 
     print("End time ....." ) + str((time.time()) - t0)
 

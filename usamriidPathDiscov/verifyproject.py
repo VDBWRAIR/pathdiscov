@@ -118,6 +118,8 @@ def main():
         for path, reason in sorted(missingfiles, key=lambda x: x[1]):
             print "{0} -- {1}".format(path,reason)
         sys.exit(1)
+    else:
+        print "All project files for {0} exist and are non-zero".format(args.projectpath)
 
 if __name__ == '__main__':
     main()
