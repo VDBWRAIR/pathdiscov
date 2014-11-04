@@ -5,7 +5,6 @@ from os.path import exists, basename
 # Default stages
 # Each has it's own template under output_files_templates
 STAGES = [
-    'quality_analysis',
     'step1',
     'host_map_1',
     'quality_filter',
@@ -66,12 +65,11 @@ def verify_files(projectpath, files_template):
     failed = []
     # Now check all items in expected listing
     for item in expected_listing:
-        itemsize = os.stat(item).st_size
         if not exists(item):
             failed.append(
                 (item, 'Missing')
             )
-        elif itemsize == 0:
+        elif os.stat(item).st_size == 0:
             failed.append(
                 (item, 'Size zero')
             )
@@ -86,4 +84,5 @@ def verify_standard_stages_files(projectpath, templatedir):
     templates = []
     for stage in STAGES:
         tfile = os.path.join(templatedir,stage+'.lst')
+        templates.append(tfile)
     return verify_project(projectpath, projectname, templates)

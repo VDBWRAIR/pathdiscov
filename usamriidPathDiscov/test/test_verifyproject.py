@@ -1,5 +1,6 @@
 from StringIO import StringIO
 from os.path import *
+import os
 
 from nose.tools import eq_, ok_, raises
 from nose.plugins.attrib import attr
@@ -34,6 +35,14 @@ ${projpath}/${projname}/file2
         verifyproject.open = self.mock_open
         verifyproject.exists = self.mock_exists
         verifyproject.os.stat = self.mock_stat
+
+    def reset_imports(self):
+        reload(os.path)
+        reload(os)
+        verifyproject.open = open
+        verifyproject.exists = exists
+        verifyproject.os.stat = os.stat
+        reload(verifyproject)
 
     def with_filestemplate_to_listing_mock(self):
         self.ftl_mock = Mock(
@@ -110,3 +119,19 @@ class TestVerifyFiles(Base):
             (join(self.projpath,self.projname,'file2'), 'Size zero'),
         ]
         eq_(expected, r)
+
+class TestVerifyStandardStagesFiles(Base):
+    functionname = 'verify_standard_stages_files'
+
+    def setUp(self):
+        super(TestVerifyStandardStagesFiles,self).setUp()
+        this = dirname(abspath(__file__))
+        self.mockproj = join(this, 'fixtures', 'mock_project')
+        self.templatedir = join(dirname(this), 'output_files_templates')
+        self.reset_imports()
+
+    def test_runs_on_mock_proj(self):
+        r = self._C(self.mockproj, self.templatedir)
+        for item in r:
+            if item[1] != 'Size zero':
+                ok_(False, 'Found a missing file {0}'.format(item))
