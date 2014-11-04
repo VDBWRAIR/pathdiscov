@@ -1,7 +1,5 @@
 ${projpath}/results/quality_filter
 ${projpath}/results/quality_filter/logs
-${projpath}/results/quality_filter/logs/${projname}.20141022-16.44-out.o
-${projpath}/results/quality_filter/logs/${projname}.20141022-16.44-out.e
 ${projpath}/results/quality_filter/quality_filter.R1
 ${projpath}/results/quality_filter/R1.cut.fastq
 ${projpath}/results/quality_filter/R1.count

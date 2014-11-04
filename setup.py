@@ -273,7 +273,8 @@ setup_dict = dict(
     zip_safe=False,  # don't use eggs
     entry_points={
         'console_scripts': [
-            'usamriidPathDiscov_cli = usamriidPathDiscov.main:main'
+            'usamriidPathDiscov_cli = usamriidPathDiscov.main:main',
+            'verifyproject = usamriidPathDiscov.verifyproject:main',
         ],
     },
     scripts = [

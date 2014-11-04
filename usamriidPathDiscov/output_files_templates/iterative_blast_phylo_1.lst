@@ -1,7 +1,5 @@
 ${projpath}/results/iterative_blast_phylo_1
 ${projpath}/results/iterative_blast_phylo_1/logs
-${projpath}/results/iterative_blast_phylo_1/logs/${projname}.20141022-16.44-out.o
-${projpath}/results/iterative_blast_phylo_1/logs/${projname}.20141022-16.44-out.e
 ${projpath}/results/iterative_blast_phylo_1/1.contig.fasta
 ${projpath}/results/iterative_blast_phylo_1/contig.count
 ${projpath}/results/iterative_blast_phylo_1/tmp_contig_1

@@ -1,10 +1,6 @@
 ${projpath}/results/ray2_assembly_1
 ${projpath}/results/ray2_assembly_1/logs
-${projpath}/results/ray2_assembly_1/logs/${projname}.20141022-16.44-out.o
-${projpath}/results/ray2_assembly_1/logs/${projname}.20141022-16.44-out.e
 ${projpath}/results/ray2_assembly_1/logs_assembly
-${projpath}/results/ray2_assembly_1/logs_assembly/assembly.o
-${projpath}/results/ray2_assembly_1/logs_assembly/assembly.e
 ${projpath}/results/ray2_assembly_1/R1.single.fastq
 ${projpath}/results/ray2_assembly_1/R1.paired.fastq
 ${projpath}/results/ray2_assembly_1/R2.single.fastq

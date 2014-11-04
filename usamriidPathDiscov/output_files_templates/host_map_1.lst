@@ -1,7 +1,5 @@
 ${projpath}/results/host_map_1
 ${projpath}/results/host_map_1/logs
-${projpath}/results/host_map_1/logs/${projname}.20141022-16.44-out.o
-${projpath}/results/host_map_1/logs/${projname}.20141022-16.44-out.e
 ${projpath}/results/host_map_1/R1.count
 ${projpath}/results/host_map_1/R2.count
 ${projpath}/results/host_map_1/map_1

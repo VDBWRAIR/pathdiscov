@@ -1,6 +1,7 @@
 import string
 import os
-from os.path import exists, basename
+from os.path import exists, basename, normpath
+import sys
 
 # Default stages
 # Each has it's own template under output_files_templates
@@ -29,6 +30,7 @@ def filestemplate_to_listing(projpath, projname, template):
     '''
     Convert string template to list of file/directory paths
     '''
+    projpath = normpath(projpath)
     return string.Template(template).substitute(
         projpath=projpath, projname=projname
     ).splitlines()
@@ -46,8 +48,9 @@ def verify_files(projectpath, files_template):
     return an empty list if all is well otherwise return list of tuples of
         (filedirpath, 'Reason why did not pass')
     '''
+    projpath = normpath(projectpath)
     # Get the basename(last thing after the last /)
-    projname = basename(projectpath)
+    projname = basename(normpath(projpath))
     
     # Make sure template file actually exists
     template = None
@@ -78,7 +81,7 @@ def verify_files(projectpath, files_template):
 def verify_standard_stages_files(projectpath, templatedir):
     ''' Hardcoded verification of standard stages '''
     #templates.append(resource_filename(__name__, tfile))
-    projectname = basename(projectpath)
+    projectname = basename(normpath(projectpath))
     # Fetch template files for each stage from inside
     # of templatedir
     templates = []
@@ -86,3 +89,35 @@ def verify_standard_stages_files(projectpath, templatedir):
         tfile = os.path.join(templatedir,stage+'.lst')
         templates.append(tfile)
     return verify_project(projectpath, projectname, templates)
+
+def main():
+    import argparse
+    from pkg_resources import resource_filename
+    parser = argparse.ArgumentParser(
+        'Verify all stages have necessary files'
+    )
+
+    parser.add_argument(
+        dest='projectpath',
+        help='Path to project to check'
+    )
+
+    templatesdir = resource_filename(__name__, 'output_files_templates')
+    parser.add_argument(
+        '--templatedir',
+        default=templatesdir,
+        help='Path to directory that contains templates of files for each stage' \
+            '[Default: %(default)s]'
+    )
+
+    args = parser.parse_args()
+
+    from pprint import pprint
+    missingfiles = verify_standard_stages_files(args.projectpath, args.templatedir)
+    if missingfiles:
+        for path, reason in sorted(missingfiles, key=lambda x: x[1]):
+            print "{0} -- {1}".format(path,reason)
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()
