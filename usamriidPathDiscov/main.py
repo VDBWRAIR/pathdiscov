@@ -276,8 +276,11 @@ def main():
     runCommand(cmd, "T")
 
     from verifyproject import verify_standard_stages_files
+    from pprint import pprint
     templatesdir = resource_filename(__name__, 'output_files_templates')
-    verify_standard_stages_files(project_dir, templatesdir)
+    missingfiles = verify_standard_stages_files(project_dir, templatesdir)
+    if missingfiles:
+        pprint(missingfiles)
 
     print("End time ....." ) + str((time.time()) - t0)
 
