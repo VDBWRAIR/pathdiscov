@@ -233,7 +233,7 @@ setup_dict = dict(
     maintainer_email=metadata.emails[0],
     url=metadata.url,
     description=metadata.description,
-    long_description=read('README.rst'),
+    long_description=read('README.md'),
     # Find a list of classifiers here:
     # <http://pypi.python.org/pypi?%3Aaction=list_classifiers>
     classifiers=[
@@ -293,7 +293,7 @@ setup_dict = dict(
     package_data = {
         # This tells setup.py to copy all items under usamriidPathDiscov/files to
         #  the site-packages/usamriidPathDiscov/files for us
-        'usamriidPathDiscov': ['files/*'],
+        'usamriidPathDiscov': ['files/*', 'output_files_templates/*'],
     },
 )
 

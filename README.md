@@ -25,7 +25,7 @@ Instructions
 
    At this time you have to manually download the EMBOSS package manually using your browser.
    
-   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into ~/Downloads using one of the links below:
+   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into usamriidPathDiscov/downloads/ using one of the links below:
    - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
    - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
 
@@ -70,8 +70,6 @@ Instructions
     # These should now all be in your path so should work
     apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl )
     for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
-    env | grep -q INNO || echo "INNO environmental variables not setup. Is settings.sh sourced?"
-    env | grep INNO | grep '\/' | awk -F'=' '{printf("%s %s\n",$1, $2)}' | while read var val; do test -e $val || echo "($var) $val does not exit"; done;
     ```
 
 Using  usamriidPathDiscov
@@ -95,7 +93,7 @@ To use::
 Don't forget to give the full path for your forward and reverse lanes if the reads isn't in your analysis directory::
 ```
 
-    usamriidPathDiscov_cli -R1 ~/testData/F.fastq  -R2 ~/testData/R.fastq  --outdir  testoutDir
+    usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
 
 ```
 
