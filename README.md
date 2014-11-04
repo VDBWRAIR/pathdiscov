@@ -93,7 +93,7 @@ To use::
 Don't forget to give the full path for your forward and reverse lanes if the reads isn't in your analysis directory::
 ```
 
-    usamriidPathDiscov_cli -R1 ~/testData/F.fastq  -R2 ~/testData/R.fastq  --outdir  testoutDir
+    usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
 
 ```
 

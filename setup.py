@@ -293,7 +293,7 @@ setup_dict = dict(
     package_data = {
         # This tells setup.py to copy all items under usamriidPathDiscov/files to
         #  the site-packages/usamriidPathDiscov/files for us
-        'usamriidPathDiscov': ['files/*'],
+        'usamriidPathDiscov': ['files/*', 'output_files_templates/*'],
     },
 )
 
