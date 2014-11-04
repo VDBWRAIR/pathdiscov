@@ -70,8 +70,6 @@ Instructions
     # These should now all be in your path so should work
     apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl )
     for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
-    env | grep -q INNO || echo "INNO environmental variables not setup. Is settings.sh sourced?"
-    env | grep INNO | grep '\/' | awk -F'=' '{printf("%s %s\n",$1, $2)}' | while read var val; do test -e $val || echo "($var) $val does not exit"; done;
     ```
 
 Using  usamriidPathDiscov
