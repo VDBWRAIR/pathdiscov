@@ -4,7 +4,7 @@ from os.path import exists, basename
 
 # Default stages
 # Each has it's own template under output_files_templates
-stages = [
+STAGES = [
     'quality_analysis',
     'step1',
     'host_map_1',
@@ -76,3 +76,14 @@ def verify_files(projectpath, files_template):
                 (item, 'Size zero')
             )
     return failed
+
+def verify_standard_stages_files(projectpath, templatedir):
+    ''' Hardcoded verification of standard stages '''
+    #templates.append(resource_filename(__name__, tfile))
+    projectname = basename(projectpath)
+    # Fetch template files for each stage from inside
+    # of templatedir
+    templates = []
+    for stage in STAGES:
+        tfile = os.path.join(templatedir,stage+'.lst')
+    return verify_project(projectpath, projectname, templates)

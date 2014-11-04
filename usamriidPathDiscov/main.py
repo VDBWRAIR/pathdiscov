@@ -196,6 +196,17 @@ def priStage(input, output):
         input, project_dir, paramFile, blast_unassembled, output)
     return result
 
+def verify_standard_stages_files(projectpath, templatedir):
+    ''' Hardcoded verification of standard stages '''
+    #templates.append(resource_filename(__name__, tfile))
+    from verifyproject import STAGES, verify_project
+    projectname = basename(projectpath)
+    # Fetch template files for each stage from inside
+    # of templatedir
+    templates = []
+    for stage in STAGES:
+        tfile = os.path.join(templatedir,stage+'.lst')
+    return verify_project(projectpath, projectname, templates)
 
 def main():
     from helpers import which
@@ -263,6 +274,11 @@ def main():
     final_out_link = os.path.abspath(project_dir + "/analysis.log")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
+
+    from verifyproject import verify_standard_stages_files
+    templatesdir = resource_filename(__name__, 'output_files_templates')
+    verify_standard_stages_files(project_dir, templatesdir)
+
     print("End time ....." ) + str((time.time()) - t0)
 
 
