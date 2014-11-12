@@ -32,6 +32,10 @@ options(setup=setup_dict,
             sdir=path('usamriidPathDiscov/download'),
             bindir=path('usamriidPathDiscov/bin')
         ),
+         prinseq=Bunch(
+            sdir=path('usamriidPathDiscov/download/prinseq-lite-0.20.3'),
+            bindir=path('usamriidPathDiscov/bin')
+        ),
         minilib=Bunch(
             # extra_files=['doctools','virtual']
         ),
@@ -265,6 +269,15 @@ def download_compile_samtools(options):
     sh('which samtools 2>&1 || (cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools; make; cd %s)' % (sdir, sdir))
 
 @task
+def install_prinseq(options):
+    """installs the current package"""
+    info("Compiling prinseq...")
+    currwd = os.getcwd()
+    sdir = path(currwd) / options.prinseq.sdir
+    bindir = path(currwd) / options.prinseq.bindir
+    sh('which bwa 2>&1 || (cd %s; cp *.pl  %s; cd %s)' % (sdir,bindir, sdir))
+
+@task
 def refRay(options):
     """Install  Ray assembler """
     info("Compiling Ray Assembler")
@@ -354,7 +367,7 @@ def install_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
 @task
-@needs('install_dependencies', 'setupConfigFile', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
+@needs('install_dependencies', 'setupConfigFile', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf', 'install_prinseq')
 def prepare():
     """Prepare complete environment
     """
