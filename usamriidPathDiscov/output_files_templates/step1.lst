@@ -1,0 +1,10 @@
+${projpath}/results/step1
+${projpath}/results/step1/logs
+${projpath}/results/step1/R1.fastq
+${projpath}/results/step1/R1.id
+${projpath}/results/step1/step1.R1
+${projpath}/results/step1/R1.count
+${projpath}/results/step1/R2.fastq
+${projpath}/results/step1/R2.id
+${projpath}/results/step1/step1.R2
+${projpath}/results/step1/R2.count

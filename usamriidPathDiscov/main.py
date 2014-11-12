@@ -60,10 +60,12 @@ os.environ['INNO_TAX_NAMES'] = tax_names
 os.environ['INNO_SCRIPTS_PATH'] = installdir
 os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
 os.environ['R_LIBS'] = os.path.join(installdir, 'scripts')
+# Set LD_LIBRARY_PATH
 if 'LD_LIBRARY_PATH' not in os.environ:
-    os.environ['LD_LIBRARY_PATH']= '/usr/lib64/openmpi/lib'
+	os.environ['LD_LIBRARY_PATH'] = '/usr/lib64/openmpi/lib'
 else:
-    os.environ['LD_LIBRARY_PATH'] +=os.pathsep +  '/usr/lib64/openmpi/lib'
+    os.environ['LD_LIBRARY_PATH'] += os.pathsep +  '/usr/lib64/openmpi/lib'
+# Set PATH
 os.environ['PATH'] = installdir + os.pathsep + \
     os.path.join(installdir,'bin') + os.pathsep + \
     os.path.join(installdir,'scripts') + \
@@ -194,6 +196,17 @@ def priStage(input, output):
         input, project_dir, paramFile, blast_unassembled, output)
     return result
 
+def verify_standard_stages_files(projectpath, templatedir):
+    ''' Hardcoded verification of standard stages '''
+    #templates.append(resource_filename(__name__, tfile))
+    from verifyproject import STAGES, verify_project
+    projectname = basename(projectpath)
+    # Fetch template files for each stage from inside
+    # of templatedir
+    templates = []
+    for stage in STAGES:
+        tfile = os.path.join(templatedir,stage+'.lst')
+    return verify_project(projectpath, projectname, templates)
 
 def main():
     from helpers import which
@@ -261,6 +274,12 @@ def main():
     final_out_link = os.path.abspath(project_dir + "/analysis.log")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
+
+    cmd = 'verifyproject %s' % project_dir
+    import subprocess
+    # We want output from this
+    subprocess.Popen(cmd, shell=True).wait()
+
     print("End time ....." ) + str((time.time()) - t0)
 
 

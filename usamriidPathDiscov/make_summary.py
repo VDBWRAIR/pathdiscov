@@ -54,7 +54,7 @@ def r1r2_count( steppath ):
         Merge together counts for R1 and R2 inside of steppath
         Raises MissingProjectFile if < 1 .count file found
     '''
-    r1r2 = glob( join( steppath, 'R*.count' ) )
+    r1r2 = glob( join( steppath, '*.count' ) )
     if len(r1r2) == 0:
         raise MissingProjectFile( '{0} did not contain > 1 count files'.format(steppath) )
     counts = defaultdict( int )
@@ -179,7 +179,7 @@ def unassembled_report( projdir, kingdom, groupby='family' ):
         Combines R1 & R2 results
         Adds a new key called accession with the parsed out accession
     '''
-    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R*smallreport*.txt' ) )
+    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
         raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )

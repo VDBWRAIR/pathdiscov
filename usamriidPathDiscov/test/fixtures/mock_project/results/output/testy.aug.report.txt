@@ -1,0 +1,1 @@
+qseq	blast_alg	qseqid	sseqid	pident	length	mismatch	gapopen	qstart	qend	sstart	send	evalue	bitscore	qlen	slen	aligned_qseq	taxid	superkingdom	order	family	genus	descrip	#reads_map2contig	contig_len(bp)

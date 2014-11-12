@@ -1,0 +1,10 @@
+${projpath}/results/quality_filter
+${projpath}/results/quality_filter/logs
+${projpath}/results/quality_filter/quality_filter.R1
+${projpath}/results/quality_filter/R1.cut.fastq
+${projpath}/results/quality_filter/R1.count
+${projpath}/results/quality_filter/R1.discard
+${projpath}/results/quality_filter/quality_filter.R2
+${projpath}/results/quality_filter/R2.cut.fastq
+${projpath}/results/quality_filter/R2.count
+${projpath}/results/quality_filter/R2.discard

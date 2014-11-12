@@ -354,7 +354,6 @@ def install_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
 @task
-#@needs('install_dependencies', 'setupConfigFile', 'source_shell', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
 @needs('install_dependencies', 'setupConfigFile', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
 def prepare():
     """Prepare complete environment
