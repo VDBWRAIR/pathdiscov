@@ -20,6 +20,8 @@ my ($path_scripts);		# path variables (scripts)
 my ($r1, $r2, $paramFile);			# paths to r1 and r2, if present
 my ($help);			# help bool
 my $numarg=scalar(@ARGV);
+my (@stages);           # Will hold stages to run
+my ($strstages);
 my $usage = <<_EOUSAGE_;
 
 ################################################################################################################
@@ -27,7 +29,7 @@ my $usage = <<_EOUSAGE_;
 #  Run a standard implementation of the pathogen discovery pipeline
 #  
 #  Useage example:
-#  $0 --sample mysample --outputdir results --R1 R1.fastq --R2 R2.fastq --blast_unassembled 1000
+#  $0 --sample mysample --outputdir results --R1 R1.fastq --R2 R2.fastq --blast_unassembled 1000 --stages host_map quality_filter
 #
 #  Required inputs:
 #
@@ -43,6 +45,8 @@ my $usage = <<_EOUSAGE_;
 #
 #  --blast_unassembled <int>		number of unassembled reads to blast
 #
+#  --stages                             step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo2
+#
 #  --help                               help
 #
 ####################################################################################################################
@@ -53,6 +57,7 @@ _EOUSAGE_
 $r2="none";
 $numreads=0;
 $path_scripts=$RealBin;
+@stages=();
 
 GetOptions (	'outputdir=s' => \$outputdir,
 		'blast_unassembled=i' => \$numreads,
@@ -60,9 +65,17 @@ GetOptions (	'outputdir=s' => \$outputdir,
 		'R1=s' => \$r1,
 		'R2=s' => \$r2,
         'paramFile=s'=>\$paramFile,
-		'sample=s' => \$sample);
+		'sample=s' => \$sample,
+        'stages=s{,}' => \@stages);
             
 # -------------------- main --------------------
+# Joined stages by ' '
+$strstages = join(' ', @stages);
+print($strstages);
+# Set default stages if not set by options
+if( $strstages eq "" ) {
+    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2'
+}
 
 if ( $help || $numarg == 0 || (not defined($sample)) || (not defined($r1)) ) {print $usage; exit;}
 
@@ -72,7 +85,7 @@ $r2=abs_path($r2);
 `mkdir -p $outputdir`;
 
 print("-|-------pathogen pipeline-------|-\n");
-print_system("$path_scripts/pathogen.pl --sample $sample --command step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 | tee -a $outputdir/analysis.log");
+print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 | tee -a $outputdir/analysis.log");
 
 # fastq files come in 4-line chunks
 $numreads=$numreads*4;

@@ -67,6 +67,7 @@ else:
     os.environ['LD_LIBRARY_PATH'] += os.pathsep +  '/usr/lib64/openmpi/lib'
 # Set PATH
 os.environ['PATH'] = installdir + os.pathsep + \
+    os.path.join('/usr','lib64','openmpi','bin') + os.pathsep + \
     os.path.join(installdir,'bin') + os.pathsep + \
     os.path.join(installdir,'scripts') + \
     os.pathsep + os.path.join(installdir,'step1') + \
