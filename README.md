@@ -21,7 +21,14 @@ Instructions
   
 # To install
 
-  1. Download Emboss
+  1. Clone the repository
+
+    ```
+    git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
+    cd usamriidPathDiscov
+    ```
+
+  2. Download Emboss
 
    At this time you have to manually download the EMBOSS package manually using your browser.
    
@@ -29,22 +36,17 @@ Instructions
    - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
    - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
 
-  2. Run installation instructions(you should be able to copy paste this entire section)
+  3. Run installation instructions(you should be able to copy paste this entire section)
 
     ```
-    git clone https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git
-    cd usamriidPathDiscov
-    cp ~/Downloads/EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
     wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
     python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
     source usamriidPathDiscov/bin/activate
     pip install paver
     python setup.py install
-    deactivate
-    source ~/.bashrc
     ```
     
-  3. Setup databases under your home directory
+  4. Setup databases under your home directory
 
     1. Setup databases directory
     
@@ -64,13 +66,19 @@ Instructions
        get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
        ```
 
-  4. Quick Verify of all components
+  5. Quick Verify of all components
 
     ```
     # These should now all be in your path so should work
     apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl )
     for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
     ```
+
+  6. Optional: Run a sample dataset
+
+  ```
+  usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
+  ```
 
 Using  usamriidPathDiscov
 ------------------------
