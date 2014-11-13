@@ -95,7 +95,6 @@ class BaseTest(Base):
         mock.update( **blastcols )
         return mock
 
-@attr('current')
 class TestParseTabFile( BaseTest ):
     def setUp( self ):
         super( TestParseTabFile, self ).setUp()
@@ -126,7 +125,6 @@ class TestParseTabFile( BaseTest ):
             sum += int( row['count'] )
         eq_( 658336, sum )
 
-@attr('current')
 class TestReadCount( BaseTest ):
     def setUp( self ):
         super( TestReadCount, self ).setUp()
@@ -161,7 +159,6 @@ class TestReadCount( BaseTest ):
         eq_( 1, r['intval'] )
         eq_( 1, r['floatval'] )
 
-@attr('current')
 class TestTotalReads( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import total_reads
@@ -179,7 +176,6 @@ class TestTotalReads( BaseTest ):
             os.unlink(f)
         self._C( self.mockproj )
 
-@attr('current')
 class TestNonHostNumReads( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import non_host_num_reads
@@ -197,7 +193,6 @@ class TestNonHostNumReads( BaseTest ):
             os.unlink(f)
         self._C( self.mockproj )
 
-@attr('current')
 class TestNumContig( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import num_contig
@@ -216,7 +211,6 @@ class TestNumContig( BaseTest ):
             os.unlink( f )
         self._C( self.mockproj )
 
-@attr('current')
 class TestR1R2Count( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import r1r2_count
@@ -238,7 +232,6 @@ class TestR1R2Count( BaseTest ):
     def test_missing_files( self ):
         r = self._C( self.tdir )
 
-@attr('current')
 class TestParseBlastReport( BaseTest ):
     def setUp( self ):
         super( TestParseBlastReport, self ).setUp()
@@ -268,7 +261,6 @@ class TestParseBlastReport( BaseTest ):
         eq_( 3, len(r), 'Did not filter correctly' )
         eq_( 'c47', r[0]['qseqid'] )
 
-@attr('current')
 class TestBlastResultsFor( BaseTest ):
     def setUp( self ):
         super( TestBlastResultsFor, self ).setUp()
@@ -301,7 +293,10 @@ class TestContigInfo( BaseTest ):
 
     def test_missing_files( self ):
         self.make_tmp_proj()
-        files = glob( join(self.mockproj, 'results', 'ray2_assembly_1', 'contig*' ) )
+        files = [
+            join(self.mockproj, 'results', 'ray2_assembly_1', 'contig.id'),
+            join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_numreads.txt'),
+        ]
         ok_( len(files) > 0, files )
         for f in files:
             print "Removing " + f
@@ -334,7 +329,6 @@ class TestContigInfo( BaseTest ):
         eq_( ('9',-1), r.get( 'c9', False ) )
         eq_( ('10',-1), r.get( 'c10', False ) )
 
-@attr('current')
 class TestContigsFor( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import contigs_for
@@ -377,7 +371,6 @@ class TestContigsFor( BaseTest ):
         for c in r:
             eq_( c['numreads'], -1 )
 
-@attr('current')
 class TestUnassembledReads( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import unassembled_reads
@@ -388,7 +381,6 @@ class TestUnassembledReads( BaseTest ):
         eq_( 101898, r[0] )
         eq_( 5127, r[1] )
 
-@attr('current')
 class TestGroupBlastBy( BaseTest ):
     def setUp( self ):
         super( TestGroupBlastBy, self ).setUp()
@@ -404,7 +396,6 @@ class TestGroupBlastBy( BaseTest ):
         eq_( 5, r['Leviviridae']['count'] )
         eq_( 9, r['Rhabdoviridae']['count'] )
 
-@attr('current')
 class TestUnassembledReport( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import unassembled_report
@@ -435,7 +426,6 @@ class TestUnassembledReport( BaseTest ):
             os.unlink( f )
         assert_raises( MissingProjectFile, self._C, self.mockproj, 'Viruses' )
 
-@attr('current')
 class TestSummary( BaseTest ):
     def setUp( self ):
         super( TestSummary, self ).setUp()
@@ -496,7 +486,6 @@ class TestSummary( BaseTest ):
                 os.unlink( f )
         self._C( self.mockproj, 'superkingdom', 'Viruses' )
 
-@attr('current')
 class TestFormatSummary( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import format_summary
@@ -554,7 +543,6 @@ class TestFormatSummary( BaseTest ):
             count = r.split('\t')[14]
             eq_( e, int(count), 'Count should be {0} but got {1} at index {2}'.format(e,count,i) )
 
-@attr('current')
 class TestFormatDic( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import format_dict
