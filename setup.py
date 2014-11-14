@@ -289,7 +289,8 @@ setup_dict = dict(
         'usamriidPathDiscov/download/Ray2',
         'usamriidPathDiscov/download/bowtie2/bowtie2',
     ] + glob('usamriidPathDiscov/download/bowtie2/bowtie2-*') +
-        glob('usamriidPathDiscov/download/blast-2.2.28/bin/*'),
+        glob('usamriidPathDiscov/download/blast-2.2.28/bin/*') +
+        glob('usamriidPathDiscov/download/prinseq-lite-0.20.3/*.pl'),
     package_data = {
         # This tells setup.py to copy all items under usamriidPathDiscov/files to
         #  the site-packages/usamriidPathDiscov/files for us

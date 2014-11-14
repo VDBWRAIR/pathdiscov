@@ -258,7 +258,7 @@ def download_compile_bwa(options):
     info("Compiling BWA...")
     currwd = os.getcwd()
     sdir = path(currwd) / options.bwa.sdir
-    sh('which bwa 2>&1 || (cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; mv bwa-* bwa; cd bwa; make; cd %s)' % (sdir, sdir))
+    sh('(cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; mv bwa-* bwa; cd bwa; make; cd %s)' % (sdir, sdir))
 
 @task
 def download_compile_samtools(options):
@@ -266,7 +266,7 @@ def download_compile_samtools(options):
     info("Compiling samtools....")
     currwd = os.getcwd()
     sdir = path(currwd) / options.samtools.sdir
-    sh('which samtools 2>&1 || (cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools; make; cd %s)' % (sdir, sdir))
+    sh('(cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools; make; cd %s)' % (sdir, sdir))
 
 @task
 def install_prinseq(options):
@@ -275,7 +275,7 @@ def install_prinseq(options):
     currwd = os.getcwd()
     sdir = path(currwd) / options.prinseq.sdir
     bindir = path(currwd) / options.prinseq.bindir
-    sh('which bwa 2>&1 || (cd %s; cp *.pl  %s; cd %s)' % (sdir,bindir, sdir))
+    sh('(cd %s; cp *.pl  %s; cd %s)' % (sdir,bindir, sdir))
 
 @task
 def refRay(options):
@@ -301,7 +301,7 @@ def getorf(options):
     currwd = os.getcwd()
     src = path(currwd) / options.getorf.src
     sfile = path(currwd) / options.getorf.sfile
-    sh('test -d %s || (cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s --without-x;make;make install)' %(sfile, src, sfile, sfile))
+    sh('(cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s --without-x;make;make install)' %(src, sfile, sfile))
 
 def ensure_line_in_file(filepath, line):
     with open(filepath,'r+') as fh:
