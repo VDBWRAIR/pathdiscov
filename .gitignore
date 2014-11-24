@@ -59,7 +59,7 @@ EMBOSS-6.6.0.tar.gz
 lib64
 man
 virtualenv-1.11.6
-#usamriidPathDiscov/files/config.yaml
+usamriidPathDiscov/files/config.yaml
 usamriidPathDiscov/files/config.yaml.bak
 usamriidPathDiscov/config.yaml
 usamriidPathDiscov/config.yaml.bak
