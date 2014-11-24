@@ -85,7 +85,15 @@ def blast_results_for_( blastfile, blastcol, filterval ):
     '''
         Return rows from blast output that match row[blastcol] == filterval
     '''
-    for row in parse_blast_report( blastfile, lambda x: x[blastcol] == filterval ):
+    def blastfilter(row):
+        if filterval is None:
+            return True
+        elif row[blastcol] == filterval:
+            return True
+        else:
+            return False
+
+    for row in parse_blast_report( blastfile, blastfilter ):
         yield row
 
 def contig_info( projdir ):
@@ -261,7 +269,7 @@ def main( args ):
     for p in args.projdir:
         try:
             sys.stderr.write( p + '\n' )
-            s = summary( p, 'superkingdom', 'Viruses', 'family' )
+            s = summary( p, args.filter_column, args.filter_value, args.group_by )
             rows = format_summary( s )
             samplename = basename(p)
             print samplename + ('\n'+samplename).join( rows )
@@ -278,6 +286,27 @@ def parse_args( args=sys.argv[1:] ):
         'projdir',
         nargs='+',
         help='Project directory path for riidpipeline project'
+    )
+
+    parser.add_argument(
+        '--filter-column',
+        dest='filter_column',
+        default='superkingdom',
+        help='What column in the blast reports to filter by[Default: %(default)s]'.format(fcd)
+    )
+
+    parser.add_argument(
+        '--filter-value',
+        dest='filter_value',
+        default=None,
+        help='What value to filter on in the --filter-column[Default: %(default)s]'
+    )
+
+    parser.add_argument(
+        '--group-by',
+        dest='group_by',
+        default='family',
+        help='What column to group results by for consolidation[Default: %(default)s]'.format(gbv)
     )
 
     return parser.parse_args( args )

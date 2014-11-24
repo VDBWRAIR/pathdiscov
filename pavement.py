@@ -8,7 +8,7 @@ import sys
 import time
 import subprocess
 from paver.easy import *
-from os.path import islink,isfile
+from os.path import islink,isfile,join,basename,dirname,exists,relpath
 from paver.setuputils import setup
 try:
     from paver.virtual import bootstrap,virtualenv
@@ -54,9 +54,10 @@ options(setup=setup_dict,
             olink =path('usamriidPathDiscov/bin')
 
         ),
-        FASTQC=Bunch(
-            sfile = path('usamriidPathDiscov/download/FastQC/fastqc'),
-            olink =path('usamriidPathDiscov/bin')
+        FastQC=Bunch(
+            url='http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip',
+            downloads=path('usamriidPathDiscov/download'),
+            installdir=join(sys.prefix,'lib')
         ),
 
         wkhtmltopdf=Bunch(
@@ -253,29 +254,56 @@ def source_shell(options):
     sh('source %s' %(settings) )
 
 @task
+def download_install_fastqc(options):
+    import zipfile
+    from glob import glob
+    dlpath = join(options.FastQC.downloads,'fastqc_v*.zip')
+    fastqczip = glob(dlpath)
+    # No need to redownload
+    if not len(fastqczip):
+        info("Downloading FastQC from %s" % options.FastQC.url)
+        dlcmd = 'cd %s; wget %s' % (options.FastQC.downloads,options.FastQC.url)
+        sh(dlcmd)
+    else:
+        info("FastQC Already downloaded")
+    fastqczip = glob(dlpath)
+    fqcdir = join(options.FastQC.installdir,'FastQC')
+    # Check to see if it is extracted already
+    if not exists(fqcdir):
+        info("Unpacking FastQC")
+        zfh = zipfile.ZipFile(fastqczip[-1])
+        zfh.extractall(options.FastQC.installdir)
+        zfh.close()
+    else:
+        info("FastQC already unpacked")
+    # Make symlink to bin
+    src = relpath(join(fqcdir,'fastqc'),join(sys.prefix,'bin'))
+    dst = join(sys.prefix,'bin','fastqc')
+    if not exists(dst):
+        info("Installing fastqc symlink")
+        os.symlink(src,dst)
+    else:
+        info("fastqc symlink already exists")
+
+@task
 def download_compile_bwa(options):
     """installs the current package"""
-    info("Compiling BWA...")
-    currwd = os.getcwd()
-    sdir = path(currwd) / options.bwa.sdir
-    sh('(cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; mv bwa-* bwa; cd bwa; make; cd %s)' % (sdir, sdir))
+    bwabin=join(sys.prefix,'bin','bwa')
+    if not exists(bwabin):
+        info("Compiling BWA...")
+        currwd = os.getcwd()
+        sdir = path(currwd) / options.bwa.sdir
+        sh('(cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; mv bwa-* bwa; cd bwa; make; cd %s)' % (sdir, sdir))
 
 @task
 def download_compile_samtools(options):
     """installs the current package"""
-    info("Compiling samtools....")
-    currwd = os.getcwd()
-    sdir = path(currwd) / options.samtools.sdir
-    sh('(cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools; make; cd %s)' % (sdir, sdir))
-
-@task
-def install_prinseq(options):
-    """installs the current package"""
-    info("Compiling prinseq...")
-    currwd = os.getcwd()
-    sdir = path(currwd) / options.prinseq.sdir
-    bindir = path(currwd) / options.prinseq.bindir
-    sh('(cd %s; cp *.pl  %s; cd %s)' % (sdir,bindir, sdir))
+    samtoolsbin=join(sys.prefix,'bin','samtools')
+    if not exists(samtoolsbin):
+        info("Compiling samtools....")
+        currwd = os.getcwd()
+        sdir = path(currwd) / options.samtools.sdir
+        sh('(cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib; wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools; make; cd %s)' % (sdir, sdir))
 
 @task
 def refRay(options):
@@ -297,11 +325,13 @@ def refRay(options):
 @task
 def getorf(options):
     """Install  EMBOSS getorf """
-    info("Compiling EMBOSS...")
-    currwd = os.getcwd()
-    src = path(currwd) / options.getorf.src
-    sfile = path(currwd) / options.getorf.sfile
-    sh('(cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s --without-x;make;make install)' %(src, sfile, sfile))
+    getorf=join(sys.prefix,'bin','getorf')
+    if not exists(getorf):
+        info("Compiling EMBOSS...")
+        currwd = os.getcwd()
+        src = path(currwd) / options.getorf.src
+        sfile = path(currwd) / options.getorf.sfile
+        sh('(cd %s; tar -xzvf EMBOSS-6.6.0.tar.gz; cd %s;./configure CC="cc"; ./configure --prefix=%s --without-x;make;make install)' %(src, sfile, sfile))
 
 def ensure_line_in_file(filepath, line):
     with open(filepath,'r+') as fh:
@@ -363,11 +393,21 @@ def setupConfigFile():
         info(line)
 
 @task
+@needs('install_python_dependencies','install_other_dependencies')
 def install_dependencies():
+    pass
+
+@task
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc')
+def install_other_dependencies():
+    pass
+
+@task
+def install_python_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
 @task
-@needs('install_dependencies', 'setupConfigFile', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf', 'install_prinseq')
+@needs('install_dependencies', 'setupConfigFile')
 def prepare():
     """Prepare complete environment
     """

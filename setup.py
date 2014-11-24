@@ -277,11 +277,10 @@ setup_dict = dict(
             'verifyproject = usamriidPathDiscov.verifyproject:main',
         ],
     },
+    # These all get copied to our installation's bin folder for us
     scripts = [
-        # These all get copied to our installation's bin folder for us
         'usamriidPathDiscov/download/bwa/bwa',
         'usamriidPathDiscov/download/samtools/samtools',
-        'usamriidPathDiscov/download/FastQC/fastqc',
         'usamriidPathDiscov/download/EMBOSS-6.6.0/bin/getorf',
         'usamriidPathDiscov/download/CAP3/cap3',
         'usamriidPathDiscov/download/wkhtmltopdf',
@@ -292,10 +291,8 @@ setup_dict = dict(
         glob('usamriidPathDiscov/download/blast-2.2.28/bin/*') +
         glob('usamriidPathDiscov/download/prinseq-lite-0.20.3/*.pl'),
     package_data = {
-        # This tells setup.py to copy all items under usamriidPathDiscov/files to
-        #  the site-packages/usamriidPathDiscov/files for us
         'usamriidPathDiscov': ['files/*', 'output_files_templates/*'],
-    },
+    }
 )
 
 def runTask():
