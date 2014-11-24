@@ -82,6 +82,7 @@ Instructions
   6. Optional: Run a sample dataset
 
   ```
+  cd ..
   usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
   ```
 
