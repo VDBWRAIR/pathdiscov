@@ -100,8 +100,8 @@ my $num_contigs_unblast = $h3{"blastx"};
 my $percent_unblast = int(100*$num_contigs_unblast/$num_contigs);
 
 # note: the number of unassembled reads here may not nec be the total (it will only be the total if the user chose to blast ALL unassembled reads)
-my $r1_unassemb_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/1.R1.fasta");
-my $r1_unassemb_unblast_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/iterative_blast_phylo_2.R1");
+my $r1_unassemb_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/1.contig.fasta"); #Dereje: changed R1 to contig
+my $r1_unassemb_unblast_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/iterative_blast_phylo_2.contig");#Dereje: changed R1 to contig
 my $percent_r1_unassemb_unblast_reads = int(100*$r1_unassemb_unblast_reads/$r1_unassemb_reads);
 
 # if mate exists
@@ -110,8 +110,8 @@ if ( -e "$outputdir/../step1/R2.id" )
 	my $href = col1_to_col2_hash("$outputdir/$sample.R2.count.txt");
 	%h2=%$href;
 
-	my $r2_unassemb_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/1.R2.fasta");
-	my $r2_unassemb_unblast_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/iterative_blast_phylo_2.R2");
+	my $r2_unassemb_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/2.contig.fasta");# changed 1.R2.fasta to 2.contig.fasta
+	my $r2_unassemb_unblast_reads=fastaid_count("$outputdir/../iterative_blast_phylo_2/iterative_blast_phylo_2.contig");
 	my $percent_r2_unassemb_unblast_reads = int(100*$r2_unassemb_unblast_reads/$r2_unassemb_reads);
 
 	my $percent_tot_unassemb_unblast_reads = int(100*($r1_unassemb_unblast_reads + $r2_unassemb_unblast_reads)/($r1_unassemb_reads + $r2_unassemb_reads));

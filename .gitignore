@@ -69,6 +69,11 @@ usamriidPathDiscov/files/sample.param.bak
 usamriidPathDiscov/files/settings.sh.bak
 usamriidPathDiscov/files/sample.param
 .vagrant
+usamriidPathDiscov/download/prinseq-lite-*
+usamriidPathDiscov/download/bwa-*
+usamriidPathDiscov/download/htslib-*
+usamriidPathDiscov/download/samtools-*
+usamriidPathDiscov/download/fastqc*
 
 #Negate, include the file
 

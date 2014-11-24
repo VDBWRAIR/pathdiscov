@@ -35,6 +35,11 @@ Instructions
    Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into usamriidPathDiscov/downloads/ using one of the links below:
    - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
    - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
+   
+   Download the "tar.gz" to `usamriidPathDiscov/download` directory.
+  ```
+  wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz && mv EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
+  ```
 
   3. Run installation instructions(you should be able to copy paste this entire section)
 
@@ -70,13 +75,14 @@ Instructions
 
     ```
     # These should now all be in your path so should work
-    apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl )
+    apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
     for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
     ```
 
   6. Optional: Run a sample dataset
 
   ```
+  cd ..
   usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
   ```
 
