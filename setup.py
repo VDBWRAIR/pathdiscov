@@ -277,8 +277,8 @@ setup_dict = dict(
             'verifyproject = usamriidPathDiscov.verifyproject:main',
         ],
     },
+    # These all get copied to our installation's bin folder for us
     scripts = [
-        # These all get copied to our installation's bin folder for us
         'usamriidPathDiscov/download/bwa/bwa',
         'usamriidPathDiscov/download/samtools/samtools',
         'usamriidPathDiscov/download/FastQC/fastqc',
@@ -290,11 +290,11 @@ setup_dict = dict(
         'usamriidPathDiscov/download/bowtie2/bowtie2',
     ] + glob('usamriidPathDiscov/download/bowtie2/bowtie2-*') +
         glob('usamriidPathDiscov/download/blast-2.2.28/bin/*'),
+    # This tells setup.py to copy all items under usamriidPathDiscov/files to
+    #  the site-packages/usamriidPathDiscov/files for us
     package_data = {
-        # This tells setup.py to copy all items under usamriidPathDiscov/files to
-        #  the site-packages/usamriidPathDiscov/files for us
         'usamriidPathDiscov': ['files/*', 'output_files_templates/*'],
-    },
+    }
 )
 
 def runTask():
