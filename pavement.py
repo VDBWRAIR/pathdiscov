@@ -8,7 +8,7 @@ import sys
 import time
 import subprocess
 from paver.easy import *
-from os.path import islink,isfile
+from os.path import islink,isfile,join,basename,dirname,exists,relpath
 from paver.setuputils import setup
 try:
     from paver.virtual import bootstrap,virtualenv
@@ -50,9 +50,10 @@ options(setup=setup_dict,
             olink =path('usamriidPathDiscov/bin')
 
         ),
-        FASTQC=Bunch(
-            sfile = path('usamriidPathDiscov/download/FastQC/fastqc'),
-            olink =path('usamriidPathDiscov/bin')
+        FastQC=Bunch(
+            url='http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip',
+            downloads=path('usamriidPathDiscov/download'),
+            installdir=join(sys.prefix,'lib')
         ),
 
         wkhtmltopdf=Bunch(
@@ -249,6 +250,30 @@ def source_shell(options):
     sh('source %s' %(settings) )
 
 @task
+def download_install_fastqc(options):
+    import zipfile
+    from glob import glob
+    fastqczip = glob(join(options.FastQC.downloads,'fastqc_v*.zip'))
+    # No need to redownload
+    if len(fastqczip):
+        info("Downloading FastQC from %s" % options.FastQC.url)
+        dlcmd = 'cd %s; wget %s' % (options.FastQC.downloads,options.FastQC.url)
+        sh(dlcmd)
+        fastqczip = glob(join(options.FastQC.downloads,'fastqc_v*.zip'))[0]
+    fqcdir = join(options.FastQC.installdir,'FastQC')
+    # Check to see if it is extracted already
+    if not exists(fqcdir):
+        info("Installing FastQC")
+        zfh = zipfile.ZipFile(fastqczip)
+        zfh.extractall(options.FastQC.installdir)
+        zfh.close()
+    # Make symlink to bin
+    src = relpath(join(fqcdir,'fastqc'),join(sys.prefix,'bin'))
+    dst = join(sys.prefix,'bin','fastqc')
+    if not exists(dst):
+        os.symlink(src,dst)
+
+@task
 def download_compile_bwa(options):
     """installs the current package"""
     info("Compiling BWA...")
@@ -350,11 +375,21 @@ def setupConfigFile():
         info(line)
 
 @task
+@needs('install_python_dependencies')
 def install_dependencies():
+    pass
+
+@task
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc')
+def install_other_dependencies():
+    pass
+
+@task
+def install_python_dependencies():
     sh('pip install  -r requirements-dev.txt ')
 
 @task
-@needs('install_dependencies', 'setupConfigFile', 'download_compile_bwa', 'download_compile_samtools','refRay','getorf')
+@needs('install_dependencies', 'setupConfigFile', 'install_other_dependencies')
 def prepare():
     """Prepare complete environment
     """

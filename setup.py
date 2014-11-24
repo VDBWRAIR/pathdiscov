@@ -281,7 +281,6 @@ setup_dict = dict(
     scripts = [
         'usamriidPathDiscov/download/bwa/bwa',
         'usamriidPathDiscov/download/samtools/samtools',
-        'usamriidPathDiscov/download/FastQC/fastqc',
         'usamriidPathDiscov/download/EMBOSS-6.6.0/bin/getorf',
         'usamriidPathDiscov/download/CAP3/cap3',
         'usamriidPathDiscov/download/wkhtmltopdf',
