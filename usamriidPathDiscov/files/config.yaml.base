@@ -4,14 +4,9 @@
 databases: GENOMEDIR
 human_dna: GENOMEDIR/humandna/human_dna
 h_sapiens_rna: GENOMEDIR/humanrna/h_sapiens_rna
-nt_db:  GENOMEDIR/ncbi/blast/nt/rikkcdna
+nt_db:  GENOMEDIR/ncbi/blast/nt/nt
 tax_nodes: GENOMEDIR/ncbi/taxonomy/nodes.dmp
 tax_names: GENOMEDIR/ncbi/taxonomy/names.dmp
 
 #paired end lane to run
 blast_unassembled: 1000
-R1: /media/VD_Research/People/Dereje.Jima/2014_programming/python/usamriidPathDiscov/testData/F.fastq  #update this line to the location of F.fastq (name of fastq doesn't matter)
-R2: /media/VD_Research/People/Dereje.Jima/2014_programming/python/usamriidPathDiscov/testData/R.fastq  #update this line to the location of R.fastq (name of fastq doesn't matter
-
-
-

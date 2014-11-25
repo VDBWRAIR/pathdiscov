@@ -1,97 +1,23 @@
-=========================
- Python Project usamriidPathDiscov
-=========================
+usamriidPathDiscov
+==================
 
-
-Project Setup
-=============
-
-Instructions
+Installation
 ------------
 
-# Install System Packages
+See [Installation](docs/source/install.rst)
 
-  ```
-  yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel
-  ```
+Configuration
+-------------
 
-  ```
-  yum groupinstall Development tools
-  ```
-  
-# To install
-
-  1. Clone the repository
-
-    ```
-    git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
-    cd usamriidPathDiscov
-    ```
-
-  2. Download Emboss
-
-   At this time you have to manually download the EMBOSS package manually using your browser.
-   
-   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into usamriidPathDiscov/downloads/ using one of the links below:
-   - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
-   - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
-   
-   Download the "tar.gz" to `usamriidPathDiscov/download` directory.
-  ```
-  wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz && mv EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
-  ```
-
-  3. Run installation instructions(you should be able to copy paste this entire section)
-
-    ```
-    wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-    python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
-    source usamriidPathDiscov/bin/activate
-    pip install paver
-    python setup.py install
-    ```
-    
-  4. Setup databases under your home directory
-
-    1. Setup databases directory
-    
-      ```
-      mkdir -p ~/databases/{humandna,humanrna,ncbi}
-      mkdir -p ~/databases/ncbi/blast/{nt,nr}
-      ```
-      
-    2. You need to have the human dna/rna genome indexed by bowtie
-    
-      You can download pre-built indexes from Illumina's iGenomes page(http://support.illumina.com/sequencing/sequencing_software/igenome.html)
-      You need to put the human dna under ~/databases/humandna and the human rna under ~/databases/humanrna
-      
-    3. You need both the dna and rna ncbi databases setup under ~/databases/ncbi/blast
-    
-       ```
-       get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
-       ```
-
-  5. Quick Verify of all components
-
-    ```
-    # These should now all be in your path so should work
-    apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
-    for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
-    ```
-
-  6. Optional: Run a sample dataset
-
-  ```
-  cd ..
-  usamriidPathDiscov_cli -R1 usamriidPathDiscov/testData/F.fastq  -R2 usamriidPathDiscov/testData/R.fastq  --outdir  testoutDir
-  ```
+See [Configuration](docs/source/configuration.rst)
 
 Using  usamriidPathDiscov
 ------------------------
 
 To get help::
+
 ```
-   usamriidPathDiscov_cli   -h 
+usamriidPathDiscov_cli   -h 
 ```
 
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension. The name of the fastq file doesn't matters.
@@ -99,19 +25,16 @@ If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extens
 To use::
 
 ```
-
-   usamriidPathDiscov_cli -R1 F.fastq  -R2 R.fastq  --outdir  testoutDir 
-
+usamriidPathDiscov_cli -R1 F.fastq  -R2 R.fastq  --outdir  testoutDir 
 ```
 
 Don't forget to give the full path for your forward and reverse lanes if the reads isn't in your analysis directory::
-```
-
-    usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
 
 ```
+usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
+```
 
-Using  usamriidPathDiscov_cli
+Using usamriidPathDiscov_cli
 ---------
 
 ``usamriidPathDiscov_cli`` is a command line computational pipeline for pathogen discovery.The application contain all the necessary tools to do the analyis in one go. It is easy to setup, nothing to edit. Install and use it!!
