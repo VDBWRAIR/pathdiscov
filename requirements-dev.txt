@@ -35,6 +35,7 @@ cutadapt
 pyyaml
 bunch==1.0.1
 path.py==5.2
+termcolor
 #autoenv
 #libpng>=1.2
 #dateutil>=1.1

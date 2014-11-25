@@ -51,7 +51,7 @@ def verify_files(projectpath, files_template):
     projpath = normpath(projectpath)
     # Get the basename(last thing after the last /)
     projname = basename(normpath(projpath))
-    
+
     # Make sure template file actually exists
     template = None
     try:
@@ -60,7 +60,7 @@ def verify_files(projectpath, files_template):
             template = fh.read()
     except IOError as e:
         raise ValueError('{0} does not exist'.format(files_template))
-    
+
     # Get the template listing
     expected_listing = filestemplate_to_listing(projectpath, projname, template)
 
@@ -113,7 +113,9 @@ def main():
     args = parser.parse_args()
 
     from pprint import pprint
+    import yaml
     missingfiles = verify_standard_stages_files(args.projectpath, args.templatedir)
+    print yaml.dump(missingfiles)
     if missingfiles:
         for path, reason in sorted(missingfiles, key=lambda x: x[1]):
             print "{0} -- {1}".format(path,reason)
