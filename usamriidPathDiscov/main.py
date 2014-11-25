@@ -278,7 +278,9 @@ def main():
     # check the process
 
     cmd = 'verifyproject %s' % project_dir
-    runCommand(cmd, "T")
+    import subprocess
+    # We can output from this
+    subprocess.Popen(cmd, shell=True).wait()
     # print time elapsed to complete the task
     import datetime
     from termcolor import colored
