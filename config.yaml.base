@@ -4,7 +4,7 @@
 databases: GENOMEDIR
 human_dna: GENOMEDIR/humandna/human_dna
 h_sapiens_rna: GENOMEDIR/humanrna/h_sapiens_rna
-nt_db:  GENOMEDIR/ncbi/blast/nt/rikkcdna
+nt_db:  GENOMEDIR/ncbi/blast/nt/nt
 tax_nodes: GENOMEDIR/ncbi/taxonomy/nodes.dmp
 tax_names: GENOMEDIR/ncbi/taxonomy/names.dmp
 
