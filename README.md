@@ -28,20 +28,7 @@ Instructions
     cd usamriidPathDiscov
     ```
 
-  2. Download Emboss
-
-   At this time you have to manually download the EMBOSS package manually using your browser.
-   
-   Download the EMBOSS-6.6.0.tar.gz from EMBOSS ftp site or from the github repo into usamriidPathDiscov/downloads/ using one of the links below:
-   - ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz
-   - https://github.com/VDBWRAIR/usamriidPathDiscov/releases/download/v4.0.3/EMBOSS-6.6.0.tar.gz
-   
-   Download the "tar.gz" to `usamriidPathDiscov/download` directory.
-  ```
-  wget ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-6.6.0.tar.gz && mv EMBOSS-6.6.0.tar.gz usamriidPathDiscov/download/
-  ```
-
-  3. Run installation instructions(you should be able to copy paste this entire section)
+  2. Run installation instructions(you should be able to copy paste this entire section)
 
     ```
     wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
@@ -51,7 +38,7 @@ Instructions
     python setup.py install
     ```
     
-  4. Setup databases under your home directory
+  3. Setup databases under your home directory
 
     1. Setup databases directory
     
@@ -83,7 +70,7 @@ Instructions
 
   ```
   cd ..
-  usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
+  usamriidPathDiscov_cli -R1 usamriidPathDiscov/testData/F.fastq  -R2 usamriidPathDiscov/testData/R.fastq  --outdir  testoutDir
   ```
 
 Using  usamriidPathDiscov
