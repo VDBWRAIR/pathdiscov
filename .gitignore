@@ -47,7 +47,7 @@ pathDescTest
 
 # Project ignores
 usamriidPathDiscov/download/ray
-#usamriidPathDiscov/download/EMBOSS-6.6.0
+usamriidPathDiscov/download/EMBOSS-6.6.0
 usamriidPathDiscov/download/RayPlatform
 usamriidPathDiscov/download/bwa
 usamriidPathDiscov/download/samtools
@@ -75,4 +75,3 @@ usamriidPathDiscov/download/samtools-*
 usamriidPathDiscov/download/fastqc*
 
 #Negate, include the file
-
