@@ -1,11 +1,12 @@
 USAMRIID Pathogen Descovery
 ===========================
 
-Contents:
+Table of Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   configuration
 
 .. only:: html
 
