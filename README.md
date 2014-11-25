@@ -83,7 +83,7 @@ Instructions
 
   ```
   cd ..
-  usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
+  usamriidPathDiscov_cli -R1 usamriidPathDiscov/testData/F.fastq  -R2 usamriidPathDiscov/testData/R.fastq  --outdir  testoutDir
   ```
 
 Using  usamriidPathDiscov
