@@ -23,16 +23,7 @@ dist
 build
 eggs
 parts
-usamriidPathDiscov/bin
-usamriidPathDiscov/lib
-usamriidPathDiscov/include
 copy.autoenv
-usamriidPathDiscov/download/ray
-usamriidPathDiscov/download/EMBOSS-6.6.0
-usamriidPathDiscov/download/RayPlatform
-usamriidPathDiscov/download/bwa
-usamriidPathDiscov/download/samtools
-usamriidPathDiscov/download/htslib
 internal
 var
 sdist
@@ -55,7 +46,15 @@ pip-log.txt
 pathDescTest
 
 # Project ignores
-EMBOSS-6.6.0.tar.gz
+usamriidPathDiscov/download/ray
+#usamriidPathDiscov/download/EMBOSS-6.6.0
+usamriidPathDiscov/download/RayPlatform
+usamriidPathDiscov/download/bwa
+usamriidPathDiscov/download/samtools
+usamriidPathDiscov/download/htslib
+usamriidPathDiscov/bin
+usamriidPathDiscov/lib
+usamriidPathDiscov/include
 lib64
 man
 virtualenv-1.11.6
