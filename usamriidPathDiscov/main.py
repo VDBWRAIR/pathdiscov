@@ -275,13 +275,16 @@ def main():
     final_out_link = os.path.abspath(project_dir + "/analysis.log")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
     runCommand(cmd, "T")
+    # check the process
 
     cmd = 'verifyproject %s' % project_dir
-    import subprocess
-    # We want output from this
-    subprocess.Popen(cmd, shell=True).wait()
-
-    print("End time ....." ) + str((time.time()) - t0)
+    runCommand(cmd, "T")
+    # print time elapsed to complete the task
+    import datetime
+    from termcolor import colored
+    elapsedTime = int((time.time()) - t0)
+    elapsedTime = str(datetime.timedelta(seconds=elapsedTime))
+    print("Time to complete the task ....." ) + colored (elapsedTime, "red")
 
 
 if __name__ == '__main__':
