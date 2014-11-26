@@ -118,12 +118,9 @@ def main():
     missingfiles = verify_standard_stages_files(args.projectpath, args.templatedir)
     #print yaml.dump(missingfiles)
     if missingfiles:
-        checkOutFile = []
         for path, reason in missingfiles:
-            myfile = basename(path)
-            checkOutFile.append(myfile)
-        #print yaml.dump(checkOutFile)
-        for fname in checkOutFile:
+            fname = basename(path)
+            #print fname
             if fname == "param.txt":
                 print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
                 sys.exit(1)
@@ -154,7 +151,7 @@ def main():
 
             #print "{0} -- {1}".format(path,reason)
     else:
-        print colored("All project files for {0} exist and are non-zero".format(args.projectpath), "green")
+        print colored(" SUCCESS! the tasks completed successfully", "green")
 
 if __name__ == '__main__':
     main()
