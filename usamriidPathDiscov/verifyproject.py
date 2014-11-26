@@ -6,6 +6,7 @@ import sys
 # Default stages
 # Each has it's own template under output_files_templates
 STAGES = [
+    'input',
     'step1',
     'host_map_1',
     'quality_filter',
@@ -112,42 +113,48 @@ def main():
 
     args = parser.parse_args()
 
-    from pprint import pprint
     import yaml
     from termcolor import colored
     missingfiles = verify_standard_stages_files(args.projectpath, args.templatedir)
     #print yaml.dump(missingfiles)
     if missingfiles:
-        for path, reason in sorted(missingfiles, key=lambda x: x[1]):
+        checkOutFile = []
+        for path, reason in missingfiles:
             myfile = basename(path)
-            if myfile == "quality_filter.R1":
+            checkOutFile.append(myfile)
+        #print yaml.dump(checkOutFile)
+        for fname in checkOutFile:
+            if fname == "param.txt":
+                print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
+                sys.exit(1)
+            elif  fname == "quality_filter.R1":
                 print colored("WARNING! :  Unable to run quality filter step, please check if prinseq is installed and running", "red")
                 sys.exit(1)
-            elif myfile == "out.bam":
+            elif fname == "out.bam":
                 print colored("WARNING! :  Unable to map the read to the ref genome, please check if bowtie2 is installed or the ref ~/databases exist", "red")
                 sys.exit(1)
-            elif myfile == "out.cap.fa":
+            elif fname == "out.cap.fa":
                 print colored("WARNING! : Unable to build the CAP3 contig, please check if cap3 program is running", "red")
                 sys.exit(1)
-            elif myfile == "out.ray.fa":
+            elif fname == "out.ray.fa":
                 print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running", "red")
                 sys.exit(1)
-            elif myfile == "R1.orfout.fa":
+            elif fname == "R1.orfout.fa":
                 print colored("WARNING! : Unable to run getorf, please check if getorf program is running", "red")
                 sys.exit(1)
-            elif myfile == "iterative_blast_phylo_1.contig":
+            elif fname == "iterative_blast_phylo_1.contig":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl excute this step", "red")
                 sys.ext(1)
-            elif myfile == "iterative_blast_phylo_2":
+            elif fname == "iterative_blast_phylo_2":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl excute this step", "red")
                 sys.ext(1)
             #else:
-             #   print colored("SUCESS! : Task completed successfully!", "green")
+                #print colored("SUCESS! : Task completed successfully!", "green")
 
 
             #print "{0} -- {1}".format(path,reason)
     else:
-        print "All project files for {0} exist and are non-zero".format(args.projectpath)
+        print colored("All project files for {0} exist and are non-zero".format(args.projectpath), "green")
 
 if __name__ == '__main__':
     main()
