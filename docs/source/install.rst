@@ -32,13 +32,20 @@ Installation
         source usamriidPathDiscov/bin/activate
         pip install paver
 
-3. Install the pipeline into the virtualenv
+
+3. Edit "usamriidPathDiscov/files/config.yaml.base" if necessary. For example edit the following lines...
+
+    .. code-block:: bash
+
+        SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
+        NODE_NUM: 10  # number of blast partition depending of the number of CPU on your computer.
+
+4. Install the pipeline into the virtualenv
 
     .. code-block:: bash
 
         python setup.py install
-
-4. Blast/Bowtie databases setup
+5. Blast/Bowtie databases setup
 
     These databases will be dependent on your specific situation, but by default we will use the blast nt/nr databases as well as the human genome to
     do host mapping
@@ -68,7 +75,7 @@ Installation
 
             get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
 
-5. Quick verify of necessary executables
+6. Quick verify of necessary executables
 
     .. code-block:: bash
 
@@ -76,12 +83,11 @@ Installation
         apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
         for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
 
-6. Optional: Run a sample dataset
+7. Optional: Run a sample dataset
 
     If your blast database is quite large(like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in
 
     .. code-block:: bash
 
-        cd ..
-        usamriidPathDiscov_cli -R1 usamriidPathDiscov/testData/F.fastq  -R2 usamriidPathDiscov/testData/R.fastq  --outdir  testoutDir
+        usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
