@@ -10,7 +10,7 @@
 # -------------------
 command step1
 
-seq_platform				illumina										# choices are: illumina or 454
+seq_platform				SEQPLATFORM										# choices are: illumina or 454
 
 # explanation: must be run first --- hence titled step1. this module maps the fastq IDs into simple numerical IDs and processes .sff file if 454
 
@@ -65,7 +65,7 @@ blast_db_list				BLAST_NT,BLAST_NT # blast db prefix
 blast_task_list				megablast,dc-megablast								# options are: megablast dc-megablast blastn, blastx
 # blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are 
 blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4			# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
-ninst_list				10,10										# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
+ninst_list				NUMINST,NUMINST										# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
 taxonomy_names				TAX_NAMES					# NCBI taxonomy names dump file
 taxonomy_nodes				TAX_NODES					# NCBI taxonomy nodes dump file
 
@@ -81,7 +81,7 @@ blast_db_list				BLAST_NT,BLAST_NT # blast db prefix
 blast_task_list				megablast,dc-megablast								# options are: megablast dc-megablast blastn, blastx
 # blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are 
 blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4			# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
-ninst_list				10,10						# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
+ninst_list				NUMINST,NUMINST						# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
 taxonomy_names				TAX_NAMES					# NCBI taxonomy names dump file
 taxonomy_nodes				TAX_NODES					# NCBI taxonomy nodes dump file
 
@@ -96,7 +96,7 @@ num_subset_seq				200											# the number of sequences in the small initial f
 blast_type				blastn											# options are: blastn blastx 
 blast_task				megablast										# options are: megablast dc-megablast blastn
 blast_options				-evalue 1e-4 -word_size 28								# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
-ninst					10											# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
+ninst					NUMINST											# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
 
 # explanation: nohost_blast will blast a subset (determined by "num_subset_seq") of your initial file to nt. it will get the taxid from the hits to nt and use these tax id to make a new database, which it will then blast the full initial file against 
 
@@ -104,7 +104,7 @@ ninst					10											# the input file will be broken into chunks and blasted i
 command ray2_assembly
 
 kmer					25											# assembler k-mer
-ninst   				10											# number of instances for mpiexec
+ninst   				NUMINST											# number of instances for mpiexec
 cap   					1											# use cap after ray
 # cap_options   														# cap options
 map2contigs				yes											# if "yes" or "1", map reads back onto assembly
@@ -117,7 +117,7 @@ command ray2_assembly_2
 # this is the same as ray2_assembly --- it just allows you to do it an n-th time
 
 kmer					25											# assembler k-mer
-ninst   				10											# number of instances for mpiexec
+ninst   				NUMINST											# number of instances for mpiexec
 cap   					1											# use cap after ray
 # cap_options   														# cap options
 map2contigs				yes											# if "yes" or "1", map reads back onto assembly

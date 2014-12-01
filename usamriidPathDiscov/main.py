@@ -30,7 +30,9 @@ R2 = options.R2
 #    Setup databases and few globals             #
 #                                                #
 ##################################################
-
+phred_offset = str(config['PHRED_OFFSET'])
+seq_platform = config['SEQUENCE_PLATFORM']
+num_node = str(config['NODE_NUM'])
 databases = config['databases']
 human_dna = config['human_dna']
 h_sapiens_rna = config['h_sapiens_rna']
@@ -48,9 +50,9 @@ blast_unassembled = config['blast_unassembled']
 # This will be wherever python setup.py install installs to which
 installdir = sys.prefix
 
-os.environ['INNO_PHRED_OFFSET'] = '33'
-os.environ['INNO_SEQUENCE_PLATFORM'] = 'illumina'	# choices are: illumina 454
-os.environ['INNO_NODE_NUM'] = '10'
+os.environ['INNO_PHRED_OFFSET'] = phred_offset # NOTE: ******I don't see where this is required******
+os.environ['INNO_SEQUENCE_PLATFORM'] = seq_platform	# choices are: illumina 454
+os.environ['INNO_NODE_NUM'] = num_node
 os.environ['INNO_BOWTIE_HUMAN_GENOME_DB'] = human_dna
 os.environ['INNO_BOWTIE_HUMAN_TRAN_DB'] = h_sapiens_rna
 os.environ['INNO_BLAST_NT_DB'] = nt_db
@@ -107,7 +109,6 @@ pram = [
     [R2, project_dir + "/input/R.fastq"]
 ]
 print "******************************", yaml.dump(pram)
-
 F_fastq = os.path.abspath(project_dir + "/input/F.fastq")
 R_fastq = os.path.abspath(project_dir + "/input/R.fastq")
 
@@ -117,6 +118,8 @@ sampleParam = baseFile.replace('.base','')
 tasks.copy_map_file(baseFile, sampleParam)
 # replace some globals in the sample.param file such as db names
 for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):
+    line = re.sub(r'SEQPLATFORM',seq_platform, line.rstrip() )
+    line = re.sub('NUMINST', num_node, line.rstrip() )
     line = re.sub(r'HUMAN_DNA',  human_dna, line.rstrip())
     line = re.sub(r'H_SAPIENS_RNA',  h_sapiens_rna, line.rstrip())
     line = re.sub(r'BLAST_NT',  nt_db, line.rstrip())
