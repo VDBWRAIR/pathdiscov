@@ -38,7 +38,7 @@ Installation
     .. code-block:: bash
 
         SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-        NODE_NUM: 10  # number of blast partition depending of the number of CPU on your computer.
+        NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
 
 4. Install the pipeline into the virtualenv
 
