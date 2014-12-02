@@ -8,5 +8,8 @@ nt_db:  GENOMEDIR/ncbi/blast/nt/nt
 tax_nodes: GENOMEDIR/ncbi/taxonomy/nodes.dmp
 tax_names: GENOMEDIR/ncbi/taxonomy/names.dmp
 
+PHRED_OFFSET: 33
+SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
+NODE_NUM: 10  # number of computer nodes
 #paired end lane to run
 blast_unassembled: 1000
