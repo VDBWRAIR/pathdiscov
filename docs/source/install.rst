@@ -55,7 +55,7 @@ Installation
         .. code-block:: bash
         
             mkdir -p ~/databases/{humandna,humanrna,ncbi}
-            mkdir -p ~/databases/ncbi/blast/{nt,nr}
+            mkdir -p ~/databases/ncbi/blast/{nt}
 
     2. You also need to get bowtie indexed host genomes
 
@@ -79,7 +79,7 @@ Installation
 
         .. code-block:: bash
 
-            usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+            usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
 
 6. Quick verify of necessary executables
 
