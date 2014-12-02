@@ -65,6 +65,10 @@ Installation
         Whichever ones you decide on, you need to put them under ~/databases/humandna and ~/databases/humanrna
         We will add more documentation on how to do other hosts later, but in general you can check out the configuration.rst file for
         more information on how to configure the pipeline to use different indexes.
+        
+        .. code-block:: bash
+            wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz | mv Homo_sapiens_NCBI_build37.2.tar.gz  ~/databases/humandna | cd ~/databases/humandna | tar -xzvf Homo_sapiens_NCBI_build37.2.tar.gz
+            
 
     3. You need to then setup the blast databases
 
