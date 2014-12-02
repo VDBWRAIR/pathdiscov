@@ -69,11 +69,12 @@ Installation
     3. You need to then setup the blast databases
 
         In general you just need to unpack the nt/nr databases from ncbi(or wherever) into ~/databases/ncbi/blast/nt,nr,taxdb
-        There is a shell script you should be able to use to do this for you as well
+        There is a shell script you should be able to use to do this for you as well.
+        This may take longer time depending on your connection. 
 
         .. code-block:: bash
 
-            get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+            usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
 
 6. Quick verify of necessary executables
 
