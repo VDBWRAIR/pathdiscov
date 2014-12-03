@@ -10,6 +10,7 @@ Table of Contents:
     configuration
     make_summary
     make_pie
+    modules
 
 .. only:: html
 

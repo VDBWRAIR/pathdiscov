@@ -41,13 +41,3 @@ Pathogen composition
 ====================
 
 Based on the superkingdom field and only includes Bacteria and Viruses
-
-API
-===
-
-usamriidPathDiscov.make_pie
----------------------------
-
-.. automodule:: usamriidPathDiscov.make_pie
-    :members:
-    :undoc-members:

@@ -1,9 +1,3 @@
-Run `sphinx-apidoc -o . ../../usamriidPathDiscov' in this directory.
-
-This will generate `modules.rst' and `usamriidPathDiscov.rst'.
-
-Then include `modules.rst' in your `index.rst' file.
-
 Run the following to generate the documentation and then view it
 
-`. usamriidPathDiscov/bin/activate; cd docs && make html && firefox build/html/index.html'
+`cd docs && make html && firefox build/html/index.html'

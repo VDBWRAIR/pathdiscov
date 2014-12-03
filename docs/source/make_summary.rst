@@ -57,13 +57,3 @@ The rows are compiled from multiple files
     Number of reads matching blast row
 * Accession, Family, Virus Genus, descrip
     Blast information for reads
-
-API
-===
-
-usamriidPathDiscov.make_summary
--------------------------------
-
-.. automodule:: usamriidPathDiscov.make_summary
-    :members:
-    :undoc-members:

@@ -18,6 +18,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
+	@echo "  api		to make api rst files"
 	@echo "  html       to make standalone HTML files"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
@@ -41,7 +42,11 @@ help:
 clean:
 	-rm -rf $(BUILDDIR)/*
 
-html:
+api:
+	sphinx-apidoc -f -o source ../usamriidPathDiscov ../usamriidPathDiscov/bootstrap.py ../usamriidPathDiscov/main.py ../usamriidPathDiscov/tasks.py ../usamriidPathDiscov/helpers.py ../usamriidPathDiscov/configs.py
+	@echo "Build finished. API rst built in source/"
+
+html: api
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
