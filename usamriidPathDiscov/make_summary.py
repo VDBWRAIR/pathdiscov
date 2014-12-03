@@ -278,7 +278,7 @@ def format_summary( summary ):
             rows[-1] += '\t'*4
 
         # Only the first time should prefix have values
-        prefix = '\t'*3
+        prefix = '\t'*4
     return rows
 
 def format_dict( contig, keys ):
@@ -289,7 +289,7 @@ def format_dict( contig, keys ):
 
 def main( ):
     args = parse_args()
-    hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'Ctg#', 'Ctg bp', 'numReads', 'N50', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
+    hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'N50', 'Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
     print '\t'.join( hdr )
     for p in args.projdir:
         try:
