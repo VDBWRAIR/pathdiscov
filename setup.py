@@ -276,6 +276,7 @@ setup_dict = dict(
             'usamriidPathDiscov_cli = usamriidPathDiscov.main:main',
             'verifyproject = usamriidPathDiscov.verifyproject:main',
             'make_summary = usamriidPathDiscov.make_summary:main',
+            'make_pie = usamriidPathDiscov.make_pie:main',
         ],
     },
     # These all get copied to our installation's bin folder for us
