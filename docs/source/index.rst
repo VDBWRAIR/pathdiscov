@@ -8,6 +8,8 @@ Table of Contents:
 
     install
     configuration
+    make_summary
+    make_pie
 
 .. only:: html
 

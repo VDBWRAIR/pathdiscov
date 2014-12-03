@@ -25,8 +25,8 @@ def parse_tab_file( tabfile, fields=None ):
 
 def read_count( countfile ):
     '''
-        Get counts for every line in count file
-        returns a dictionary keyed by every item in the first column with value of the item in right column
+    Get counts for every line in count file
+    returns a dictionary keyed by every item in the first column with value of the item in right column
     '''
     counts = {}
     for row in parse_tab_file( countfile, ['name', 'count'] ):
@@ -51,8 +51,8 @@ def non_host_num_reads( projdir ):
 
 def r1r2_count( steppath ):
     '''
-        Merge together counts for R1 and R2 inside of steppath
-        Raises MissingProjectFile if < 1 .count file found
+    Merge together counts for R1 and R2 inside of steppath
+    Raises MissingProjectFile if < 1 .count file found
     '''
     r1r2 = glob( join( steppath, '*.count' ) )
     if len(r1r2) == 0:
@@ -72,9 +72,10 @@ def num_contig( projdir ):
 
 def parse_blast_report( reportpath, filterf=None ):
     '''
-        Return row by row results from a blast report in tab format
-        @param filterf - Function that will filter the results being supplied one row
-                        and returns True for rows to keep and False for rows to discard
+    Return row by row results from a blast report in tab format
+
+    @param filterf - Function that will filter the results being supplied one row
+    and returns True for rows to keep and False for rows to discard
     '''
     with open( reportpath ) as fh:
         for row in csv.DictReader( fh, delimiter='\t' ):
@@ -83,7 +84,7 @@ def parse_blast_report( reportpath, filterf=None ):
 
 def blast_results_for_( blastfile, blastcol, filterval ):
     '''
-        Return rows from blast output that match row[blastcol] == filterval
+    Return rows from blast output that match row[blastcol] == filterval
     '''
     def blastfilter(row):
         if filterval is None:
@@ -98,8 +99,8 @@ def blast_results_for_( blastfile, blastcol, filterval ):
 
 def contig_info( projdir ):
     '''
-        Merge together results from contig.id and contig_numreads.txt file
-        and return as a dictionary keyed by contigname
+    Merge together results from contig.id and contig_numreads.txt file
+    and return as a dictionary keyed by contigname
     '''
     d = join( projdir, 'results', 'ray2_assembly_1' )
     contiglenfile = join( d, 'contig_len.txt' )
@@ -124,11 +125,11 @@ def contig_info( projdir ):
 
 def contigs_for( projdir, blastcol, blastval ):
     '''
-        Merge together contig information from various sources and return
-        information [{contigname, length, numreads, accession, family, genus, description},...]
+    Merge together contig information from various sources and return
+    information [{contigname, length, numreads, accession, family, genus, description},...]
 
-        @param blastcol - Column in blast tab file that will be used to filter
-        @param blastval - Value to filter the blastcol on
+    @param blastcol - Column in blast tab file that will be used to filter
+    @param blastval - Value to filter the blastcol on
     '''
     # Contains contigname, length, numreads for every contig
     ci = contig_info( projdir )
@@ -162,8 +163,8 @@ def unassembled_reads( projdir ):
 
 def group_blast_by_( blastfile, filtercol, filterval, groupbycol ):
     '''
-        Filter blast results down by filtercol == filterval then
-        group results by groupbycol
+    Filter blast results down by filtercol == filterval then
+    group results by groupbycol
     '''
     # Will sort the results by groupbycol and put in list
     results = blast_results_for_( blastfile, filtercol, filterval )
@@ -179,11 +180,11 @@ def group_blast_by_( blastfile, filtercol, filterval, groupbycol ):
 
 def unassembled_report( projdir, kingdom, groupby='family' ):
     '''
-        Returns the grouped blast results filtered first by kingdom and then
-        grouped by groupby field
-        Each key in the returned dictionary will be the groupby column uniq values
-        Combines R1 & R2 results
-        Adds a new key called accession with the parsed out accession
+    Returns the grouped blast results filtered first by kingdom and then
+    grouped by groupby field
+    Each key in the returned dictionary will be the groupby column uniq values
+    Combines R1 & R2 results
+    Adds a new key called accession with the parsed out accession
     '''
     smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
     if len(smallreports) < 1:
@@ -220,8 +221,8 @@ def summary( projdir, filtercol, filterval, groupby='family' ):
 
 def format_summary( summary ):
     '''
-        Format summary into multiple rows based on longest of contig or unassembled reads
-        Formats as rows of tab separated values
+    Format summary into multiple rows based on longest of contig or unassembled reads
+    Formats as rows of tab separated values
     '''
     rows = []
     import itertools
