@@ -34,6 +34,8 @@ The contig report contains the following columns
     Number of contigs generated
 * Num blast0 Ctg
     Not sure
+* N50
+    N50 of all contig lengths
 * Ctg#
     The name of the contig in the project
 * Ctg bp

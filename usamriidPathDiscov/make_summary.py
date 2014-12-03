@@ -13,6 +13,29 @@ import itertools
 # Exception class for when project files are missing
 class MissingProjectFile( Exception ): pass
 
+def get_n50(numlist):
+    """
+    :param list numlist: List of numbers
+
+    Returns the N50 value of the passed list of numbers. 
+    Code from http://seqanswers.com/forums/showpost.php?p=9414&postcount=7
+
+    Based on the Broad Institute definition:
+    https://www.broad.harvard.edu/crd/wiki/index.php/N50
+    """
+    numlist.sort()
+    newlist = []
+    for x in numlist :
+        newlist += [x]*x
+    # take the mean of the two middle elements if there are an even number
+    # of elements.  otherwise, take the middle element
+    if len(newlist) % 2 == 0:
+        medianpos = len(newlist)/2  
+        return float(newlist[medianpos] + newlist[medianpos-1]) /2
+    else:
+        medianpos = len(newlist)/2
+        return newlist[medianpos]
+
 def parse_tab_file( tabfile, fields=None ):
     delimiter = '\t'
     with open( tabfile ) as fh:
@@ -216,6 +239,7 @@ def summary( projdir, filtercol, filterval, groupby='family' ):
     summary['numreadsunassembled'], summary['numblastunassembled'] = unassembled_reads( projdir )
     summary['contigs'] = list( contigs_for( projdir, filtercol, filterval ) )
     summary['unassembled'] = dict( unassembled_report( projdir, filterval ) )
+    summary['n50'] = get_n50([contiginfo['length'] for contiginfo in summary['contigs']])
 
     return summary
 
@@ -229,7 +253,7 @@ def format_summary( summary ):
     # Iterate over longsest of the two and fill the other in with ''
     contigkeys = ('contigname','length','numreads','accession','family','genus','description')
     unasskeys = ('count','accession','family','genus','descrip')
-    prefix = format_dict( summary, ('numreads','nonhostreads','numcontig','numblastcontig') )
+    prefix = format_dict( summary, ('numreads','nonhostreads','numcontig','numblastcontig','n50') )
     unassembled = sorted( summary['unassembled'].items(), key=lambda x: x[1]['count'], reverse=True )
     for contig, unassembled in itertools.izip_longest( summary['contigs'], unassembled, fillvalue=None ):
         # Start a new row
@@ -238,7 +262,8 @@ def format_summary( summary ):
         if contig is not None:
             rows[-1] += format_dict( contig, contigkeys )
         else:
-            rows[-1] += '\t'*6
+            # Insert blank cells when there is no more contig info but more unassembled
+            rows[-1] += '\t'*len(contigkeys)
 
         # Then the number of unassembled reads
         if prefix[0] == '\t':
@@ -264,7 +289,7 @@ def format_dict( contig, keys ):
 
 def main( ):
     args = parse_args()
-    hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
+    hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'Ctg#', 'Ctg bp', 'numReads', 'N50', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
     print '\t'.join( hdr )
     for p in args.projdir:
         try:
