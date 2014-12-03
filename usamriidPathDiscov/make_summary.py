@@ -25,8 +25,8 @@ def parse_tab_file( tabfile, fields=None ):
 
 def read_count( countfile ):
     '''
-        Get counts for every line in count file
-        returns a dictionary keyed by every item in the first column with value of the item in right column
+    Get counts for every line in count file
+    returns a dictionary keyed by every item in the first column with value of the item in right column
     '''
     counts = {}
     for row in parse_tab_file( countfile, ['name', 'count'] ):
@@ -51,8 +51,8 @@ def non_host_num_reads( projdir ):
 
 def r1r2_count( steppath ):
     '''
-        Merge together counts for R1 and R2 inside of steppath
-        Raises MissingProjectFile if < 1 .count file found
+    Merge together counts for R1 and R2 inside of steppath
+    Raises MissingProjectFile if < 1 .count file found
     '''
     r1r2 = glob( join( steppath, '*.count' ) )
     if len(r1r2) == 0:
@@ -72,9 +72,10 @@ def num_contig( projdir ):
 
 def parse_blast_report( reportpath, filterf=None ):
     '''
-        Return row by row results from a blast report in tab format
-        @param filterf - Function that will filter the results being supplied one row
-                        and returns True for rows to keep and False for rows to discard
+    Return row by row results from a blast report in tab format
+
+    @param filterf - Function that will filter the results being supplied one row
+    and returns True for rows to keep and False for rows to discard
     '''
     with open( reportpath ) as fh:
         for row in csv.DictReader( fh, delimiter='\t' ):
@@ -83,7 +84,7 @@ def parse_blast_report( reportpath, filterf=None ):
 
 def blast_results_for_( blastfile, blastcol, filterval ):
     '''
-        Return rows from blast output that match row[blastcol] == filterval
+    Return rows from blast output that match row[blastcol] == filterval
     '''
     def blastfilter(row):
         if filterval is None:
@@ -98,11 +99,11 @@ def blast_results_for_( blastfile, blastcol, filterval ):
 
 def contig_info( projdir ):
     '''
-        Merge together results from contig.id and contig_numreads.txt file
-        and return as a dictionary keyed by contigname
+    Merge together results from contig.id and contig_numreads.txt file
+    and return as a dictionary keyed by contigname
     '''
     d = join( projdir, 'results', 'ray2_assembly_1' )
-    contiglenfile = join( d, 'contig.id' )
+    contiglenfile = join( d, 'contig_len.txt' )
     contignreadsfile = join( d, 'contig_numreads.txt' )
     info = {}
     if not (exists(contiglenfile) and exists(contignreadsfile)):
@@ -114,24 +115,21 @@ def contig_info( projdir ):
     # Make sure sorted
     cl.sort( key=sortkey )
     cr.sort( key=sortkey )
-    print cl
-    print cr
     # Sometimes one list is not the same length as the other
     for l, nr in itertools.izip_longest( cl, cr, fillvalue={'contig':'','nreads':-1,'lenstr':'contig-c000000 -1 nucleotides'} ):
         contigname = l['contig']
-        print l['lenstr']
-        length = l['lenstr'].split()[1]
+        length = l['lenstr']
         nreads = nr['nreads']
         info[contigname] = (length,nreads)
     return info
 
 def contigs_for( projdir, blastcol, blastval ):
     '''
-        Merge together contig information from various sources and return
-        information [{contigname, length, numreads, accession, family, genus, description},...]
+    Merge together contig information from various sources and return
+    information [{contigname, length, numreads, accession, family, genus, description},...]
 
-        @param blastcol - Column in blast tab file that will be used to filter
-        @param blastval - Value to filter the blastcol on
+    @param blastcol - Column in blast tab file that will be used to filter
+    @param blastval - Value to filter the blastcol on
     '''
     # Contains contigname, length, numreads for every contig
     ci = contig_info( projdir )
@@ -165,8 +163,8 @@ def unassembled_reads( projdir ):
 
 def group_blast_by_( blastfile, filtercol, filterval, groupbycol ):
     '''
-        Filter blast results down by filtercol == filterval then
-        group results by groupbycol
+    Filter blast results down by filtercol == filterval then
+    group results by groupbycol
     '''
     # Will sort the results by groupbycol and put in list
     results = blast_results_for_( blastfile, filtercol, filterval )
@@ -182,12 +180,13 @@ def group_blast_by_( blastfile, filtercol, filterval, groupbycol ):
 
 def unassembled_report( projdir, kingdom, groupby='family' ):
     '''
-        Returns the grouped blast results filtered first by kingdom and then
-        grouped by family
-        Combines R1 & R2 results
-        Adds a new key called accession with the parsed out accession
+    Returns the grouped blast results filtered first by kingdom and then
+    grouped by groupby field
+    Each key in the returned dictionary will be the groupby column uniq values
+    Combines R1 & R2 results
+    Adds a new key called accession with the parsed out accession
     '''
-    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
+    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
         raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )
@@ -222,8 +221,8 @@ def summary( projdir, filtercol, filterval, groupby='family' ):
 
 def format_summary( summary ):
     '''
-        Format summary into multiple rows based on longest of contig or unassembled reads
-        Formats as rows of tab separated values
+    Format summary into multiple rows based on longest of contig or unassembled reads
+    Formats as rows of tab separated values
     '''
     rows = []
     import itertools
@@ -263,7 +262,8 @@ def format_dict( contig, keys ):
         format.append( str(contig[k]) )
     return '\t'.join( format )
 
-def main( args ):
+def main( ):
+    args = parse_args()
     hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
     print '\t'.join( hdr )
     for p in args.projdir:
@@ -274,7 +274,9 @@ def main( args ):
             samplename = basename(p)
             print samplename + ('\n'+samplename).join( rows )
         except Exception as e:
-            sys.stderr.write( 'Skipping {0} because {1}\n'.format(p,e) )
+            import traceback
+            traceback.print_exc()
+            sys.stderr.write( 'Skipping {0} because of the above error\n'.format(p) )
         sys.stderr.write( '\n' )
 
 def parse_args( args=sys.argv[1:] ):
@@ -292,7 +294,7 @@ def parse_args( args=sys.argv[1:] ):
         '--filter-column',
         dest='filter_column',
         default='superkingdom',
-        help='What column in the blast reports to filter by[Default: %(default)s]'.format(fcd)
+        help='What column in the blast reports to filter by[Default: %(default)s]'
     )
 
     parser.add_argument(
@@ -306,10 +308,7 @@ def parse_args( args=sys.argv[1:] ):
         '--group-by',
         dest='group_by',
         default='family',
-        help='What column to group results by for consolidation[Default: %(default)s]'.format(gbv)
+        help='What column to group results by for consolidation[Default: %(default)s]'
     )
 
     return parser.parse_args( args )
-
-if __name__ == '__main__':
-    main( parse_args() )

@@ -53,7 +53,7 @@ This package  supports the following versions out of the box:
 Licenses
 ========
 
-The code that makes up this Python project is licensed under the GPL license (fake). Feel free to use it in your free software/open-source or proprietary projects.
+The code that makes up this Python project is licensed under the GPL license. Feel free to use it in your free software/open-source or proprietary projects.
 
 Issues
 ======

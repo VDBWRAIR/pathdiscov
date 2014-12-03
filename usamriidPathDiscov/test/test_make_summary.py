@@ -88,7 +88,7 @@ class BaseTest(Base):
             'slen': '104710',
             'sseqid': 'gi|84683224|gb|DQ333351.1|',
             'sstart': '25900',
-            'superkingdom': 'Viruses',
+            'superkingdom': 'Bacteria',
             'taxid': '364745',
             'accession': 'DQ333351.1'
         }
@@ -244,7 +244,7 @@ class TestParseBlastReport( BaseTest ):
     def test_parses_nofilter( self ):
         r = self._C( self.blastfile )
         r = list( r )
-        eq_( 120, len( r ), 'Not correct number of rows' )
+        eq_( 8, len( r ), 'Not correct number of rows' )
         eq_( 'c1', r[0]['qseqid'] )
         eq_( 'gi|470488608|ref|NR_076881.1|', r[0]['sseqid'] )
         eq_( 'Bacteria', r[0]['superkingdom'] )
@@ -254,12 +254,12 @@ class TestParseBlastReport( BaseTest ):
 
     def test_parses_filter( self ):
         def filt( blastrow ):
-            return blastrow['superkingdom'] == 'Viruses'
+            return blastrow['superkingdom'] == 'Bacteria'
 
         r = self._C( self.blastfile, filt )
         r = list( r )
-        eq_( 3, len(r), 'Did not filter correctly' )
-        eq_( 'c47', r[0]['qseqid'] )
+        eq_( 6, len(r), 'Did not filter correctly. Returned {0} rows instead of {1}'.format(len(r),5) )
+        eq_( 'c1', r[0]['qseqid'] )
 
 class TestBlastResultsFor( BaseTest ):
     def setUp( self ):
@@ -271,12 +271,11 @@ class TestBlastResultsFor( BaseTest ):
         return blast_results_for_( *args, **kwargs )
 
     def test_filters_on_column( self ):
-        r = self._C( self.blastfile, 'superkingdom', 'Viruses' )
+        r = self._C( self.blastfile, 'superkingdom', 'Bacteria' )
         r = list( r )
-        eq_( 3, len(r), 'Did not filter correctly' )
-        eq_( 'c47', r[0]['qseqid'] )
+        eq_( 6, len(r), 'Did not filter correctly' )
+        eq_( 'c1', r[0]['qseqid'] )
 
-@attr('current')
 class TestContigInfo( BaseTest ):
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import contig_info
@@ -286,7 +285,7 @@ class TestContigInfo( BaseTest ):
         r = self._C( self.mockproj )
         # Just make sure that all the contigs made it into dict
         # and have length and num reads
-        for i in range( 1, 431 ):
+        for i in range( 1, 9 ):
             l, nr = r['c{0}'.format(i)]
             int(l)
             int(nr)
@@ -294,8 +293,8 @@ class TestContigInfo( BaseTest ):
     def test_missing_files( self ):
         self.make_tmp_proj()
         files = [
-            join(self.mockproj, 'results', 'ray2_assembly_1', 'contig.id'),
             join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_numreads.txt'),
+            join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_len.txt'),
         ]
         ok_( len(files) > 0, files )
         for f in files:
@@ -306,9 +305,9 @@ class TestContigInfo( BaseTest ):
 
     def test_contig_files_not_same_size( self ):
         from contextlib import nested
-        # Sometimes contig_numreads has less contigs than contig.id
+        # Sometimes contig_numreads has less contigs than contig_len
         self.make_tmp_proj()
-        clenf  = join(self.mockproj, 'results', 'ray2_assembly_1', 'contig.id' )
+        clenf  = join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_len.txt' )
         nreadsf = join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_numreads.txt' )
         # Create a mocked smaller version with 10 contigs
         contigs = [('c'+str(i),i,i) for i in range(1,11)]
@@ -320,7 +319,7 @@ class TestContigInfo( BaseTest ):
                     # Write numreads for contigs <= 8 so c9,c10 do not exist
                     nrfh.write( '{0}\t1{1}\n'.format(cn,nr) )
                 # Write all contig.id
-                clfh.write( '{0}\tcontig-c{1}000000 {2} nucleotides\n'.format(cn,cnum-1,l) )
+                clfh.write( '{0}\t{2}\n'.format(cn,cnum-1,l) )
         r = self._C( self.mockproj )
         # Assert that 1-8 exist
         ok_( [r['c'+str(i)] for i in range(1,9)] )
@@ -335,29 +334,32 @@ class TestContigsFor( BaseTest ):
         return contigs_for( *args, **kwargs )
 
     def test_gets_correct_info( self ):
-        r = self._C( self.mockproj, 'superkingdom', 'Viruses' )
+        r = self._C( self.mockproj, 'superkingdom', 'Bacteria' )
         r = list( r )
-        eq_( 3, len(r) )
+        eq_( 6, len(r) )
         # Check the first item
         v = r[0]
-        eq_( 'c47', v['contigname'] )
-        eq_( 174, v['length'] )
-        eq_( 8, v['numreads'] )
-        eq_( 'AF426126.1', v['accession'] )
-        eq_( 'Flaviviridae', v['family'] )
-        eq_( 'Flavivirus', v['genus'] )
+        eq_( 'c1', v['contigname'] )
+        eq_( 257, v['length'] )
+        eq_( 2, v['numreads'] )
+        eq_( 'NR_076881.1', v['accession'] )
+        eq_( 'Comamonadaceae', v['family'] )
+        eq_( 'Delftia', v['genus'] )
         # Check the last item too
         v = r[-1]
-        eq_( 'c420', v['contigname'] )
+        eq_( 'c5', v['contigname'] )
 
     @raises(MissingProjectFile)
     def test_missing_files( self ):
         self.make_tmp_proj()
         files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', '*smallreport*.txt' ) )
-        files += glob( join(self.mockproj, 'results', 'ray2_assembly_1', 'contig?*' ) )
+        files += [
+            join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_numreads.txt'),
+            join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_len.txt'),
+        ]
         for f in files:
             os.unlink( f )
-            r = self._C( self.mockproj, 'superkingdom', 'Viruses' )
+            r = self._C( self.mockproj, 'superkingdom', 'Bacteria' )
             next(r)
             open(f,'w').close()
 
@@ -367,7 +369,7 @@ class TestContigsFor( BaseTest ):
         readsfile = join( self.ray2, 'contig_numreads.txt' )
         # Truncate numreads file so no contigs exist
         open(readsfile, 'w' ).close()
-        r = list( self._C( self.mockproj, 'superkingdom', 'Viruses' ) )
+        r = list( self._C( self.mockproj, 'superkingdom', 'Bacteria' ) )
         for c in r:
             eq_( c['numreads'], -1 )
 
@@ -384,17 +386,18 @@ class TestUnassembledReads( BaseTest ):
 class TestGroupBlastBy( BaseTest ):
     def setUp( self ):
         super( TestGroupBlastBy, self ).setUp()
-        self.contigblast = join(self.phylo2,'reports','1.contig.top.blast')
+        self.contigblast = join(self.phylo2,'reports','contig.mock_project.top.smallreport.txt')
 
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import group_blast_by_
         return group_blast_by_( *args, **kwargs )
 
-    def test_superkingdom_family( self ):
-        r = self._C( self.contigblast, 'superkingdom', 'Viruses', 'family' )
-        eq_( 2, len(r) )
-        eq_( 5, r['Leviviridae']['count'] )
-        eq_( 9, r['Rhabdoviridae']['count'] )
+    def test_groupby_order( self ):
+        r = self._C(self.contigblast, 'superkingdom', None, 'order')
+        eq_( 3, len(r) )
+        eq_( 5, r['Diptera']['count'] )
+        eq_( 2, r['Rickettsiales']['count'] )
+        eq_( 1, r['Polyopisthocotylea']['count'] )
 
 class TestUnassembledReport( BaseTest ):
     def _C( self, *args, **kwargs ):
@@ -402,29 +405,27 @@ class TestUnassembledReport( BaseTest ):
         return unassembled_report( *args, **kwargs )
 
     def test_correctly_parsed_accession( self ):
-        r = self._C( self.mockproj, 'Viruses' )
-        eq_( 'AB604791.1', r['Rhabdoviridae']['accession'] )
+        r = self._C( self.mockproj, 'Eukaryota' )
+        eq_( 'LM975171.1', r['Polystomatidae']['accession'] )
 
     def test_correct_report( self ):
-        r = self._C( self.mockproj, 'Viruses' )
-        eq_( 4, len(r) )
-        eq_( 18, r['Rhabdoviridae']['count'] )
-        eq_( 9, r['Leviviridae']['count'] )
-        eq_( 2, r['Baculoviridae']['count'] )
-        eq_( 1, r['Microviridae']['count'] )
+        r = self._C( self.mockproj, 'Bacteria' )
+        print r
+        eq_( 1, len(r) )
+        eq_( 2, r['Rickettsiaceae']['count'] )
 
     def test_parses_accession( self ):
-        r = self._C( self.mockproj, 'Viruses' )
+        r = self._C( self.mockproj, 'Bacteria' )
         print r
         for sk, values in r.items():
             ok_( 'accession' in values, 'Accession was not parsed and put int report' )
 
     def test_missing_smallreports( self ):
         self.make_tmp_proj()
-        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
+        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
         for f in smreport:
             os.unlink( f )
-        assert_raises( MissingProjectFile, self._C, self.mockproj, 'Viruses' )
+        assert_raises( MissingProjectFile, self._C, self.mockproj, 'Bacteria' )
 
 class TestSummary( BaseTest ):
     def setUp( self ):
@@ -432,7 +433,7 @@ class TestSummary( BaseTest ):
 
         self.make_tmp_proj()
         self.phylo1files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', 'contig.*smallreport*.txt' ) )
-        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
+        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
         self.step1files = glob( join(self.mockproj, 'results', 'step1', '*.count') )
         self.qualfiles = glob( join(self.mockproj, 'results', 'quality_filter', '*.count') )
         self.contigcountfiles = glob( join(self.mockproj, 'results', 'iterative_blast_phylo_1', '*.count' ) )
@@ -442,7 +443,7 @@ class TestSummary( BaseTest ):
         return summary( *args, **kwargs )
 
     def test_correct_summary( self ):
-        r = self._C( self.mockproj, 'superkingdom', 'Viruses' )
+        r = self._C( self.mockproj, 'superkingdom', 'Eukaryota' )
         eq_( 1316672, r['numreads'] )
         eq_( 479967, r['nonhostreads'] )
         eq_( 430, r['numcontig'] )
@@ -451,12 +452,12 @@ class TestSummary( BaseTest ):
         eq_( 5127, r['numblastunassembled'] )
 
         contigs = list( r['contigs'] )
-        contigs[0]['contigname'] = 'c47'
-        contigs[-1]['contigname'] = 'c420'
+        contigs[0]['contigname'] = 'c1'
+        contigs[-1]['contigname'] = 'c8'
 
         unreads = r['unassembled']
-        eq_( 4, len(unreads) )
-        eq_( 18, unreads['Rhabdoviridae']['count'] )
+        eq_(1, len(unreads) )
+        eq_(1, unreads['Polystomatidae']['count'])
 
     def test_missing_files( self ):
         for files in (self.phylo1files,self.phylo2files,self.step1files,self.qualfiles,self.contigcountfiles):
@@ -464,9 +465,8 @@ class TestSummary( BaseTest ):
             for i,f in enumerate(files):
                 shutil.copy( f, 'tmp.'+str(i) )
                 os.unlink(f)
-
             try:
-                self._C( self.mockproj, 'superkingdom', 'Viruses' )
+                self._C( self.mockproj, 'superkingdom', 'Bacteria' )
                 ok_(False, "Did not raise MissingProjectFile")
             except MissingProjectFile as e:
                 ok_(True)
@@ -484,7 +484,7 @@ class TestSummary( BaseTest ):
             if 'R2' in f:
                 print "Removing " + f
                 os.unlink( f )
-        self._C( self.mockproj, 'superkingdom', 'Viruses' )
+        self._C( self.mockproj, 'superkingdom', 'Bacteria' )
 
 class TestFormatSummary( BaseTest ):
     def _C( self, *args, **kwargs ):
@@ -550,13 +550,13 @@ class TestFormatDic( BaseTest ):
 
     def test_formats_contig( self ):
         from usamriidPathDiscov.make_summary import contigs_for
-        contigs = list( contigs_for( self.mockproj, 'superkingdom', 'Viruses' ) )
+        contigs = list( contigs_for( self.mockproj, 'superkingdom', 'Bacteria' ) )
         r = self._C( contigs[0], ('contigname','length','numreads') )
-        eq_( 'c47\t174\t8', r )
+        eq_( 'c1\t257\t2', r )
 
     def test_formats_unassem( self ):
         from usamriidPathDiscov.make_summary import unassembled_report
-        ur = unassembled_report( self.mockproj, 'Viruses' )
-        f = 'Rhabdoviridae'
+        ur = unassembled_report( self.mockproj, 'Eukaryota' )
+        f = 'Polystomatidae'
         r = self._C( ur[f], ('count','accession','family') )
-        eq_( '18\tAB604791.1\tRhabdoviridae', r )
+        eq_( '1\tLM975171.1\tPolystomatidae', r )
