@@ -102,7 +102,7 @@ def contig_info( projdir ):
         and return as a dictionary keyed by contigname
     '''
     d = join( projdir, 'results', 'ray2_assembly_1' )
-    contiglenfile = join( d, 'contig.id' )
+    contiglenfile = join( d, 'contig_len.txt' )
     contignreadsfile = join( d, 'contig_numreads.txt' )
     info = {}
     if not (exists(contiglenfile) and exists(contignreadsfile)):
@@ -114,13 +114,10 @@ def contig_info( projdir ):
     # Make sure sorted
     cl.sort( key=sortkey )
     cr.sort( key=sortkey )
-    print cl
-    print cr
     # Sometimes one list is not the same length as the other
     for l, nr in itertools.izip_longest( cl, cr, fillvalue={'contig':'','nreads':-1,'lenstr':'contig-c000000 -1 nucleotides'} ):
         contigname = l['contig']
-        print l['lenstr']
-        length = l['lenstr'].split()[1]
+        length = l['lenstr']
         nreads = nr['nreads']
         info[contigname] = (length,nreads)
     return info
@@ -183,11 +180,12 @@ def group_blast_by_( blastfile, filtercol, filterval, groupbycol ):
 def unassembled_report( projdir, kingdom, groupby='family' ):
     '''
         Returns the grouped blast results filtered first by kingdom and then
-        grouped by family
+        grouped by groupby field
+        Each key in the returned dictionary will be the groupby column uniq values
         Combines R1 & R2 results
         Adds a new key called accession with the parsed out accession
     '''
-    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', '*.contig.top.blast' ) )
+    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
         raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )
@@ -263,7 +261,8 @@ def format_dict( contig, keys ):
         format.append( str(contig[k]) )
     return '\t'.join( format )
 
-def main( args ):
+def main( ):
+    args = parse_args()
     hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
     print '\t'.join( hdr )
     for p in args.projdir:
@@ -274,7 +273,9 @@ def main( args ):
             samplename = basename(p)
             print samplename + ('\n'+samplename).join( rows )
         except Exception as e:
-            sys.stderr.write( 'Skipping {0} because {1}\n'.format(p,e) )
+            import traceback
+            traceback.print_exc()
+            sys.stderr.write( 'Skipping {0} because of the above error\n'.format(p) )
         sys.stderr.write( '\n' )
 
 def parse_args( args=sys.argv[1:] ):
@@ -292,7 +293,7 @@ def parse_args( args=sys.argv[1:] ):
         '--filter-column',
         dest='filter_column',
         default='superkingdom',
-        help='What column in the blast reports to filter by[Default: %(default)s]'.format(fcd)
+        help='What column in the blast reports to filter by[Default: %(default)s]'
     )
 
     parser.add_argument(
@@ -306,10 +307,7 @@ def parse_args( args=sys.argv[1:] ):
         '--group-by',
         dest='group_by',
         default='family',
-        help='What column to group results by for consolidation[Default: %(default)s]'.format(gbv)
+        help='What column to group results by for consolidation[Default: %(default)s]'
     )
 
     return parser.parse_args( args )
-
-if __name__ == '__main__':
-    main( parse_args() )
