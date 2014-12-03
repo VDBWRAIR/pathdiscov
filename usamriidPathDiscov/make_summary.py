@@ -239,7 +239,9 @@ def summary( projdir, filtercol, filterval, groupby='family' ):
     summary['numreadsunassembled'], summary['numblastunassembled'] = unassembled_reads( projdir )
     summary['contigs'] = list( contigs_for( projdir, filtercol, filterval ) )
     summary['unassembled'] = dict( unassembled_report( projdir, filterval ) )
-    summary['n50'] = get_n50([contiginfo['length'] for contiginfo in summary['contigs']])
+    contiglengths = [contiginfo['length'] for contiginfo in summary['contigs']]
+    summary['n50'] = get_n50(contiglengths)
+    summary['assemblylength'] = sum(contiglengths)
 
     return summary
 
@@ -253,7 +255,7 @@ def format_summary( summary ):
     # Iterate over longsest of the two and fill the other in with ''
     contigkeys = ('contigname','length','numreads','accession','family','genus','description')
     unasskeys = ('count','accession','family','genus','descrip')
-    prefix = format_dict( summary, ('numreads','nonhostreads','numcontig','numblastcontig','n50') )
+    prefix = format_dict( summary, ('numreads','nonhostreads','numcontig','numblastcontig','n50','assemblylength') )
     unassembled = sorted( summary['unassembled'].items(), key=lambda x: x[1]['count'], reverse=True )
     for contig, unassembled in itertools.izip_longest( summary['contigs'], unassembled, fillvalue=None ):
         # Start a new row
@@ -278,7 +280,7 @@ def format_summary( summary ):
             rows[-1] += '\t'*4
 
         # Only the first time should prefix have values
-        prefix = '\t'*4
+        prefix = '\t'*5
     return rows
 
 def format_dict( contig, keys ):
@@ -289,7 +291,7 @@ def format_dict( contig, keys ):
 
 def main( ):
     args = parse_args()
-    hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'N50', 'Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
+    hdr = ('Sample Name', 'Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'N50', 'Assembly Length', 'Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description', 'Num unassem', 'Num blast0 Unassem', 'num reads', 'Accession', 'Family', 'Virus Genus', 'descrip')
     print '\t'.join( hdr )
     for p in args.projdir:
         try:

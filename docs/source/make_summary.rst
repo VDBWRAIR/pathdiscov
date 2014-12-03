@@ -36,6 +36,8 @@ The contig report contains the following columns
     Not sure
 * N50
     N50 of all contig lengths
+* Assembly Length
+    The length of all contigs concatted together
 * Ctg#
     The name of the contig in the project
 * Ctg bp
