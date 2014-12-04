@@ -41,7 +41,7 @@ class BaseTest(Base):
         self.mockproj = mockproj
         self.setup_dirs()
 
-    def mock_summary( self, nr=1, nhr=2, nc=3, nbc=4, nru=5, nbu=6, contigs=[], unassembled={} ):
+    def mock_summary( self, nr=1, nhr=2, nc=3, nbc=4, nru=5, nbu=6, n50=7, alen=8, contigs=[], unassembled={} ):
         return {
             'numreads': nr,
             'nonhostreads': nhr,
@@ -50,7 +50,9 @@ class BaseTest(Base):
             'numreadsunassembled': nru,
             'numblastunassembled': nbu,
             'contigs': contigs,
-            'unassembled': unassembled
+            'unassembled': unassembled,
+            'n50': n50,
+            'assemblylength': alen
         }
 
     def mock_contig( self, *args, **kwargs ):
@@ -94,6 +96,26 @@ class BaseTest(Base):
         }
         mock.update( **blastcols )
         return mock
+
+class TestN50(BaseTest):
+    def _C(self, *args, **kwargs):
+        from usamriidPathDiscov.make_summary import get_n50
+        return get_n50(*args, **kwargs)
+
+    def test_generates_correct_n50_from_list(self):
+        r = self._C([2,2,2,3,3,4,8,8])
+        eq_(6, r)
+
+    def test_mockproj_contig_n50(self):
+        from usamriidPathDiscov.make_summary import parse_tab_file
+        print self.mockproj
+        contiglenfile = join(self.ray2,'contig_len.txt')
+        contiglens = parse_tab_file(contiglenfile)
+        lens = []
+        for name, len in contiglens:
+            lens.append(int(len))
+        r = self._C(lens)
+        eq_(175, r)
 
 class TestParseTabFile( BaseTest ):
     def setUp( self ):
@@ -450,6 +472,8 @@ class TestSummary( BaseTest ):
         eq_( 310, r['numblastcontig'] )
         eq_( 101898, r['numreadsunassembled'] )
         eq_( 5127, r['numblastunassembled'] )
+        eq_( 144, r['n50'] )
+        eq_( 250, r['assemblylength'] )
 
         contigs = list( r['contigs'] )
         contigs[0]['contigname'] = 'c1'
@@ -516,31 +540,39 @@ class TestFormatSummary( BaseTest ):
             'Virus2':
                 self.mock_unassembled(count=2,accession='acc2',family='family2',genus='genus2',descrip='descrip2')
         }
-        contig = [self.mock_contig(length=1,numreads=1,contigname='c1',accession='ca',family='cfam',genus='cgen',description='cdesc')]
-        summary = self.mock_summary( contigs=contig, unassembled=una )
+        contig = [
+            self.mock_contig(length=1,numreads=2,contigname='c1',accession='ca',family='cfam',genus='cgen',description='cdesc'),
+            self.mock_contig(length=10,numreads=20,contigname='c2',accession='cb',family='cfam',genus='cgen',description='cdesc')
+        ]
+        summary = self.mock_summary(contigs=contig, unassembled=una)
+        # Check summary line with contig and unassembled read
         r = self._C( summary )
-        e = '\t1\t2\t3\t4\tc1\t1\t1\tca\tcfam\tcgen\tcdesc\t5\t6\t2\tacc2\tfamily2\tgenus2\tdescrip2'
+        e = ['','1','2','3','4','7','8','c1','1','2','ca','cfam','cgen','cdesc','5','6','2','acc2','family2','genus2','descrip2']
         print e
-        print r[0]
+        print r[0].split('\t')
         print '---------'
-        eq_( e, r[0] )
-        e = '\t\t\t\t\t\t\t\t\t\t\t\t\t\t1\tacc1\tfamily1\tgenus1\tdescrip1'
+        eq_(e, r[0].split('\t'))
+        # Check summary line with only unassembled read
+        e = ['','','','','','','','c2','10','20','cb','cfam','cgen','cdesc','','','1','acc1','family1','genus1','descrip1']
         print e
-        print r[1]
-        eq_( e, r[1] )
+        print r[1].split('\t')
+        eq_( e, r[1].split('\t') )
 
     def test_sorted_unassembled( self ):
         una = {}
         for i in range(1,11):
-            una['Virus'+str(i)] = self.mock_unassembled(count=i)
+            mu = self.mock_unassembled(count=i,accession='acc1',family='family1',genus='genus1',descrip='descrip1')
+            una['Virus'+str(i)] = mu
         contig = []
-        summary = self.mock_summary( contigs=[], unassembled=una )
+        summary = self.mock_summary(nr=10,nhr=10,nc=0,nbc=0,nru=10,nbu=10,n50=0,contigs=[], unassembled=una)
         rows = self._C( summary )
         # First item should be count == 10
-        # Count is column 14
         for i, r in enumerate( rows, 1 ):
             e = 11 - i
-            count = r.split('\t')[14]
+            print r
+            line = r.split('\t')
+            print line
+            count = line[17]
             eq_( e, int(count), 'Count should be {0} but got {1} at index {2}'.format(e,count,i) )
 
 class TestFormatDic( BaseTest ):

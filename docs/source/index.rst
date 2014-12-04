@@ -8,6 +8,7 @@ Table of Contents:
 
     install
     configuration
+    stages/index
     make_summary
     make_pie
     modules
