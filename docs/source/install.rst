@@ -8,10 +8,20 @@ Install developmental tools like compilers and make and such
 You need an administrator to run the following commands. That is, somebody who can use
 su or sudo
 
+CentOS
+^^^^^^
+
 .. code-block:: bash
 
     #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel
     #> yum groupinstall Development Tools
+    
+Ubuntu
+^^^^^^
+
+.. code-block:: bash
+
+    #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev
 
 Installation
 ------------
