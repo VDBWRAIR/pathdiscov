@@ -65,27 +65,18 @@ Installation
         Whichever ones you decide on, you need to put them under ~/databases/humandna and ~/databases/humanrna
         We will add more documentation on how to do other hosts later, but in general you can check out the configuration.rst file for
         more information on how to configure the pipeline to use different indexes.
-<<<<<<< HEAD
-        
-        
-=======
-    
+
           .. code-block:: bash
 
-            wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz | mv Homo_sapiens_NCBI_build37.2.tar.gz  ~/databases/humandna | cd ~/databases/humandna | tar -xzvf Homo_sapiens_NCBI_build37.2.tar.gz
+            wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz | mv Homo_sapiens_NCBI_build37.2.tar.gz  ~/databases | tar -xzvf Homo_sapiens_NCBI_build37.2.tar.gz
  
 
->>>>>>> f2e8d73fc59afed0cb107ca687947654f2dd86de
     3. You need to then setup the blast databases
 
         In general you just need to unpack the nt/nr databases from ncbi(or wherever) into ~/databases/ncbi/blast/nt,nr,taxdb
         There is a shell script you should be able to use to do this for you as well.
-<<<<<<< HEAD
-       
-=======
         This may take longer time depending on your network connection.
 
->>>>>>> f2e8d73fc59afed0cb107ca687947654f2dd86de
         .. code-block:: bash
 
             usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
