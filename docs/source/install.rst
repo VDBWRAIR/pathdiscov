@@ -67,6 +67,10 @@ Installation
         apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
         for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
 
+#. Optional: Build the documentation
+
+    .. include:: README
+
 #. Optional: Run a sample dataset
 
     If your blast database is quite large(like the default nt database) this could take up to 2 hours...

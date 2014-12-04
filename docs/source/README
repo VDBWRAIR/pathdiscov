@@ -1,3 +1,5 @@
 Run the following to generate the documentation and then view it
 
-`cd docs && make html && firefox build/html/index.html'
+.. code-block:: bash
+
+    cd docs && make html && firefox build/html/index.html
