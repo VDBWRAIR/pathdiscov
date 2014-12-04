@@ -58,7 +58,10 @@ Installation
 5. Blast/Bowtie databases setup
 
     These databases will be dependent on your specific situation, but by default we will use the blast nt/nr databases as well as the human genome to
-    do host mapping
+    do host mapping.
+
+    **Note**: These databases are rather large and will take a long time to initially download. The bowtie indexes for homo sapiens on a fast connections(5MB/s) will take roughly 1.5 hours, while the
+    ncbi databases can take multiple hours at that same speed.
 
     1. Setup directories
 
