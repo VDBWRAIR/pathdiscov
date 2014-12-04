@@ -215,8 +215,8 @@ foreach my $mate (@mates)
 				
 				# get counts for top hits only (this is hack-ish! should roll into (weighted_count.pl))		
 		
-#				my $cmd = "cat $j.R1.blast | awk \'{if (!x[$1]) {x[$1]=1; print}}\' > $j.R1.top.blast";
-#				system($cmd);
+				#my $cmd = "cat $j.R1.blast | awk \'{if (!x[$1]) {x[$1]=1; print}}\' > $j.R1.top.blast";
+				#system($cmd);
 				# use perl instead of awk
 				
 				# THIS SHOULD BE PUT IN A FUNCTION
