@@ -4,9 +4,23 @@ step1
 
 Handles converting sff -> fastq and renaming read names to easy integers
 
-#. Convert sff -> fastq if seq platform is set to 454
+#. Convert sff -> fastq if SEQUENCE_PLATFORM is set to 454
+    Option is configured through `usamriidPathDiscov/files/config.yaml.base <../../../../usamriidPathDiscov/files/config.yaml.base>`_ during install
 #. Unzip gzip files if necessary
 #. Change all fastq id's to sequenctial integers
+#. Count each mate
+
+Configuration Options
+=====================
+
+command step1
+
+* seq_platform
+    The sequencing platform used. SEQPLATFORM is replaced with SEQUENCE_PLATFORM from :ref:`config-yaml-base`
+
+    Choices: ``illumina``, ``454``
+
+    Default: ``SEQPLATFORM``
 
 Output
 ======

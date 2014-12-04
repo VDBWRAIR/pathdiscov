@@ -1,3 +1,48 @@
 ========
 host_map
 ========
+
+Takes a series of indexed db's and runs a series of alignments on them. For example, you might run bowtie2 with db=genome, followed bowtie2 with db=transcriptome. At each stage, the input is what didn't align in the previous stage.
+
+#. Count input files(R1 & R2)
+#. Iterate through mapper_db_list in :ref:`sample-param-base` and map input reads against mapper_db_list entries
+#. Count reads after each mapping
+#. Generate unmap 
+
+Configuration Options
+=====================
+
+command host_map
+
+* mapper_program_list
+    Comma separated list of mappers to use. By default bowtie2,bowtie2 are used
+
+    Choices: ``bwa``, ``bowtie2``
+
+    Example: ``bowtie2,bowtie2``
+* mapper_db_list
+    Paths to bowtie indexed genomes as a comma separated list
+    These values will be replaced when the pipeline installs by setting human_dna and h_sapiens_rna in the :ref:`config-yaml-base`
+    The pipeline looks for HUMAN_DNA and H_SAPIENS_RNA and replaces them during install
+
+    Example: ``HUMAN_DNA,H_SAPIENS_RNA``
+* mapper_name_list
+    Simply names the mapping assemblys for graphic generation
+
+    Example: ``bowtie2_genome_local,bowtie2_transcript_local``
+* mapper_options_list
+    Comma separated list of options to pass to the mapper
+
+    Example: ``--local,--local``
+
+Output
+======
+
+* host_map_1.R1, host_map_1.R2
+    Reads remaining that did not map in any of the mapings
+* R1.count, R2.count
+    Count of unmapped reads at the end of all mappings
+* R2.discard, R1.discard
+    Reads that mapped in all mappings
+* map_1, map_2
+    Assembly mappings from each mapping done from mapping_db_list
