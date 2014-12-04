@@ -7,6 +7,7 @@ Table of Contents:
     :maxdepth: 2
 
     install
+    databases
     configuration
     stages/index
     make_summary

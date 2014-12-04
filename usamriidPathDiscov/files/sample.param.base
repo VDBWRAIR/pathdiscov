@@ -31,10 +31,10 @@ prinseq_options				-min_len 50 -derep 14 -lc_method dust -lc_threshold 3 -trim_n
 command host_map
 # for the "_list" settings, use a comma-delimited list with no spaces
 
-mapper_program_list		bowtie2,bowtie2											# choices are: bwa, bowtie2
-mapper_db_list			HUMAN_DNA,H_SAPIENS_RNA
-mapper_name_list		bowtie2_genome_local,bowtie2_transcript_local							# names that will appear on a graph
-mapper_options_list		--local,--local											# flags for aligner
+mapper_program_list		bowtie2											# choices are: bwa, bowtie2
+mapper_db_list			HUMAN_DNA
+mapper_name_list		bowtie2_genome_local							# names that will appear on a graph
+mapper_options_list		--local											# flags for aligner
 
 # explanation: perform a chain of alignments.
 

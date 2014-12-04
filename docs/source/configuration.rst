@@ -4,8 +4,9 @@ Configuration
 
 .. _config-yaml-base:
 
-usamriidPathDiscov/files/config.yml.base
-========================================
+`usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
+=================================================================================================
+
 
 This file allows you to set the defaults that define where your databases are located
 under the databases directory.
@@ -22,8 +23,9 @@ and GENOMEDIR is replaced with ~/databases
 
 .. _sample-param-base:
 
-usamriidPathDiscov/files/sample.param.base
-==========================================
+`usamriidPathDiscov/files/sample.param.base <../../../usamriidPathDiscov/files/sample.param.base>`_
+===================================================================================================
+
 
 Then when the pipeline is run with usamriidPathDiscov_cli usamriidPathDiscov/files/config.yaml is used to modify
 `usamriidPathDiscov/files/sample.param.base <../../../usamriidPathDiscov/files/sample.param.base>`_ which is copied to the python installation under

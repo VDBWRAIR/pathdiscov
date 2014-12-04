@@ -57,45 +57,7 @@ Installation
         python setup.py install
 #. Blast/Bowtie databases setup
 
-    These databases will be dependent on your specific situation, but by default we will use the blast nt/nr databases as well as the human genome to
-    do host mapping.
-
-    **NOTE**: These databases are rather large and will take a long time to initially download. The bowtie indexes for homo sapiens on a fast connections(5MB/s) will take roughly 1.5 hours, while the
-    ncbi databases can take multiple hours at that same speed.
-
-    #. Setup directories
-
-        .. code-block:: bash
-        
-            mkdir -p ~/databases/{humandna,humanrna,ncbi}
-            mkdir -p ~/databases/ncbi/blast/{nt}
-
-    #. You also need to get bowtie indexed host genomes
-
-        You should be able to fetch these from Illumina, Ensamble or NCBI. Illumina seems to have the easiest ones as they are pre-built where ncbi and ensamble require you to build them manually with bowtie
-        Illumina's iGenomes page can be found at http://support.illumina.com/sequencing/sequencing_software/igenome.html
-
-        Whichever ones you decide on, you need to put them under ~/databases/humandna and ~/databases/humanrna
-        We will add more documentation on how to do other hosts later, but in general you can check out the configuration.rst file for
-        more information on how to configure the pipeline to use different indexes.
-
-        **NOTE**: we will fix the database naming to the actual name on the downlaod  site instead of humandna/humanrna. 
-        
-        .. code-block:: bash
-        
-            cd ~/databases/humandna
-            wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz
-            tar xzvf Homo_sapiens_NCBI_build37.2.tar.gz
-
-    #. You need to then setup the blast databases
-
-        In general you just need to unpack the nt/nr databases from ncbi(or wherever) into ~/databases/ncbi/blast/nt,nr,taxdb
-        There is a shell script you should be able to use to do this for you as well.
-        This may take longer time depending on your network connection.
-
-        .. code-block:: bash
-
-            usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
+    See :doc:`databases`
 
 #. Quick verify of necessary executables
 
