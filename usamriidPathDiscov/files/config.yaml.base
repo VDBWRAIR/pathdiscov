@@ -4,7 +4,8 @@
 # GENOMEDIR will be replaced by the pipeline
 # with the root of your databases(probably ~/databases)
 databases: GENOMEDIR
-human_dna: GENOMEDIR/humandna/Homo_sapiens/UCSC/hg19/Sequence/Bowtie2Index/genome
+human_dna: GENOMEDIR/humandna/human_dna
+human_rna: GENOMEDIR/humanrna/h_sapiens_rna
 nt_db:  GENOMEDIR/ncbi/blast/nt/nt
 tax_nodes: GENOMEDIR/ncbi/taxonomy/nodes.dmp
 tax_names: GENOMEDIR/ncbi/taxonomy/names.dmp
