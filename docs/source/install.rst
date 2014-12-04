@@ -43,7 +43,7 @@ Installation
         pip install paver
 
 
-#. Edit `usamriidPathDiscov/files/config.yaml.base <../usamriidPathDiscov/files/config.yaml.base>`_ if necessary. For example edit the following lines...
+#. Edit `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_ if necessary. For example edit the following lines...
 
     .. code-block:: bash
 
