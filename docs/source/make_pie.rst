@@ -37,7 +37,12 @@ Host Composition
 
 Based on the class field and only includes Mammalia
 
-Pathogen composition
+Pathogen Composition
 ====================
 
 Based on the superkingdom field and only includes Bacteria and Viruses
+
+Sample Composition
+==================
+
+Overview that shows Host, Vector and Pathogen composition as a whole for the sample

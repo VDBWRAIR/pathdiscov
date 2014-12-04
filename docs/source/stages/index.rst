@@ -5,6 +5,11 @@ Pipeline Stages
 Documentation of each stage of the pipeline including all of the output files generated and how they are used
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
-    ray_assembly
+    step1
+    host_map
+    quality_filter
+    ray2_assembly
+    orf_filter
+    iterative_blast_phylo
