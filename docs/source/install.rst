@@ -66,6 +66,11 @@ Installation
         We will add more documentation on how to do other hosts later, but in general you can check out the configuration.rst file for
         more information on how to configure the pipeline to use different indexes.
         
+        .. code-block:: bash
+        
+            cd ~/databases/humandna
+            wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/UCSC/hg19/Homo_sapiens_UCSC_hg19.tar.gz
+            tar xzvf Homo_sapiens_UCSC_hg19.tar.gz
         
     3. You need to then setup the blast databases
 
