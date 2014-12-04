@@ -70,6 +70,10 @@ Installation
 #. Optional: Build the documentation
 
     .. include:: README
+    
+    .. code-block:: bash
+    
+        cd ..
 
 #. Optional: Run a sample dataset
 
