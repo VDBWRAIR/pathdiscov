@@ -64,7 +64,7 @@ Installation
 
         Whichever ones you decide on, you need to put them under ~/databases/humandna and ~/databases/humanrna
         We will add more documentation on how to do other hosts later, but in general you can check out the configuration.rst file for
-        more information on how to configure the pipeline to use different indexes.
+        more information on how to configure the pipeline to use different indexes. NOTE: we will fix the database naming to the actual name on the downlaod  site instead of humandna/humanrna. 
 
           .. code-block:: bash
 
