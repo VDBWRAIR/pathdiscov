@@ -9,6 +9,34 @@ ray_assembly
 #. Map original paired and unpaired reads to contig index 
 #. Use mapping to find unmapped reads
 
+Configuration Options
+=====================
+
+command ray2_assembly
+
+* kmer
+    Example: ``25``
+* ninst
+    Number of mpiexec instances to use.
+
+    You can specify NUMINST to have it replaced with NODE_NUM from :ref:`config-yaml-base`
+    
+    Example: ``NUMINST``
+* cap
+    Boolean to specify to run CAP3 after Ray completes
+    
+    Choices: ``1`` indicates True, ``0`` indicates False
+* cap_options
+    Options to pass to CAP3
+* map2contigs
+    Boolean to specify to map reads back to assembly
+
+    Choices: ``1`` to map reads, ``0`` to skip
+* bowtie2_options
+    Options for bowtie when map2contigs is ``1``
+
+    Example: ``--local``
+
 Output
 ======
 * 1.R1.unmap.fastq, 1.R2.unmap.fastq

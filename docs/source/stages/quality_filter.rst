@@ -4,8 +4,10 @@ quality_filter
 
 Run cutadapt and possibly prinseq on input reads
 
-# Run cutadapt on R1 and R2 if exists
-# Count reads after each step
+#. Run cutadapt on R1 and R2 if exists
+#. Count reads after each step
+#. Run prinseq if specified
+#. Count reads
 
 Configuration Options
 =====================
