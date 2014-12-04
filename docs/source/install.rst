@@ -65,7 +65,7 @@ Installation
         .. code-block:: bash
         
             mkdir -p ~/databases/{humandna,humanrna,ncbi}
-            mkdir -p ~/databases/ncbi/blast/{nt,nr}
+            mkdir -p ~/databases/ncbi/blast/{nt}
 
     2. You also need to get bowtie indexed host genomes
 
@@ -74,17 +74,22 @@ Installation
 
         Whichever ones you decide on, you need to put them under ~/databases/humandna and ~/databases/humanrna
         We will add more documentation on how to do other hosts later, but in general you can check out the configuration.rst file for
-        more information on how to configure the pipeline to use different indexes.
-        
-        
+        more information on how to configure the pipeline to use different indexes. NOTE: we will fix the database naming to the actual name on the downlaod  site instead of humandna/humanrna. 
+
+          .. code-block:: bash
+
+            wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz | mv Homo_sapiens_NCBI_build37.2.tar.gz  ~/databases | tar -xzvf Homo_sapiens_NCBI_build37.2.tar.gz
+ 
+
     3. You need to then setup the blast databases
 
         In general you just need to unpack the nt/nr databases from ncbi(or wherever) into ~/databases/ncbi/blast/nt,nr,taxdb
         There is a shell script you should be able to use to do this for you as well.
-       
+        This may take longer time depending on your network connection.
+
         .. code-block:: bash
 
-            get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+            usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
 
 6. Quick verify of necessary executables
 
