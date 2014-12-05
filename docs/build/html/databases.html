@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Databases &mdash; USAMRIID Pathogen Descovery 4.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="USAMRIID Pathogen Descovery 4.0 documentation" href="index.html"/>
+        <link rel="next" title="Configuration" href="configuration.html"/>
+        <link rel="prev" title="Installation" href="install.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> USAMRIID Pathogen Descovery</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#system-packages">System Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#id1">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Databases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#directory-setup">Directory Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blast">Blast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#host-genome">Host Genome</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#config-yaml-base">usamriidPathDiscov/files/config.yaml.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#sample-param-base">usamriidPathDiscov/files/sample.param.base</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stages/index.html">Pipeline Stages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stages/step1.html">step1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stages/host_map.html">host_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stages/quality_filter.html">quality_filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stages/ray2_assembly.html">ray_assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stages/orf_filter.html">orf_filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stages/iterative_blast_phylo.html">iterative_blast_phylo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="make_summary.html">make_summary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="make_summary.html#reading-the-report">Reading the Report</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="make_pie.html">make_pie</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="make_pie.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_pie.html#vector-composition">Vector Composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_pie.html#host-composition">Host Composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_pie.html#pathogen-composition">Pathogen Composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_pie.html#sample-composition">Sample Composition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">usamriidPathDiscov</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usamriidPathDiscov.html">usamriidPathDiscov package</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">USAMRIID Pathogen Descovery</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Databases</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/databases.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="databases">
+<h1>Databases<a class="headerlink" href="#databases" title="Permalink to this headline">¶</a></h1>
+<p>The pipeline requires that you have blast databases and host genome indexes available for some of the stages such as <a class="reference internal" href="stages/host_map.html"><em>host_map</em></a> and <a class="reference internal" href="stages/iterative_blast_phylo.html"><em>iterative_blast_phylo</em></a></p>
+<div class="section" id="directory-setup">
+<h2>Directory Setup<a class="headerlink" href="#directory-setup" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>mkdir -p ~/databases/<span class="o">{</span>humandna,humanrna,ncbi<span class="o">}</span>
+mkdir -p ~/databases/ncbi/blast/<span class="o">{</span>nt<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="blast">
+<h2>Blast<a class="headerlink" href="#blast" title="Permalink to this headline">¶</a></h2>
+<p>In general you just need to unpack the nt/nr databases from ncbi(or wherever) into ~/databases/ncbi/blast/nt,nr,taxdb
+There is a shell script you should be able to use to do this for you as well.
+This may take longer time depending on your network connection.</p>
+<div class="highlight-bash"><div class="highlight"><pre>usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
+</pre></div>
+</div>
+</div>
+<div class="section" id="host-genome">
+<h2>Host Genome<a class="headerlink" href="#host-genome" title="Permalink to this headline">¶</a></h2>
+<p>The host genomes can be built manually(takes a very long time) or they can be downloaded from a few various sources such as Illumina, Ensemble or NCBI.</p>
+<p>Illumina seems to have the easiest option as they are pre-built for you where the others may require you to build them yourself.</p>
+<p>Illumina&#8217;s iGenomes page can be found at <a class="reference external" href="http://support.illumina.com/sequencing/sequencing_software/igenome.html">http://support.illumina.com/sequencing/sequencing_software/igenome.html</a></p>
+<p>There you can download any hosts you want. Just note that they are likely very large downloads(20GB+) and can take a few hours. Once they are downloaded you will need to extract them and then set the correct path in the <a class="reference internal" href="configuration.html#config-yaml-base"><em>usamriidPathDiscov/files/config.yaml.base</em></a></p>
+<p>Right now the pipeline only allows you to set a single human_dna</p>
+<div class="section" id="example-setup">
+<h3>Example Setup<a class="headerlink" href="#example-setup" title="Permalink to this headline">¶</a></h3>
+<p>Configure pipeline to use NCBI&#8217;s build37.2</p>
+<p>Ensure you are in the usamriidPathDiscov git cloned directory then execute the following:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">pushd</span> ~/databases/humandna
+wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz
+tar xzvf Homo_sapiens_NCBI_build37.2.tar.gz
+<span class="nb">popd</span>
+sed -i <span class="s1">&#39;s%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/Homo_sapiens/NCBI/build37.2/Sequence/Bowtie2Index/genome%&#39;</span> usamriidPathDiscov/files/config.yaml.base
+</pre></div>
+</div>
+<p>The h_sapiens_rna needs more documentation, but can simply be removed from the <a class="reference internal" href="configuration.html#config-yaml-base"><em>usamriidPathDiscov/files/config.yaml.base</em></a> and then the <a class="reference internal" href="configuration.html#sample-param-base"><em>usamriidPathDiscov/files/sample.param.base</em></a> needs to be modified as well to have the second bowtie mapping removed from the host_map section</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014 Mike Wiley, Gustavo Palacios, Jason Ladner, Dereje Jima.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'4.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
