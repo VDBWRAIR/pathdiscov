@@ -1,15 +1,17 @@
 # database location
 # Upadate all database locations
 
+# GENOMEDIR will be replaced by the pipeline
+# with the root of your databases(probably ~/databases)
 databases: GENOMEDIR
 human_dna: GENOMEDIR/humandna/human_dna
-h_sapiens_rna: GENOMEDIR/humanrna/h_sapiens_rna
+human_rna: GENOMEDIR/humanrna/h_sapiens_rna
 nt_db:  GENOMEDIR/ncbi/blast/nt/nt
 tax_nodes: GENOMEDIR/ncbi/taxonomy/nodes.dmp
 tax_names: GENOMEDIR/ncbi/taxonomy/names.dmp
 
 PHRED_OFFSET: 33
 SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-NODE_NUM: 10  # number of computer nodes
+NODE_NUM: 10  # Number of computer nodes or CPUS
 #paired end lane to run
 blast_unassembled: 1000
