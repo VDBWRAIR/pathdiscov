@@ -13,6 +13,7 @@ Table of Contents:
     make_summary
     make_pie
     modules
+    uninstall
 
 .. only:: html
 

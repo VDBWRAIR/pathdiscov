@@ -2,13 +2,22 @@
 
 # Should perform all necessary steps to uninstall the pipeline
 
-# Deactivate virtualenv if needed
-deactivate
-# Remove data files that may have been altered
-rm usamriidPathDiscov/files/*
+# Remove binaries copied from install as well as build and possibly altered files
+rm -rf usamriidPathDiscov/{files,build}
 # Checkout files from git to replace removed ones
 git checkout usamriidPathDiscov/files
-# Remove virtualenv installation
-rm -rf usamriidPathDiscov/{lib,lib64,include,bin}
+# Should we uninstall everything or just the usamriidPathDiscov package
+# Takes a long time to reinstall numpy/matplotlib
+if [ "$1" == "-full" ]
+then
+    rm -rf usamriidPathDiscov/downloads
+    git checkout usamriidPathDiscov/downloads
+    rm -rf usamriidPathDiscov/{lib,lib64,include,bin}
+else
+    # Use pip to uninstall(If multiple version, may need to call more than once)
+    # Ensure activated
+    . usamriidPathDiscov/bin/activate
+    while pip uninstall -y usamriidPathDiscov; do sleep 1; done;
+fi
 
-echo "The pipeline should be uninstalled. Make sure you deactivate prior to reinstalling if needed"
+echo "The pipeline should be uninstalled"

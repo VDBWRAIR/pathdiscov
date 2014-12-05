@@ -1,15 +1,18 @@
+============
 Installation
 ============
 
+.. _install-system-packages:
+
 System Packages
----------------
+===============
 
 Install developmental tools like compilers and make and such
 You need an administrator to run the following commands. That is, somebody who can use
 su or sudo
 
 CentOS
-^^^^^^
+------
 
 .. code-block:: bash
 
@@ -17,14 +20,14 @@ CentOS
     #> yum groupinstall Development Tools
     
 Ubuntu
-^^^^^^
+------
 
 .. code-block:: bash
 
     #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev
 
 Installation
-------------
+============
 
 #. Clone the repository
 
