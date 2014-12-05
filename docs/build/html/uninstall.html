@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuration &mdash; USAMRIID Pathogen Discovery 4.1.1 documentation</title>
+  <title>Uninstall &mdash; USAMRIID Pathogen Discovery 4.1.1 documentation</title>
   
 
   
@@ -29,8 +29,7 @@
 
   
     <link rel="top" title="USAMRIID Pathogen Discovery 4.1.1 documentation" href="index.html"/>
-        <link rel="next" title="Pipeline Stages" href="stages/index.html"/>
-        <link rel="prev" title="Databases" href="databases.html"/> 
+        <link rel="prev" title="usamriidPathDiscov package" href="usamriidPathDiscov.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -69,9 +68,9 @@
 <li class="toctree-l2"><a class="reference internal" href="databases.html#host-genome">Host Genome</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#config-yaml-base">usamriidPathDiscov/files/config.yaml.base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sample-param-base">usamriidPathDiscov/files/sample.param.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#config-yaml-base">usamriidPathDiscov/files/config.yaml.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#sample-param-base">usamriidPathDiscov/files/sample.param.base</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="stages/index.html">Pipeline Stages</a><ul>
@@ -99,9 +98,9 @@
 <li class="toctree-l2"><a class="reference internal" href="usamriidPathDiscov.html">usamriidPathDiscov package</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="uninstall.html#partial-uninstall">Partial Uninstall</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uninstall.html#full-uninstall">Full Uninstall</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Uninstall</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#partial-uninstall">Partial Uninstall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-uninstall">Full Uninstall</a></li>
 </ul>
 </li>
 </ul>
@@ -127,10 +126,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Configuration</li>
+    <li>Uninstall</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/configuration.txt" rel="nofollow"> View page source</a>
+          <a href="_sources/uninstall.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -138,28 +137,24 @@
 </div>
           <div role="main">
             
-  <div class="section" id="configuration">
-<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="config-yaml-base">
-<span id="id1"></span><h2><a class="reference external" href="../../../usamriidPathDiscov/files/config.yaml.base">usamriidPathDiscov/files/config.yaml.base</a><a class="headerlink" href="#config-yaml-base" title="Permalink to this headline">¶</a></h2>
-<p>This file allows you to set the defaults that define where your databases are located
-under the databases directory.
-GENOMEDIR will be replaced with ~/databases(at some point that will be configurable)</p>
-<p>When the pipeline is installed</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="c">#&gt; python setup.py install</span>
+  <div class="section" id="uninstall">
+<h1>Uninstall<a class="headerlink" href="#uninstall" title="Permalink to this headline">¶</a></h1>
+<p>The pipeline comes with an uninstaller that you can use to either completely remove the pipeline and its dependencies(except system packages) or it will just uninstall the pipeline from the virtualenv</p>
+<div class="section" id="partial-uninstall">
+<h2>Partial Uninstall<a class="headerlink" href="#partial-uninstall" title="Permalink to this headline">¶</a></h2>
+<p>This is useful if you just want to uninstall the pipeline from the virtualenv. This is nice since you will not have to wait for some of the bigger packages to recompile.</p>
+<p>This is especially useful for testing</p>
+<div class="highlight-bash"><div class="highlight"><pre>./uninstall.sh
 </pre></div>
 </div>
-<p>usamriidPathDiscov/files/config.yaml.base is copied to usamriidPathDiscov/files/config.yaml
-and GENOMEDIR is replaced with ~/databases</p>
 </div>
-<div class="section" id="sample-param-base">
-<span id="id2"></span><h2><a class="reference external" href="../../../usamriidPathDiscov/files/sample.param.base">usamriidPathDiscov/files/sample.param.base</a><a class="headerlink" href="#sample-param-base" title="Permalink to this headline">¶</a></h2>
-<p>Then when the pipeline is run with usamriidPathDiscov_cli usamriidPathDiscov/files/config.yaml is used to modify
-<a class="reference external" href="../../../usamriidPathDiscov/files/sample.param.base">usamriidPathDiscov/files/sample.param.base</a> which is copied to the python installation under
-usamriidPathDiscov/lib/python*/site-packages/usamriidPathDiscov/files/sample.param</p>
-<p>This file is then in turn used to create the param.txt file that run_standard_stable4.pl uses</p>
-<p>The file is comprised of sections defining parameters for each <a class="reference internal" href="stages/index.html"><em>pipeline stage</em></a>
-Each stage&#8217;s documentation contains the information about the configuration available</p>
+<div class="section" id="full-uninstall">
+<h2>Full Uninstall<a class="headerlink" href="#full-uninstall" title="Permalink to this headline">¶</a></h2>
+<p>This completely removes all dependencies and the pipeline. Basically, <tt class="docutils literal"><span class="pre">rm</span> <span class="pre">-rf</span></tt> specific directories related to installation</p>
+<div class="highlight-bash"><div class="highlight"><pre>./uninstall.sh -full
+</pre></div>
+</div>
+<p><strong>Note</strong>: This does not remove the system packages your administrator had to install during the <a class="reference internal" href="install.html#install-system-packages"><em>System Packages</em></a></p>
 </div>
 </div>
 
@@ -169,10 +164,8 @@ Each stage&#8217;s documentation contains the information about the configuratio
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="stages/index.html" class="btn btn-neutral float-right" title="Pipeline Stages"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="databases.html" class="btn btn-neutral" title="Databases"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="usamriidPathDiscov.html" class="btn btn-neutral" title="usamriidPathDiscov package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
