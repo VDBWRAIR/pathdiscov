@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>step1 &mdash; USAMRIID Pathogen Descovery 4.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="USAMRIID Pathogen Descovery 4.0 documentation" href="../index.html"/>
+        <link rel="up" title="Pipeline Stages" href="index.html"/>
+        <link rel="next" title="host_map" href="host_map.html"/>
+        <link rel="prev" title="Pipeline Stages" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> USAMRIID Pathogen Descovery</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#system-packages">System Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#id1">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../databases.html">Databases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../databases.html#directory-setup">Directory Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../databases.html#blast">Blast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../databases.html#host-genome">Host Genome</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#config-yaml-base">usamriidPathDiscov/files/config.yaml.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#sample-param-base">usamriidPathDiscov/files/sample.param.base</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Pipeline Stages</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">step1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host_map.html">host_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quality_filter.html">quality_filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ray2_assembly.html">ray_assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orf_filter.html">orf_filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterative_blast_phylo.html">iterative_blast_phylo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../make_summary.html">make_summary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../make_summary.html#reading-the-report">Reading the Report</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../make_pie.html">make_pie</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../make_pie.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../make_pie.html#vector-composition">Vector Composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../make_pie.html#host-composition">Host Composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../make_pie.html#pathogen-composition">Pathogen Composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../make_pie.html#sample-composition">Sample Composition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">usamriidPathDiscov</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usamriidPathDiscov.html">usamriidPathDiscov package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../uninstall.html">Uninstall</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../uninstall.html#partial-uninstall">Partial Uninstall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uninstall.html#full-uninstall">Full Uninstall</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">USAMRIID Pathogen Descovery</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Pipeline Stages</a> &raquo;</li>
+      
+    <li>step1</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/stages/step1.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="step1">
+<h1>step1<a class="headerlink" href="#step1" title="Permalink to this headline">¶</a></h1>
+<p>Handles converting sff -&gt; fastq and renaming read names to easy integers</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>Convert sff -&gt; fastq if SEQUENCE_PLATFORM is set to 454</dt>
+<dd><p class="first last">Option is configured through <a class="reference external" href="../../../../usamriidPathDiscov/files/config.yaml.base">usamriidPathDiscov/files/config.yaml.base</a> during install</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Unzip gzip files if necessary</p>
+</li>
+<li><p class="first">Change all fastq id&#8217;s to sequenctial integers</p>
+</li>
+<li><p class="first">Count each mate</p>
+</li>
+</ol>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>command step1</p>
+<ul>
+<li><dl class="first docutils">
+<dt>seq_platform</dt>
+<dd><p class="first">The sequencing platform used. SEQPLATFORM is replaced with SEQUENCE_PLATFORM from <a class="reference internal" href="../configuration.html#config-yaml-base"><em>usamriidPathDiscov/files/config.yaml.base</em></a></p>
+<p>Choices: <tt class="docutils literal"><span class="pre">illumina</span></tt>, <tt class="docutils literal"><span class="pre">454</span></tt></p>
+<p class="last">Default: <tt class="docutils literal"><span class="pre">SEQPLATFORM</span></tt></p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>R1.fastq, R2.fastq</dt>
+<dd><p class="first last">Same as input reads except with ID&#8217;s replaced</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>R1.count, R2.count</dt>
+<dd><p class="first last">Count of input reads for each input file</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>R1.id, R2.id</dt>
+<dd><p class="first last">Map of old id&#8217;s to numeric ids</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>step1.R1, step1.R2</dt>
+<dd><p class="first last">Symlink that points to output files(R1.fastq, R2.fastq)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="host_map.html" class="btn btn-neutral float-right" title="host_map"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Pipeline Stages"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014 Mike Wiley, Gustavo Palacios, Jason Ladner, Dereje Jima.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'4.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

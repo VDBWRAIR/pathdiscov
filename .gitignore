@@ -73,5 +73,6 @@ usamriidPathDiscov/download/bwa-*
 usamriidPathDiscov/download/htslib-*
 usamriidPathDiscov/download/samtools-*
 usamriidPathDiscov/download/fastqc*
+usamriidPathDiscov/download/.pip_cache
 
 #Negate, include the file
