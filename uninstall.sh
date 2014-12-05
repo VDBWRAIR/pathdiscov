@@ -10,9 +10,10 @@ git checkout usamriidPathDiscov/files
 # Takes a long time to reinstall numpy/matplotlib
 if [ "$1" == "-full" ]
 then
-    rm -rf usamriidPathDiscov/downloads
-    git checkout usamriidPathDiscov/downloads
-    rm -rf usamriidPathDiscov/{lib,lib64,include,bin}
+    # Remove all things that installer touches
+    rm -rf usamriidPathDiscov/{lib,lib64,include,bin,download}
+    # Replace download from git
+    git checkout usamriidPathDiscov/download
 else
     # Use pip to uninstall(If multiple version, may need to call more than once)
     # Ensure activated
