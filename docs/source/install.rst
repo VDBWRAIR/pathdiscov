@@ -57,7 +57,7 @@ Installation
         python setup.py install
 #. Blast/Bowtie databases setup
 
-    See :doc:`databases`
+    See `Databases <databases.rst>`_
 
 #. Quick verify of necessary executables
 
