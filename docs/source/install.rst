@@ -16,7 +16,7 @@ CentOS
 
 .. code-block:: bash
 
-    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel
+    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel freetype-devel libpng-devel
     #> yum groupinstall Development Tools
     
 Ubuntu
@@ -24,7 +24,7 @@ Ubuntu
 
 .. code-block:: bash
 
-    #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev
+    #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
 
 Installation
 ============
