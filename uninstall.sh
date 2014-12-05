@@ -10,3 +10,5 @@ rm usamriidPathDiscov/files/*
 git checkout usamriidPathDiscov/files
 # Remove virtualenv installation
 rm -rf usamriidPathDiscov/{lib,lib64,include,bin}
+
+echo "The pipeline should be uninstalled. Make sure you deactivate prior to reinstalling if needed"
