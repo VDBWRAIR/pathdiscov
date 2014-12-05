@@ -12,6 +12,6 @@ tax_names: GENOMEDIR/ncbi/taxonomy/names.dmp
 
 PHRED_OFFSET: 33
 SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-NODE_NUM: 10  # Number of computer nodes or CPUS
+NODE_NUM: 4  # Number of computer nodes or CPUS
 #paired end lane to run
 blast_unassembled: 1000
