@@ -8,7 +8,7 @@ Information describing the project.
 package = 'usamriidPathDiscov'
 project = "USAMRIID Pathogen Discovery"
 project_no_spaces = project.replace(' ', '')
-version = '4.1.1'
+version = '4.1.0'
 description = 'USAMRIID Pathogen Discovery Pipleline'
 authors = ['Mike Wiley', 'Gustavo Palacios','Jason Ladner', 'Dereje Jima']
 authors_string = ', '.join(authors)
