@@ -26,29 +26,46 @@ This may take longer time depending on your network connection.
 Host Genome
 ===========
 
-The host genomes can be built manually(takes a very long time) or they can be downloaded from a few various sources such as Illumina, Ensemble or NCBI.
+The host genomes can be built manually(takes a very long time) or they can be downloaded from a few various sources such as ucsc, Ensemble or NCBI.
 
-Illumina seems to have the easiest option as they are pre-built for you where the others may require you to build them yourself.
+Download the version of the gonome you like, the current version is GRCh38/hg38. This may change when you download and you may modify the following path accordingly.
 
-Illumina's iGenomes page can be found at http://support.illumina.com/sequencing/sequencing_software/igenome.html
+The page can be found at http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/
 
-There you can download any hosts you want. Just note that they are likely very large downloads(20GB+) and can take a few hours. Once they are downloaded you will need to extract them and then set the correct path in the :ref:`config-yaml-base`
-
-Right now the pipeline only allows you to set a single human_dna
+There you can download the host DNA and RNA. Just note that the linke is ~ 700 mb  and can take a few time depending on your connection. Once you downloaded you will need to extract, index it using 'bowtie2-build' and then set the correct path in the :ref:`config-yaml-base`
 
 Example Setup
 -------------
 
-Configure pipeline to use NCBI's build37.2
+Configure pipeline to use NCBI's build38
 
 Ensure you are in the usamriidPathDiscov git cloned directory then execute the following:
 
 .. code-block:: bash
 
     pushd ~/databases/humandna
-    wget ftp://igenome:G3nom3s4u@ussd-ftp.illumina.com/Homo_sapiens/NCBI/build37.2/Homo_sapiens_NCBI_build37.2.tar.gz
-    tar xzvf Homo_sapiens_NCBI_build37.2.tar.gz
+    wget  http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
+    tar -xzvf  hg38.chromFa.tar.gz
+    rm  chroms/*_random.fa
+    rm  chroms/*alt.fa
+    cat chroms/*.fa > hg38_all.fa
+    #index the database using bowite2-build
+    bowtie2-build hg38_all.fa hg38
     popd
-    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/Homo_sapiens/NCBI/build37.2/Sequence/Bowtie2Index/genome%' usamriidPathDiscov/files/config.yaml.base
+    # replace the location of indexed database in the template config  file  'usamriidPathDiscov/files/config.yaml.base'
+    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml.base
 
-The h_sapiens_rna needs more documentation, but can simply be removed from the :ref:`config-yaml-base` and then the :ref:`sample-param-base` needs to be modified as well to have the second bowtie mapping removed from the host_map section
+Download human rna from the same URL, the version of the geome might be different.
+
+.. code-block:: bash
+   
+   pushd ~/databases/humanrna
+   wget  http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/mrna.fa.gz 
+   gunzip mrna.fa.gz
+   # index the database suing bowtie2-build
+   bowtie2-build mrna.fa hg38_mrna
+   popd
+   # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml.base'
+   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml.base
+   
+
