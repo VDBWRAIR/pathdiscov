@@ -48,6 +48,7 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     tar -xzvf  hg38.chromFa.tar.gz
     rm  chroms/*_random.fa
     rm  chroms/*alt.fa
+    # NOTE: If you have multiple hosts, you may download the fasta files of all hosts to same folder ('chroms/') and concatinate as show below. You may also modify the names accordingly, exmaple instead of hg38, you may name  'allHost.fa'
     cat chroms/*.fa > hg38_all.fa
     #index the database using bowite2-build
     bowtie2-build hg38_all.fa hg38
