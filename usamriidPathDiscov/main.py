@@ -41,6 +41,7 @@ tax_nodes = config['tax_nodes']
 tax_names = config['tax_names']
 blast_unassembled = config['blast_unassembled']
 
+
 ##################################################
 #    Setup environ vars                          #
 # All come from old settings.sh                  #
@@ -212,38 +213,8 @@ def verify_standard_stages_files(projectpath, templatedir):
         tfile = os.path.join(templatedir,stage+'.lst')
     return verify_project(projectpath, projectname, templates)
 
-def main():
-    from helpers import which
-    print which('pathogen.pl')
-    t0 = time.time()
-    print (" Starting time ..... :") + str(t0)
-    dir_bak = project_dir + ".bak"
-    try:
-        if os.path.exists(project_dir):
-            tasks.copyDir(project_dir,dir_bak )
-            tasks.rmdir(dir)
-    except:
-        pass
-    print "Task names: ", pipeline_get_task_names()
-    #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
 
-    #pipeline_printout_graph(
-        #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
-            #"colour_scheme_index": 6}, no_key_legend=False,
-        #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
-        #draw_vertically=True, ignore_upstream_of_target=False)
-    print "....................." + basedir + "/" + project_dir
-    pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
-    pipeline_run(
-        ['usamriidPathDiscov.main.createPram',
-         'usamriidPathDiscov.main.prepare_analysis',
-         'usamriidPathDiscov.main.fastQC',
-         #'usamriidPathDiscov.main.convertToPdf',
-         'usamriidPathDiscov.main.priStage'], multiprocess=6)
-    pipeline_get_task_names()  # return task names
-
-    #helpers.run(options)
-
+def generateSymLink():
     final_out = 'results/output'
     final_out_link = os.path.abspath(project_dir + "/output")
     cmd = "ln -s %s  %s" %(final_out, final_out_link)
@@ -285,6 +256,79 @@ def main():
     # We can output from this
     subprocess.Popen(cmd, shell=True).wait()
     # print time elapsed to complete the task
+    return
+
+
+def main():
+    from helpers import which
+    print which('pathogen.pl')
+    t0 = time.time()
+    print (" Starting time ..... :") + str(t0)
+    print "print default argument whether to generate default param.txt file ..." +  str(options.param)
+    if options.param:
+        dir_bak = project_dir + ".bak"
+        try:
+            if os.path.exists(project_dir):
+                tasks.copyDir(project_dir,dir_bak )
+                tasks.rmdir(dir)
+        except:
+            pass
+        print "Task names: ", pipeline_get_task_names()
+
+        print "....................." + basedir + "/" + project_dir
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis], verbose=6)
+        pipeline_run(
+            ['usamriidPathDiscov.main.createPram',
+            'usamriidPathDiscov.main.prepare_analysis'], multiprocess=6)
+        pipeline_get_task_names()  # return task names
+
+
+    elif options.noparam is False:
+        #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
+
+        #pipeline_printout_graph(
+            #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
+                #"colour_scheme_index": 6}, no_key_legend=False,
+            #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
+            #draw_vertically=True, ignore_upstream_of_target=False)
+        print "....................." + basedir + "/" + project_dir
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
+        pipeline_run(
+            ['usamriidPathDiscov.main.fastQC',
+            #'usamriidPathDiscov.main.convertToPdf',
+            'usamriidPathDiscov.main.priStage'], multiprocess=6)
+        pipeline_get_task_names()  # return task names
+
+        generateSymLink()
+        ##helpers.run(options)
+    else:
+        dir_bak = project_dir + ".bak"
+        try:
+            if os.path.exists(project_dir):
+                tasks.copyDir(project_dir,dir_bak )
+                tasks.rmdir(dir)
+        except:
+            pass
+        print "Task names: ", pipeline_get_task_names()
+        #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
+
+        #pipeline_printout_graph(
+            #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
+                #"colour_scheme_index": 6}, no_key_legend=False,
+            #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
+            #draw_vertically=True, ignore_upstream_of_target=False)
+        print "....................." + basedir + "/" + project_dir
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
+        pipeline_run(
+            ['usamriidPathDiscov.main.createPram',
+            'usamriidPathDiscov.main.prepare_analysis',
+            'usamriidPathDiscov.main.fastQC',
+            #'usamriidPathDiscov.main.convertToPdf',
+            'usamriidPathDiscov.main.priStage'], multiprocess=6)
+        pipeline_get_task_names()
+        generateSymLink()
+
+
     import datetime
     from termcolor import colored
     elapsedTime = int((time.time()) - t0)

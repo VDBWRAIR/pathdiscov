@@ -9,6 +9,7 @@ import StringIO
 import subprocess
 from ruffus.proxy_logger import *
 from ruffus import *
+#import ast
 
 
 class Result(object):
@@ -187,6 +188,8 @@ def get_options():
                         help='output directory')
     parser.add_argument('-R1', help="Path to forward fastq file")
     parser.add_argument('-R2', help ="Path to reverse fastq file")
+    parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
+    parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
 
     # get help string
     f = StringIO.StringIO()
