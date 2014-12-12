@@ -2,10 +2,8 @@
 
 # Should perform all necessary steps to uninstall the pipeline
 
-# Remove binaries copied from install as well as build and possibly altered files
-rm -rf usamriidPathDiscov/{files,build}
-# Checkout files from git to replace removed ones
-git checkout usamriidPathDiscov/files
+# Remove pesky build directory
+rm -rf build
 # Should we uninstall everything or just the usamriidPathDiscov package
 # Takes a long time to reinstall numpy/matplotlib
 if [ "$1" == "-full" ]

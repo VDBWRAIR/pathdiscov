@@ -11,6 +11,7 @@ import distutils.spawn
 import fileinput
 from helpers import runCommand
 from pkg_resources import resource_filename
+from os.path import join
 
 print "Set up command line option handling, logger creation, and load config file"
 options = helpers.get_options()
@@ -34,11 +35,13 @@ phred_offset = str(config['PHRED_OFFSET'])
 seq_platform = config['SEQUENCE_PLATFORM']
 num_node = str(config['NODE_NUM'])
 databases = config['databases']
-human_dna = config['human_dna']
+human_dna = join(databases, config['human_dna'])
 h_sapiens_rna = config.get('human_rna','')
-nt_db = config['nt_db']
-tax_nodes = config['tax_nodes']
-tax_names = config['tax_names']
+if h_sapiens_rna:
+    h_sapiens_rna = join(databases, h_sapiens_rna)
+nt_db = join(databases, config['nt_db'])
+tax_nodes = join(databases, config['tax_nodes'])
+tax_names = join(databases, config['tax_names'])
 blast_unassembled = config['blast_unassembled']
 
 

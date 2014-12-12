@@ -46,12 +46,22 @@ Installation
         pip install paver
 
 
-#. Edit `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_ if necessary. For example edit the following lines...
+#. Setup `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
 
-    .. code-block:: bash
+    #. Copy config.yaml.base to config.yaml
 
-        SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-        NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
+        .. code-block:: bash
+
+            cp usamriidPathDiscov/files/config.yaml{.base,}
+
+    #. Edit config.yaml to suite your setup
+
+        Example:
+
+        .. code-block:: bash
+
+            SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
+            NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
 
 #. Install the pipeline into the virtualenv
 

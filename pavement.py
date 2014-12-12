@@ -407,7 +407,7 @@ def install_python_dependencies():
     sh('pip install -r requirements-dev.txt --download-cache usamriidPathDiscov/download/.pip_cache')
 
 @task
-@needs('install_dependencies', 'setupConfigFile')
+@needs('install_dependencies')
 def prepare():
     """Prepare complete environment
     """
