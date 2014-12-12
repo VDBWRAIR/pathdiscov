@@ -197,6 +197,9 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 			# get unmap reads
 			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/R2.unmap.id > map_$j/R2.unmap.fastq";
 			print_system($cmd);	
+    
+            # The next time we map, likely that the input files are no longer wellpaired
+            $wellpaired=0;
 		}
 		# paired but not well paired
 		else
