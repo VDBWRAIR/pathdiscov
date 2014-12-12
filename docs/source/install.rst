@@ -41,6 +41,9 @@ Installation
 
 #. Build and view the complete documentation
 
+    This will open a new firefox window that will display the built documentation
+    that you can continue on where you left off here
+
     .. code-block:: bash
 
         cd docs
@@ -79,8 +82,8 @@ Installation
     .. code-block:: bash
 
         # These should now all be in your path so should work
-        apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
-        for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
+        apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
+        for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
 
 #. Optional: Run a sample dataset
 
