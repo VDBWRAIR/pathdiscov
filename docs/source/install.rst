@@ -26,15 +26,19 @@ Ubuntu
 
     #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
 
+
+Build and view the complete documentation
+-----------------------------------------
+
+.. code-block:: bash
+
+    cd docs
+    make clean && make html
+    firefox build/html/index.html
+    cd ..
+
 Installation
 ============
-
-#. Clone the repository
-
-    .. code-block:: bash
-
-        git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
-        cd usamriidPathDiscov
 
 #. Setup a virtualenv to install into
 
@@ -79,14 +83,6 @@ Installation
         # These should now all be in your path so should work
         apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
         for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
-
-#. Optional: Build the documentation
-
-    .. include:: README
-    
-    .. code-block:: bash
-    
-        cd ..
 
 #. Optional: Run a sample dataset
 
