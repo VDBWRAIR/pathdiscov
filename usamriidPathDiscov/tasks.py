@@ -58,8 +58,10 @@ def copyDir(file_to_copy, file_copy):
     return
 
 
-def createParam(input,output):
-    cmd = '%s --example  > %s' %(input,output)
+def createParam(param_output):
+    import distutils.spawn
+    pathogenScript = distutils.spawn.find_executable("pathogen.pl")
+    cmd = '%s --example  > %s' %(pathogenScript, param_output)
     p=runCommand(cmd, "F")
     return p
 
