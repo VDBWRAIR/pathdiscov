@@ -43,7 +43,7 @@ clean:
 	-rm -rf $(BUILDDIR)/*
 
 api:
-	sphinx-apidoc -f -o source ../usamriidPathDiscov ../usamriidPathDiscov/bootstrap.py ../usamriidPathDiscov/main.py ../usamriidPathDiscov/tasks.py ../usamriidPathDiscov/helpers.py ../usamriidPathDiscov/configs.py
+	sphinx-apidoc -f -o source ../usamriidPathDiscov ../usamriidPathDiscov/bootstrap.py ../usamriidPathDiscov/main.py ../usamriidPathDiscov/tasks.py ../usamriidPathDiscov/helpers.py ../usamriidPathDiscov/configs.py ../usamriidPathDiscov/local
 	@echo "Build finished. API rst built in source/"
 
 html: api
@@ -82,17 +82,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/USAMRIIDPathogenDescovery.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/USAMRIIDPathogenDiscovery.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/USAMRIIDPathogenDescovery.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/USAMRIIDPathogenDiscovery.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $HOME/.local/share/devhelp/USAMRIIDPathogenDescovery"
-	@echo "# ln -s $(BUILDDIR)/devhelp $HOME/.local/share/devhelp/USAMRIIDPathogenDescovery"
+	@echo "# mkdir -p $HOME/.local/share/devhelp/USAMRIIDPathogenDiscovery"
+	@echo "# ln -s $(BUILDDIR)/devhelp $HOME/.local/share/devhelp/USAMRIIDPathogenDiscovery"
 	@echo "# devhelp"
 
 epub:

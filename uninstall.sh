@@ -2,10 +2,18 @@
 
 # Should perform all necessary steps to uninstall the pipeline
 
-# Remove binaries copied from install as well as build and possibly altered files
-rm -rf usamriidPathDiscov/{files,build}
-# Checkout files from git to replace removed ones
-git checkout usamriidPathDiscov/files
+# Clean out compiled binaries so they are recopied
+function clean_bin() {
+    for f in bwa cap3 fastqc getorf Ray Ray2 samtools bowtie* blast*
+    do
+        rm -f usamriidPathDiscov/bin/${f}
+    done
+}
+
+# Full clean build and egg
+rm -rf build
+rm -rf usamriidPathDiscov.egg-info
+
 # Should we uninstall everything or just the usamriidPathDiscov package
 # Takes a long time to reinstall numpy/matplotlib
 if [ "$1" == "-full" ]
@@ -19,6 +27,7 @@ else
     # Ensure activated
     . usamriidPathDiscov/bin/activate
     while pip uninstall -y usamriidPathDiscov; do sleep 1; done;
+    clean_bin
 fi
 
 echo "The pipeline should be uninstalled"
