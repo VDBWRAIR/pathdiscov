@@ -43,7 +43,7 @@ clean:
 	-rm -rf $(BUILDDIR)/*
 
 api:
-	sphinx-apidoc -f -o source ../usamriidPathDiscov ../usamriidPathDiscov/bootstrap.py ../usamriidPathDiscov/main.py ../usamriidPathDiscov/tasks.py ../usamriidPathDiscov/helpers.py ../usamriidPathDiscov/configs.py
+	sphinx-apidoc -f -o source ../usamriidPathDiscov ../usamriidPathDiscov/bootstrap.py ../usamriidPathDiscov/main.py ../usamriidPathDiscov/tasks.py ../usamriidPathDiscov/helpers.py ../usamriidPathDiscov/configs.py ../usamriidPathDiscov/local
 	@echo "Build finished. API rst built in source/"
 
 html: api

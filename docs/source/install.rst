@@ -27,16 +27,6 @@ Ubuntu
     #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
 
 
-Build and view the complete documentation
------------------------------------------
-
-.. code-block:: bash
-
-    cd docs
-    make clean && make html
-    firefox build/html/index.html
-    cd ..
-
 Installation
 ============
 
@@ -49,6 +39,14 @@ Installation
         source usamriidPathDiscov/bin/activate
         pip install paver
 
+#. Build and view the complete documentation
+
+    .. code-block:: bash
+
+        cd docs
+        make clean && make html
+        firefox build/html/install.html
+        cd ..
 
 #. Setup `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
 

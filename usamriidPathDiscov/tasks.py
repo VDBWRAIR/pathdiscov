@@ -3,7 +3,7 @@ import sys
 import yaml
 import shutil
 from helpers import get_options, make_logger, runCommand, which, run_cmd
-from pkg_resources import resource_filename
+from pkg_resources import resource_filename, resource_stream
 
 options = get_options()
 #logger_proxy, logging_mutex = make_logger(options, __file__)
@@ -59,11 +59,10 @@ def copyDir(file_to_copy, file_copy):
 
 
 def createParam(param_output):
-    import distutils.spawn
-    pathogenScript = distutils.spawn.find_executable("pathogen.pl")
-    cmd = '%s --example  > %s' %(pathogenScript, param_output)
-    p=runCommand(cmd, "F")
-    return p
+    # Gets config file as a file like object
+    fin = resource_stream(__name__, 'files/sample.param')
+    with open(param_output,'w') as fout:
+        fout.write(fin.read())
 
 def createQuality(input,output):
     """Check quality of the two fastq files

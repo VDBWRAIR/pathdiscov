@@ -34,15 +34,6 @@ sample1 = results + "/" + "sample1"
 sample2 = results + "/" + "sample2"
 paramFile = input + "/param.txt"
 
-pram = [
-    [R1, project_dir + "/input/F.fastq"],
-    [R2, project_dir + "/input/R.fastq"]
-]
-F_fastq = os.path.abspath(project_dir + "/input/F.fastq")
-R_fastq = os.path.abspath(project_dir + "/input/R.fastq")
-
-param3 = [[paramFile]]
-
 def report(result):
     """Wrapper around Result.report"""
     result.report(logger_proxy, logging_mutex)
@@ -56,7 +47,10 @@ def createPram(output_file):
 
 #@graphviz(height=1.8, width=2, label="Prepare\nanalysis")
 @follows(createPram)
-@files(pram)
+@files([
+    [R1, join(project_dir, 'input', 'F.fastq')],
+    [R2, join(project_dir, 'input', 'R.fastq')],
+])
 def prepare_analysis(input, output):
     """copy the mapfile to analyiss dir
 
