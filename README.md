@@ -79,7 +79,7 @@ Development
 Authors
 =======
 
-* Micheal Wiley
+* Mickeal Wiley
 * Jason
 * Dereje Jima
 * Tyghe Vallard
