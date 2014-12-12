@@ -26,15 +26,9 @@ Ubuntu
 
     #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
 
+
 Installation
 ============
-
-#. Clone the repository
-
-    .. code-block:: bash
-
-        git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
-        cd usamriidPathDiscov
 
 #. Setup a virtualenv to install into
 
@@ -45,13 +39,34 @@ Installation
         source usamriidPathDiscov/bin/activate
         pip install paver
 
+#. Build and view the complete documentation
 
-#. Edit `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_ if necessary. For example edit the following lines...
+    This will open a new firefox window that will display the built documentation
+    that you can continue on where you left off here
 
     .. code-block:: bash
 
-        SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-        NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
+        cd docs
+        make clean && make html
+        firefox build/html/install.html
+        cd ..
+
+#. Setup `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
+
+    #. Copy config.yaml.base to config.yaml
+
+        .. code-block:: bash
+
+            cp usamriidPathDiscov/files/config.yaml{.base,}
+
+    #. Edit config.yaml to suite your setup
+
+        Example:
+
+        .. code-block:: bash
+
+            SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
+            NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
 
 #. Install the pipeline into the virtualenv
 
@@ -67,16 +82,8 @@ Installation
     .. code-block:: bash
 
         # These should now all be in your path so should work
-        apps=( bwa samtools bowtie2 Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
-        for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p runs" || echo "$p broken?"; done
-
-#. Optional: Build the documentation
-
-    .. include:: README
-    
-    .. code-block:: bash
-    
-        cd ..
+        apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
+        for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
 
 #. Optional: Run a sample dataset
 

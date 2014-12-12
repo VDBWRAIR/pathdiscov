@@ -6,6 +6,14 @@ About usamriidPathDiscov_cli
 
 ``usamriidPathDiscov_cli`` is a command line computational pipeline for  pathogen discovery.The application contain all the necessary tools to do the analyis in one go. It is easy to setup, nothing to edit. Install and use it!!
 
+Clone the repository
+--------------------
+
+```
+git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
+cd usamriidPathDiscov
+```
+
 Installation
 ------------
 
