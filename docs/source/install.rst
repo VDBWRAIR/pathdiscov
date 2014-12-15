@@ -39,18 +39,6 @@ Installation
         source usamriidPathDiscov/bin/activate
         pip install paver
 
-#. Build and view the complete documentation
-
-    This will open a new firefox window that will display the built documentation
-    that you can continue on where you left off here
-
-    .. code-block:: bash
-
-        cd docs
-        make clean && make html
-        firefox build/html/install.html
-        cd ..
-
 #. Setup `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
 
     #. Copy config.yaml.base to config.yaml
@@ -73,6 +61,19 @@ Installation
     .. code-block:: bash
 
         python setup.py install
+
+#. Build and view the complete documentation
+
+    This will open a new firefox window that will display the built documentation
+    that you can continue on where you left off here
+
+    .. code-block:: bash
+
+        cd docs
+        make clean && make html
+        firefox build/html/install.html
+        cd ..
+
 #. Blast/Bowtie databases setup
 
     See :doc:`databases`

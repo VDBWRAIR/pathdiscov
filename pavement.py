@@ -419,6 +419,11 @@ def install():
     pass
 
 @task
+@needs('install')
+def develop():
+    pass
+
+@task
 @needs('prepare', 'doc_html', 'setuptools.command.sdist')
 def sdist():
     """Build the HTML docs and the tarball."""
