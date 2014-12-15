@@ -87,7 +87,7 @@ Development
 Authors
 =======
 
-* Mickeal Wiley
-* Jason
+* Micheal Wiley
+* Jason Ladner
 * Dereje Jima
 * Tyghe Vallard
