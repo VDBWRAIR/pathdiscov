@@ -34,6 +34,13 @@ The page can be found at http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/
 
 There you can download the host DNA and RNA. Just note that the linke is ~ 700 mb  and can take a few time depending on your connection. Once you downloaded you will need to extract, index it using 'bowtie2-build' and then set the correct path in the :ref:`config-yaml-base`
 
+If you don't have enough space in your home directory for the genome you plan to use, you may download the `databases` anywhere in your network and make a symoblic link to `$HOME/databases`
+as follows.
+
+.. code-block:: bash
+      
+     ln -s {/path/to/databases}   $HOME/databases
+
 Example Setup
 -------------
 
