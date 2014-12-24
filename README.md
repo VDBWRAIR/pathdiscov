@@ -50,6 +50,14 @@ Don't forget to give the full path for your forward and reverse files if the rea
 ```
 usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
 ```
+Note: The pipeline runs in the following order: `step1,host_map,quality_filter,ray2_assembly,iterative_blast_phylo,orf_filter`.If it fails the application  generally suggest where it fails  by
+checking the key files created at each stage. Most likely, the error occurs on the suggested stage or the stage before it,  hence you may check the log file to get a clue and fix it.
+
+To check the log for example under `host_map`
+
+```
+cat testoutDir/results/host_map_1/logs/*.e
+```
 
 #### To create  example *`param.txt`* file, edit the parameters and run::
 
