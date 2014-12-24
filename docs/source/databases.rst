@@ -26,13 +26,13 @@ This may take longer time depending on your network connection.
 Host Genome
 ===========
 
-The host genomes can be built manually(takes a very long time) or they can be downloaded from a few various sources such as ucsc, Ensemble or NCBI.
+The host genomes can be built manually (takes a very long time) or they can be downloaded from a few various sources such as UCSC, Ensemble or NCBI.
 
-Download the version of the gonome you like, the current version is GRCh38/hg38. This may change when you download and you may modify the following path accordingly.
+Download the version of the genome you like, the current version is GRCh38/hg38. Note the version of the genome may be updated in the future so you will need to update it periodically.
 
 The page can be found at http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/
 
-There you can download the host DNA and RNA. Just note that the linke is ~ 700 mb  and can take a few time depending on your connection. Once you downloaded you will need to extract, index it using 'bowtie2-build' and then set the correct path in the :ref:`config-yaml-base`
+There you can download the host DNA and RNA. Just note that the download is ~700 mb  and could take a long time depending on your connection. Once you have downloaded the file you will need to extract it and index it using 'bowtie2-build' and then set the correct path in the :ref:`config-yaml-base`
 
 If you don't have enough space in your home directory for the genome you plan to use, you may download the `databases` anywhere in your network and make a symoblic link to `$HOME/databases`
 as follows.
@@ -60,8 +60,8 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     #index the database using bowite2-build
     bowtie2-build hg38_all.fa hg38
     popd
-    # replace the location of indexed database in the template config  file  'usamriidPathDiscov/files/config.yaml'
-    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml
+    # replace the location of indexed database in the template config  file  'usamriidPathDiscov/files/config.yaml.base'
+    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml.base
 
 Download human rna from the same URL, the version of the geome might be different.
 
@@ -73,7 +73,7 @@ Download human rna from the same URL, the version of the geome might be differen
    # index the database suing bowtie2-build
    bowtie2-build mrna.fa hg38_mrna
    popd
-   # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml'
-   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml
+   # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml.base'
+   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml.base
    
 
