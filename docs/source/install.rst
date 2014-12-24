@@ -7,8 +7,7 @@ Installation
 System Packages
 ===============
 
-Install developmental tools like compilers and make and such
-You need an administrator to run the following commands. That is, somebody who can use
+In order to installed developer tools you will need root priveledges; that is, somebody who can use
 su or sudo
 
 CentOS
@@ -48,8 +47,12 @@ Installation
             cp usamriidPathDiscov/files/config.yaml{.base,}
 
     #. Edit config.yaml to suite your setup
+    
+        .. code-block:: bash
 
-        Example:
+            vim usamriidPathDiscov/files/config.yaml
+
+        Example edits:
 
         .. code-block:: bash
 
@@ -76,6 +79,8 @@ Installation
 
 #. Blast/Bowtie databases setup
 
+You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
+
     See :doc:`databases`
 
 #. Quick verify of necessary executables
@@ -88,7 +93,7 @@ Installation
 
 #. Optional: Run a sample dataset
 
-    If your blast database is quite large(like the default nt database) this could take up to 2 hours...
+    If your blast database is quite large (like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in
 
     .. code-block:: bash
