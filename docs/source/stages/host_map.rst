@@ -2,12 +2,12 @@
 host_map
 ========
 
-Takes a series of indexed db's and runs a series of alignments on them. For example, you might run bowtie2 with db=genome, followed bowtie2 with db=transcriptome. At each stage, the input is what didn't align in the previous stage.
+Takes a series of indexed databases and runs a series of alignments on them. For example, you might run bowtie2 with db=genome, followed bowtie2 with db=transcriptome. At each stage, the input is what didn't align in the previous stage.
 
-#. Count input files(R1 & R2)
+#. Count input files (R1 & R2)
 #. Iterate through mapper_db_list in :ref:`sample-param-base` and map input reads against mapper_db_list entries
 #. Count reads after each mapping
-#. Generate unmap 
+#. Generate a list of unmapped reads 
 
 Configuration Options
 =====================
@@ -27,7 +27,7 @@ command host_map
 
     Example: ``HUMAN_DNA,H_SAPIENS_RNA``
 * mapper_name_list
-    Simply names the mapping assemblys for graphic generation
+    Simply names the mapping assemblies for graphic generation
 
     Example: ``bowtie2_genome_local,bowtie2_transcript_local``
 * mapper_options_list
@@ -39,10 +39,10 @@ Output
 ======
 
 * host_map_1.R1, host_map_1.R2
-    Reads remaining that did not map in any of the mapings
+    Reads remaining that did not map in any of the mappings
 * R1.count, R2.count
     Count of unmapped reads at the end of all mappings
 * R2.discard, R1.discard
     Reads that mapped in all mappings
 * map_1, map_2
-    Assembly mappings from each mapping done from mapping_db_list
+    Assembly mappings of each mapping done from mapping_db_list
