@@ -60,8 +60,8 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     #index the database using bowite2-build
     bowtie2-build hg38_all.fa hg38
     popd
-    # replace the location of indexed database in the template config  file  'usamriidPathDiscov/files/config.yaml.base'
-    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml.base
+    # replace the location of indexed database in the template config  file  'usamriidPathDiscov/files/config.yaml'
+    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml
 
 Download human rna from the same URL, the version of the geome might be different.
 
@@ -73,7 +73,7 @@ Download human rna from the same URL, the version of the geome might be differen
    # index the database suing bowtie2-build
    bowtie2-build mrna.fa hg38_mrna
    popd
-   # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml.base'
-   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml.base
+   # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml'
+   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml
    
 
