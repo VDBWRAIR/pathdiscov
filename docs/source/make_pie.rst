@@ -5,7 +5,7 @@ make_pie
 Creates a graphic for each supplied project based on all of the .top.blast.phylo files found in both the
 iterative_blast_phylo output directories.
 
-The graphic dipicts sample compisition in the form of 4 pie graphics depicting:
+The graphic depicts sample compisition in the form of 4 pie graphics depicting:
 
 * Vector composition
 * Host composition
