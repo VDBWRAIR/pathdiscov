@@ -1,3 +1,4 @@
+===========================
 USAMRIID Pathogen Discovery
 ===========================
 
@@ -9,11 +10,10 @@ Table of Contents:
     install
     databases
     configuration
+    analysis
     stages/index
-    make_summary
-    make_pie
+    scripts/index
     modules
-    uninstall
 
 .. only:: html
 
