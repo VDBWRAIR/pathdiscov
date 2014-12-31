@@ -29,6 +29,13 @@ Ubuntu
 Installation
 ============
 
+#. Clone the repository
+
+    .. code-block:: bash
+
+        git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
+        cd usamriidPathDiscov
+
 #. Setup a virtualenv to install into
 
     .. code-block:: bash
