@@ -48,7 +48,7 @@ Then when the pipeline is run with usamriidPathDiscov_cli usamriidPathDiscov/fil
 `usamriidPathDiscov/files/sample.param.base <../../../usamriidPathDiscov/files/sample.param.base>`_ which is copied to the python installation under
 usamriidPathDiscov/lib/python*/site-packages/usamriidPathDiscov/files/sample.param
 
-This file is then in turn used to create the param.txt file that run_standard_stable4.pl uses
+This file is then in turn used to create the :ref:`paramtxt` file that run_standard_stable4.pl uses
 
 The file is comprised of sections defining parameters for each :doc:`pipeline stage <stages/index>`
 Each stage's documentation contains the information about the configuration available
@@ -58,9 +58,9 @@ Each stage's documentation contains the information about the configuration avai
 param.txt
 =========
 
-The param.txt file is created each time you run the :doc:`scripts/usamriidPathDiscov_cli`
+The :ref:`paramtxt` file is created each time you run the :doc:`scripts/usamriidPathDiscov_cli`
 
 It is placed inside of the directory you specify with the ``--outdir`` parameter inside
 of the input directory.
 
-The param.txt has the same format as the :ref:`sample-param-base` file.
+The :ref:`paramtxt` has the same format as the :ref:`sample-param-base` file.
