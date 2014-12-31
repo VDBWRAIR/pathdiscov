@@ -39,10 +39,16 @@ Output
 ======
 
 * host_map_1.R1, host_map_1.R2
-    Reads remaining that did not map in any of the mappings
+    Reads remaining that did not map in any of the host genome mappings that can be used
+    further downstream in the pipeline.
 * R1.count, R2.count
     Count of unmapped reads at the end of all mappings
+
+    These are the number of reads that did not map to host genomes in mapper_db_list
 * R2.discard, R1.discard
-    Reads that mapped in all mappings
-* map_1, map_2
-    Assembly mappings of each mapping done from mapping_db_list
+    Reads that mapped in all mappings to the host genomes set in mapper_db_list
+
+    This is the number of reads that will be discarded due to mapping to host DBs
+* map_1, map_2, ..., map_n
+    Each mapping to a host genome in mapping_db_list will generate a new map_X directory
+    which will contain all files related to that mapping
