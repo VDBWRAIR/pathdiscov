@@ -24,4 +24,7 @@ This completely removes all dependencies and the pipeline. Basically, ``rm -rf``
 
     ./uninstall.sh -full
 
-**Note**: This does not remove the system packages your administrator had to install during the :ref:`install-system-packages`
+**Notes**: 
+
+1. This does not remove the system packages your administrator had to install during the :ref:`install-system-packages`
+2. Neither of these uninstall commands will remove the established directory that was cloned during installation so you will still have the usamriidPathDiscov directory. You will have to do ``rm -rf`` on this directory if you want to remove absolutely everything associated with this pipeline.
