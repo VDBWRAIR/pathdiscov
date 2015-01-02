@@ -10,4 +10,5 @@ Table of Contents:
     usamriidPathDiscov_cli
     make_summary
     make_pie
+    verifydatabases
     uninstall
