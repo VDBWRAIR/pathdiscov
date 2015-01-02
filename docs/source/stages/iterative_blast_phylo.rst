@@ -11,7 +11,10 @@ iterative_blast_phylo
         #. Pull out top blast results only
         #. Then annotate top blast result
         #. Get all reads that didn't blast
+        #. Count reads that didn't blast and add to .count file with name of 
+           blast_task_list
         #. Get superclass counts file
+        #. Symlink x.contig.noblast.fasta as input to next blast_db_list
 #. Create reports for all blast_task_list items
 
 Configuration Options
@@ -59,7 +62,7 @@ Output
 * 1.contig.fasta or 1.R1.fasta,1.R2.fasta
     Symlink to input reads
 * contig.count
-    Counts for all stages
+    Counts for all stages with names from blast_task_list
 * tmp_contig_1, tmp_contig_2
     Contains files that were split during initial blasting
 * x.contig.blast
