@@ -28,6 +28,14 @@ usamriidPathDiscov.metadata module
     :undoc-members:
     :show-inheritance:
 
+usamriidPathDiscov.verifydatabases module
+-----------------------------------------
+
+.. automodule:: usamriidPathDiscov.verifydatabases
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 usamriidPathDiscov.verifyproject module
 ---------------------------------------
 

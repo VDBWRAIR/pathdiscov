@@ -15,7 +15,7 @@ The graphic depicts sample compisition in the form of 4 pie graphics depicting:
 Example
 =======
 
-This example was built using the testoutDir created via the example in the :doc:`install`
+This example was built using the testoutDir created via the example in the :doc:`../install`
 
 .. code-block:: bash
 
@@ -24,7 +24,7 @@ This example was built using the testoutDir created via the example in the :doc:
 This will create a directory called host_vector_pathogen inside of the current directory. Inside of that directory
 you will find the file testoutDir.png that looks like this:
 
-.. image:: _static/example_make_pie.png
+.. image:: ../_static/example_make_pie.png
     :width: 100%
 
 Vector Composition

@@ -29,6 +29,13 @@ Ubuntu
 Installation
 ============
 
+#. Clone the repository
+
+    .. code-block:: bash
+
+        git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
+        cd usamriidPathDiscov
+
 #. Setup a virtualenv to install into
 
     .. code-block:: bash
@@ -83,13 +90,21 @@ You must refer to built documentation to set up these databases. These databases
 
     See :doc:`databases`
 
-#. Quick verify of necessary executables
+#. Quick verify of a few things
 
-    .. code-block:: bash
+    * See if required executables are available
 
-        # These should now all be in your path so should work
-        apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
-        for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
+        .. code-block:: bash
+
+            # These should now all be in your path so should work
+            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
+            for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
+
+    * See if your databases are available as specified in config
+
+        .. code-block:: bash
+
+            verifydatabases usamriidPathDiscov/files/config.yaml
 
 #. Optional: Run a sample dataset
 

@@ -75,5 +75,11 @@ Download human rna from the same URL, the version of the geome might be differen
    popd
    # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml'
    sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml
-   
 
+Verify Databases
+================
+
+You will probably want to ensure that the pipeline can find all of your databases.
+There is now a handy script that you can use to do this prior to installing.
+
+:doc:`scripts/verifydatabases`
