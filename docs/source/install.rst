@@ -45,7 +45,7 @@ Installation
         source usamriidPathDiscov/bin/activate
         pip install paver
 
-#. Setup `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
+#. Setup usamriidPathDiscov/files/config.yaml.base
 
     #. Copy config.yaml.base to config.yaml
 
