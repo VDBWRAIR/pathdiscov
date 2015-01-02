@@ -2,6 +2,28 @@
 Running the Pipeline
 ====================
 
+.. _activate:
+
+Activating the Pipeline
+=======================
+
+You must always ensure that the virtualenv that you installed into during the
+:doc:`install` is activated prior to running any portion of the pipeline.
+
+You only have to do this if you have closed your terminal since the last time your
+activated.
+
+You need to specify the full path to the activate script such as
+
+.. code-block:: bash
+
+    $> . /path/to/usamriidPathDiscov/usamriidPathDiscov/bin/activate
+
+When you ran the :doc:`install` the full path to activate should have been printed
+during step #2
+
+You can read more about what virtualenv is `here <https://virtualenv.pypa.io/en/latest/>`_
+
 To get help
 ===========
 
