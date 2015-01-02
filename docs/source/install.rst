@@ -44,6 +44,11 @@ Installation
         python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
         source usamriidPathDiscov/bin/activate
         pip install paver
+        echo '**************************************************************'
+        echo 'Remember this path as you will need it every time you activate
+        echo 'the pipeline:
+        pwd
+        echo '**************************************************************'
 
 #. Setup usamriidPathDiscov/files/config.yaml.base
 
