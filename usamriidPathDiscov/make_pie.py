@@ -16,7 +16,7 @@ def main():
     if not isdir( outdir ):
         os.makedirs( outdir )
     for proj in args.project_path:
-        outpath = join( outdir, basename(proj) + '.png' )
+        outpath = join( outdir, basename(normpath(proj)) + '.png' )
         create_image( proj, output_path=outpath )
 
 def host_vector_pathogen( phylo_files ):

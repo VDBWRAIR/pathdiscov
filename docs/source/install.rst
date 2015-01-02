@@ -36,7 +36,7 @@ Installation
         git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
         cd usamriidPathDiscov
 
-#. Setup a virtualenv to install into
+#. Setup a :ref:`virtualenv <activate>` to install into
 
     .. code-block:: bash
 
@@ -44,8 +44,25 @@ Installation
         python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
         source usamriidPathDiscov/bin/activate
         pip install paver
+        cat <<EOF
 
-#. Setup `usamriidPathDiscov/files/config.yaml.base <../../../usamriidPathDiscov/files/config.yaml.base>`_
+
+
+        **************************************************************
+        Remember this path as you will need it every time you activate
+        the pipeline:
+
+
+        $(pwd)/usamriidPathDiscov/bin/activate
+
+
+        **************************************************************
+
+
+        EOF
+        echo
+
+#. Setup usamriidPathDiscov/files/config.yaml.base
 
     #. Copy config.yaml.base to config.yaml
 
@@ -63,8 +80,8 @@ Installation
 
         .. code-block:: bash
 
-            SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-            NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
+            SEQUENCE_PLATFORM: illumina #choices are: illumina,454
+            NODE_NUM: 10 # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
 
 #. Install the pipeline into the virtualenv
 
@@ -81,7 +98,7 @@ Installation
 
         cd docs
         make clean && make html
-        firefox build/html/install.html
+        firefox build/html/install.html &
         cd ..
 
 #. Blast/Bowtie databases setup
@@ -113,4 +130,4 @@ Installation
 
     .. code-block:: bash
 
-        usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
+        usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --outdir testoutDir

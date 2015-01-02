@@ -10,7 +10,7 @@ Directory Setup
 .. code-block:: bash
     
     mkdir -p ~/databases/{humandna,humanrna,ncbi}
-    mkdir -p ~/databases/ncbi/blast/{nt}
+    mkdir -p ~/databases/ncbi/blast/{nt,taxonomy}
 
 Blast
 =====
@@ -23,6 +23,18 @@ This may take longer time depending on your network connection.
 
     usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
 
+Taxonomy
+========
+
+You need to download and extract the taxonomy databases as well so the pipeline
+can extract taxonomy names for each of the blast results
+
+.. code-block:: bash
+
+    pushd ~/databases/ncbi/blast/taxonomy
+    wget http://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O - | tar xzvf -
+    popd
+
 Host Genome
 ===========
 
@@ -32,14 +44,14 @@ Download the version of the genome you like, the current version is GRCh38/hg38.
 
 The page can be found at http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/
 
-There you can download the host DNA and RNA. Just note that the download is ~700 mb  and could take a long time depending on your connection. Once you have downloaded the file you will need to extract it and index it using 'bowtie2-build' and then set the correct path in the :ref:`config-yaml-base`
+There you can download the host DNA and RNA. Just note that the download is ~700 mb and could take a long time depending on your connection. Once you have downloaded the file you will need to extract it and index it using 'bowtie2-build' and then set the correct path in the :ref:`config-yaml-base`
 
 If you don't have enough space in your home directory for the genome you plan to use, you may download the `databases` anywhere in your network and make a symoblic link to `$HOME/databases`
 as follows.
 
 .. code-block:: bash
       
-     ln -s {/path/to/databases}   $HOME/databases
+     ln -s /path/to/databases $HOME/databases
 
 Example Setup
 -------------
@@ -51,16 +63,16 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
 .. code-block:: bash
 
     pushd ~/databases/humandna
-    wget  http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
-    tar -xzvf  hg38.chromFa.tar.gz
-    rm  chroms/*_random.fa
-    rm  chroms/*alt.fa
-    # NOTE: If you have multiple hosts, you may download the fasta files of all hosts to same folder ('chroms/') and concatinate as show below. You may also modify the names accordingly, exmaple instead of hg38, you may name  'allHost.fa'
+    wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
+    tar -xzvf hg38.chromFa.tar.gz
+    rm chroms/*_random.fa
+    rm chroms/*alt.fa
+    # NOTE: If you have multiple hosts, you may download the fasta files of all hosts to same folder ('chroms/') and concatinate as show below. You may also modify the names accordingly, exmaple instead of hg38, you may name 'allHost.fa'
     cat chroms/*.fa > hg38_all.fa
     #index the database using bowite2-build
     bowtie2-build hg38_all.fa hg38
     popd
-    # replace the location of indexed database in the template config  file  'usamriidPathDiscov/files/config.yaml'
+    # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
     sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml
 
 Download human rna from the same URL, the version of the geome might be different.
@@ -68,13 +80,13 @@ Download human rna from the same URL, the version of the geome might be differen
 .. code-block:: bash
    
    pushd ~/databases/humanrna
-   wget  http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/mrna.fa.gz 
+   wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/mrna.fa.gz 
    gunzip mrna.fa.gz
    # index the database suing bowtie2-build
    bowtie2-build mrna.fa hg38_mrna
    popd
-   # replace the location of indexed database in the template config   file  'usamriidPathDiscov/files/config.yaml'
-   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%'  usamriidPathDiscov/files/config.yaml
+   # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
+   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
 
 Verify Databases
 ================
