@@ -80,8 +80,8 @@ Installation
 
         .. code-block:: bash
 
-            SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
-            NODE_NUM: 10  # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
+            SEQUENCE_PLATFORM: illumina #choices are: illumina,454
+            NODE_NUM: 10 # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
 
 #. Install the pipeline into the virtualenv
 
@@ -98,7 +98,7 @@ Installation
 
         cd docs
         make clean && make html
-        firefox build/html/install.html
+        firefox build/html/install.html &
         cd ..
 
 #. Blast/Bowtie databases setup
@@ -130,4 +130,4 @@ Installation
 
     .. code-block:: bash
 
-        usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  -R2 $(pwd)/testData/R.fastq  --outdir  testoutDir
+        usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --outdir testoutDir

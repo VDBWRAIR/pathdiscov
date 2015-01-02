@@ -39,7 +39,7 @@ as follows.
 
 .. code-block:: bash
       
-     ln -s {/path/to/databases}   $HOME/databases
+     ln -s /path/to/databases $HOME/databases
 
 Example Setup
 -------------
