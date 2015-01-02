@@ -10,7 +10,7 @@ Directory Setup
 .. code-block:: bash
     
     mkdir -p ~/databases/{humandna,humanrna,ncbi}
-    mkdir -p ~/databases/ncbi/blast/{nt}
+    mkdir -p ~/databases/ncbi/blast/{nt,taxonomy}
 
 Blast
 =====
@@ -22,6 +22,18 @@ This may take longer time depending on your network connection.
 .. code-block:: bash
 
     usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
+
+Taxonomy
+========
+
+You need to download and extract the taxonomy databases as well so the pipeline
+can extract taxonomy names for each of the blast results
+
+.. code-block:: bash
+
+    pushd ~/databases/ncbi/blast/taxonomy
+    wget http://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O - | tar xzvf -
+    popd
 
 Host Genome
 ===========

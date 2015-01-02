@@ -85,13 +85,18 @@ class TestVerifyDatabases(object):
         self.nt = ['nt.00.1', 'nt.00.2', 'nt.01.1', 'nt.01.2']
         self.hdna = ['hdna.1.bt2', 'hdna.2.bt2', 'hdna.rev.1.bt2', 'hdna.rev.2.bt2']
         self.hrna = ['hrna.1.bt2', 'hrna.2.bt2', 'hrna.rev.1.bt2', 'hrna.rev.2.bt2']
-        self.dbs = [self.hdna, self.hrna, self.nt]
+        self.taxnames = ['names.dmp']
+        self.taxnodes = ['names.dmp']
+        self.dbs = [
+            self.hdna, self.hrna, self.nt,
+            self.taxnames, self.taxnodes
+        ]
 
     @patch('usamriidPathDiscov.verifydatabases.glob')
     def test_contains_all_databases(self, mglob):
         self.hdna.append('hdna_all.fa')
         self.hdna.append('hdna.chromFa.tar.gz')
-        mglob.glob.side_effect = [self.hdna, self.hrna, self.nt]
+        mglob.glob.side_effect = self.dbs
         r = verifydatabases.verifydatabases(self.config)        
         assert_true(r)
 
@@ -103,8 +108,9 @@ class TestVerifyDatabases(object):
         assert_is_not_none(r)
 
     def test_database_does_not_exist(self):
+        self.setUp()
         with patch('usamriidPathDiscov.verifydatabases.glob') as mglob:
-            for i in range(3):
+            for i in range(len(self.dbs)):
                 yield self.missing_entire_db, mglob, i
 
     @patch('usamriidPathDiscov.verifydatabases.glob')
@@ -121,13 +127,13 @@ class TestVerifyDatabases(object):
     @patch('usamriidPathDiscov.verifydatabases.glob')
     def test_converts_environmental_vars(self, mglob):
         self.config['databases'] = '$HOME/databases'
-        mglob.glob.side_effect = [self.hdna, self.hrna, self.nt]
+        mglob.glob.side_effect = self.dbs
         r = verifydatabases.verifydatabases(self.config)        
         assert_true(r)
 
     @patch('usamriidPathDiscov.verifydatabases.glob')
     def test_converts_tilda_paths(self, mglob):
         self.config['databases'] = '~/databases'
-        mglob.glob.side_effect = [self.hdna, self.hrna, self.nt]
+        mglob.glob.side_effect = self.dbs
         r = verifydatabases.verifydatabases(self.config)        
         assert_true(r)

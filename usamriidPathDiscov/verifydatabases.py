@@ -68,7 +68,10 @@ def verifydatabases(config):
     :rtype: bool
     '''
     dbpath = expandvars(expanduser(config['databases']))
-    dbs = ('human_dna', 'human_rna', 'nt_db')
+    dbs = (
+        'human_dna', 'human_rna', 'nt_db',
+        'tax_nodes', 'tax_names'
+    )
     ntdb = join(dbpath, config['nt_db'])
 
     ok = True
