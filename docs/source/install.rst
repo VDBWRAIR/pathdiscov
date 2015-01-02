@@ -86,7 +86,7 @@ Installation
 
 #. Blast/Bowtie databases setup
 
-You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
+    You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
 
     See :doc:`databases`
 
