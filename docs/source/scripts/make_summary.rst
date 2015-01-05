@@ -33,7 +33,7 @@ The contig report contains the following columns
 * Num Ctg
     Number of contigs generated
 * Num blast0 Ctg
-    Not sure
+    Essentially the last value in iterative_blast_phylo_1/contig.counts
 * N50
     N50 of all contig lengths
 * Assembly Length
@@ -56,7 +56,7 @@ The rows are compiled from multiple files
 * Num unassem
     Number of reads that were not mapped
 * Num blast0 Unassem
-    Not sure
+    Essentially the last value in iterative_blast_phylo_2/contig.counts
 * num reads
     Number of reads matching blast row
 * Accession, Family, Virus Genus, descrip
