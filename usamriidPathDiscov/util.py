@@ -51,7 +51,7 @@ def change_fastq_id(input, output, idmapfile):
 
     for origid, record in seqrec_id_to_num(infh):
         # Write mapping
-        outmapfh.write('{0}\t{1}\n'.format(record.id,origid))
+        outmapfh.write('{0}\t{1}\n'.format(record.id,record.description))
         # Remove description
         record.description = ''
         # Convert . -> N in sequence

@@ -44,6 +44,19 @@ class TestChangeFastqId(Base):
             call('3\tid3\n'),
         ])
 
+    def test_preserves_description_in_map_file(self):
+        self.mock_fastq_handle.lines = [
+            '@id1 preserveme\n',
+            'ATGC\n',
+            '+\n',
+            '!!!!\n'
+        ]
+        self._C(self.mock_fastq_handle, self.outfqfh, self.outmapfh)
+        self.outmapfh.write.assert_has_calls(call('1\tid1 preserveme\n'))
+        self.outfqfh.write.assert_has_calls(call(
+            '@1\nATGC\n+\n!!!!\n'
+        ))
+
     def test_trims_plusline(self):
         # Add line with that extra stuff on + line
         self.mock_fastq_handle.lines = [
