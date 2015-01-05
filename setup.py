@@ -278,6 +278,9 @@ setup_dict = dict(
             'make_summary = usamriidPathDiscov.make_summary:main',
             'make_pie = usamriidPathDiscov.make_pie:main',
             'verifydatabases = usamriidPathDiscov.verifydatabases:main',
+            'linecount = usamriidPathDiscov.linecount:main',
+            'sff2fastq = usamriidPathDiscov.sff2fastq:main',
+            'step1 = usamriidPathDiscov.stages.step1:main',
         ],
     },
     # These all get copied to our installation's bin folder for us

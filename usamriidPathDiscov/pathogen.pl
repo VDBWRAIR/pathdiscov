@@ -221,7 +221,8 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 				
-				my $cmd = "$path_scripts/step1/step1.pl --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
+				#my $cmd = "$path_scripts/step1/step1.pl --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
+				my $cmd = "step1 --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
 				print "\n";
 						

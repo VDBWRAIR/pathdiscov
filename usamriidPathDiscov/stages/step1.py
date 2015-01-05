@@ -86,7 +86,7 @@ def step1(mates, outputdir, logs, samplename, timestamp, paramfile):
     logbase = join(logs, '{0}.{1}-out'.format(samplename,timestamp))
     stdoutlog = open(logbase+'.o','w')
     stderrlog = open(logbase+'.e','w')
-
+    
     # Iter over mate list
     for matenum, mate in enumerate(mates, start=1):
         # Get easy reference to mate name
