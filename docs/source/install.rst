@@ -15,7 +15,7 @@ CentOS
 
 .. code-block:: bash
 
-    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel freetype-devel libpng-devel
+    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget
     #> yum groupinstall Development Tools
     
 Ubuntu
@@ -62,6 +62,12 @@ Installation
         EOF
         echo
 
+#. Databases setup
+
+    You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
+
+    See :doc:`databases` or `<databases.rst>`_ if you have not built the docs
+
 #. Setup usamriidPathDiscov/files/config.yaml.base
 
     #. Copy config.yaml.base to config.yaml
@@ -100,12 +106,6 @@ Installation
         make clean && make html
         firefox build/html/install.html &
         cd ..
-
-#. Blast/Bowtie databases setup
-
-    You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
-
-    See :doc:`databases`
 
 #. Quick verify of a few things
 

@@ -105,7 +105,7 @@ class TestVerifyDatabases(object):
         mglob.glob.side_effect = self.dbs
         r = verifydatabases.verifydatabases(self.config)
         assert_false(r)
-        assert_is_not_none(r)
+        ok_(r is not None)
 
     def test_database_does_not_exist(self):
         self.setUp()
@@ -122,7 +122,7 @@ class TestVerifyDatabases(object):
         mglob.glob.side_effect = self.dbs
         r = verifydatabases.verifydatabases(self.config)        
         assert_false(r)
-        assert_is_not_none(r)
+        ok_(r is not None)
 
     @patch('usamriidPathDiscov.verifydatabases.glob')
     def test_converts_environmental_vars(self, mglob):
