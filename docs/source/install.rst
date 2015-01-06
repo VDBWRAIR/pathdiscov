@@ -66,7 +66,7 @@ Installation
 
     You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
 
-    See :doc:`databases` or `databases.rst`_ if you have not built the docs
+    See :doc:`databases` or `<databases.rst>`_ if you have not built the docs
 
 #. Setup usamriidPathDiscov/files/config.yaml.base
 
