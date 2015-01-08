@@ -404,7 +404,7 @@ def install_other_dependencies():
 
 @task
 def install_python_dependencies():
-    sh('pip install -r requirements-dev.txt --download-cache usamriidPathDiscov/download/.pip_cache')
+    sh('pip install --no-index --find-links=./usamriidPathDiscov/download/python_packages -r requirements-dev.txt')
 
 @task
 @needs('install_dependencies')
