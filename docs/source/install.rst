@@ -43,7 +43,7 @@ Installation
         wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
         python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
         source usamriidPathDiscov/bin/activate
-        pip install paver
+        pip install --no-index --find-links=./usamriidPathDiscov/download/python_packages paver
         cat <<EOF
 
 
