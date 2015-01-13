@@ -262,7 +262,7 @@ def download_install_fastqc(options):
     # No need to redownload
     if not len(fastqczip):
         info("Downloading FastQC from %s" % options.FastQC.url)
-        dlcmd = 'cd %s; wget %s' % (options.FastQC.downloads,options.FastQC.url)
+        dlcmd = 'cd %s && [ ! -e fastqc*.zip ] && wget %s' % (options.FastQC.downloads,options.FastQC.url)
         sh(dlcmd)
     else:
         info("FastQC Already downloaded")
@@ -331,7 +331,7 @@ def getorf(options):
         currwd = os.getcwd()
         src = path(currwd) / options.getorf.src
         sfile = path(currwd) / options.getorf.sfile
-        sh('(cd %s; cd %s;./configure CC="cc"; ./configure --prefix=%s --without-x;make;make install)' %(src, sfile, sfile))
+        sh('(cd %s; ./configure CC="cc" --without-x; make)' %(sfile))
 
 def ensure_line_in_file(filepath, line):
     with open(filepath,'r+') as fh:
