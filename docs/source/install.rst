@@ -114,7 +114,7 @@ Installation
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc )
+            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl )
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
 
     * See if your databases are available as specified in config
@@ -131,3 +131,44 @@ Installation
     .. code-block:: bash
 
         usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --outdir testoutDir
+
+Offline Installation
+====================
+
+There may be some instances where you need to install onto an offline workstation. You can achieve this by the following method
+
+#. Clone the usamriidPathDiscov project from github
+#. Download all of the required software prior to installation and place in usamriidPathDiscov/download
+    * `htslib <https://github.com/samtools/htslib>`_
+    * `samtools <https://github.com/samtools/samtools>`_
+    * `bwa <https://github.com/lh3/bwa>`_
+    * `fastqc <http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip>`_
+#. Download all of the required python packages
+
+    .. code-block:: bash
+
+        mkdir -p usamriidPathDiscov/download/python_packages; pip install --no-use-wheel -d usamriidPathDiscov/download/python_packages -r requirements-dev.txt 
+        pip install --no-use-wheel -d usamriidPathDiscov/download/python_packages virtualenv paver
+
+#. Once downloaded make sure all of the files are extracted if needed and the following directories/files exist
+    * usamriidPathDiscov/download/htslib
+    * usamriidPathDiscov/download/samtools
+    * usamriidPathDiscov/download/bwa
+    * usamriidPathDiscov/download/fastqc_v0.11.2.zip
+#. Now you can copy the git cloned usamriidPathDiscov directory to your offline workstation to kick off the install
+
+    .. code-block:: bash
+
+        cd usamriidPathDiscov
+
+#. Install virtualenv and python packages into that virtualenv
+
+    .. code-block:: bash
+
+        tar xzf usamriidPathDiscov/download/python_packages/virtualenv*
+        python virtualenv*/virtualenv.py usamriidPathDiscov
+        . usamriidPathDiscov/bin/activate
+        pip install --no-index --find-links=usamriidPathDiscov/download/python_packages six argparse numpy paver
+        pip install --no-index --find-links=usamriidPathDiscov/download/python_packages -r requirements-dev.txt
+#. Now you can start the normal installation process from the Databases setup step
+
