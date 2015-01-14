@@ -78,12 +78,12 @@ def verifydatabases(config):
     for db in dbs:
         pth = join(dbpath, config[db])
         try:
-            missing = all_db_files_same_prefix(pth, ['.fa', '.gz'])
+            missing = all_db_files_same_prefix(pth, ['.fa', '.gz', '.nal'])
             if missing:
                 ok = False
                 sys.stderr.write('Please check {0} as the following database extensions' \
                     'are missing from some database files {1}\n'.format(pth,missing))
         except ValueError as e:
-            sys.stderr.write(e.message + '\n')
+            sys.stderr.write(str(e) + '\n')
             ok = False
     return ok

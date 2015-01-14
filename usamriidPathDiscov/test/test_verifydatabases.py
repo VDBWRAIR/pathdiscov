@@ -82,7 +82,7 @@ class TestDatabaseFilesHaveSameNumExtensions(unittest.TestCase):
 class TestVerifyDatabases(object):
     def setUp(self):
         self.config = configyaml()
-        self.nt = ['nt.00.1', 'nt.00.2', 'nt.01.1', 'nt.01.2']
+        self.nt = ['nt.00.1', 'nt.00.2', 'nt.01.1', 'nt.01.2', 'nt.nal']
         self.hdna = ['hdna.1.bt2', 'hdna.2.bt2', 'hdna.rev.1.bt2', 'hdna.rev.2.bt2']
         self.hrna = ['hrna.1.bt2', 'hrna.2.bt2', 'hrna.rev.1.bt2', 'hrna.rev.2.bt2']
         self.taxnames = ['names.dmp']
