@@ -125,6 +125,15 @@ Installation
 
 #. Optional: Run a sample dataset
 
+    Anytime you run the pipeline you need to activate the pipeline first. If the pipeline is activated you will see ```
+    (usamriidPathDiscov)``` in front of your prompt.
+    
+    If it is not activated:
+    
+    .. code-block:: bash
+    
+        source ~/usamriidPathDiscov/usamriidPathDiscov/bin/activate
+
     If your blast database is quite large (like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in
 
