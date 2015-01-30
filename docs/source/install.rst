@@ -123,7 +123,7 @@ Installation
 
             verifydatabases usamriidPathDiscov/files/config.yaml
 
-#. Optional: Run a sample dataset
+#. Optional: Run a Paired-end  dataset
 
     If your blast database is quite large (like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in
@@ -131,6 +131,11 @@ Installation
     .. code-block:: bash
 
         usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --outdir testoutDir
+#. Option 2: Run a Single-end dataset
+
+    .. code-block:: bash
+        
+       samriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  --outdir testoutDir
 
 Offline Installation
 ====================

@@ -19,7 +19,11 @@ options = helpers.get_options()
 basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
 R1 = os.path.abspath(options.R1)
-R2 = os.path.abspath(options.R2)
+R2 = "none"
+if options.R2:
+    R2 = os.path.abspath(options.R2)
+else:
+    R2 = "none"
 
 # Do all initial setup
 config = helpers.parse_config()
@@ -46,11 +50,21 @@ def createPram(output_file):
     return result
 
 #@graphviz(height=1.8, width=2, label="Prepare\nanalysis")
+
+#define file
+if options.R2:
+    pram1= [
+          [R1, join(project_dir, 'input', 'F.fastq')],
+          [R2, join(project_dir, 'input', 'R.fastq')],
+          ]
+else:
+    pram1= [
+          [R1, join(project_dir, 'input', 'F.fastq')],
+          ]
+
+
 @follows(createPram)
-@files([
-    [R1, join(project_dir, 'input', 'F.fastq')],
-    [R2, join(project_dir, 'input', 'R.fastq')],
-])
+@files(pram1)
 def prepare_analysis(input, output):
     """copy the mapfile to analyiss dir
 
@@ -71,17 +85,29 @@ def fastQC(input, output):
 #def convertToPdf(input, output):
     #result = tasks.convertHtmlToPDF(input, output)
     #return result
-param5 = [
-       [[project_dir + "/input/F.fastq", project_dir + "/input/R.fastq"], results]
-]
-
+param2 = [
+           [[project_dir + "/input/F.fastq", project_dir + "/input/R.fastq"], results]
+         ]
 
 #@graphviz(height=1.8, width=2, label="Processing\nstep1")
 @follows(prepare_analysis)
-@files(param5)
+@files(param2)
 #@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results)
-def priStage(input, output):
-    result = tasks.stage1(
+def pairedEndStage(input, output):
+    result = tasks.pairedEnd(
+        input, project_dir, paramFile, config['blast_unassembled'], output)
+    return result
+
+#@graphviz(height=1.8, width=2, label="Processing\nstep1")
+param3 = [
+          [project_dir + "/input/F.fastq", results]
+         ]
+
+@follows(prepare_analysis)
+@files(param3)
+#@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results)
+def singleEndStage(input, output):
+    result = tasks.singleEnd(
         input, project_dir, paramFile, config['blast_unassembled'], output)
     return result
 
@@ -168,49 +194,82 @@ def main():
 
 
     elif options.noparam is False:
-        #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
+        if options.R2:
 
-        #pipeline_printout_graph(
-            #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
-                #"colour_scheme_index": 6}, no_key_legend=False,
-            #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
-            #draw_vertically=True, ignore_upstream_of_target=False)
-        print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
-        pipeline_run(
-            ['usamriidPathDiscov.main.fastQC',
-            #'usamriidPathDiscov.main.convertToPdf',
-            'usamriidPathDiscov.main.priStage'], multiprocess=6)
-        pipeline_get_task_names()  # return task names
+            print "....................." + basedir + "/" + project_dir
+            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,pairedEndStage], verbose=6)
+            pipeline_run(
+                ['usamriidPathDiscov.main.fastQC',
+                #'usamriidPathDiscov.main.convertToPdf',
+                'usamriidPathDiscov.main.pairedEndStage'], multiprocess=6)
+            pipeline_get_task_names()  # return task names
 
-        generateSymLink()
-        ##helpers.run(options)
+            generateSymLink()
+            ##helpers.run(options)
+        else:
+            print "....................." + basedir + "/" + project_dir
+            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,singleEndStage], verbose=6)
+            pipeline_run(
+                ['usamriidPathDiscov.main.fastQC',
+                #'usamriidPathDiscov.main.convertToPdf',
+                'usamriidPathDiscov.main.singleEndStage'], multiprocess=6)
+            pipeline_get_task_names()  # return task names
+
+            generateSymLink()
+
     else:
-        dir_bak = project_dir + ".bak"
-        try:
-            if os.path.exists(project_dir):
-                tasks.copyDir(project_dir,dir_bak )
-                tasks.rmdir(dir)
-        except:
-            pass
-        print "Task names: ", pipeline_get_task_names()
-        #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
+       if options.R2:
+            print """ **********************************************************
 
-        #pipeline_printout_graph(
-            #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
-                #"colour_scheme_index": 6}, no_key_legend=False,
-            #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
-            #draw_vertically=True, ignore_upstream_of_target=False)
-        print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
-        pipeline_run(
-            ['usamriidPathDiscov.main.createPram',
-            'usamriidPathDiscov.main.prepare_analysis',
-            'usamriidPathDiscov.main.fastQC',
-            #'usamriidPathDiscov.main.convertToPdf',
-            'usamriidPathDiscov.main.priStage'], multiprocess=6)
-        pipeline_get_task_names()
-        generateSymLink()
+              Processing Paired end reads ....
+              *****************************************************************
+
+            """
+            dir_bak = project_dir + ".bak"
+            try:
+                if os.path.exists(project_dir):
+                    tasks.copyDir(project_dir,dir_bak )
+                    tasks.rmdir(dir)
+            except:
+                pass
+            print "Task names: ", pipeline_get_task_names()
+            print "....................." + basedir + "/" + project_dir
+            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,pairedEndStage], verbose=6)
+            pipeline_run(
+                ['usamriidPathDiscov.main.createPram',
+                'usamriidPathDiscov.main.prepare_analysis',
+                'usamriidPathDiscov.main.fastQC',
+                #'usamriidPathDiscov.main.convertToPdf',
+                'usamriidPathDiscov.main.pairedEndStage'], multiprocess=6)
+            pipeline_get_task_names()
+            generateSymLink()
+       else:
+            print """ **********************************************************
+
+              Processing single end reads ....
+              *****************************************************************
+
+              """
+
+            dir_bak = project_dir + ".bak"
+            try:
+                if os.path.exists(project_dir):
+                    tasks.copyDir(project_dir,dir_bak )
+                    tasks.rmdir(dir)
+            except:
+                pass
+            print "Task names: ", pipeline_get_task_names()
+            print "....................." + basedir + "/" + project_dir
+            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,singleEndStage], verbose=6)
+            pipeline_run(
+                ['usamriidPathDiscov.main.createPram',
+                'usamriidPathDiscov.main.prepare_analysis',
+                'usamriidPathDiscov.main.fastQC',
+                #'usamriidPathDiscov.main.convertToPdf',
+                'usamriidPathDiscov.main.singleEndStage'], multiprocess=6)
+            pipeline_get_task_names()
+            generateSymLink()
+
 
 
     import datetime

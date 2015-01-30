@@ -83,9 +83,12 @@ $r1=abs_path($r1);
 $r2=abs_path($r2);
 
 `mkdir -p $outputdir`;
-
-print("-|-------pathogen pipeline-------|-\n");
+#if($r2 ne "none"):
+print("-|-------pathogen pipeline paired end run-------|-\n");
 print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 | tee -a $outputdir/analysis.log");
+#else:
+#    print("-|-------pathogen pipeline single end run -------|-\n");
+#    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 | tee -a $outputdir/analysis.log");
 
 # fastq files come in 4-line chunks
 $numreads=$numreads*4;
