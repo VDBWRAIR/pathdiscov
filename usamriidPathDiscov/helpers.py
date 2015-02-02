@@ -203,7 +203,7 @@ def get_options():
     helpstr = f.getvalue()
     options = parser.parse_args()
 
-    mandatory_options = ['R1', 'R2', 'outdir']
+    mandatory_options = ['R1', 'outdir']
 
     def check_mandatory_options(options, mandatory_options, helpstr):
         """

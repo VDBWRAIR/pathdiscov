@@ -19,7 +19,11 @@ options = helpers.get_options()
 basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
 R1 = os.path.abspath(options.R1)
-R2 = os.path.abspath(options.R2)
+R2 = "none"
+if options.R2:
+    R2 = os.path.abspath(options.R2)
+else:
+    R2 = "none"
 
 # Do all initial setup
 config = helpers.parse_config()
@@ -46,11 +50,21 @@ def createPram(output_file):
     return result
 
 #@graphviz(height=1.8, width=2, label="Prepare\nanalysis")
+
+#define file
+if options.R2:
+    pram1= [
+          [R1, join(project_dir, 'input', 'F.fastq')],
+          [R2, join(project_dir, 'input', 'R.fastq')],
+          ]
+else:
+    pram1= [
+          [R1, join(project_dir, 'input', 'F.fastq')],
+          ]
+
+
 @follows(createPram)
-@files([
-    [R1, join(project_dir, 'input', 'F.fastq')],
-    [R2, join(project_dir, 'input', 'R.fastq')],
-])
+@files(pram1)
 def prepare_analysis(input, output):
     """copy the mapfile to analyiss dir
 
@@ -67,22 +81,22 @@ def fastQC(input, output):
     result = tasks.createQuality(input, output)
     return result
 
-#@transform(fastQC, formatter("F_fastqc.html", "R_fastqc.html"), ".pdf")
-#def convertToPdf(input, output):
-    #result = tasks.convertHtmlToPDF(input, output)
-    #return result
-param5 = [
-       [[project_dir + "/input/F.fastq", project_dir + "/input/R.fastq"], results]
-]
-
-
+if R2!="none":
+    param2 = [
+           [[project_dir + "/input/F.fastq", project_dir + "/input/R.fastq"], results]
+         ]
+else:
+    param2 = [
+             [project_dir + "/input/F.fastq", results]
+             ]
 #@graphviz(height=1.8, width=2, label="Processing\nstep1")
 @follows(prepare_analysis)
-@files(param5)
+@files(param2)
 #@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results)
 def priStage(input, output):
-    result = tasks.stage1(
-        input, project_dir, paramFile, config['blast_unassembled'], output)
+
+    result = tasks.priStage(
+            input, project_dir, paramFile, config['blast_unassembled'], output)
     return result
 
 def verify_standard_stages_files(projectpath, templatedir):
@@ -168,13 +182,8 @@ def main():
 
 
     elif options.noparam is False:
-        #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
+        #if options.R2:
 
-        #pipeline_printout_graph(
-            #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
-                #"colour_scheme_index": 6}, no_key_legend=False,
-            #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
-            #draw_vertically=True, ignore_upstream_of_target=False)
         print "....................." + basedir + "/" + project_dir
         pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
         pipeline_run(
@@ -184,8 +193,14 @@ def main():
         pipeline_get_task_names()  # return task names
 
         generateSymLink()
-        ##helpers.run(options)
+
     else:
+        print """ **********************************************************
+
+            Processing Pathogen discovery ....
+            *****************************************************************
+
+        """
         dir_bak = project_dir + ".bak"
         try:
             if os.path.exists(project_dir):
@@ -194,13 +209,6 @@ def main():
         except:
             pass
         print "Task names: ", pipeline_get_task_names()
-        #tasks_torun = [createPram, prepare_analysis,fastQC,convertToPdf, priStage]
-
-        #pipeline_printout_graph(
-            #'snake_eater.ps', 'ps', tasks_torun, user_colour_scheme={
-                #"colour_scheme_index": 6}, no_key_legend=False,
-            #pipeline_name="Pathogen Discovery", size=(11, 8), dpi=30,
-            #draw_vertically=True, ignore_upstream_of_target=False)
         print "....................." + basedir + "/" + project_dir
         pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
         pipeline_run(
@@ -211,7 +219,6 @@ def main():
             'usamriidPathDiscov.main.priStage'], multiprocess=6)
         pipeline_get_task_names()
         generateSymLink()
-
 
     import datetime
     from termcolor import colored
