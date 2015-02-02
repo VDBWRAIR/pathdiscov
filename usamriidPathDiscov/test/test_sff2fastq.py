@@ -15,35 +15,25 @@ class TestMain(Base, BaseTempDir):
         self.parse_args = Mock()
         self.parser = Mock()
         self.parser.return_value.parse_args.return_value = self.parse_args
-        self.in_sffs = [self.sff_file]
+        self.in_sffs = [self.sff_file, self.sffgz_file]
 
     def test_accepts_multiple_sff(self, mock_argparse):
-        mock_argparse.ArgumentParser = self.parser
-        self.parse_args.sfffile = self.in_sffs*10
-        self.parse_args.outfile = 'output.fastq'
-
-        self._C()
-
-        numseq = countlines('output.fastq','fastq')
-        eq_(100,numseq)
-
-    def test_accepts_multiple_single_sff(self, mock_argparse):
         mock_argparse.ArgumentParser = self.parser
         self.parse_args.sfffile = self.in_sffs
         self.parse_args.outfile = 'output.fastq'
 
         self._C()
-        
+
         numseq = countlines('output.fastq','fastq')
-        eq_(10,numseq)
-    
+        eq_(20,numseq)
+
 class TestSffToFastq(Base):
     functionname = 'sff_to_fastq'
 
     def setUp(self):
         super(TestSffToFastq,self).setUp()
         self.outfh = MagicMock(file)()
-        self.in_sffs = [self.sff_file]
+        self.in_sffs = [self.sff_file, self.sffgz_file]
 
     def test_empty_sff_list(self):
         r = self._C([], self.outfh)
@@ -51,26 +41,25 @@ class TestSffToFastq(Base):
         # Should not have written at all
         eq_(0,self.outfh.write.call_count)
 
-    def test_single_sff(self):
-        r = self._C(self.in_sffs, self.outfh)
-        eq_(10,r)
-        eq_(10,self.outfh.write.call_count)
-
     def test_multiple_sff(self):
-        r = self._C(self.in_sffs*10, self.outfh)
-        eq_(10*10,r)
-        eq_(10*10,self.outfh.write.call_count)
+        r = self._C(self.in_sffs, self.outfh)
+        eq_(20,self.outfh.write.call_count)
+        eq_(20,r)
 
-    def test_output_arg_string(self):
-        m = MagicMock(file)
-        outfh = MagicMock(file)
-        sfffh = open(self.sff_file,'rb')
-        m.side_effect = [outfh, sfffh]
-        with patch('__builtin__.open', m, create=True) as m:
-            r = self._C(self.in_sffs, '/path/to/out.fastq')
-            m.assert_has_calls([
-                call('/path/to/out.fastq','w'),
-                call(self.in_sffs[0],'rb')
-            ])
-            eq_(10,r)
-            eq_(10,outfh.write.call_count)
+import unittest2 as unittest
+import mock
+
+from .. import sff2fastq
+
+class TestFileHandle(unittest.TestCase):
+    def test_opens_gzip(self):
+        with mock.patch.object(sff2fastq, 'gzip') as mgzip:
+            r = sff2fastq.file_handle('/path/to/foo.sff.gz', 'rb')
+            self.assertEqual((mgzip.open.return_value, 'sff'), r)
+            mgzip.open.assert_called_once_with('/path/to/foo.sff.gz', 'rb')
+
+    def test_opens_normal(self):
+        with mock.patch('__builtin__.open') as mopen:
+            r = sff2fastq.file_handle('/path/to/foo.sff', 'rb')
+            self.assertEqual((mopen.return_value, 'sff'), r)
+            mopen.assert_called_once_with('/path/to/foo.sff', 'rb')
