@@ -101,7 +101,7 @@ def comment():
     return "*" * 80
 #pathogen.pl --sample sample1 --command step1 --paramfile param.txt --outputdir ../results/sample1 --R1 /my/data/R1.fastq.gz --R2 /my/data/R2.fastq.gz > ../logs/out1.o 2> ../logs/out1.e &
 #input=[pathDescTest/input/F.fastq, pathDescTest/input/R.fastq, pathDescTest, step1,pathDescTest/input/param.txt, pathDescTest/logs/out.o, pathDescTest/logs/out.e]
-def pairedEnd(input, project_dir, paramFile,numreads, output):
+def priStage(input, project_dir, paramFile,numreads, output):
     """run step  1 of pathogen discovery
     Arguments:
         -`input`: list of F and R fastq file
@@ -122,57 +122,39 @@ def pairedEnd(input, project_dir, paramFile,numreads, output):
             ##'2>', output + "/step1/logs/out1.e",
 
             #]
-    ffastq,rfastq = input
-    cmds = [
-        'run_standard_stable4.pl',
-        '--sample', project_dir,
-        '--paramfile', paramFile,
-        '--outputdir', output,
-        '--R1', ffastq,
-        '--R2', rfastq,
-        '--blast_unassembled', str(numreads),
-    ]
-    cmds = '  '.join(cmds)
-    cmds += "| tee  -a "  + output + "/analysis.log"
-    print cmds
-    p = runCommand(cmds, "F")
-    return
-
-
-def singleEnd(input, project_dir, paramFile,numreads, output):
-    """run step  1 of pathogen discovery
-    Arguments:
-        -`input`: list of F and R fastq file
-        -`output`: output directory
-        -`pramfile`: parameter file name
-        -`output`: outdir for the output
-        -`logdir`: log dir
-    """
-    #numreads = blast_unassembled * 4
-    #cmds = ['pathogen.pl',
-            #'--sample', project_dir,
-            #'--command', "step1 quality_filter  host_map ray2_assembly",
-            #'--paramfile', paramFile,
-            #'--outputdir', output,
-            #'--R1', F_fastq,
-            #'--R2', R_fastq,
-            ##'>', output + "/step1/logs/out1.o",
-            ##'2>', output + "/step1/logs/out1.e",
-
-            #]
-    cmds = [
+    if len(input)==2:
+        ffastq,rfastq = input
+        cmds = [
+            'run_standard_stable4.pl',
+            '--sample', project_dir,
+            '--paramfile', paramFile,
+            '--outputdir', output,
+            '--R1', ffastq,
+            '--R2', rfastq,
+            '--blast_unassembled', str(numreads),
+        ]
+        cmds = '  '.join(cmds)
+        cmds += "| tee  -a "  + output + "/analysis.log"
+        print cmds
+        p = runCommand(cmds, "F")
+        return
+    else:
+        input =input
+        cmds = [
         'run_standard_stable4.pl',
         '--sample', project_dir,
         '--paramfile', paramFile,
         '--outputdir', output,
         '--R1', input,
         '--blast_unassembled', str(numreads),
-    ]
-    cmds = '  '.join(cmds)
-    cmds += "| tee  -a "  + output + "/analysis.log"
-    print cmds
-    p = runCommand(cmds, "F")
-    return
+        ]
+        cmds = '  '.join(cmds)
+        cmds += "| tee  -a "  + output + "/analysis.log"
+        print cmds
+        p = runCommand(cmds, "F")
+        return
+
+
 
 
 

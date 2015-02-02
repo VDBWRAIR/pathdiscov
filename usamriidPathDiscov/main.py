@@ -81,34 +81,22 @@ def fastQC(input, output):
     result = tasks.createQuality(input, output)
     return result
 
-#@transform(fastQC, formatter("F_fastqc.html", "R_fastqc.html"), ".pdf")
-#def convertToPdf(input, output):
-    #result = tasks.convertHtmlToPDF(input, output)
-    #return result
-param2 = [
+if R2!="none":
+    param2 = [
            [[project_dir + "/input/F.fastq", project_dir + "/input/R.fastq"], results]
          ]
-
+else:
+    param2 = [
+             [project_dir + "/input/F.fastq", results]
+             ]
 #@graphviz(height=1.8, width=2, label="Processing\nstep1")
 @follows(prepare_analysis)
 @files(param2)
 #@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results)
-def pairedEndStage(input, output):
-    result = tasks.pairedEnd(
-        input, project_dir, paramFile, config['blast_unassembled'], output)
-    return result
+def priStage(input, output):
 
-#@graphviz(height=1.8, width=2, label="Processing\nstep1")
-param3 = [
-          [project_dir + "/input/F.fastq", results]
-         ]
-
-@follows(prepare_analysis)
-@files(param3)
-#@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results)
-def singleEndStage(input, output):
-    result = tasks.singleEnd(
-        input, project_dir, paramFile, config['blast_unassembled'], output)
+    result = tasks.priStage(
+            input, project_dir, paramFile, config['blast_unassembled'], output)
     return result
 
 def verify_standard_stages_files(projectpath, templatedir):
@@ -194,83 +182,43 @@ def main():
 
 
     elif options.noparam is False:
-        if options.R2:
+        #if options.R2:
 
-            print "....................." + basedir + "/" + project_dir
-            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,pairedEndStage], verbose=6)
-            pipeline_run(
-                ['usamriidPathDiscov.main.fastQC',
-                #'usamriidPathDiscov.main.convertToPdf',
-                'usamriidPathDiscov.main.pairedEndStage'], multiprocess=6)
-            pipeline_get_task_names()  # return task names
+        print "....................." + basedir + "/" + project_dir
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
+        pipeline_run(
+            ['usamriidPathDiscov.main.fastQC',
+            #'usamriidPathDiscov.main.convertToPdf',
+            'usamriidPathDiscov.main.priStage'], multiprocess=6)
+        pipeline_get_task_names()  # return task names
 
-            generateSymLink()
-            ##helpers.run(options)
-        else:
-            print "....................." + basedir + "/" + project_dir
-            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,singleEndStage], verbose=6)
-            pipeline_run(
-                ['usamriidPathDiscov.main.fastQC',
-                #'usamriidPathDiscov.main.convertToPdf',
-                'usamriidPathDiscov.main.singleEndStage'], multiprocess=6)
-            pipeline_get_task_names()  # return task names
-
-            generateSymLink()
+        generateSymLink()
 
     else:
-       if options.R2:
-            print """ **********************************************************
+        print """ **********************************************************
 
-              Processing Paired end reads ....
-              *****************************************************************
+            Processing Pathogen discovery ....
+            *****************************************************************
 
-            """
-            dir_bak = project_dir + ".bak"
-            try:
-                if os.path.exists(project_dir):
-                    tasks.copyDir(project_dir,dir_bak )
-                    tasks.rmdir(dir)
-            except:
-                pass
-            print "Task names: ", pipeline_get_task_names()
-            print "....................." + basedir + "/" + project_dir
-            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,pairedEndStage], verbose=6)
-            pipeline_run(
-                ['usamriidPathDiscov.main.createPram',
-                'usamriidPathDiscov.main.prepare_analysis',
-                'usamriidPathDiscov.main.fastQC',
-                #'usamriidPathDiscov.main.convertToPdf',
-                'usamriidPathDiscov.main.pairedEndStage'], multiprocess=6)
-            pipeline_get_task_names()
-            generateSymLink()
-       else:
-            print """ **********************************************************
-
-              Processing single end reads ....
-              *****************************************************************
-
-              """
-
-            dir_bak = project_dir + ".bak"
-            try:
-                if os.path.exists(project_dir):
-                    tasks.copyDir(project_dir,dir_bak )
-                    tasks.rmdir(dir)
-            except:
-                pass
-            print "Task names: ", pipeline_get_task_names()
-            print "....................." + basedir + "/" + project_dir
-            pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,singleEndStage], verbose=6)
-            pipeline_run(
-                ['usamriidPathDiscov.main.createPram',
-                'usamriidPathDiscov.main.prepare_analysis',
-                'usamriidPathDiscov.main.fastQC',
-                #'usamriidPathDiscov.main.convertToPdf',
-                'usamriidPathDiscov.main.singleEndStage'], multiprocess=6)
-            pipeline_get_task_names()
-            generateSymLink()
-
-
+        """
+        dir_bak = project_dir + ".bak"
+        try:
+            if os.path.exists(project_dir):
+                tasks.copyDir(project_dir,dir_bak )
+                tasks.rmdir(dir)
+        except:
+            pass
+        print "Task names: ", pipeline_get_task_names()
+        print "....................." + basedir + "/" + project_dir
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
+        pipeline_run(
+            ['usamriidPathDiscov.main.createPram',
+            'usamriidPathDiscov.main.prepare_analysis',
+            'usamriidPathDiscov.main.fastQC',
+            #'usamriidPathDiscov.main.convertToPdf',
+            'usamriidPathDiscov.main.priStage'], multiprocess=6)
+        pipeline_get_task_names()
+        generateSymLink()
 
     import datetime
     from termcolor import colored
