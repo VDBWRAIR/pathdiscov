@@ -1,6 +1,8 @@
 import argparse
 from Bio import SeqIO
 import itertools
+import gzip
+from os.path import splitext
 
 def sff_to_fastq(sfffiles, outfile):
     '''
@@ -16,10 +18,25 @@ def sff_to_fastq(sfffiles, outfile):
     if isinstance(outfile,str):
         outfh = open(outfile,'w')
     # Creates one continuous stream of seqrecords from all input sff
-    all_records = itertools.chain.from_iterable([SeqIO.parse(open(sff,'rb'), 'sff') for sff in sfffiles])
+    all_records = itertools.chain.from_iterable([SeqIO.parse(*file_handle(sff,'rb')) for sff in sfffiles])
     # Write all records to outfh as fastq
     numwritten = SeqIO.write(all_records, outfh, 'fastq')
     return numwritten
+
+def file_handle(filepath, mode):
+    '''
+    :param str filepath: path to file to open
+    :param str mode: file mode to open with
+    :return: (opened file handle, file extension)
+    '''
+    root, ext = splitext(filepath.replace('.gz',''))
+    # Remove the period in extension
+    ext = ext[1:]
+    if filepath.endswith('.gz'):
+        handle = gzip.open(filepath, mode)
+    else:
+        handle = open(filepath, mode)
+    return (handle, ext)
 
 def parse_args():
     parser = argparse.ArgumentParser('Convert sff to fastq')
