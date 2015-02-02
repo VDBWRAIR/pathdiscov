@@ -430,3 +430,22 @@ def setup_param(config):
         line = re.sub(r'TAX_NODES', config['tax_nodes'], line.rstrip())
         line = re.sub(r'TAX_NAMES', config['tax_names'], line.rstrip())
         print (line)
+
+def format_fastq(fastq_gz, fastq_output):
+    """Extract fastq.gz file
+
+ Arguments:
+    - `fastq_file`: Gzipped fastq file downloaded from sequencing center
+    - `fastq_output`: gunzipped fastq file
+    """
+    import gzip
+    fo = open(fastq_output, 'w')
+    with gzip.open(fastq_gz, 'rb') as fz:
+        for line in fz:
+            fo.write(line)
+def isGzip(input):
+    if input.endswith(".gz"):
+        return True
+    else:
+        return False
+

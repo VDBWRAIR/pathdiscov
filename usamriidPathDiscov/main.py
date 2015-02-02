@@ -9,7 +9,7 @@ import os
 import re
 import distutils.spawn
 import fileinput
-from helpers import runCommand
+from helpers import runCommand,isGzip,format_fastq
 from pkg_resources import resource_filename
 from os.path import join, expanduser, expandvars
 
@@ -43,6 +43,7 @@ def report(result):
     result.report(logger_proxy, logging_mutex)
     print result
 
+
 @follows(mkdir(project_dir, input, results, logs))
 @originate([paramFile])
 def createPram(output_file):
@@ -51,17 +52,28 @@ def createPram(output_file):
 
 #@graphviz(height=1.8, width=2, label="Prepare\nanalysis")
 
-#define file
-if options.R2:
-    pram1= [
-          [R1, join(project_dir, 'input', 'F.fastq')],
-          [R2, join(project_dir, 'input', 'R.fastq')],
-          ]
-else:
-    pram1= [
-          [R1, join(project_dir, 'input', 'F.fastq')],
-          ]
 
+if options.R2:
+    if isGzip(R1):
+        pram1= [
+            [R1, join(project_dir, 'input', 'F.fastq.gz')],
+            [R2, join(project_dir, 'input', 'R.fastq.gz')],
+            ]
+    else:
+        pram1= [
+            [R1, join(project_dir, 'input', 'F.fastq')],
+            [R2, join(project_dir, 'input', 'R.fastq')],
+            ]
+
+else:
+    if isGzip(R1):
+        pram1= [
+            [R1, join(project_dir, 'input', 'F.fastq.gz')],
+            ]
+    else:
+        pram1= [
+            [R1, join(project_dir, 'input', 'F.fastq')],
+            ]
 
 @follows(createPram)
 @files(pram1)
@@ -74,6 +86,17 @@ def prepare_analysis(input, output):
     """
     result = tasks.copy_map_file(input, output)
     return result
+
+@active_if(isGzip(R1))
+@transform(prepare_analysis, regex(r"(.+).fastq.gz"), r"\1.fastq")
+def ungizp_fastq(input,output):
+    """Only activated if the argument is ".gz"
+
+    """
+    result = format_fastq(input,output)
+    return result
+
+
 
 @follows(mkdir(results + "/quality_analysis"))
 @transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results + "/quality_analysis")
@@ -185,9 +208,10 @@ def main():
         #if options.R2:
 
         print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis,ungizp_fastq,fastQC,priStage], verbose=6)
         pipeline_run(
-            ['usamriidPathDiscov.main.fastQC',
+            ['usamriidPathDiscov.main.ungizp_fastq',
+            'usamriidPathDiscov.main.fastQC',
             #'usamriidPathDiscov.main.convertToPdf',
             'usamriidPathDiscov.main.priStage'], multiprocess=6)
         pipeline_get_task_names()  # return task names
@@ -210,10 +234,11 @@ def main():
             pass
         print "Task names: ", pipeline_get_task_names()
         print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis,fastQC,priStage], verbose=6)
+        pipeline_printout(sys.stdout, [createPram, prepare_analysis,ungizp_fastq,fastQC,priStage], verbose=6)
         pipeline_run(
             ['usamriidPathDiscov.main.createPram',
             'usamriidPathDiscov.main.prepare_analysis',
+            'usamriidPathDiscov.main.ungizp_fastq',
             'usamriidPathDiscov.main.fastQC',
             #'usamriidPathDiscov.main.convertToPdf',
             'usamriidPathDiscov.main.priStage'], multiprocess=6)
