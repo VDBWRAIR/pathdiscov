@@ -71,11 +71,14 @@ GetOptions (	'outputdir=s' => \$outputdir,
 # -------------------- main --------------------
 # Joined stages by ' '
 $strstages = join(' ', @stages);
-print($strstages);
 # Set default stages if not set by options
 if( $strstages eq "" ) {
-    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2'
+    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2';
+    if( system("which qsub") == 0 ) {
+        $strstages =~ s/iterative/sge_iterative/g
+    }
 }
+print($strstages);
 
 if ( $help || $numarg == 0 || (not defined($sample)) || (not defined($r1)) ) {print $usage; exit;}
 

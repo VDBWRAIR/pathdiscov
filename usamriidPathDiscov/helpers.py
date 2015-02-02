@@ -440,9 +440,12 @@ def format_fastq(fastq_gz, fastq_output):
     """
     import gzip
     fo = open(fastq_output, 'w')
-    with gzip.open(fastq_gz, 'rb') as fz:
-        for line in fz:
-            fo.write(line)
+    fh = gzip.open(fastq_gz, 'rb')
+    for line in fh:
+        fo.write(line)
+    fo.close()
+    fh.close()
+
 def isGzip(input):
     if input.endswith(".gz"):
         return True
