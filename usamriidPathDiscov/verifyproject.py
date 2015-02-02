@@ -141,10 +141,10 @@ def main():
                 sys.exit(1)
             elif fname == "iterative_blast_phylo_1.contig":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl excute this step", "red")
-                sys.ext(1)
+                sys.exit(1)
             elif fname == "iterative_blast_phylo_2":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl excute this step", "red")
-                sys.ext(1)
+                sys.exit(1)
             #else:
                 #print colored("SUCESS! : Task completed successfully!", "green")
 
