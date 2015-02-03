@@ -139,16 +139,19 @@ def verify_standard_stages_files(projectpath):
     else:
         print colored(" SUCCESS! the tasks completed successfully", "green")
 
-@follows(priStage)
-@files([
+symlink_files = [
     [join(results_dir,'output'), join(project_dir, 'output')],
     [join(results_dir,'iterative_blast_phylo_1','reports'), join(project_dir,'contig_reports')],
     [join(results_dir,'iterative_blast_phylo_2','reports'), join(project_dir,'unassembled_read_reports')],
     [join(results_dir,'step1','R1.count'), join(project_dir, 'R1.count')],
-    [join(results_dir,'step1','R2.count'), join(project_dir, 'R2.count')],
     [join(results_dir,'quality_analysis'), join(project_dir, 'quality_analysis')],
     [join(results_dir,'analysis.log'), join(project_dir, 'analysis.log')]
-])
+]
+if R2:
+    symlink_files += [[join(results_dir,'step1','R2.count'), join(project_dir, 'R2.count')]]
+
+@follows(priStage)
+@files(symlink_files)
 def symlink(src, dst):
     '''
     Create symlink src -> dst
@@ -177,16 +180,18 @@ def main():
         ('usamriidPathDiscov.main.createPram', createPram),
     ]
 
-    helpers.create_new_project(project_dir)
     print "....................." + basedir + "/" + project_dir
 
-    if not options.noparam:
+    if options.param:
+        helpers.create_new_project(project_dir)
+    elif not options.noparam:
         pipeline_commands = [
             ('usamriidPathDiscov.main.fastQC', fastQC),
             ('usamriidPathDiscov.main.priStage', priStage),
             ('usamriidPathDiscov.main.symlink', symlink)
         ]
     else:
+        helpers.create_new_project(project_dir)
         pipeline_commands += [
             ('usamriidPathDiscov.main.fastQC', fastQC),
             ('usamriidPathDiscov.main.priStage', priStage),
