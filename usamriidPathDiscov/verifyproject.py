@@ -2,6 +2,7 @@ import string
 import os
 from os.path import exists, basename, normpath
 import sys
+import pprint
 
 # Default stages
 # Each has it's own template under output_files_templates
@@ -113,45 +114,8 @@ def main():
 
     args = parser.parse_args()
 
-    import yaml
-    from termcolor import colored
     missingfiles = verify_standard_stages_files(args.projectpath, args.templatedir)
-    #print yaml.dump(missingfiles)
-    if missingfiles:
-        for path, reason in missingfiles:
-            fname = basename(path)
-            #print fname
-            if fname == "param.txt":
-                print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
-                sys.exit(1)
-            elif  fname == "quality_filter.R1":
-                print colored("WARNING! :  Unable to run quality filter step, please check if prinseq is installed and running", "red")
-                sys.exit(1)
-            elif fname == "out.bam":
-                print colored("WARNING! :  Unable to map the read to the ref genome, please check if bowtie2 is installed or the ref ~/databases exist", "red")
-                sys.exit(1)
-            elif fname == "out.cap.fa":
-                print colored("WARNING! : Unable to build the CAP3 contig, please check if cap3 program is running", "red")
-                sys.exit(1)
-            elif fname == "out.ray.fa":
-                print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running", "red")
-                sys.exit(1)
-            elif fname == "R1.orfout.fa":
-                print colored("WARNING! : Unable to run getorf, please check if getorf program is running", "red")
-                sys.exit(1)
-            elif fname == "iterative_blast_phylo_1.contig":
-                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl excute this step", "red")
-                sys.exit(1)
-            elif fname == "iterative_blast_phylo_2":
-                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl excute this step", "red")
-                sys.exit(1)
-            #else:
-                #print colored("SUCESS! : Task completed successfully!", "green")
-
-
-            #print "{0} -- {1}".format(path,reason)
-    else:
-        print colored(" SUCCESS! the tasks completed successfully", "green")
+    pprint.pprint(missingfiles)
 
 if __name__ == '__main__':
     main()

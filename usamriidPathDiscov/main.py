@@ -11,7 +11,10 @@ import distutils.spawn
 import fileinput
 from helpers import runCommand,isGzip,format_fastq
 from pkg_resources import resource_filename
-from os.path import join, expanduser, expandvars
+from os.path import (
+    join, expanduser, expandvars,
+    splitext, basename, dirname, exists
+)
 
 options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
@@ -19,11 +22,9 @@ options = helpers.get_options()
 basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
 R1 = os.path.abspath(options.R1)
-R2 = "none"
-if options.R2:
+R2 = options.R2
+if R2:
     R2 = os.path.abspath(options.R2)
-else:
-    R2 = "none"
 
 # Do all initial setup
 config = helpers.parse_config()
@@ -31,12 +32,14 @@ helpers.setup_shell_environment(config)
 helpers.setup_param(config)
 
 # Setup initial inputs
-input = project_dir + "/" + "input"
-logs = project_dir + "/" + "logs"
-results = project_dir + "/" + "results"
-sample1 = results + "/" + "sample1"
-sample2 = results + "/" + "sample2"
-paramFile = input + "/param.txt"
+input_dir = join(project_dir, "input")
+logs_dir = join(project_dir, "logs")
+results_dir = join(project_dir, "results")
+output_dir = join(project_dir, 'output')
+quality_analysis_dir = join(results_dir, 'quality_analysis')
+sample1 = join(results_dir, "sample1")
+sample2 = join(results_dir, "sample2")
+paramFile = join(input_dir, "param.txt")
 
 def report(result):
     """Wrapper around Result.report"""
@@ -44,209 +47,159 @@ def report(result):
     print result
 
 
-@follows(mkdir(project_dir, input, results, logs))
+@follows(mkdir(project_dir, input_dir, results_dir, logs_dir))
 @originate([paramFile])
 def createPram(output_file):
+    '''
+    Create param.txt inside projectdir/input
+    '''
     result = tasks.createParam(output_file)
-    return result
 
-#@graphviz(height=1.8, width=2, label="Prepare\nanalysis")
-
-
-if options.R2:
-    if isGzip(R1):
-        pram1= [
-            [R1, join(project_dir, 'input', 'F.fastq.gz')],
-            [R2, join(project_dir, 'input', 'R.fastq.gz')],
-            ]
+def qa_outfile(input):
+    ''' Generate quality_analysis output file for input file '''
+    if input is not None:
+        return join(
+            quality_analysis_dir,
+            splitext(basename(input).replace('.gz',''))[0] + '_fastqc.zip'
+        )
     else:
-        pram1= [
-            [R1, join(project_dir, 'input', 'F.fastq')],
-            [R2, join(project_dir, 'input', 'R.fastq')],
-            ]
-
-else:
-    if isGzip(R1):
-        pram1= [
-            [R1, join(project_dir, 'input', 'F.fastq.gz')],
-            ]
-    else:
-        pram1= [
-            [R1, join(project_dir, 'input', 'F.fastq')],
-            ]
+        return None
 
 @follows(createPram)
-@files(pram1)
-def prepare_analysis(input, output):
-    """copy the mapfile to analyiss dir
-
-    Arguments:
-    - `file_to_copy`: The mapfile from 454 sequencer
-    - `file_copy`: a copy of mapfile
-    """
-    result = tasks.copy_map_file(input, output)
-    return result
-
-@active_if(isGzip(R1))
-@transform(prepare_analysis, regex(r"(.+).fastq.gz"), r"\1.fastq")
-def ungizp_fastq(input,output):
-    """Only activated if the argument is ".gz"
-
-    """
-    result = format_fastq(input,output)
-    return result
-
-
-
-@follows(mkdir(results + "/quality_analysis"))
-@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results + "/quality_analysis")
+@follows(mkdir(quality_analysis_dir))
+@files([
+    [R1, qa_outfile(R1)],
+    [R2, qa_outfile(R2)],
+])
 def fastQC(input, output):
-    result = tasks.createQuality(input, output)
-    return result
+    '''
+    Runs fastqc on both input files(or only R1 if only -R1)
+    '''
+    if input is not None:
+        tasks.createQuality(input, dirname(output))
 
-if R2!="none":
-    param2 = [
-           [[project_dir + "/input/F.fastq", project_dir + "/input/R.fastq"], results]
-         ]
-else:
-    param2 = [
-             [project_dir + "/input/F.fastq", results]
-             ]
-#@graphviz(height=1.8, width=2, label="Processing\nstep1")
-@follows(prepare_analysis)
-@files(param2)
-#@transform(prepare_analysis, formatter("F.fastq", "R.fastq"), results)
+@follows(fastQC)
+@files(
+    [R1, R2],
+    [join(results_dir,'analysis.log')]
+)
 def priStage(input, output):
-
+    '''
+    Run run_standard_stable4.pl with all supplied options
+    '''
     result = tasks.priStage(
-            input, project_dir, paramFile, config['blast_unassembled'], output)
+        input, project_dir, paramFile,
+        config['blast_unassembled'], results_dir
+    )
     return result
 
-def verify_standard_stages_files(projectpath, templatedir):
+def verify_standard_stages_files(projectpath):
     ''' Hardcoded verification of standard stages '''
     #templates.append(resource_filename(__name__, tfile))
-    from verifyproject import STAGES, verify_project
+    from verifyproject import STAGES, verify_standard_stages_files
     projectname = basename(projectpath)
-    # Fetch template files for each stage from inside
-    # of templatedir
-    templates = []
-    for stage in STAGES:
-        tfile = os.path.join(templatedir,stage+'.lst')
-    return verify_project(projectpath, projectname, templates)
+    import yaml
+    from termcolor import colored
+    templatesdir = resource_filename(__name__, 'output_files_templates')
+    missingfiles = verify_standard_stages_files(projectpath, templatesdir)
+    #print yaml.dump(missingfiles)
+    if missingfiles:
+        for path, reason in missingfiles:
+            fname = basename(path)
+            #print fname
+            if fname == "param.txt":
+                print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
+                sys.exit(1)
+            elif  fname == "quality_filter.R1":
+                print colored("WARNING! :  Unable to run quality filter step, please check if prinseq is installed and running", "red")
+                sys.exit(1)
+            elif fname == "out.bam":
+                print colored("WARNING! :  Unable to map the read to the ref genome, please check if bowtie2 is installed or the ref ~/databases exist", "red")
+                sys.exit(1)
+            elif fname == "out.cap.fa":
+                print colored("WARNING! : Unable to build the CAP3 contig, please check if cap3 program is running", "red")
+                sys.exit(1)
+            elif fname == "out.ray.fa":
+                print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running", "red")
+                sys.exit(1)
+            elif fname == "R1.orfout.fa":
+                print colored("WARNING! : Unable to run getorf, please check if getorf program is running", "red")
+                sys.exit(1)
+            elif fname == "iterative_blast_phylo_1.contig":
+                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl execute this step", "red")
+                sys.exit(1)
+            elif fname == "iterative_blast_phylo_2":
+                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl execute this step", "red")
+                sys.exit(1)
+            #else:
+                #print colored("SUCESS! : Task completed successfully!", "green")
 
 
-def generateSymLink():
-    final_out = 'results/output'
-    final_out_link = os.path.abspath(project_dir + "/output")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
+            #print "{0} -- {1}".format(path,reason)
+    else:
+        print colored(" SUCCESS! the tasks completed successfully", "green")
 
-    final_out = "results/iterative_blast_phylo_1/reports"
-    final_out_link = os.path.abspath(project_dir + "/contig_reports")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
+@follows(priStage)
+@files([
+    [join(results_dir,'output'), join(project_dir, 'output')],
+    [join(results_dir,'iterative_blast_phylo_1','reports'), join(project_dir,'contig_reports')],
+    [join(results_dir,'iterative_blast_phylo_2','reports'), join(project_dir,'unassembled_read_reports')],
+    [join(results_dir,'step1','R1.count'), join(project_dir, 'R1.count')],
+    [join(results_dir,'step1','R2.count'), join(project_dir, 'R2.count')],
+    [join(results_dir,'quality_analysis'), join(project_dir, 'quality_analysis')],
+    [join(results_dir,'analysis.log'), join(project_dir, 'analysis.log')]
+])
+def symlink(src, dst):
+    '''
+    Create symlink src -> dst
+    Overwrite dst if exists
+    Do not create if src does not exist
+    '''
+    helpers.symlink(src, dst)
 
-    final_out = "results/iterative_blast_phylo_2/reports"
-    final_out_link = os.path.abspath(project_dir + "/unassembledread_reports")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
+def commands(commandlist, index):
+    '''
+    Just return the correct commands from commandlist based on index given
 
-    final_out = "results/step1/R1.count"
-    final_out_link = os.path.abspath(project_dir + "/R1.count")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
-
-    final_out = "results/step1/R2.count"
-    final_out_link = os.path.abspath(project_dir + "/R2.count")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
-
-    final_out = "results/quality_analysis"
-    final_out_link = os.path.abspath(project_dir + "/quality_analysis")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
-
-    final_out = "results/analysis.log"
-    final_out_link = os.path.abspath(project_dir + "/analysis.log")
-    cmd = "ln -s %s  %s" %(final_out, final_out_link)
-    runCommand(cmd, "T")
-    # check the process
-
-    cmd = 'verifyproject %s' % project_dir
-    import subprocess
-    # We can output from this
-    subprocess.Popen(cmd, shell=True).wait()
-    # print time elapsed to complete the task
-    return
-
+    :param list commandlist: [(commandpath, commandfunc), ...]
+    :param int index: Index of item in each tuple to extract
+    '''
+    return map(lambda x: x[index], commandlist)
 
 def main():
-
     from helpers import which
     t0 = time.time()
     print (" Starting time ..... :") + str(t0)
     print "print default argument whether to generate default param.txt file ..." +  str(options.param)
-    if options.param:
-        dir_bak = project_dir + ".bak"
-        try:
-            if os.path.exists(project_dir):
-                tasks.copyDir(project_dir,dir_bak )
-                tasks.rmdir(dir)
-        except:
-            pass
-        print "Task names: ", pipeline_get_task_names()
 
-        print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis], verbose=6)
-        pipeline_run(
-            ['usamriidPathDiscov.main.createPram',
-            'usamriidPathDiscov.main.prepare_analysis'], multiprocess=6)
-        pipeline_get_task_names()  # return task names
+    # Will be all the commands to run
+    pipeline_commands = [
+        ('usamriidPathDiscov.main.createPram', createPram),
+    ]
 
+    helpers.create_new_project(project_dir)
+    print "....................." + basedir + "/" + project_dir
 
-    elif options.noparam is False:
-        #if options.R2:
-
-        print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis,ungizp_fastq,fastQC,priStage], verbose=6)
-        pipeline_run(
-            ['usamriidPathDiscov.main.ungizp_fastq',
-            'usamriidPathDiscov.main.fastQC',
-            #'usamriidPathDiscov.main.convertToPdf',
-            'usamriidPathDiscov.main.priStage'], multiprocess=6)
-        pipeline_get_task_names()  # return task names
-
-        generateSymLink()
-
+    if not options.noparam:
+        pipeline_commands = [
+            ('usamriidPathDiscov.main.fastQC', fastQC),
+            ('usamriidPathDiscov.main.priStage', priStage),
+            ('usamriidPathDiscov.main.symlink', symlink)
+        ]
     else:
-        print """ **********************************************************
+        pipeline_commands += [
+            ('usamriidPathDiscov.main.fastQC', fastQC),
+            ('usamriidPathDiscov.main.priStage', priStage),
+            ('usamriidPathDiscov.main.symlink', symlink),
+        ]
 
-            Processing Pathogen discovery ....
-            *****************************************************************
-
-        """
-        dir_bak = project_dir + ".bak"
-        try:
-            if os.path.exists(project_dir):
-                tasks.copyDir(project_dir,dir_bak )
-                tasks.rmdir(dir)
-        except:
-            pass
-        print "Task names: ", pipeline_get_task_names()
-        print "....................." + basedir + "/" + project_dir
-        pipeline_printout(sys.stdout, [createPram, prepare_analysis,ungizp_fastq,fastQC,priStage], verbose=6)
-        pipeline_run(
-            ['usamriidPathDiscov.main.createPram',
-            'usamriidPathDiscov.main.prepare_analysis',
-            'usamriidPathDiscov.main.ungizp_fastq',
-            'usamriidPathDiscov.main.fastQC',
-            #'usamriidPathDiscov.main.convertToPdf',
-            'usamriidPathDiscov.main.priStage'], multiprocess=6)
-        pipeline_get_task_names()
-        generateSymLink()
+    pipeline_printout(sys.stdout, commands(pipeline_commands, 1), verbose=6)
+    pipeline_run(commands(pipeline_commands, 0), multiprocess=6)
+    pipeline_get_task_names()
 
     import datetime
     from termcolor import colored
+    verify_standard_stages_files(project_dir)
     elapsedTime = int((time.time()) - t0)
     elapsedTime = str(datetime.timedelta(seconds=elapsedTime))
     print("Time to complete the task ....." ) + colored (elapsedTime, "red")

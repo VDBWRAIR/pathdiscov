@@ -4,16 +4,8 @@ import yaml
 import shutil
 from helpers import get_options, make_logger, runCommand, which, run_cmd
 from pkg_resources import resource_filename, resource_stream
+import subprocess
 
-options = get_options()
-#logger_proxy, logging_mutex = make_logger(options, __file__)
-#config = yaml.load(open(options.config).read())
-print 'sys.argv[0] =', sys.argv[0]
-config_file = resource_filename(__name__, 'files/config.yaml')
-config = yaml.load(open(config_file).read())
-#print yaml.dump(config)
-#logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
-blast_unassembled =config['blast_unassembled']
 def work_dir(dirname):
     if not dirname:
         currpath = os.getcwd()
@@ -22,19 +14,16 @@ def work_dir(dirname):
         os.mkdir(dir_to_create, 0755)
         return
 
-
 def rmdir(dirname):
     if os.path.exists(dirname):
         #shutil.rmtree(dirname, ignore_errors=True)
         shutil.rmtree(dirname)
         return
 
-
 def mkdir(dirname):
     if not os.path.exists(dirname):
         os.mkdir(dirname)
         return
-
 
 def copy_map_file(file_to_copy, file_copy):
     """copy the mapfile to analyiss dir
@@ -46,6 +35,7 @@ def copy_map_file(file_to_copy, file_copy):
 
     shutil.copyfile(file_to_copy, file_copy)
     return
+
 def copyDir(file_to_copy, file_copy):
     """copy the mapfile to analyiss dir
 
@@ -56,7 +46,6 @@ def copyDir(file_to_copy, file_copy):
 
     shutil.copytree(file_to_copy, file_copy)
     return
-
 
 def createParam(param_output):
     # Gets config file as a file like object
@@ -75,11 +64,9 @@ def createQuality(input,output):
         input,
         '-o', output,
     ]
-    cmds = '  '.join(cmds)
-    cmds += "| tee  -a "  + output + "/analysis_quality.log"
-    print cmds
-    p = runCommand(cmds, "F")
-    return
+    cmds = ' '.join(cmds)
+    cmds += "| tee -a " + output + "/analysis_quality.log"
+    sout,serr = runCommand(cmds, True)
 
 def convertHtmlToPDF(input,output):
     """Check quality of the two fastq files
@@ -92,13 +79,14 @@ def convertHtmlToPDF(input,output):
         input,
         output,
     ]
-    cmds = '  '.join(cmds)
+    cmds = ' '.join(cmds)
     print cmds
-    p = runCommand(cmds, "F")
+    p = runCommand(cmds, False)
     return
 
 def comment():
     return "*" * 80
+
 #pathogen.pl --sample sample1 --command step1 --paramfile param.txt --outputdir ../results/sample1 --R1 /my/data/R1.fastq.gz --R2 /my/data/R2.fastq.gz > ../logs/out1.o 2> ../logs/out1.e &
 #input=[pathDescTest/input/F.fastq, pathDescTest/input/R.fastq, pathDescTest, step1,pathDescTest/input/param.txt, pathDescTest/logs/out.o, pathDescTest/logs/out.e]
 def priStage(input, project_dir, paramFile,numreads, output):
@@ -110,51 +98,21 @@ def priStage(input, project_dir, paramFile,numreads, output):
         -`output`: outdir for the output
         -`logdir`: log dir
     """
-    #numreads = blast_unassembled * 4
-    #cmds = ['pathogen.pl',
-            #'--sample', project_dir,
-            #'--command', "step1 quality_filter  host_map ray2_assembly",
-            #'--paramfile', paramFile,
-            #'--outputdir', output,
-            #'--R1', F_fastq,
-            #'--R2', R_fastq,
-            ##'>', output + "/step1/logs/out1.o",
-            ##'2>', output + "/step1/logs/out1.e",
-
-            #]
-    if len(input)==2:
-        ffastq,rfastq = input
-        cmds = [
-            'run_standard_stable4.pl',
-            '--sample', project_dir,
-            '--paramfile', paramFile,
-            '--outputdir', output,
-            '--R1', ffastq,
-            '--R2', rfastq,
-            '--blast_unassembled', str(numreads),
-        ]
-        cmds = '  '.join(cmds)
-        cmds += "| tee  -a "  + output + "/analysis.log"
-        print cmds
-        p = runCommand(cmds, "F")
-        return
-    else:
-        input =input
-        cmds = [
+    ffastq, rfastq = input
+    cmds = [
         'run_standard_stable4.pl',
         '--sample', project_dir,
         '--paramfile', paramFile,
         '--outputdir', output,
-        '--R1', input,
-        '--blast_unassembled', str(numreads),
+        '--R1', ffastq,
+    ]
+    if rfastq is not None:
+        cmds += [
+            '--R2', rfastq
         ]
-        cmds = '  '.join(cmds)
-        cmds += "| tee  -a "  + output + "/analysis.log"
-        print cmds
-        p = runCommand(cmds, "F")
-        return
 
+    cmds += ['--blast_unassembled', str(numreads)]
+    cmds = ' '.join(cmds)
+    cmds += "| tee -a " + output + "/analysis.log"
 
-
-
-
+    runCommand(cmds, True)

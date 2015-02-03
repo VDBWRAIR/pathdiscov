@@ -190,10 +190,9 @@ def get_options():
                         type=str,
                         help="Pipeline task(s) which will be included "
                              "even if they are up to date.")
-    parser.add_argument('--outdir',
-                        help='output directory')
-    parser.add_argument('-R1', help="Path to forward fastq file")
-    parser.add_argument('-R2', help ="Path to reverse fastq file")
+    parser.add_argument('--outdir', required=True, help='output directory')
+    parser.add_argument('-R1', required=True, help="Path to forward fastq file")
+    parser.add_argument('-R2', default=None, help ="Path to reverse fastq file")
     parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
     parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
 
@@ -203,36 +202,18 @@ def get_options():
     helpstr = f.getvalue()
     options = parser.parse_args()
 
-    mandatory_options = ['R1', 'outdir']
-
-    def check_mandatory_options(options, mandatory_options, helpstr):
-        """
-        Check if specified mandatory options have been defined
-        """
-        missing_options = []
-        for o in mandatory_options:
-            if not getattr(options, o):
-                missing_options.append("--" + o)
-
-        if not len(missing_options):
-            return
-
-        raise Exception("Missing mandatory parameter%s: %s.\n\n%s\n\n" %
-                        ("s" if len(missing_options) > 1 else "",
-                         ", ".join(missing_options),
-                         helpstr))
-    check_mandatory_options(options, mandatory_options, helpstr) #  File  helpstr
     return options
 
 
 def runCommand(cmd, printCMD):
     import subprocess
-    if printCMD == 'T':
+    if printCMD == 'T' or printCMD is True:
         print cmd
-    cmdOut = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
-    # return(cmdOut[0].split(' ')[0])
-    return
+    p = subprocess.Popen(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
+    )
+    sout, serr = p.communicate()
+    return sout,serr
 
 def run_cmd(cmd_str):
     """
@@ -452,3 +433,27 @@ def isGzip(input):
     else:
         return False
 
+def symlink(src, dst):
+    '''
+    Create symlink src -> dst
+    Overwrite dst if exists
+    Do not create if src does not exist
+    '''
+    rel = relpath(src, dirname(dst))
+    if exists(dst):
+        os.unlink(dst)
+    if not exists(src):
+        return
+    os.symlink(rel, dst)
+
+def create_new_project(projpath):
+    '''
+    Create a new project(just empty dir)
+    and/or backup existing project if exists
+    '''
+    projbk = projpath + '.bk'
+    if exists(projpath):
+        if exists(projbk):
+            shutil.rmtree(projbk)
+        os.rename(projpath, projbk)
+    os.makedirs(projpath)

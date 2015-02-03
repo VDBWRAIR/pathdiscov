@@ -74,7 +74,7 @@ $strstages = join(' ', @stages);
 # Set default stages if not set by options
 if( $strstages eq "" ) {
     $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2';
-    if( system("which qsub") == 0 ) {
+    if( system("which qsub >/dev/null 2>&1") == 0 ) {
         $strstages =~ s/iterative/sge_iterative/g
     }
 }
