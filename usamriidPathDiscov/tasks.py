@@ -89,7 +89,7 @@ def comment():
 
 #pathogen.pl --sample sample1 --command step1 --paramfile param.txt --outputdir ../results/sample1 --R1 /my/data/R1.fastq.gz --R2 /my/data/R2.fastq.gz > ../logs/out1.o 2> ../logs/out1.e &
 #input=[pathDescTest/input/F.fastq, pathDescTest/input/R.fastq, pathDescTest, step1,pathDescTest/input/param.txt, pathDescTest/logs/out.o, pathDescTest/logs/out.e]
-def priStage(input, project_dir, paramFile,numreads, output):
+def priStage(input, project_dir, paramFile,numreads,sge, output):
     """run step  1 of pathogen discovery
     Arguments:
         -`input`: list of F and R fastq file
@@ -109,6 +109,11 @@ def priStage(input, project_dir, paramFile,numreads, output):
     if rfastq is not None:
         cmds += [
             '--R2', rfastq
+        ]
+
+    if sge:
+        cmds += [
+            '--SGE', '1'
         ]
 
     cmds += ['--blast_unassembled', str(numreads)]

@@ -17,7 +17,8 @@ my $outputdir=Cwd::getcwd();    # output dir (default: cwd)
 my ($sample);			# sample name
 my ($numreads);			# number of unassembled reads to blast
 my ($path_scripts);		# path variables (scripts)
-my ($r1, $r2, $paramFile);			# paths to r1 and r2, if present
+my ($r1, $r2,$paramFile);			# paths to r1 and r2, if present
+my $sge;
 my ($help);			# help bool
 my $numarg=scalar(@ARGV);
 my (@stages);           # Will hold stages to run
@@ -64,7 +65,8 @@ GetOptions (	'outputdir=s' => \$outputdir,
 		'help' => \$help,
 		'R1=s' => \$r1,
 		'R2=s' => \$r2,
-        'paramFile=s'=>\$paramFile,
+        'SGE=i' => \$sge,
+        'paramFile=s' => \$paramFile,
 		'sample=s' => \$sample,
         'stages=s{,}' => \@stages);
             
@@ -74,9 +76,6 @@ $strstages = join(' ', @stages);
 # Set default stages if not set by options
 if( $strstages eq "" ) {
     $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2';
-    if( system("which qsub >/dev/null 2>&1") == 0 ) {
-        $strstages =~ s/iterative/sge_iterative/g
-    }
 }
 print($strstages);
 
@@ -86,12 +85,17 @@ $r1=abs_path($r1);
 $r2=abs_path($r2);
 
 `mkdir -p $outputdir`;
-#if($r2 ne "none"):
-print("-|-------pathogen pipeline paired end run-------|-\n");
-print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 | tee -a $outputdir/analysis.log");
-#else:
-#    print("-|-------pathogen pipeline single end run -------|-\n");
-#    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 | tee -a $outputdir/analysis.log");
+if($sge == 1)
+{
+
+    print("-|-------pathogen pipeline  run on SUNGRID engine (SGE)-------|-\n");
+    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 --SGE $sge | tee -a $outputdir/analysis.log");
+}
+else:
+{
+    print("-|-------pathogen pipeline run without SUNGRID engine (SGE)  -------|-\n");
+    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 | tee -a $outputdir/analysis.log");
+}
 
 # fastq files come in 4-line chunks
 $numreads=$numreads*4;

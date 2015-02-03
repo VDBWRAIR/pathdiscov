@@ -147,7 +147,7 @@ def get_options():
     Standard set of options to be passed to the command line.  These can be in
     turn passed to run() to actually run the pipeline.
     """
-    parser = ArgumentParser(usage="\n\n    %(prog)s [-R1 F.fastq -R2 R.fastq --outdir testRunFolder]")
+    parser = ArgumentParser()
     parser.add_argument("-v", "--verbose", dest="verbose",
                         action="count", default=0,
                         help="Print more verbose messages for each "
@@ -162,12 +162,12 @@ def get_options():
                         metavar="JOBNAME",
                         type=str,
                         help="Target task(s) of pipeline.")
-    parser.add_argument("-j", "--jobs", dest="jobs",
-                        default=6,
-                        metavar="N",
-                        type=int,
-                        help="Allow N jobs (commands) to run "
-                             "simultaneously.")
+    parser.add_argument("--use-sge",
+                        dest='sge',
+                        default=False,
+                        action="store_true",
+                        help="bool for sun grid engine"
+                             )
     parser.add_argument("-n", "--just_print", dest="just_print",
                         action="store_true", default=False,
                         help="Don't actually run any commands; just print "
@@ -195,6 +195,7 @@ def get_options():
     parser.add_argument('-R2', default=None, help ="Path to reverse fastq file")
     parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
     parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
+    parser.add_argument('-c','--cpuNum', dest="cpuNum" ,default=10, type=int, help="Number of CPU to use, default is 10")
 
     # get help string
     f = StringIO.StringIO()
@@ -412,20 +413,6 @@ def setup_param(config):
         line = re.sub(r'TAX_NAMES', config['tax_names'], line.rstrip())
         print (line)
 
-def format_fastq(fastq_gz, fastq_output):
-    """Extract fastq.gz file
-
- Arguments:
-    - `fastq_file`: Gzipped fastq file downloaded from sequencing center
-    - `fastq_output`: gunzipped fastq file
-    """
-    import gzip
-    fo = open(fastq_output, 'w')
-    fh = gzip.open(fastq_gz, 'rb')
-    for line in fh:
-        fo.write(line)
-    fo.close()
-    fh.close()
 
 def isGzip(input):
     if input.endswith(".gz"):

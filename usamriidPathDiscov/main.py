@@ -9,7 +9,7 @@ import os
 import re
 import distutils.spawn
 import fileinput
-from helpers import runCommand,isGzip,format_fastq
+from helpers import runCommand,isGzip
 from pkg_resources import resource_filename
 from os.path import (
     join, expanduser, expandvars,
@@ -21,6 +21,7 @@ options = helpers.get_options()
 
 basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
+sge = options.sge
 R1 = os.path.abspath(options.R1)
 R2 = options.R2
 if R2:
@@ -89,7 +90,7 @@ def priStage(input, output):
     '''
     result = tasks.priStage(
         input, project_dir, paramFile,
-        config['blast_unassembled'], results_dir
+        config['blast_unassembled'], sge, results_dir
     )
     return result
 

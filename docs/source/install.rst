@@ -123,7 +123,7 @@ Installation
 
             verifydatabases usamriidPathDiscov/files/config.yaml
 
-#. Optional: Run a Paired-end  dataset
+#. Optional: Run a Paired-end dataset
 
     Anytime you run the pipeline you need to activate the pipeline first. If the pipeline is activated you will see ```
     (usamriidPathDiscov)``` in front of your prompt.
@@ -137,29 +137,37 @@ Installation
     If your blast database is quite large (like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in.
     
-    You may input `*.fastq` or `*.fastq.gz` file
+    You may use ``.fastq``, ``.fastq.gz``, ``.sff`` and ``.sff.gz`` files
 
     .. code-block:: bash
 
-         usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq.gz -R2     $(pwd)/testData/R.fastq.gz --outdir testoutDir
+         usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq.gz -R2 $(pwd)/testData/R.fastq.gz --outdir testoutDir
  
 OR
 
     .. code-block:: bash
 
-        usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --outdir testoutDir
+        usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir
 
 #. Option 2: Run a Single-end dataset
 
    .. code-block:: bash
            
-       samriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq.gz  --outdir      testoutDir
+       samriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq.gz --outdir testoutDir
 
 OR
 
     .. code-block:: bash
         
-       samriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  --outdir testoutDir
+       samriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq --outdir testoutDir
+
+#. Option 3: Using Sun Grid Engine
+    
+   If your cluster support SGE, pass ``--use-sge`` to activate sge_iterative_blast_phylo
+    
+   .. code-block:: bash
+
+         usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq.gz -R2 $(pwd)/testData/R.fastq.gz --outdir testoutDir --sge 1
 
 Offline Installation
 ====================
