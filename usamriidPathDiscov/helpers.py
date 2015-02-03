@@ -15,6 +15,7 @@ from os.path import *
 import shutil
 import fileinput
 import re
+import multiprocessing
 #import ast
 
 
@@ -195,7 +196,7 @@ def get_options():
     parser.add_argument('-R2', default=None, help ="Path to reverse fastq file")
     parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
     parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
-    parser.add_argument('-c','--cpuNum', dest="cpuNum" ,default=10, type=int, help="Number of CPU to use, default is 10")
+    parser.add_argument('-c','--cpuNum', dest="cpuNum", default=multiprocessing.cpu_count(), type=int, help="Number of CPU to use, default is %(default)s")
 
     # get help string
     f = StringIO.StringIO()
