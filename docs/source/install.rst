@@ -161,6 +161,14 @@ OR
         
        samriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq  --outdir testoutDir
 
+#. Option 3: Using Sun Grid Engine
+    
+   If your cluster support SGE, pass `--sge 1`, default is  `--sge 0`
+    
+   .. code-block:: bash
+
+         usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq.gz -R2  $(pwd)/testData/R.fastq.gz --outdir testoutDir --sge 1
+
 Offline Installation
 ====================
 

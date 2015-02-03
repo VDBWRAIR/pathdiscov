@@ -9,7 +9,7 @@ import os
 import re
 import distutils.spawn
 import fileinput
-from helpers import runCommand,isGzip,format_fastq
+from helpers import runCommand,isGzip
 from pkg_resources import resource_filename
 from os.path import join, expanduser, expandvars
 
@@ -18,6 +18,8 @@ options = helpers.get_options()
 
 basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
+sge=options.sge
+print sge
 R1 = os.path.abspath(options.R1)
 R2 = "none"
 if options.R2:
@@ -88,14 +90,13 @@ def prepare_analysis(input, output):
     return result
 
 @active_if(isGzip(R1))
-@transform(prepare_analysis, regex(r"(.+).fastq.gz"), r"\1.fastq")
+@transform(prepare_analysis, regex(r"(.+).fastq.gz"), (r"\1.fastq"))
 def ungizp_fastq(input,output):
     """Only activated if the argument is ".gz"
 
     """
-    result = format_fastq(input,output)
+    result = tasks.format_fastq(input,output)
     return result
-
 
 
 @follows(mkdir(results + "/quality_analysis"))
@@ -119,7 +120,7 @@ else:
 def priStage(input, output):
 
     result = tasks.priStage(
-            input, project_dir, paramFile, config['blast_unassembled'], output)
+            input, project_dir, paramFile, config['blast_unassembled'],sge,output)
     return result
 
 def verify_standard_stages_files(projectpath, templatedir):
