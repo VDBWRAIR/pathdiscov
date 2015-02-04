@@ -279,7 +279,7 @@ def download_install_fastqc(options):
     # Make symlink to bin
     src = relpath(join(fqcdir,'fastqc'),join(sys.prefix,'bin'))
     dst = join(sys.prefix,'bin','fastqc')
-    os.chmod(src, 0755)
+    os.chmod(dst, 0755)
     if not exists(dst):
         info("Installing fastqc symlink")
         os.symlink(src,dst)
