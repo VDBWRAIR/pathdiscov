@@ -46,6 +46,14 @@ pip-log.txt
 pathDescTest
 
 # Project ignores
+snake-eater.ps
+snake-eater.pdf
+.config
+.editorconfig
+.ppt-version
+docs/source/usamriidPathDiscov.rst
+docs/source/usamriidPathDiscov.stages.rst
+docs/source/usamriidPathDiscov.test.rst
 usamriidPathDiscov/download/ray
 usamriidPathDiscov/download/EMBOSS-6.6.0
 usamriidPathDiscov/download/RayPlatform
