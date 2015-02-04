@@ -287,7 +287,7 @@ setup_dict = dict(
     scripts = [
         'usamriidPathDiscov/download/bwa/bwa',
         'usamriidPathDiscov/download/samtools/samtools',
-        'usamriidPathDiscov/download/EMBOSS-6.6.0/bin/getorf',
+        'usamriidPathDiscov/download/EMBOSS-6.6.0/emboss/getorf',
         'usamriidPathDiscov/download/CAP3/cap3',
         'usamriidPathDiscov/download/wkhtmltopdf',
         'usamriidPathDiscov/download/ray/Ray',
