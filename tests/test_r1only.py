@@ -19,7 +19,7 @@ class TestR1Only(common.TempDir):
         f = self.f_fastq
         args = ['-R1', f, '--outdir', self.outdir]
         r = common.run_path_discov(args)
-        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, False)
+        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, skip_r2=True)
         common.print_list(missingfiles)
         print r
         self.assertEqual([], missingfiles)
@@ -29,7 +29,7 @@ class TestR1Only(common.TempDir):
         f = relpath(self.f_fastq)
         args = ['-R1', f, '--outdir', self.outdir]
         r = common.run_path_discov(args)
-        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, False)
+        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, skip_r2=True)
         common.print_list(missingfiles)
         print r
         self.assertEqual([], missingfiles)
@@ -39,7 +39,7 @@ class TestR1Only(common.TempDir):
         f = self.f_sff
         args = ['-R1', f, '--outdir', self.outdir]
         r = common.run_path_discov(args)
-        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, False)
+        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, skip_r2=True)
         common.print_list(missingfiles)
         print r
         self.assertEqual([], missingfiles)
@@ -49,7 +49,7 @@ class TestR1Only(common.TempDir):
         f = self.f_fastq_gz
         args = ['-R1', f, '--outdir', self.outdir]
         r = common.run_path_discov(args)
-        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, False)
+        missingfiles = common.verify_project(self.outdir, common.PROJECT_FILES, skip_r2=True)
         common.print_list(missingfiles)
         print r
         self.assertEqual([], missingfiles)
