@@ -89,6 +89,9 @@ def step1(mates, outputdir, logs, samplename, timestamp, paramfile):
     
     # Iter over mate list
     for matenum, mate in enumerate(mates, start=1):
+        # If mate passed is 'none' then same as not having --R2
+        if mate == "none":
+            continue
         # Get easy reference to mate name
         matename = 'R{0}'.format(matenum)
         # Get easy reference to current mate paths (R1|R2).*
