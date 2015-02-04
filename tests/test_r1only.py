@@ -1,6 +1,7 @@
 from os.path import *
 
 import unittest2 as unittest
+from nose.plugins.attrib import attr
 
 import common
 
@@ -12,6 +13,7 @@ class TestR1Only(common.TempDir):
         self.f_sff = join(common.TESTDATA, '454Reads.sff')
         self.f_sff_gz = join(common.TESTDATA, '454Reads.sff.gz')
 
+    @attr('current')
     def test_run_r1only_abspath(self):
         self.outdir = join(self.testdir, 'r1only_abspath')
         f = self.f_fastq
