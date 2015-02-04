@@ -5,6 +5,7 @@ import shutil
 from helpers import get_options, make_logger, runCommand, which, run_cmd
 from pkg_resources import resource_filename, resource_stream
 import subprocess
+import os.path
 
 def work_dir(dirname):
     if not dirname:
@@ -101,7 +102,7 @@ def priStage(input, project_dir, paramFile,numreads,sge, output):
     ffastq, rfastq = input
     cmds = [
         'run_standard_stable4.pl',
-        '--sample', project_dir,
+        '--sample', os.path.basename(project_dir),
         '--paramfile', paramFile,
         '--outputdir', output,
         '--R1', ffastq,
