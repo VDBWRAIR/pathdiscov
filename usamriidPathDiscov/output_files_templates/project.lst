@@ -10,4 +10,3 @@ ${projpath}/unassembledread_reports
 ${projpath}/output
 ${projpath}/quality_analysis
 ${projpath}/R1.count
-${projpath}/R2.count

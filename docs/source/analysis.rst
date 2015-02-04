@@ -34,21 +34,55 @@ To get help
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension.
 The name of the fastq file doesn't matter.
 
-General use
-===========
+Usage Examples
+==============
+
+You may use ``.fastq``, ``.fastq.gz``, ``.sff`` and ``.sff.gz`` files for ``-R1`` and ``-R2``
+
+Typical Usage
+-------------
+
+To run with default **param.txt** file created during ``python setup.py``
 
 .. code-block:: bash
 
     usamriidPathDiscov_cli -R1 F.fastq -R2 R.fastq --outdir testoutDir 
 
-Don't forget to give the full path to your forward and reverse files if the reads 
-are not in your current analysis directory that you will be running the pipeline in
+Single Read file
+----------------
 
-To run with default **param.txt** file and default host database (human)
+   .. code-block:: bash
+           
+       samriidPathDiscov_cli -R1 testData/454Reads.sff --outdir testoutDir
+
+
+Creating custom param.txt
+-------------------------
+
+You need to first initialize a project directory with the input reads and the template
+param.txt file.
 
 .. code-block:: bash
 
-    usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --outdir testoutDir
+    usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --param --outdir testoutDir
+
+Then, open :ref:`testoutDir/input/param.txt <paramtxt>` and manually edit the databases and 
+paramaters you would like to change.
+
+Execute the following line to use the :ref:`paramtxt` you have edited to complete the analysis
+
+.. code-block:: bash
+
+    usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --noparam --outdir testoutDir
+
+Using Sun Grid Engine
+---------------------
+    
+If your cluster support SGE, use ``--use-sge`` to activate sge_iterative_blast_phylo instead of iterative_blast_phylo
+
+.. code-block:: bash
+
+     usamriidPathDiscov_cli -R1 testData/F.fastq.gz -R2 testData/R.fastq.gz --outdir testoutDir --use-sge
 
 **Note**: The pipeline, by default, runs in the following order::
 
@@ -67,22 +101,3 @@ To check the log for example under host_map
 .. code-block:: bash
 
     cat testoutDir/results/host_map_1/logs/*.e
-
-Creating custom param.txt
-=========================
-
-You need to first initialize a project directory with the input reads and the template
-param.txt file.
-
-.. code-block:: bash
-
-    usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --param --outdir testoutDir
-
-Then, open :ref:`testoutDir/input/param.txt <paramtxt>` and manually edit the databases and 
-paramaters you would like to change.
-
-Execute the following line to use the :ref:`paramtxt` you have edited to complete the analysis
-
-.. code-block:: bash
-
-    usamriidPathDiscov_cli -R1 $(pwd)/testData/F.fastq -R2 $(pwd)/testData/R.fastq --noparam --outdir testoutDir

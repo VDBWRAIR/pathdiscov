@@ -10,7 +10,6 @@ ${projpath}/results/logs
 ${projpath}/results/logs/${projname}.20141022-16.44_param.txt
 ${projpath}/results/output
 ${projpath}/results/output/${projname}.R1.count.txt
-${projpath}/results/output/${projname}.R2.count.txt
 ${projpath}/results/output/${projname}.contig.count.txt
 ${projpath}/results/output/reads.txt
 ${projpath}/results/output/stats.txt
@@ -23,6 +22,5 @@ ${projpath}/results/output/${projname}.aug.report.txt
 ${projpath}/results/output/contig.${projname}.top.report.txt
 ${projpath}/results/output/contig.${projname}.top.phylo.txt
 ${projpath}/results/output/R1.${projname}.top.phylo.txt
-${projpath}/results/output/R2.${projname}.top.phylo.txt
 ${projpath}/results/output/2.contig.noblast.fasta
 ${projpath}/results/output/out.cap.fa
