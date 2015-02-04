@@ -314,10 +314,10 @@ def refRay(options):
     sfile = path(currwd) / options.Ray.sfile
     sfile2 = path(currwd) / options.Ray.sfile2
     olink = path(currwd) / options.Ray.olink
-    if os.path.isdir("/usr/lib64/openmpi/lib"):
-        sh('cd %s; test ! -d ray && tar -xzvf ray.tar.gz; test ! -d RayPlatform && tar -xzvf RayPlatform.tar.gz; export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH; cd %s;make PREFIX=build2000 MPICXX=/usr/lib64/openmpi/bin/mpicxx;' % (src,sfile))
-    elif os.path.isdir("/usr/lib/openmpi/lib"):
-        sh('cd %s; test ! -d ray && tar -xzvf ray.tar.gz; test ! -d RayPlatform && tar -xzvf RayPlatform.tar.gz; export LD_LIBRARY_PATH=/usr/lib/openmpi/lib:$LD_LIBRARY_PATH; export PATH=$PATH:/usr/lib/openmpi/bin; cd %s; make PREFIX=build2000' % (src,sfile))
+    if os.path.isdir("/usr/lib64/openmpi"):
+        sh('cd %s; test ! -d ray && tar -xzvf ray.tar.gz; test ! -d RayPlatform && tar -xzvf RayPlatform.tar.gz; mpicxx=$(which mpicxx); export LD_LIBRARY_PATH=/usr/lib64/openmpi:/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH; cd %s;make PREFIX=build2000 MPICXX=$mpicxx;' % (src,sfile))
+    elif os.path.isdir("/usr/lib/openmpi"):
+        sh('cd %s; test ! -d ray && tar -xzvf ray.tar.gz; test ! -d RayPlatform && tar -xzvf RayPlatform.tar.gz; mpicxx=$(which mpicxx); export LD_LIBRARY_PATH=/usr/lib/openmpi:/usr/lib/openmpi/lib:$LD_LIBRARY_PATH; export PATH=$PATH:/usr/lib/openmpi/bin; cd %s; make PREFIX=build2000 MPICXX=$mpicxx' % (src,sfile))
     else:
         info("Ray is not installed, ... please install `openmpi and openmpi-devel` and try again")
         sys.exit()
