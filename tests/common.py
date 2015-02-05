@@ -26,9 +26,9 @@ PROJECT_FILES = [
 	('results/orf_filter/orf_filter.R1',''),
 	('results/quality_analysis/F_fastqc.zip',''),
 	('results/quality_analysis/analysis_quality.log',''),
-	('results/quality_analysis/R_fastqc.zip','R2'),
+	('results/quality_analysis/R_fastqc.zip','R1R2'),
 	('results/quality_analysis/F_fastqc.html',''),
-	('results/quality_analysis/R_fastqc.html','R2'),
+	('results/quality_analysis/R_fastqc.html','R1R2'),
 	('results/ray2_assembly_1/out.ray.fa.cap.concat',''),
 	('results/ray2_assembly_1/results/FilePartition.txt',''),
 	('results/ray2_assembly_1/results/NetworkTest.txt',''),
@@ -44,31 +44,31 @@ PROJECT_FILES = [
 	('results/ray2_assembly_1/head.1.R1.unmap.fastq',''),
 	('results/ray2_assembly_1/assembly.count',''),
 	('results/ray2_assembly_1/out.ray.fa',''),
-	('results/ray2_assembly_1/R2.single.fastq','R2'),
-	('results/ray2_assembly_1/R2.paired.fastq','R2'),
+	('results/ray2_assembly_1/R2.single.fastq','R1R2'),
+	('results/ray2_assembly_1/R2.paired.fastq','R1R2'),
 	('results/ray2_assembly_1/logs_assembly/assembly.o',''),
 	('results/ray2_assembly_1/logs_assembly/assembly.e',''),
 	('results/ray2_assembly_1/ray2_assembly_1.fasta',''),
-	('results/ray2_assembly_1/bowtie2_mapping/R1.unmap.fastq','R2'),
-	('results/ray2_assembly_1/bowtie2_mapping/R2.unmap.fastq','R2'),
-	('results/ray2_assembly_1/bowtie2_mapping/R2.unmap.id','R2'),
+	('results/ray2_assembly_1/bowtie2_mapping/R1.unmap.fastq','R1R2'),
+	('results/ray2_assembly_1/bowtie2_mapping/R2.unmap.fastq','R1R2'),
+	('results/ray2_assembly_1/bowtie2_mapping/R2.unmap.id','R1R2'),
 	('results/ray2_assembly_1/bowtie2_mapping/out.bam',''),
-	('results/ray2_assembly_1/bowtie2_mapping/R1.map.id','R2'),
-	('results/ray2_assembly_1/bowtie2_mapping/R1.unmap.id','R2'),
-	('results/ray2_assembly_1/bowtie2_mapping/R2.map.id','R2'),
+	('results/ray2_assembly_1/bowtie2_mapping/R1.map.id','R1R2'),
+	('results/ray2_assembly_1/bowtie2_mapping/R1.unmap.id','R1R2'),
+	('results/ray2_assembly_1/bowtie2_mapping/R2.map.id','R1R2'),
 	('results/ray2_assembly_1/cap3.out',''),
-	('results/ray2_assembly_1/head.1.R2.unmap.fastq','R2'),
+	('results/ray2_assembly_1/head.1.R2.unmap.fastq','R1R2'),
 	('results/ray2_assembly_1/logs/*-out.o',''),
 	('results/ray2_assembly_1/logs/*-out.e',''),
 	('results/ray2_assembly_1/R1.single.fastq',''),
-	('results/ray2_assembly_1/R1.paired.fastq','R2'),
+	('results/ray2_assembly_1/R1.paired.fastq','R1R2'),
 	('results/ray2_assembly_1/contig_len.txt',''),
 	('results/output/{projectdir}.aug.report.txt',''),
 	('results/output/2.contig.noblast.fasta',''),
 	('results/output/out.cap.fa',''),
-	('results/output/R1.{projectdir}.top.phylo.txt','R2'),
-	('results/output/R2.{projectdir}.top.phylo.txt','R2'),
-	('results/output/{projectdir}.R2.count.txt','R2'),
+	('results/output/R1.{projectdir}.top.phylo.txt','R1R2'),
+	('results/output/R2.{projectdir}.top.phylo.txt','R1R2'),
+	('results/output/{projectdir}.R2.count.txt','R1R2'),
 	('results/output/{projectdir}.R1.count.txt',''),
 	('results/output/contig.{projectdir}.top.report.txt',''),
 	('results/output/contig.{projectdir}.top.phylo.txt',''),
@@ -92,12 +92,12 @@ PROJECT_FILES = [
 	('results/iterative_blast_phylo_1/contig.top.count.superclass',''),
 	('results/iterative_blast_phylo_1/2.contig.fasta',''),
 	('results/iterative_blast_phylo_1/1.contig.noblast.fasta',''),
-	('results/step1/R2.fastq','R2'),
+	('results/step1/R2.fastq','R1R2'),
 	('results/step1/R1.count',''),
 	('results/step1/R1.id',''),
-	('results/step1/R2.count','R2'),
-	('results/step1/R2.id','R2'),
-	('results/step1/step1.R2','R2'),
+	('results/step1/R2.count','R1R2'),
+	('results/step1/R2.id','R1R2'),
+	('results/step1/step1.R2','R1R2'),
 	('results/step1/R1.fastq',''),
 	('results/step1/logs/*-out.o',''),
 	('results/step1/logs/*-out.e',''),
@@ -111,59 +111,65 @@ PROJECT_FILES = [
 	('results/logs/{projectdir}.*_param.txt',''),
 	('results/host_map_1/host_map_1.R1',''),
 	('results/host_map_1/R1.discard',''),
-	('results/host_map_1/map_1/R2.unmap.id','R2'),
+	('results/host_map_1/map_1/R2.unmap.id','R1R2'),
 	('results/host_map_1/map_1/out.bam',''),
-	('results/host_map_1/map_1/R1.map.id','R2'),
-	('results/host_map_1/map_1/R1.unmap.id','R2'),
-	('results/host_map_1/map_1/R2.unmap.fastq','R2'),
+	('results/host_map_1/map_1/R1.map.id','R1R2'),
+	('results/host_map_1/map_1/R1.unmap.id','R1R2'),
+	('results/host_map_1/map_1/R2.unmap.fastq','R1R2'),
 	('results/host_map_1/map_1/R1.unmap.fastq',''),
 	('results/host_map_1/map_1/singleton.map.id','R1'),
 	('results/host_map_1/map_1/singleton.unmap.id','R1'),
-	('results/host_map_1/map_1/R2.map.id','R2'),
+	('results/host_map_1/map_1/R2.map.id','R1R2'),
 	('results/host_map_1/map_2/out.bam',''),
 	('results/host_map_1/map_2/singleton.map.id',''),
 	('results/host_map_1/map_2/R1.unmap.fastq',''),
 	('results/host_map_1/map_2/singleton.unmap.id',''),
-    ('results/host_map_1/map_2/R1.map.id','R2'),
-    ('results/host_map_1/map_2/R1.paired.fastq','R2'),
-    ('results/host_map_1/map_2/R1.single.fastq','R2'),
-    ('results/host_map_1/map_2/R1.unmap.fastq','R2'),
-    ('results/host_map_1/map_2/R1.unmap.id','R2'),
-    ('results/host_map_1/map_2/R2.map.id','R2'),
-    ('results/host_map_1/map_2/R2.paired.fastq','R2'),
-    ('results/host_map_1/map_2/R2.single.fastq','R2'),
-    ('results/host_map_1/map_2/R2.unmap.fastq','R2'),
-    ('results/host_map_1/map_2/R2.unmap.id','R2'),
+    ('results/host_map_1/map_2/R1.map.id','R1R2'),
+    ('results/host_map_1/map_2/R1.paired.fastq','R1R2'),
+    ('results/host_map_1/map_2/R1.single.fastq','R1R2'),
+    ('results/host_map_1/map_2/R1.unmap.fastq','R1R2'),
+    ('results/host_map_1/map_2/R1.unmap.id','R1R2'),
+    ('results/host_map_1/map_2/R2.map.id','R1R2'),
+    ('results/host_map_1/map_2/R2.paired.fastq','R1R2'),
+    ('results/host_map_1/map_2/R2.single.fastq','R1R2'),
+    ('results/host_map_1/map_2/R2.unmap.fastq','R1R2'),
+    ('results/host_map_1/map_2/R2.unmap.id','R1R2'),
 	('results/host_map_1/R1.count',''),
-	('results/host_map_1/R2.discard','R2'),
-	('results/host_map_1/R2.count','R2'),
+	('results/host_map_1/R2.discard','R1R2'),
+	('results/host_map_1/R2.count','R1R2'),
 	('results/host_map_1/logs/*-out.o',''),
 	('results/host_map_1/logs/*-out.e',''),
-	('results/host_map_1/host_map_1.R2','R2'),
+	('results/host_map_1/host_map_1.R2','R1R2'),
 	('quality_analysis',''),
 	('output',''),
 	('R1.count',''),
 	('contig_reports',''),
-	('R2.count','R2'),
+	('R2.count','R1R2'),
 	('analysis.log',''),
 	('unassembled_read_reports',''),
 	('input/param.txt',''),
 ]
 
-def verify_project(projpath, expectedfiles, skip_r2=False):
+def verify_project(projpath, expectedfiles, r1r2, skiplist=[]):
     '''
     Just makes sure all files are present in project
     if r2 is false then ignore files that have R2 in them
     expectedfiles should contain paths to files that are relative to
     projpath(like [join(projpath, f) for f in expectedfiles])
+
+    r1r2 specifies either R1 or R1R2 to signify what args were used
+    skiplist is a list of paths that can be ignored
     '''
     # Will use this to replace {projdir}
     projname = basename(projpath)
     # Keep track of missing files
     missing = []
     for f in expectedfiles:
-        # Skip R2 file checks if specified
-        if skip_r2 and f[1] == 'R2':
+        if r1r2 == '':
+            # If r1r2 blank then mandatory
+            pass
+        elif r1r2 != f[1]:
+            # If no match, then skip the file
             continue
         p = join(projpath, f[0])
         try:
@@ -179,7 +185,8 @@ def verify_project(projpath, expectedfiles, skip_r2=False):
         else:
             for f in files:
                 if not exists(f):
-                    missing.append(f)
+                    if f not in skiplist:
+                        missing.append(f)
     return missing
 
 def print_list(lst):

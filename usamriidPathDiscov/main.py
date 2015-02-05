@@ -103,11 +103,9 @@ def verify_standard_stages_files(projectpath):
     from termcolor import colored
     templatesdir = resource_filename(__name__, 'output_files_templates')
     missingfiles = verify_standard_stages_files(projectpath, templatesdir)
-    #print yaml.dump(missingfiles)
     if missingfiles:
         for path, reason in missingfiles:
             fname = basename(path)
-            #print fname
             if fname == "param.txt":
                 print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
                 sys.exit(1)
@@ -132,11 +130,6 @@ def verify_standard_stages_files(projectpath):
             elif fname == "iterative_blast_phylo_2":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl execute this step", "red")
                 sys.exit(1)
-            #else:
-                #print colored("SUCESS! : Task completed successfully!", "green")
-
-
-            #print "{0} -- {1}".format(path,reason)
     else:
         print colored(" SUCCESS! the tasks completed successfully", "green")
 
@@ -174,7 +167,6 @@ def main():
     from helpers import which
     t0 = time.time()
     print (" Starting time ..... :") + str(t0)
-    print "print default argument whether to generate default param.txt file ..." +  str(options.param)
 
     # Will be all the commands to run
     pipeline_commands = [
@@ -209,7 +201,3 @@ def main():
     elapsedTime = int((time.time()) - t0)
     elapsedTime = str(datetime.timedelta(seconds=elapsedTime))
     print("Time to complete the task ....." ) + colored (elapsedTime, "red")
-
-
-if __name__ == '__main__':
-    main()
