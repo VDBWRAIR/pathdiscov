@@ -21,6 +21,7 @@ options = helpers.get_options()
 
 basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
+pro_dir= os.path.basename(project_dir)
 sge = options.sge
 R1 = os.path.abspath(options.R1)
 R2 = options.R2
@@ -112,25 +113,30 @@ def verify_standard_stages_files(projectpath):
                 print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
                 sys.exit(1)
             elif  fname == "quality_filter.R1":
-                print colored("WARNING! :  Unable to run quality filter step, please check if prinseq is installed and running", "red")
+                print colored("WARNING! :  Unable to run quality filter step, please check if prinseq is installed and running or the log file under host_map if bowtie2 succeeded", "red")
                 sys.exit(1)
             elif fname == "out.bam":
                 print colored("WARNING! :  Unable to map the read to the ref genome, please check if bowtie2 is installed or the ref ~/databases exist", "red")
                 sys.exit(1)
             elif fname == "out.cap.fa":
-                print colored("WARNING! : Unable to build the CAP3 contig, please check if cap3 program is running", "red")
+                print colored("WARNING! : Unable find out.cap.fa file, please check if cap3 program is running and  ray2_assembly error log", "red")
                 sys.exit(1)
             elif fname == "out.ray.fa":
-                print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running", "red")
+                print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running and possible error in the log file", "red")
                 sys.exit(1)
             elif fname == "R1.orfout.fa":
                 print colored("WARNING! : Unable to run getorf, please check if getorf program is running", "red")
                 sys.exit(1)
-            elif fname == "iterative_blast_phylo_1.contig":
-                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl execute this step", "red")
+            elif fname == "1.contig.blast":
+                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the log file under iterative_blast_phylo_1", "red")
                 sys.exit(1)
-            elif fname == "iterative_blast_phylo_2":
-                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the program called in pathogen.pl execute this step", "red")
+            elif fname == "1.contig.fasta":
+                print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the log file under iterative_blast_phylo_2", "red")
+                sys.exit(1)
+
+            elif fname == "contig." + pro_dir + ".top.smallreport.txt":
+                print fname
+                print colored("WARNING! : Unable to run iterative_blast_phylo , please check the log file under iterative_blast_phylo_1 or iterative_blast_phylo_2", "red")
                 sys.exit(1)
             #else:
                 #print colored("SUCESS! : Task completed successfully!", "green")
