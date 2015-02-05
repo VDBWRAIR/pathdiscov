@@ -28,9 +28,8 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print r
-        self.assertEqual([], missingfiles)
-        self.assertEqual(0, r)
-
+        self.assertEqual([], missingfiles, 'Required files missing from project')
+        self.assertEqual(0, r, 'Return code was not 0')
 
     def test_r1r2_outdir_abspath(self):
         # abspath outdir
@@ -45,8 +44,8 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print r
-        self.assertEqual([], missingfiles)
-        self.assertEqual(0, r)
+        self.assertEqual([], missingfiles, 'Required files missing from project')
+        self.assertEqual(0, r, 'Return code was not 0')
 
     def test_r1gzip(self):
         self.outdir = join(self.testdir, 'r1gzip')
@@ -57,8 +56,8 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print r
-        self.assertEqual([], missingfiles)
-        self.assertEqual(0, r)
+        self.assertEqual([], missingfiles, 'Required files missing from project')
+        self.assertEqual(0, r, 'Return code was not 0')
 
     def test_r1sff(self):
         skip = [
@@ -73,5 +72,5 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print r
-        self.assertEqual([], missingfiles)
-        self.assertEqual(0, r)
+        self.assertEqual([], missingfiles, 'Required files missing from project')
+        self.assertEqual(0, r, 'Return code was not 0')

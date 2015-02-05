@@ -19,10 +19,10 @@ class TestArguments(common.TempDir):
         print
         print e
         self.assertTrue(
-            exists(join(outdir, 'input', 'param.txt'))
+            exists(join(outdir, 'input', 'param.txt')),
+            'input/param.txt was not created'
         )
         self.assertEqual(0, r, 'Return code was not 0')
-        self.assertTrue(False)
 
     def test_cpu_option_sets_param_txt_ninst(self):
         outdir = 'cpu_param'
@@ -36,17 +36,17 @@ class TestArguments(common.TempDir):
 
         ninst = re.findall('ninst(?:_list){0,1}\s+(?:(\d+)(?:,(\d+))*)', param_contents)
         for l,r in ninst:
-            self.assertEqual('99', l)
-            self.assertIn(r, ('99',''))
+            self.assertEqual('99', l, 'Did not set ninst inside param.txt')
+            self.assertIn(r, ('99',''), 'Did not set ninst_list inside param.txt')
 
     def test_missing_outdir(self):
         o,e,r = common.run_path_discov(
             ['-R1', self.r1]
         )
-        self.assertEqual(2, r)
+        self.assertEqual(2, r, 'Did not ensure -R1 was specified')
 
     def test_missing_r1(self):
         o,e,r = common.run_path_discov(
             ['--outdir', 'outdir']
         )
-        self.assertEqual(2, r)
+        self.assertEqual(2, r, 'Did not ensure --outdir was specified')
