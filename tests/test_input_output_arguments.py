@@ -17,7 +17,7 @@ class TestInputOutputArguments(common.TempDir):
         self.f_sff = join(common.TESTDATA, '454Reads.sff')
         self.f_sff_gz = join(common.TESTDATA, '454Reads.sff.gz')
 
-    def run_with_rikkcdna(args):
+    def run_with_rikkcdna(self, args):
         ''' run --param and change param.txt to rikkcdna to run faster '''
         # outdir is argument after --outdir
         outdir = args[args.index('--outdir') + 1]
@@ -46,7 +46,7 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print o
-		print e
+        print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
 
@@ -63,7 +63,7 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print o
-		print e
+        print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
 
@@ -93,6 +93,6 @@ class TestInputOutputArguments(common.TempDir):
         )
         common.print_list(missingfiles)
         print o
-		print e
+        print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
