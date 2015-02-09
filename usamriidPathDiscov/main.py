@@ -197,7 +197,8 @@ def main():
 
     import datetime
     from termcolor import colored
-    verify_standard_stages_files(project_dir)
+    if not options.param:
+        verify_standard_stages_files(project_dir)
     elapsedTime = int((time.time()) - t0)
     elapsedTime = str(datetime.timedelta(seconds=elapsedTime))
     print("Time to complete the task ....." ) + colored (elapsedTime, "red")
