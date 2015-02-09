@@ -104,11 +104,9 @@ def verify_standard_stages_files(projectpath):
     from termcolor import colored
     templatesdir = resource_filename(__name__, 'output_files_templates')
     missingfiles = verify_standard_stages_files(projectpath, templatesdir)
-    #print yaml.dump(missingfiles)
     if missingfiles:
         for path, reason in missingfiles:
             fname = basename(path)
-            #print fname
             if fname == "param.txt":
                 print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
                 sys.exit(1)
@@ -138,11 +136,6 @@ def verify_standard_stages_files(projectpath):
                 print fname
                 print colored("WARNING! : Unable to run iterative_blast_phylo , please check the log file under iterative_blast_phylo_1 or iterative_blast_phylo_2", "red")
                 sys.exit(1)
-            #else:
-                #print colored("SUCESS! : Task completed successfully!", "green")
-
-
-            #print "{0} -- {1}".format(path,reason)
     else:
         print colored(" SUCCESS! the tasks completed successfully", "green")
 
@@ -180,11 +173,10 @@ def main():
     from helpers import which
     t0 = time.time()
     print (" Starting time ..... :") + str(t0)
-    print "print default argument whether to generate default param.txt file ..." +  str(options.param)
 
     # Will be all the commands to run
     pipeline_commands = [
-        ('usamriidPathDiscov.main.createPram', createPram),
+        (__name__ + '.createPram', createPram),
     ]
 
     print "....................." + basedir + "/" + project_dir
@@ -193,16 +185,16 @@ def main():
         helpers.create_new_project(project_dir)
     elif not options.noparam:
         pipeline_commands = [
-            ('usamriidPathDiscov.main.fastQC', fastQC),
-            ('usamriidPathDiscov.main.priStage', priStage),
-            ('usamriidPathDiscov.main.symlink', symlink)
+            (__name__ + '.fastQC', fastQC),
+            (__name__ + '.priStage', priStage),
+            (__name__ + '.symlink', symlink)
         ]
     else:
         helpers.create_new_project(project_dir)
         pipeline_commands += [
-            ('usamriidPathDiscov.main.fastQC', fastQC),
-            ('usamriidPathDiscov.main.priStage', priStage),
-            ('usamriidPathDiscov.main.symlink', symlink),
+            (__name__ + '.fastQC', fastQC),
+            (__name__ + '.priStage', priStage),
+            (__name__ + '.symlink', symlink),
         ]
 
     pipeline_printout(sys.stdout, commands(pipeline_commands, 1), verbose=6)
@@ -211,11 +203,8 @@ def main():
 
     import datetime
     from termcolor import colored
-    verify_standard_stages_files(project_dir)
+    if not options.param:
+        verify_standard_stages_files(project_dir)
     elapsedTime = int((time.time()) - t0)
     elapsedTime = str(datetime.timedelta(seconds=elapsedTime))
     print("Time to complete the task ....." ) + colored (elapsedTime, "red")
-
-
-if __name__ == '__main__':
-    main()

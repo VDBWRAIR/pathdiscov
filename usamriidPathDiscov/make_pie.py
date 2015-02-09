@@ -61,6 +61,8 @@ def graph_pathogens( ax, pathogens_counts ):
 def graph_all( ax, host_vector_pathogen, **kwargs ):
     hc,vc,pc = host_vector_pathogen[1::2]
     hvp = [('Mamalia',hc), ('Insecta',vc), ('Virus/Bacteria',pc)]
+    for k,v in hvp:
+        sys.stdout.write('{0}: {1}\n'.format(k,v))
     ax.set_title( kwargs['title'] )
     ax.pie( [ct for l,ct in hvp], labels=[l for l,ct in hvp], autopct='%1.1f%%' )
 
