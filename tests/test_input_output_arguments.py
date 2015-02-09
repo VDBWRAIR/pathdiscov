@@ -1,9 +1,11 @@
 from os.path import *
 import fileinput
 import sys
+import os
 
 import unittest2 as unittest
 from nose.plugins.attrib import attr
+import mock
 
 import common
 
@@ -12,18 +14,12 @@ class TestInputOutputArguments(common.TempDir):
     def setUp(self):
         super(TestInputOutputArguments, self).setUp()
         self.keep_temp_dir = True
-        self.f_fastq = join(common.TESTDATA, 'F.fastq')
-        self.f_fastq_gz = join(common.TESTDATA, 'F.fastq.gz')
-        self.r_fastq = join(common.TESTDATA, 'R.fastq')
-        self.r_fastq_gz = join(common.TESTDATA, 'R.fastq.gz')
-        self.f_sff = join(common.TESTDATA, '454Reads.sff')
-        self.f_sff_gz = join(common.TESTDATA, '454Reads.sff.gz')
 
     def run_with_rikkcdna(self, args):
         ''' run --param and change param.txt to rikkcdna to run faster '''
         # Some day will do something special, but just run it for now as
         # the param.txt is
-        return common.run_path_discov(args)
+        #return common.run_path_discov(args)
         # outdir is argument after --outdir
         outdir = args[args.index('--outdir') + 1]
         # Create param.txt
@@ -34,13 +30,12 @@ class TestInputOutputArguments(common.TempDir):
         param = None
         for line in fileinput.input(paramtxt, inplace=True):
             if 'blast_db_list' in line:
-                sys.stdout.write('blast_db_list {0},{0}'.format(rikkcdnapath))
+                sys.stdout.write('blast_db_list {0},{0}\n'.format(rikkcdnapath))
             else:
                 sys.stdout.write(line)
         # Now run with --noparam to use modified param.txt
         return common.run_path_discov(args + ['--noparam'])
 
-    @attr('current')
     def test_r1only_abspath(self):
         # relative path outdir
         self.outdir = 'r1_abspath_outdir_relpath'

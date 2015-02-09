@@ -170,7 +170,7 @@ def main():
 
     # Will be all the commands to run
     pipeline_commands = [
-        ('usamriidPathDiscov.main.createPram', createPram),
+        (__name__ + '.createPram', createPram),
     ]
 
     print "....................." + basedir + "/" + project_dir
@@ -179,16 +179,16 @@ def main():
         helpers.create_new_project(project_dir)
     elif not options.noparam:
         pipeline_commands = [
-            ('usamriidPathDiscov.main.fastQC', fastQC),
-            ('usamriidPathDiscov.main.priStage', priStage),
-            ('usamriidPathDiscov.main.symlink', symlink)
+            (__name__ + '.fastQC', fastQC),
+            (__name__ + '.priStage', priStage),
+            (__name__ + '.symlink', symlink)
         ]
     else:
         helpers.create_new_project(project_dir)
         pipeline_commands += [
-            ('usamriidPathDiscov.main.fastQC', fastQC),
-            ('usamriidPathDiscov.main.priStage', priStage),
-            ('usamriidPathDiscov.main.symlink', symlink),
+            (__name__ + '.fastQC', fastQC),
+            (__name__ + '.priStage', priStage),
+            (__name__ + '.symlink', symlink),
         ]
 
     pipeline_printout(sys.stdout, commands(pipeline_commands, 1), verbose=6)

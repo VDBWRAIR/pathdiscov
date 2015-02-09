@@ -6,6 +6,8 @@ import os
 import sys
 import glob
 
+import mock
+
 import unittest2 as unittest
 
 # Testing directory
@@ -195,6 +197,32 @@ def print_list(lst):
     '''
     print '\n'.join(lst)
 
+def exec_main(mock_args):
+    '''
+    Attempt to run main.py with the ability to modify
+    things
+    '''
+    # Path to main.py
+    PATH_TO_MAIN = join(dirname(TESTDIR), 'usamriidPathDiscov', 'main.py')
+    sys.path.append(dirname(PATH_TO_MAIN))
+    # Blank globals(i have no idea what I'm doing here probably wrong)
+    _g = {
+        '__name__': 'main'
+    }
+    # set sys.argv if mock_args is list
+    if isinstance(mock_args, list):
+        sys.argv = [''] + mock_args
+    else:
+        # Replace helpers.get_options to just return mock_args
+        import helpers
+        helpers.get_options = lambda: mock_args
+        # Fake globals
+        _g['helpers'] = helpers # Patch helpers module
+    # Exec main to fill in _g and we will call main then
+    execfile(PATH_TO_MAIN, _g)
+    # return results of what changed in g
+    return _g
+
 def run_path_discov(args):
     '''
     Run usamriidPathDiscov_cli with args
@@ -222,6 +250,12 @@ class TempDir(unittest.TestCase):
         # Change directory into the testdir so accidental files will be
         # put into it hopefully instead of somwhere random
         os.chdir(self.testdir)
+        self.f_fastq = join(TESTDATA, 'F.fastq')
+        self.f_fastq_gz = join(TESTDATA, 'F.fastq.gz')
+        self.r_fastq = join(TESTDATA, 'R.fastq')
+        self.r_fastq_gz = join(TESTDATA, 'R.fastq.gz')
+        self.f_sff = join(TESTDATA, '454Reads.sff')
+        self.f_sff_gz = join(TESTDATA, '454Reads.sff.gz')
 
     def tearDown(self):
         os.chdir(TESTDIR)
