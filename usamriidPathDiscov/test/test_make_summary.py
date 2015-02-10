@@ -408,7 +408,7 @@ class TestUnassembledReads( BaseTest ):
 class TestGroupBlastBy( BaseTest ):
     def setUp( self ):
         super( TestGroupBlastBy, self ).setUp()
-        self.contigblast = join(self.phylo2,'reports','contig.mock_project.top.smallreport.txt')
+        self.contigblast = join(self.phylo2,'reports','R1.mock_project.top.smallreport.txt')
 
     def _C( self, *args, **kwargs ):
         from usamriidPathDiscov.make_summary import group_blast_by_
@@ -444,7 +444,7 @@ class TestUnassembledReport( BaseTest ):
 
     def test_missing_smallreports( self ):
         self.make_tmp_proj()
-        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
+        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.smallreport.txt' ) )
         for f in smreport:
             os.unlink( f )
         assert_raises( MissingProjectFile, self._C, self.mockproj, 'Bacteria' )
@@ -455,7 +455,7 @@ class TestSummary( BaseTest ):
 
         self.make_tmp_proj()
         self.phylo1files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', 'contig.*smallreport*.txt' ) )
-        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
+        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.smallreport.txt' ) )
         self.step1files = glob( join(self.mockproj, 'results', 'step1', '*.count') )
         self.qualfiles = glob( join(self.mockproj, 'results', 'quality_filter', '*.count') )
         self.contigcountfiles = glob( join(self.mockproj, 'results', 'iterative_blast_phylo_1', '*.count' ) )
