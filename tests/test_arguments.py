@@ -3,9 +3,11 @@ import os
 import re
 
 import unittest2 as unittest
+from nose.plugins.attrib import attr
 
 import common
 
+@attr('fast')
 class TestArguments(common.TempDir):
     def setUp(self):
         super(TestArguments,self).setUp()

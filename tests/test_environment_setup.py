@@ -8,6 +8,7 @@ import mock
 
 import common
 
+@attr('fast')
 class TestEnvironSetup(common.TempDir):
     def setUp(self):
         super(TestEnvironSetup,self).setUp()
