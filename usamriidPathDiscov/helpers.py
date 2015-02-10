@@ -333,11 +333,13 @@ def parse_config():
     necessary to it such as joining database path to other paths
     and expanding ~ and $
     '''
+    options = get_options()
+    cpuNum = options.cpuNum
     config_file = resource_filename(__name__, 'files/config.yaml')
     config = yaml.load(open(config_file).read())
 
     config['PHRED_OFFSET'] = str(config['PHRED_OFFSET'])
-    config['NODE_NUM'] = str(config['NODE_NUM'])
+    config['NODE_NUM'] = str(cpuNum)
     databases = expanduser(expandvars(config['databases']))
     config['databases'] = databases
     config['human_dna'] = join(databases, config['human_dna'])
