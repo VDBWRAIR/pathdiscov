@@ -22,10 +22,15 @@ TESTDATA = join(dirname(TESTDIR), 'testData')
 # All projects need these files regardless of -R1 -R2
 # Paths are relative to --outdir
 PROJECT_FILES = [
+    ('results/orf_filter/R1.orfout.fa',''),
+    ('results/orf_filter/R1.unmap.fastq',''),
+    ('results/orf_filter/R2.orfout.fa','R1R2'),
+    ('results/orf_filter/R2.unmap.fastq','R1R2'),
 	('results/orf_filter/out.cap.fa',''),
 	('results/orf_filter/logs/*-out.o',''),
 	('results/orf_filter/logs/*-out.e',''),
 	('results/orf_filter/orf_filter.R1',''),
+	('results/orf_filter/orf_filter.R2','R1R2'),
 	('results/quality_analysis/F_fastqc.zip',''),
 	('results/quality_analysis/analysis_quality.log',''),
 	('results/quality_analysis/R_fastqc.zip','R1R2'),

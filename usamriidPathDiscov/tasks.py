@@ -119,6 +119,6 @@ def priStage(input, project_dir, paramFile,numreads,sge, output):
 
     cmds += ['--blast_unassembled', str(numreads)]
     cmds = ' '.join(cmds)
-    cmds += "| tee -a " + output + "/analysis.log"
+    cmds += " 2>&1 | tee -a " + output + "/analysis.log"
 
     runCommand(cmds, True)

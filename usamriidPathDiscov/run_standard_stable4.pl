@@ -75,7 +75,7 @@ GetOptions (	'outputdir=s' => \$outputdir,
 $strstages = join(' ', @stages);
 # Set default stages if not set by options
 if( $strstages eq "" ) {
-    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2';
+    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter';
 }
 
 print("Stages to be run: $strstages\n");
@@ -111,16 +111,16 @@ if ($numreads == 0)
 else
 {
 	# R1
-	system("cat $outputdir/ray2_assembly_1/1.R1.unmap.fastq | head -$numreads > $outputdir/ray2_assembly_1/head.1.R1.unmap.fastq");
+	verbose_system("cat $outputdir/ray2_assembly_1/1.R1.unmap.fastq | head -$numreads > $outputdir/ray2_assembly_1/head.1.R1.unmap.fastq");
 	$r1="$outputdir/ray2_assembly_1/head.1.R1.unmap.fastq";
 
 	# R2
-	system("cat $outputdir/ray2_assembly_1/1.R2.unmap.fastq | head -$numreads > $outputdir/ray2_assembly_1/head.1.R2.unmap.fastq") if ($r2 ne "none");
+	verbose_system("cat $outputdir/ray2_assembly_1/1.R2.unmap.fastq | head -$numreads > $outputdir/ray2_assembly_1/head.1.R2.unmap.fastq") if ($r2 ne "none");
 	$r2="$outputdir/ray2_assembly_1/head.1.R2.unmap.fastq" if ($r2 ne "none");
 }
 
 print("\n-|-------unassembled reads-------|-\n");
-print_system("$path_scripts/pathogen.pl --sample $sample --command iterative_blast_phylo_2 --paramfile param.txt --outputdir $outputdir --R1 $r1 --R2 $r2");
+print_system("$path_scripts/pathogen.pl --sample $sample --command iterative_blast_phylo_2 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
 
 print("\n-|-------read counts-------|-\n");
 system("mkdir -p $outputdir/output");
