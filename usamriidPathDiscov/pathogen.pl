@@ -401,14 +401,16 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				}
 						
                 my $r1r2 = "--R1 ";
-                print "r1r2: $r1r2\n";
                 if(-e $out_contig && $boolcontigname) {
                     # Use contig from previous stage if exists and
                     # boolcontigname is set
                     $r1r2 .= $out_contig;
+                    # r1r2 for next stage will be unmapped reads...hopefully
+                    $is_fasta = "no";				
                 } else {
                     # Otherwise use R1 and R2
                     $r1r2 .= $abs_r1 . " --R2 " . $abs_r1;
+                    $is_fasta = "yes";				
                 }
                 my $cmd = "$path_scripts/$command_prefix/$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date $r1r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
 				verbose_system($cmd);
@@ -419,8 +421,6 @@ for (my $i = 0; $i < scalar(@command); $i++)
                 $out_r2 = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R2" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R2" );
 			}
 			
-			# the output of this stage, for the next stage, is a fasta file so set this:
-			$is_fasta = "yes";				
 
             print("[iterative_blast_phylo_$num] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
             print "\n";
