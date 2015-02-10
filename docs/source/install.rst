@@ -87,7 +87,6 @@ Installation
         .. code-block:: bash
 
             SEQUENCE_PLATFORM: illumina #choices are: illumina,454
-            NODE_NUM: 10 # number of blast partition depending on the number of CPU on your computer. If you have 12 CPU on on your workstation, '10' works, if you have more CPU increase this number
 
 #. Install the pipeline into the virtualenv
 
@@ -134,9 +133,11 @@ Installation
     
         source ~/usamriidPathDiscov/usamriidPathDiscov/bin/activate
 
+    You may change the number of CPU based on the resource in your
+    system.
     .. code-block:: bash
 
-        usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir
+        usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir --numCPU 12
 
     If your blast database is quite large (like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in.
