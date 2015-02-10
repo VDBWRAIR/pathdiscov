@@ -90,7 +90,7 @@ def step1(mates, outputdir, logs, samplename, timestamp, paramfile):
     # Iter over mate list
     for matenum, mate in enumerate(mates, start=1):
         # If mate passed is 'none' then same as not having --R2
-        if mate == "none":
+        if not exists(mate):
             continue
         # Get easy reference to mate name
         matename = 'R{0}'.format(matenum)

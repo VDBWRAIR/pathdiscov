@@ -209,7 +209,7 @@ def unassembled_report( projdir, kingdom, groupby='family' ):
     Combines R1 & R2 results
     Adds a new key called accession with the parsed out accession
     '''
-    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'contig.*.top.smallreport.txt' ) )
+    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R[12].*.top.smallreport.txt' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
         raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )

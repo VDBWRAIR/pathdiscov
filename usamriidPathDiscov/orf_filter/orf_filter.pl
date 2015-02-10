@@ -27,20 +27,17 @@ my ($output_r2);				# output R2
 my $path_scripts=$RealBin;			# get abs path to directory in which script resides (where to look for sister scripts)
 my @mates=("R1","R2");				# strings for mates
 my $command="orf_filter";			# set command
-my $fastafile=1;				# is fasta
 
 
 GetOptions (	'outputdir=s' => \$outputdir,	# outputdir
 		'logs=s' => \$logs,		# logs
 		'paramfile=s' => \$pfile,	# parameter
-		'fastafile=i' => \$fastafile,	# is fasta 
 		'R1=s' => \$r1,			# R1
 		'R2=s' => \$r2,			# R2
 		'sample=s' => \$sample,		# sample
 		'timestamp=s' => \$timestamp);	# time stamp
             
 die "[error] required input parameters not found" if (!( defined($outputdir) && defined($logs) && defined($pfile) && defined($r1) ));
-die "[error] input must be fasta" if (!( $fastafile ));
             
 # get hash ref
 my $href = &parse_param($pfile);
@@ -94,7 +91,7 @@ foreach my $mate (@mates)
 	if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
 	{
 		# system("ln -sf $hoh{$command}{$mate} $command.$mate");		
-		system("ln -sf $hoh{$command}{$mate}");		
+		verbose_system("ln -sf $hoh{$command}{$mate}");		
 
 		if ($hoh{$command}{"getorf_options"})
 		{
@@ -109,16 +106,27 @@ foreach my $mate (@mates)
 			# my $href = fastaid_firstword_hash("$mate.orfout.fa");
 			# print Dumper $href;
 
+            # orf fasta file identifiers look like this
+            # >6_1 [109 - 192]
+            # So make a hash of all the unique first digits
 			my %h_fasta = map {/>(\w+)_(\w+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
 			# print Dumper \ %h_fasta;
 
-			print "[echo] filter $hoh{$command}{$mate} by orfs in $mate.orfout.join.fa\n";
+			print "[echo] filter $hoh{$command}{$mate} by orfs in $command.$mate\n";
 			get_subset_by_fastaid($hoh{$command}{$mate}, "$command.$mate", \%h_fasta);
 		}
 	} # defined
 	elsif ($mate eq "R1")
 	{
-		print "input not defined\n";
+        if(! -s $hoh{$command}{$mate} ) {
+            print("$hoh{$command}{$mate} is empty\n");
+            # just create an empty output file for this step then
+            print("Creating empty $command.$mate\n");
+            open(my $fh, '>', $command.".".$mate);
+            close($fh);
+        } else {
+            print "$mate not defined\n";
+        }
 	}
 } # mate
 
@@ -178,33 +186,62 @@ sub get_subset_by_fastaid
 	
 	my %h = %$hash_fasta_ref;	# hash	
 
+    # Default to fasta but detect later
+    my $format = "fasta";
+
 	# print Dumper \ %h;
 
 	if ( -s $infile )		# if file nonzero
 	{	
+        # Detect fasta or fastq file
+		open(my $fh, '<', $infile);
+        $_ = <$fh>;
+        if($_ =~ /^@/) {
+            $format = "fastq";
+            print("Detected $infile as fastq\n");
+        } else {
+            print("Detected $infile as fasta\n");
+        }
+        close($fh);
+
 		open(my $fh, '<', $infile);
 		open(my $fh2, '>', $outfile);
 	
 		while (<$fh>)
 		{
-			# ID is every line starting with ">"
-			if ( $_ =~ m/^>/ )
-			{
-				chomp $_;
-				
-				if ($_ =~ m/>(\S+)(.*)/)
-				{
-					# don't print leading ">"
-					my $key = $1;
-					# print ($key,"\n");			
-					if ($h{$key})
-					{
-						print $fh2 $_,"\n";
-						$_ = <$fh>;
-						print $fh2 $_;
-					}
-				}		
-			}
+            chomp $_;
+            
+            # parse out id line
+            $_ =~ m/[>@](\S+)(.*)/;
+            print("$format ID: $_\n");
+            # don't print leading ">"
+            my $key = $1;
+            # print ($key,"\n");			
+            if ($h{$key})
+            {
+                print("Keeping $key\n");
+                # Print identifier line
+                print $fh2 $_,"\n";
+                # Print sequence line
+                $_ = <$fh>;
+                print $fh2 $_;
+                if($format == "fastq") {
+                    # Input file is fastq so read 4 lines total
+                    $_ = <$fh>;
+                    print $fh2 $_;
+                    $_ = <$fh>;
+                    print $fh2 $_;
+                }
+			} else {
+                # Not keeping this sequence
+                # need to burn off the sequence
+                $_ = <$fh>;
+                if($format == "fastq") {
+                    # Fastq so burn off + line and qual line
+                    $_ = <$fh>;
+                    $_ = <$fh>;
+                }
+            }
 		}
 			
 		close($fh);

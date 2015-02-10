@@ -60,8 +60,8 @@ my ($help);															# bool for help (if 1, print help page then exit)
 my ($man);															# bool for man page (if 1, print man page then exit)
 my ($path_scripts, $path_output, $path_logs);						# path variables (scripts, output dir, logs)
 my ($r1, $r2);														# paths to r1 and r2, if present
-my ($abs_r1, $abs_r2);												# absolute paths to r1 r2
-my ($out_r1, $out_r2);												# these variables are used to hold the output from the previous stage == input for next stage
+my ($abs_r1, $abs_r2, $abs_contig);												# absolute paths to r1 r2
+my ($out_r1, $out_r2, $out_contig);												# these variables are used to hold the output from the previous stage == input for next stage
 my ($main_start_time, $start_date, $end_date, $main_end_time);		# benchmark variables
 my ($pfile);														# parameter file
 my ($isfasta);														# a bool for fasta (1 if fasta, 0 if fastq)
@@ -84,6 +84,7 @@ $abs_r1="none";
 $abs_r2="none";
 $out_r1 = "none";
 $out_r2 = "none";
+$out_contig = "none";
 $is_fasta = "no";
 $wellpaired=1;
 $sge = 0;
@@ -223,10 +224,11 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				#my $cmd = "$path_scripts/step1/step1.pl --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				my $cmd = "step1 --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
-				print "\n";
 						
 				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
 				$out_r2 = "$path_output/$command[$i]/$command[$i].R2" if ( -e "$path_output/$command[$i]/$command[$i].R2" );
+                print("[step1] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+				print "\n";
 			}
 		}
 		elsif ( $command[$i] eq "quality_filter" )
@@ -248,7 +250,6 @@ for (my $i = 0; $i < scalar(@command); $i++)
 					
 				my $cmd = "$path_scripts/quality_filter/quality_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/quality_filter --logs $path_output/quality_filter/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
-				print "\n";
 
 				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
 				$out_r2 = "$path_output/$command[$i]/$command[$i].R2" if ( -e "$path_output/$command[$i]/$command[$i].R2" );								
@@ -256,6 +257,8 @@ for (my $i = 0; $i < scalar(@command); $i++)
 			
 			# the output of this stage, for the next stage, is not well paired so set this:
 			$wellpaired = 0;	
+            print("[quality_filter] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            print "\n";
 		}		
 		elsif ( $command[$i] eq "host_map" || $command[$i] =~ m/^host_map_(\d){1}$/ )
 		{
@@ -288,7 +291,6 @@ for (my $i = 0; $i < scalar(@command); $i++)
 						
 				my $cmd = "$path_scripts/host_map/host_map.pl --sample $sample --paramfile $pfile --outputdir $path_output/host_map_$num --logs $path_output/host_map_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --wellpaired $wellpaired --run_iteration $num";
 				verbose_system($cmd);
-				print "\n";
 				
 				$out_r1 = "$path_output/host_map_$num/host_map_$num.R1" if ( -e "$path_output/host_map_$num/host_map_$num.R1" );	
 				$out_r2 = "$path_output/host_map_$num/host_map_$num.R2" if ( -e "$path_output/host_map_$num/host_map_$num.R2" );		
@@ -296,6 +298,8 @@ for (my $i = 0; $i < scalar(@command); $i++)
 			
 			# the output of this stage, for the next stage, is not well paired so set this:
 			$wellpaired = 0;			
+            print("[host_map] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            print "\n";
 		}
 		elsif ( $command[$i] eq "orf_filter" )
 		{
@@ -315,9 +319,8 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 						
-				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta";
+				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
-				print "\n";
 
 				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
 				$out_r2 = "$path_output/$command[$i]/$command[$i].R2" if ( -e "$path_output/$command[$i]/$command[$i].R2" );												
@@ -325,6 +328,8 @@ for (my $i = 0; $i < scalar(@command); $i++)
 			
 			# the output of this stage, for the next stage, is a fasta file so set this:
 			$is_fasta = "yes";	
+            print("[orf_filter] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            print "\n";
 		}
 		elsif ( $command[$i] eq "nohost_blast" )
 		{
@@ -346,7 +351,6 @@ for (my $i = 0; $i < scalar(@command); $i++)
 						
 				my $cmd = "$path_scripts/nohost_blast/nohost_blast.pl --sample $sample --paramfile $pfile --outputdir $path_output/nohost_blast --logs $path_output/nohost_blast/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta";
 				verbose_system($cmd);
-				print "\n";
 
 				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
 				$out_r2 = "$path_output/$command[$i]/$command[$i].R2" if ( -e "$path_output/$command[$i]/$command[$i].R2" );												
@@ -354,6 +358,8 @@ for (my $i = 0; $i < scalar(@command); $i++)
 			
 			# the output of this stage, for the next stage, is a fasta file so set this:
 			$is_fasta = "yes";	
+            print("[nohost_blast] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            print "\n";
 		}
 		elsif ( $command[$i] eq "iterative_blast_phylo" || $command[$i] =~ m/^iterative_blast_phylo_(\d){1}$/ )
 		{
@@ -394,17 +400,30 @@ for (my $i = 0; $i < scalar(@command); $i++)
 					$command_prefix="iterative_blast_phylo";
 				}
 						
-				my $cmd = "$path_scripts/$command_prefix/$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
+                my $r1r2 = "--R1 ";
+                if(-e $out_contig && $boolcontigname) {
+                    # Use contig from previous stage if exists and
+                    # boolcontigname is set
+                    $r1r2 .= $out_contig;
+                    # r1r2 for next stage will be unmapped reads...hopefully
+                    $is_fasta = "no";				
+                } else {
+                    # Otherwise use R1 and R2
+                    $r1r2 .= $abs_r1 . " --R2 " . $abs_r1;
+                    $is_fasta = "yes";				
+                }
+                my $cmd = "$path_scripts/$command_prefix/$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date $r1r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
 				verbose_system($cmd);
-				print "\n";
 				
-				$out_r1 = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R1" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R1" );	
-				$out_r2 = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R2" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R2" );
+                $out_contig = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.contig" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.contig" );	
+                $boolcontigname = 0;
+                $out_r1 = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R1" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R1" );	
+                $out_r2 = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R2" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.R2" );
 			}
 			
-			# the output of this stage, for the next stage, is a fasta file so set this:
-			$is_fasta = "yes";				
-					
+
+            print("[iterative_blast_phylo_$num] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            print "\n";
 		}		
 		elsif ( $command[$i] eq "ray2_assembly" || $command[$i] =~ m/^ray2_assembly_(\d){1}$/ )		
 		{
@@ -440,17 +459,23 @@ for (my $i = 0; $i < scalar(@command); $i++)
 					
 				my $cmd = "$path_scripts/ray2_assembly/ray2_assembly.pl --sample $sample --paramfile $pfile --outputdir $path_output/ray2_assembly_$num --logs $path_output/ray2_assembly_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --run_iteration $num";
 				verbose_system($cmd);
-				print "\n";
 				
 				# assembly produces a single output file:
-				$out_r1 = "$path_output/ray2_assembly_$num/ray2_assembly_$num.fasta" if ( -e "$path_output/ray2_assembly_$num/ray2_assembly_$num.fasta" );			
-				$out_r2 = "none";
+				$out_contig = "$path_output/ray2_assembly_$num/ray2_assembly_$num.fasta" if ( -e "$path_output/ray2_assembly_$num/ray2_assembly_$num.fasta" );			
+                #print "out_contig: $out_contig";
+                # Also can produce unmapped read files which may be needed later
+				$out_r1 = "none"; # Reset to none
+				$out_r2 = "none"; # Reset to none
+                $out_r1 = "$path_output/ray2_assembly_$num/$num.R1.unmap.fastq" if ( -e "$path_output/ray2_assembly_$num/$num.R1.unmap.fastq" );
+                $out_r2 = "$path_output/ray2_assembly_$num/$num.R2.unmap.fastq" if ( -e "$path_output/ray2_assembly_$num/$num.R2.unmap.fastq" );
 			}
 			
 			# the output of this stage, for the next stage, is a fasta file so set this:
 			$is_fasta = "yes";				
 			# use name contig instead of R1 in iterative blast
 			$boolcontigname = 1;
+            print("[ray2_assembly_$num] Output: out_r1: $out_r1 -- out_r2: $out_r2 -- out_contig: $out_contig\n");
+            print "\n";
 		}								
 		# ... ADD NEW MODULES HERE ! ...
 		else
@@ -481,6 +506,7 @@ sub echo_title
 	print "#########################################################################################","\n";
 	print "############################## PATHOGEN DISCOVERY PIPELINE ##############################","\n";	
 	print "#########################################################################################","\n";
+    print("Stages to run @command\n");
 	print "\n";	
 }
 

@@ -1,5 +1,3 @@
-${projpath}/results/orf_filter
 ${projpath}/results/orf_filter/logs
-${projpath}/results/orf_filter/out.cap.fa
 ${projpath}/results/orf_filter/R1.orfout.fa
 ${projpath}/results/orf_filter/orf_filter.R1

@@ -105,6 +105,9 @@ def verify_standard_stages_files(projectpath):
     missingfiles = verify_standard_stages_files(projectpath, templatesdir)
     if missingfiles:
         for path, reason in missingfiles:
+            # Don't care about 0 sized files
+            if reason == 'Size zero':
+                continue
             fname = basename(path)
             if fname == "param.txt":
                 print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")
@@ -121,7 +124,7 @@ def verify_standard_stages_files(projectpath):
             elif fname == "out.ray.fa":
                 print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running and possible error in the log file", "red")
                 sys.exit(1)
-            elif fname == "R1.orfout.fa":
+            elif fname == "orf_filter.R1":
                 print colored("WARNING! : Unable to run getorf, please check if getorf program is running", "red")
                 sys.exit(1)
             elif fname == "1.contig.blast":
@@ -130,7 +133,6 @@ def verify_standard_stages_files(projectpath):
             elif fname == "1.contig.fasta":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the log file under iterative_blast_phylo_2", "red")
                 sys.exit(1)
-
             elif fname == "contig." + pro_dir + ".top.smallreport.txt":
                 print fname
                 print colored("WARNING! : Unable to run iterative_blast_phylo , please check the log file under iterative_blast_phylo_1 or iterative_blast_phylo_2", "red")

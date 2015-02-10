@@ -82,6 +82,7 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
 
+    @attr('current')
     def test_r1sff(self):
         skip = [
             'results/quality_analysis/F_fastqc.zip',
