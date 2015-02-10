@@ -319,7 +319,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 						
-				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta";
+				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
 
 				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	

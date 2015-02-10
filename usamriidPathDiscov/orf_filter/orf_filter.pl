@@ -27,20 +27,17 @@ my ($output_r2);				# output R2
 my $path_scripts=$RealBin;			# get abs path to directory in which script resides (where to look for sister scripts)
 my @mates=("R1","R2");				# strings for mates
 my $command="orf_filter";			# set command
-my $fastafile=1;				# is fasta
 
 
 GetOptions (	'outputdir=s' => \$outputdir,	# outputdir
 		'logs=s' => \$logs,		# logs
 		'paramfile=s' => \$pfile,	# parameter
-		'fastafile=i' => \$fastafile,	# is fasta 
 		'R1=s' => \$r1,			# R1
 		'R2=s' => \$r2,			# R2
 		'sample=s' => \$sample,		# sample
 		'timestamp=s' => \$timestamp);	# time stamp
             
 die "[error] required input parameters not found" if (!( defined($outputdir) && defined($logs) && defined($pfile) && defined($r1) ));
-die "[error] input must be fasta" if (!( $fastafile ));
             
 # get hash ref
 my $href = &parse_param($pfile);
@@ -94,7 +91,7 @@ foreach my $mate (@mates)
 	if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
 	{
 		# system("ln -sf $hoh{$command}{$mate} $command.$mate");		
-		system("ln -sf $hoh{$command}{$mate}");		
+		verbose_system("ln -sf $hoh{$command}{$mate}");		
 
 		if ($hoh{$command}{"getorf_options"})
 		{
@@ -121,7 +118,15 @@ foreach my $mate (@mates)
 	} # defined
 	elsif ($mate eq "R1")
 	{
-		print "input not defined\n";
+        if(! -s $hoh{$command}{$mate} ) {
+            print("$hoh{$command}{$mate} is empty\n");
+            # just create an empty output file for this step then
+            print("Creating empty $command.$mate\n");
+            open(my $fh, '>', $command.".".$mate);
+            close($fh);
+        } else {
+            print "$mate not defined\n";
+        }
 	}
 } # mate
 

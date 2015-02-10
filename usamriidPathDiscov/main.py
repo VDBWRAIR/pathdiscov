@@ -105,6 +105,9 @@ def verify_standard_stages_files(projectpath):
     missingfiles = verify_standard_stages_files(projectpath, templatesdir)
     if missingfiles:
         for path, reason in missingfiles:
+            # Don't care about 0 sized files
+            if reason == 'Size zero':
+                continue
             fname = basename(path)
             if fname == "param.txt":
                 print colored("WARNING! :  Unable to create param.txt under the inpute directory", "red")

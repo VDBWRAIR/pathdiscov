@@ -125,7 +125,7 @@ class TestStep1(Base, BaseTempDir):
         self._check_id_file(r1, inputformat, r1idpath)
         self._check_countfile(r1, r1countpath, inputformat)
         r2 = self.kwargs.get('--R2',False)
-        if r2 and r2 != 'none':
+        if r2 and exists(r2):
             self._check_id_fastq(r2path)
             self._check_id_file(r2, inputformat, r2idpath)
             self._check_countfile(r2, r2countpath, inputformat)
@@ -177,6 +177,14 @@ class TestStep1(Base, BaseTempDir):
     def test_r2_is_none_str(self):
         self._make_dirs()
         self.kwargs['--R2'] = 'none'
+        print 'Script output'
+        print self.run_script(self.scriptpath,**self.kwargs)
+        print '---------'
+        self._check_step1()
+
+    def test_mate_not_exist(self):
+        self._make_dirs()
+        self.kwargs['--R2'] = '/path/to/none'
         print 'Script output'
         print self.run_script(self.scriptpath,**self.kwargs)
         print '---------'
