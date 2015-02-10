@@ -34,29 +34,10 @@ command host_map
 mapper_program_list		bowtie2,bowtie2											# choices are: bwa, bowtie2
 mapper_db_list			HUMAN_DNA,H_SAPIENS_RNA
 mapper_name_list		bowtie2_genome_local,bowtie2_transcript_local							# names that will appear on a graph
-mapper_options_list		--local,--local											# flags for aligner
+mapper_options_list		--local,--local											# flags for aligner(-p specifies how many threads to use)
 
 # explanation: perform a chain of alignments.
 
-# -------------------
-command host_map_2
-# this is the same as host_map --- it just allows you to do it an n-th time
-
-mapper_program_list			bowtie2											# choices are: bwa, bowtie2
-mapper_db_list				HUMAN_DNA		# prefix of aligner indexed database
-mapper_name_list			bowtie2_genome										# names that will appear on a graph
-mapper_options_list														# flags for aligner
-
-# -------------------
-# command host_map_2
-# this is the same as host_map --- it just allows you to do it an n-th time
-
-# mapper_program_list			bwa											# choices are: bwa, bowtie2
-# mapper_db_list			HUMAN_DNA			# prefix of aligner indexed database
-# mapper_name_list			bwa_genome										# names that will appear on a graph
-# mapper_options_list														# flags for aligner
-
-# -------------------     
 command iterative_blast_phylo
 
 # for the "_list" settings, use a comma-delimited list with no spaces
@@ -88,19 +69,6 @@ taxonomy_nodes				TAX_NODES					# NCBI taxonomy nodes dump file
 # explanation: run another instance of the iterative_blast_phylo module. you can run more instances by adding entries in this parameter file for "iterative_blast_3", "iterative_blast_4", etc
 
 # -------------------
-command nohost_blast
-
-ncbi_nt_db				BLAST_NT # full path to NCBI nt database prefix
-gi2taxid				BLAST_NT/gi2taxid.txt						# file with col1=gi number, col2=taxid (to make this file: blastdbcmd -db /data/db/nt -entry all -outfmt '%g	%T' > gi2taxid.txt) eg. blastdbcmd -db /media/VD_Research/People/Dereje.Jima/databases/ncbi/blast/nt/nt -entry all -outfmt '%g    %T' > gi2taxid.txt
-num_subset_seq				200											# the number of sequences in the small initial file to be blasted
-blast_type				blastn											# options are: blastn blastx 
-blast_task				megablast										# options are: megablast dc-megablast blastn
-blast_options				-evalue 1e-4 -word_size 28								# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
-ninst					NUMINST											# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
-
-# explanation: nohost_blast will blast a subset (determined by "num_subset_seq") of your initial file to nt. it will get the taxid from the hits to nt and use these tax id to make a new database, which it will then blast the full initial file against 
-
-# -------------------
 command ray2_assembly
 
 kmer					25											# assembler k-mer
@@ -108,25 +76,14 @@ ninst   				NUMINST											# number of instances for mpiexec
 cap   					1											# use cap after ray
 # cap_options   														# cap options
 map2contigs				yes											# if "yes" or "1", map reads back onto assembly
-bowtie2_options				--local											# only nec if map2contigs. Options for the mapper
+bowtie2_options				--local											# only nec if map2contigs. Options for the mapper(-p specifies how many threads)
 
 # explanation: perform an assembly using Ray
 
-# -------------------
-command ray2_assembly_2
-# this is the same as ray2_assembly --- it just allows you to do it an n-th time
-
-kmer					25											# assembler k-mer
-ninst   				NUMINST											# number of instances for mpiexec
-cap   					1											# use cap after ray
-# cap_options   														# cap options
-map2contigs				yes											# if "yes" or "1", map reads back onto assembly
-bowtie2_options				--local											# only nec if map2contigs. Options for the mapper
 
 # -------------------
 command orf_filter
 # filter fasta input by orf
 
 getorf_options				-minsize 60 -find 0 									# any options other than "-sequence" and "-outseq" 
-
-
+# -------------------
