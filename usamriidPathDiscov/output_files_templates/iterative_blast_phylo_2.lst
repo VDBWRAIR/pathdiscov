@@ -8,10 +8,6 @@ ${projpath}/results/iterative_blast_phylo_2/1.R1.blast
 ${projpath}/results/iterative_blast_phylo_2/1.R1.fasta
 ${projpath}/results/iterative_blast_phylo_2/1.R1.noblast.fasta
 ${projpath}/results/iterative_blast_phylo_2/1.R1.top.blast
-${projpath}/results/iterative_blast_phylo_2/1.R2.blast
-${projpath}/results/iterative_blast_phylo_2/1.R2.fasta
-${projpath}/results/iterative_blast_phylo_2/1.R2.noblast.fasta
-${projpath}/results/iterative_blast_phylo_2/1.R2.top.blast
 ${projpath}/results/iterative_blast_phylo_2/R1.count
 ${projpath}/results/iterative_blast_phylo_2/R1.count.superclass
 ${projpath}/results/iterative_blast_phylo_2/R1.top.count.superclass
