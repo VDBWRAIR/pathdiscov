@@ -49,7 +49,7 @@ if ($task eq "megablast" || $task eq "dc-megablast" || $task eq "blastn")
 
 print "[start]\n";
 
-my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -num_descriptions=10 $options";				
+my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
 verbose_system($cmd);
 
 print "[end]\n";
