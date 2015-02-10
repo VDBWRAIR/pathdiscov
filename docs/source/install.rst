@@ -135,6 +135,7 @@ Installation
 
     You may change the number of CPU based on the resource in your
     system.
+
     .. code-block:: bash
 
         usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir --numCPU 12
