@@ -138,7 +138,7 @@ Installation
 
     .. code-block:: bash
 
-        usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir --numCPU 12
+        usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir --cpuNum 12
 
     If your blast database is quite large (like the default nt database) this could take up to 2 hours...
     It is recommended that you trim down your nt databases to just the things that you are interested in.
