@@ -77,7 +77,8 @@ $strstages = join(' ', @stages);
 if( $strstages eq "" ) {
     $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter iterative_blast_phylo_2';
 }
-print($strstages);
+
+print("Stages to be run: $strstages\n");
 
 if ( $help || $numarg == 0 || (not defined($sample)) || (not defined($r1)) ) {print $usage; exit;}
 
@@ -89,12 +90,12 @@ if($sge == 1)
 {
 
     print("-|-------pathogen pipeline  run on SUNGRID engine (SGE)-------|-\n");
-    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 --SGE $sge | tee -a $outputdir/analysis.log");
+    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 --SGE $sge");
 }
 else:
 {
     print("-|-------pathogen pipeline run without SUNGRID engine (SGE)  -------|-\n");
-    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 | tee -a $outputdir/analysis.log");
+    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
 }
 
 # fastq files come in 4-line chunks

@@ -138,7 +138,7 @@ if ( $r2 ne "none" && defined($r2) )
 	$hoh{$command}{$mates[1]} = abs_path($r2);
 }
 
-die "[error] input file not found" if (!( -e $hoh{$command}{$mates[0]} ));
+die "[error] input file $hoh{$command}{$mates[0]} not found" if (!( -e $hoh{$command}{$mates[0]} ));
 
 print "[START]\n";
 print "[hash] ";
