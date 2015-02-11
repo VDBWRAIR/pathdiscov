@@ -19,7 +19,31 @@ def main():
         outpath = join( outdir, basename(normpath(proj)) + '.png' )
         create_image( proj, output_path=outpath )
 
+def find_best_name(phylo_line):
+    '''
+    Find best name from a phylo_line
+    Tries first to use species or column 8(index-0)
+    If species is '-' then try columns to the left until non-dash
+    is found and use that
+    Fallback is to use description line(although I don't think there should ever
+    be a case where that happens)
+
+    :param list phylo_line: Line from blast.phylo file already split by tab
+    '''
+    start_col = 8
+    # Work right to left over columns only 8 - 2
+    for i in range(start_col, 1, -1):
+        if phylo_line[i] != '-':
+            return phylo_line[i]
+    if phylo_line[9] == '-':
+        raise ValueError('phylo line does not contain any names to use: {0}'.format(phylo_line))
+    return phylo_line[9]
+
 def host_vector_pathogen( phylo_files ):
+    '''
+    Retrieves the sums of all hosts, vectors and pathogens by reading
+    the supplied list of blast tab formatted files
+    '''
     hosts = defaultdict(float)
     vectors = defaultdict(float)
     pathogens = defaultdict(float)
@@ -30,7 +54,7 @@ def host_vector_pathogen( phylo_files ):
             count = float(parts[1])
             sk = parts[2]
             clss = parts[4]
-            species = parts[8]
+            species = find_best_name(parts)
             if count < 1.0:
                 continue
             if clss == 'Mammalia':
@@ -67,11 +91,12 @@ def graph_all( ax, host_vector_pathogen, **kwargs ):
     ax.pie( [ct for l,ct in hvp], labels=[l for l,ct in hvp], autopct='%1.1f%%' )
 
 def create_image( project_path, **kwargs ):
-    phylo_files = glob( join(project_path, 'results/iterative*/[12].contig.top.blast.phylo') )
+    phylo_files = glob( join(project_path, 'results/iterative*/*.top.blast.phylo') )
     hvp = host_vector_pathogen( phylo_files )
     h,hc,v,vc,p,pc = hvp
 
-    fig = plt.figure()                                                                                                                                                                                                                                                                                                       
+    fig = plt.figure()
+
     fig.suptitle( basename(kwargs['output_path']) )
     fig.set_size_inches( 50.0, 10.0 )
 
