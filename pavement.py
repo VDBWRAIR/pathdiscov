@@ -76,6 +76,12 @@ options(setup=setup_dict,
             olink =path('usamriidPathDiscov/bin')
 
         ),
+        diamond=Bunch(
+            src=path('usamriidPathDiscov/download'),
+            sfile =path('usamriidPathDiscov/download/diamond')
+
+        ),
+
 
         #"""
         #local_lib=Bunch(
@@ -324,6 +330,21 @@ def refRay(options):
         sys.exit()
 
 @task
+def install_diamond(options):
+    """Install  diamond """
+    info("Install diamond, require boost>=1.53")
+    currwd = os.getcwd()
+    src = path(currwd) / options.diamond.src
+    sfile = path(currwd) / options.diamond.sfile
+    diamond=join(sys.prefix,'bin','diamond')
+    if not exists(diamond):
+        is_64bits = sys.maxsize > 2**32
+        if not is_64bits:
+            info("Installing diamond, it requres boost library >=1.53, make sure to excute `yum install boost` incase you get error")
+            sh ('cd %s; tar -xzvf diamond.tar.gz; cd diamond;./configure --prefix=%s;make, make install '%(src, sfile))
+        else:
+            info("System is 64 bit, excutable diamond binary included")
+@task
 def getorf(options):
     """Install  EMBOSS getorf """
     getorf=join(sys.prefix,'bin','getorf')
@@ -399,7 +420,7 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc')
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc', 'install_diamond')
 def install_other_dependencies():
     pass
 
