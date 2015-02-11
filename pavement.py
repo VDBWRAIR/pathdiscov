@@ -332,7 +332,7 @@ def refRay(options):
 @task
 def install_diamond(options):
     """Install  diamond """
-    info("Install diamond, require boost>=1.53")
+    info("Install diamond ....")
     currwd = os.getcwd()
     src = path(currwd) / options.diamond.src
     sfile = path(currwd) / options.diamond.sfile
