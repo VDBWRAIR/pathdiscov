@@ -16,8 +16,10 @@ def main():
     if not isdir( outdir ):
         os.makedirs( outdir )
     for proj in args.project_path:
+        phylo_files = glob( join(proj, 'results/iterative*/*.top.blast.phylo') )
+        hvp = host_vector_pathogen(phylo_files, args.hostclasses, args.vectorclasses, args.pathogenclasses)
         outpath = join( outdir, basename(normpath(proj)) + '.png' )
-        create_image( proj, output_path=outpath )
+        create_image( proj, hvp=hvp, output_path=outpath )
 
 def find_best_name(phylo_line):
     '''
@@ -39,10 +41,17 @@ def find_best_name(phylo_line):
         raise ValueError('phylo line does not contain any names to use: {0}'.format(phylo_line))
     return phylo_line[9]
 
-def host_vector_pathogen( phylo_files ):
+def host_vector_pathogen(phylo_files, hostclass, vectorclass, pathogenclass):
     '''
     Retrieves the sums of all hosts, vectors and pathogens by reading
     the supplied list of blast tab formatted files
+
+    :param list phylo_files: list of .blast.phylo files
+    :param str|list hostclass: name of class column to consider as host
+    :param str|list vectorclass: name of class column to consider as vector
+    :param str|list pathogenclass: name of class column to consider as pathogen
+
+    :return: list of host counts, sumhosts, vector counts, sumvectors, pathogen counts, sumpathogens
     '''
     hosts = defaultdict(float)
     vectors = defaultdict(float)
@@ -57,13 +66,13 @@ def host_vector_pathogen( phylo_files ):
             species = find_best_name(parts)
             if count < 1.0:
                 continue
-            if clss == 'Mammalia':
+            if clss in hostclass:
                 hosts[species] += count
                 hosts_ct += count
-            elif clss == 'Insecta':
+            elif clss in vectorclass:
                 vectors[species] += count
                 vectors_ct += count
-            elif sk in ('Viruses','Bacteria'):
+            elif sk in pathogenclass:
                 pathogens[species] += count
                 pathogens_ct += count
 
@@ -91,8 +100,7 @@ def graph_all( ax, host_vector_pathogen, **kwargs ):
     ax.pie( [ct for l,ct in hvp], labels=[l for l,ct in hvp], autopct='%1.1f%%' )
 
 def create_image( project_path, **kwargs ):
-    phylo_files = glob( join(project_path, 'results/iterative*/*.top.blast.phylo') )
-    hvp = host_vector_pathogen( phylo_files )
+    hvp = kwargs['hvp']
     h,hc,v,vc,p,pc = hvp
 
     fig = plt.figure()
@@ -125,4 +133,28 @@ def parse_args( args=sys.argv[1:] ):
         help='Path to riidpipeline project[s] path'
     )
 
+    parser.add_argument(
+        '--hostclasses',
+        nargs='+',
+        default='Mammalia',
+        help='Names of blast classes to use to call as host [%(default)s]'
+    )
+
+    parser.add_argument(
+        '--vectorclasses',
+        nargs='+',
+        default='Insecta',
+        help='Names of blast classes to use to call as vector [%(default)s]'
+    )
+
+    parser.add_argument(
+        '--pathogenclasses',
+        nargs='+',
+        default='Viruses Bacteria',
+        help='Names of blast classes to use to call as pathogen [%(default)s]'
+    )
+
     return parser.parse_args( args )
+
+if __name__ == '__main__':
+    main()
