@@ -29,26 +29,28 @@ else
 
 	# regular 
 	counter=1; 	
-	for i in *.${j}.blast.phylo; do
-	 
+	for i in *.${j}.blast.phylo;
+    do
+        if [ ! -e $i ]
+        then
+            continue
+        fi
 		echo -e "iteration\t"$counter; 
-		
 		cat $i | sed '1d;' | awk '{x[$3]+=$2}END{for (y in x) print y"\t"x[y]}' | sed 's|\-|Unannotated|'; 
-		
 		counter=$(($counter+1)); 
-	
 	done > ${j}.count.superclass 
  
 	# top hits 
 	counter=1; 
-	for i in *.${j}.top.blast.phylo; do
-	 
+	for i in *.${j}.top.blast.phylo;
+    do
+        if [ ! -e $i ]
+        then
+            continue
+        fi
 		echo -e "iteration\t"$counter; 
-		
 		cat $i | sed '1d;' | awk '{x[$3]+=$2}END{for (y in x) print y"\t"x[y]}' | sed 's|\-|Unannotated|'; 
-		
 		counter=$(($counter+1)); 
-	
 	done > ${j}.top.count.superclass
 
 fi

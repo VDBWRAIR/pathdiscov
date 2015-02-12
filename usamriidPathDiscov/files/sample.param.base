@@ -34,7 +34,7 @@ command host_map
 mapper_program_list		bowtie2,bowtie2											# choices are: bwa, bowtie2
 mapper_db_list			HUMAN_DNA,H_SAPIENS_RNA
 mapper_name_list		bowtie2_genome_local,bowtie2_transcript_local							# names that will appear on a graph
-mapper_options_list		--local,--local											# flags for aligner(-p specifies how many threads to use)
+mapper_options_list		--local -p NUMINST,--local -p NUMINST											# flags for aligner(-p specifies how many threads to use)
 
 # explanation: perform a chain of alignments.
 
@@ -76,7 +76,7 @@ ninst   				NUMINST											# number of instances for mpiexec
 cap   					1											# use cap after ray
 # cap_options   														# cap options
 map2contigs				yes											# if "yes" or "1", map reads back onto assembly
-bowtie2_options				--local											# only nec if map2contigs. Options for the mapper(-p specifies how many threads)
+bowtie2_options			--local -p NUMINST											# only nec if map2contigs. Options for the mapper(-p specifies how many threads)
 
 # explanation: perform an assembly using Ray
 

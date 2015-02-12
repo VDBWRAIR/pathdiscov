@@ -148,6 +148,7 @@ def get_options():
     Standard set of options to be passed to the command line.  These can be in
     turn passed to run() to actually run the pipeline.
     """
+    config = parse_config()
     parser = ArgumentParser()
     parser.add_argument("-v", "--verbose", dest="verbose",
                         action="count", default=0,
@@ -192,11 +193,11 @@ def get_options():
                         help="Pipeline task(s) which will be included "
                              "even if they are up to date.")
     parser.add_argument('--outdir', required=True, help='output directory')
-    parser.add_argument('-R1', required=True, help="Path to forward fastq file")
-    parser.add_argument('-R2', default=None, help ="Path to reverse fastq file")
+    parser.add_argument('--R1', '-R1', required=True, help="Path to forward fastq file")
+    parser.add_argument('--R2', '-R2', default=None, help ="Path to reverse fastq file")
     parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
     parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
-    parser.add_argument('-c','--cpuNum', dest="cpuNum", default=multiprocessing.cpu_count(), type=int, help="Number of CPU to use, default is %(default)s")
+    parser.add_argument('-c','--cpuNum', dest="cpuNum", default=config['NODE_NUM'], type=int, help="Number of CPU to use, default is %(default)s")
 
     # get help string
     f = StringIO.StringIO()
@@ -333,13 +334,11 @@ def parse_config():
     necessary to it such as joining database path to other paths
     and expanding ~ and $
     '''
-    options = get_options()
-    cpuNum = options.cpuNum
     config_file = resource_filename(__name__, 'files/config.yaml')
     config = yaml.load(open(config_file).read())
 
     config['PHRED_OFFSET'] = str(config['PHRED_OFFSET'])
-    config['NODE_NUM'] = str(cpuNum)
+    config['NODE_NUM'] = str(config['NODE_NUM'])
     databases = expanduser(expandvars(config['databases']))
     config['databases'] = databases
     config['human_dna'] = join(databases, config['human_dna'])
