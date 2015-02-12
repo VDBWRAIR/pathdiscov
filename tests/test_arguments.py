@@ -37,9 +37,15 @@ class TestArguments(common.TempDir):
         fh.close()
 
         ninst = re.findall('ninst(?:_list){0,1}\s+(?:(\d+)(?:,(\d+))*)', param_contents)
+        self.assertEqual(3, len(ninst))
         for l,r in ninst:
             self.assertEqual('99', l, 'Did not set ninst inside param.txt')
             self.assertIn(r, ('99',''), 'Did not set ninst_list inside param.txt')
+
+        bowtie_numinst = re.findall('--local -p (\d+)', param_contents)
+        self.assertEqual(3, len(bowtie_numinst), 'Found no -p NUMINST in param.txt')
+        for n in bowtie_numinst:
+            self.assertEqual('99', n, 'Did not set -p NUMINST correctly in param.txt')
 
     def test_missing_outdir(self):
         o,e,r = common.run_path_discov(
