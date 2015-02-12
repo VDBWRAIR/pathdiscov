@@ -97,7 +97,7 @@ GetOptions ('outputdir=s' => \$outputdir,
             'sample=s' => \$sample,    				# same name            
             'fastafile=s' => \$is_fasta,			# is fasta (default assumes fastq) (allow values: "yes" "no")
             'fasta' => \$isfasta,            		# is fasta (default assumes fastq) (bad style - this is a boolean that does the same thing as the above fastafile option but uses a bool instead of a string)            
-            'SGE' => \$sge,							# use qsub (default: no)
+            'SGE=i' => \$sge,							# use qsub (default: no)
             'example' => \$example,              	# boolean for example parameter file
             'key' => \$filekey,  	            	# boolean for key to output files
             'checkerror' => \$checkerror,			# check error after running the program
