@@ -192,8 +192,8 @@ def get_options():
                         help="Pipeline task(s) which will be included "
                              "even if they are up to date.")
     parser.add_argument('--outdir', required=True, help='output directory')
-    parser.add_argument('-R1', required=True, help="Path to forward fastq file")
-    parser.add_argument('-R2', default=None, help ="Path to reverse fastq file")
+    parser.add_argument('--R1', '-R1', required=True, help="Path to forward fastq file")
+    parser.add_argument('--R2', '-R2', default=None, help ="Path to reverse fastq file")
     parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
     parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
     parser.add_argument('-c','--cpuNum', dest="cpuNum", default=multiprocessing.cpu_count(), type=int, help="Number of CPU to use, default is %(default)s")
