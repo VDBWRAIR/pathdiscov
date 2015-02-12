@@ -40,7 +40,7 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
 clean:
-	-rm -rf $(BUILDDIR)/*
+	-rm -rf $(BUILDDIR)/* source/usamriidPathDiscov*.rst
 
 api:
 	sphinx-apidoc -f -o source ../usamriidPathDiscov ../usamriidPathDiscov/bootstrap.py ../usamriidPathDiscov/main.py ../usamriidPathDiscov/tasks.py ../usamriidPathDiscov/helpers.py ../usamriidPathDiscov/configs.py ../usamriidPathDiscov/local
