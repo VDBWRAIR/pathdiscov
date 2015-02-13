@@ -26,6 +26,7 @@ from setup import (
 from paver.easy import options, task, needs, consume_args
 from paver.setuputils import install_distutils_tasks
 
+from usamriidPathDiscov import installers
 
 options(setup=setup_dict,
         bwa=Bunch(
@@ -77,18 +78,9 @@ options(setup=setup_dict,
 
         ),
         diamond=Bunch(
-            src=path('usamriidPathDiscov/download'),
-            sfile =path('usamriidPathDiscov/download/diamond')
-
+            src=path('usamriidPathDiscov/download/diamond-linux64.tar.gz'),
+            install_to=path('usamriidPathDiscov/download/diamond')
         ),
-
-
-        #"""
-        #local_lib=Bunch(
-            #sdir=path('usamriidPathDiscov/download/local-lib-2.000011'),
-            #bindir=path('usamriidPathDiscov/bin')
-        #),
-        #"""
         settings=Bunch(
             shell_file=path('usamriidPathDiscov/files/settings.sh'),
             shell_file_bk=path('usamriidPathDiscov/files/settings.sh.base'),
@@ -99,19 +91,6 @@ options(setup=setup_dict,
             param_base =path('usamriidPathDiscov/files/sample.param.base'),
             param_work =path('usamriidPathDiscov/files/sample.param')
         ),
-        #virtualenv=Bunch(
-            #packages_to_install=['http://bitbucket.org/ianb/pip/get/2cb1db7b2baf.gz#egg=pip', 'urlgrabber', 'jstools', 'virtualenv'],
-            #dest_dir='./',
-            #install_paver=True,
-            #script_name='bootstrap.py',
-            #no_site_packages=True,
-            #paver_command_line='post_bootstrap'
-        #virtualenv=dict(
-        #script_name="bootstrap.py",
-        #packages_to_install = [
-            ## Project dependencies
-            #],
-        #paver_command_line="init",
         virtualenv=Bunch(
             packages_to_install=[],
             no_site_packages=True
@@ -332,18 +311,8 @@ def refRay(options):
 @task
 def install_diamond(options):
     """Install  diamond """
-    info("Install diamond ....")
-    currwd = os.getcwd()
-    src = path(currwd) / options.diamond.src
-    sfile = path(currwd) / options.diamond.sfile
-    diamond=join(sys.prefix,'bin','diamond')
-    if not exists(diamond):
-        is_64bits = sys.maxsize > 2**32
-        if not is_64bits:
-            info("Installing diamond, it requres boost library >=1.53, make sure to excute `yum install boost` incase you get error")
-            sh ('cd %s; tar -xzvf diamond.tar.gz; cd diamond;./configure --prefix=%s;make, make install '%(src, sfile))
-        else:
-            info("System is 64 bit, excutable diamond binary included")
+    installers.install_diamond(options)
+
 @task
 def getorf(options):
     """Install  EMBOSS getorf """
