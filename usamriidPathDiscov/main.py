@@ -15,7 +15,10 @@ from os.path import (
     join, expanduser, expandvars,
     splitext, basename, dirname, exists
 )
-
+is_64bits = sys.maxsize > 2**32
+if not is_64bits:
+    print "Please upgrade your operating system to 64 bit, application such as diamond don't run on 32 bit"
+    sys.exit(0)
 options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
 
