@@ -26,13 +26,12 @@ PROJECT_FILES = [
     ('results/orf_filter/R1.unmap.fastq',''),
     ('results/orf_filter/R2.orfout.fa','R1R2'),
     ('results/orf_filter/R2.unmap.fastq','R1R2'),
-	('results/orf_filter/out.cap.fa',''),
 	('results/orf_filter/logs/*-out.o',''),
 	('results/orf_filter/logs/*-out.e',''),
 	('results/orf_filter/orf_filter.R1',''),
 	('results/orf_filter/orf_filter.R2','R1R2'),
-	('results/quality_analysis/F_fastqc.zip',''),
 	('results/quality_analysis/analysis_quality.log',''),
+	('results/quality_analysis/F_fastqc.zip',''),
 	('results/quality_analysis/R_fastqc.zip','R1R2'),
 	('results/quality_analysis/F_fastqc.html',''),
 	('results/quality_analysis/R_fastqc.html','R1R2'),
@@ -110,7 +109,7 @@ PROJECT_FILES = [
 	('results/step1/logs/*-out.e',''),
 	('results/step1/step1.R1',''),
 	('results/analysis.log',''),
-	('results/iterative_blast_phylo_2/reports/{projectdir}.joinR1R2.smallreport.txt',''),
+	('results/iterative_blast_phylo_2/reports/{projectdir}.joinR1R2.smallreport.txt','R1R2'),
 	('results/iterative_blast_phylo_2/logs/*-out.o',''),
 	('results/iterative_blast_phylo_2/logs/*-out.e',''),
 	('results/quality_filter/logs/*-out.o',''),
@@ -172,8 +171,11 @@ def verify_project(projpath, expectedfiles, r1r2, skiplist=[]):
     # Keep track of missing files
     missing = []
     for f in expectedfiles:
-        if r1r2 == '':
-            # If r1r2 blank then mandatory
+        if f[0] in skiplist:
+            # Skip skiplist stuff
+            continue
+        elif r1r2 == '' or f[1] == '':
+            # If r1r2 blank from arg or from file then mandatory
             pass
         elif r1r2 != f[1]:
             # If no match, then skip the file
@@ -185,15 +187,15 @@ def verify_project(projpath, expectedfiles, r1r2, skiplist=[]):
         except:
             pass
         # Expand glob expressions if there
+        # might end up empty
         files = glob.glob(p)
+        for f in files:
+            if not exists(f):
+                if f not in skiplist:
+                    missing.append(f)
         if not files:
             # Append since glob didn't match anything
             missing.append(p)
-        else:
-            for f in files:
-                if not exists(f):
-                    if f not in skiplist:
-                        missing.append(f)
     return missing
 
 def print_list(lst):
