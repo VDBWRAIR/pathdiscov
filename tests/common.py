@@ -30,8 +30,8 @@ PROJECT_FILES = [
 	('results/orf_filter/logs/*-out.e',''),
 	('results/orf_filter/orf_filter.R1',''),
 	('results/orf_filter/orf_filter.R2','R1R2'),
-	('results/quality_analysis/F_fastqc.zip',''),
 	('results/quality_analysis/analysis_quality.log',''),
+	('results/quality_analysis/F_fastqc.zip',''),
 	('results/quality_analysis/R_fastqc.zip','R1R2'),
 	('results/quality_analysis/F_fastqc.html',''),
 	('results/quality_analysis/R_fastqc.html','R1R2'),
@@ -171,7 +171,10 @@ def verify_project(projpath, expectedfiles, r1r2, skiplist=[]):
     # Keep track of missing files
     missing = []
     for f in expectedfiles:
-        if r1r2 == '' or f[1] == '':
+        if f[0] in skiplist:
+            # Skip skiplist stuff
+            continue
+        elif r1r2 == '' or f[1] == '':
             # If r1r2 blank from arg or from file then mandatory
             pass
         elif r1r2 != f[1]:
