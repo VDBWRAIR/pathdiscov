@@ -248,9 +248,8 @@ def run_path_discov(args):
 class TempDir(unittest.TestCase):
     def setUp(self):
         self.keep_temp_dir = False
-        if isdir(SCRATCH):
-            shutil.rmtree(SCRATCH)
-        os.makedirs(SCRATCH)
+        if not isdir(SCRATCH):
+            os.makedirs(SCRATCH)
         # Create temporary directory to run tests in inside scratch dir
         self.testdir = tempfile.mkdtemp(suffix=__name__, dir=SCRATCH)
         # Change directory into the testdir so accidental files will be
