@@ -26,7 +26,6 @@ PROJECT_FILES = [
     ('results/orf_filter/R1.unmap.fastq',''),
     ('results/orf_filter/R2.orfout.fa','R1R2'),
     ('results/orf_filter/R2.unmap.fastq','R1R2'),
-	('results/orf_filter/out.cap.fa',''),
 	('results/orf_filter/logs/*-out.o',''),
 	('results/orf_filter/logs/*-out.e',''),
 	('results/orf_filter/orf_filter.R1',''),
@@ -172,8 +171,8 @@ def verify_project(projpath, expectedfiles, r1r2, skiplist=[]):
     # Keep track of missing files
     missing = []
     for f in expectedfiles:
-        if r1r2 == '':
-            # If r1r2 blank then mandatory
+        if r1r2 == '' or f[1] == '':
+            # If r1r2 blank from arg or from file then mandatory
             pass
         elif r1r2 != f[1]:
             # If no match, then skip the file
