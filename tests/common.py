@@ -184,15 +184,15 @@ def verify_project(projpath, expectedfiles, r1r2, skiplist=[]):
         except:
             pass
         # Expand glob expressions if there
+        # might end up empty
         files = glob.glob(p)
+        for f in files:
+            if not exists(f):
+                if f not in skiplist:
+                    missing.append(f)
         if not files:
             # Append since glob didn't match anything
             missing.append(p)
-        else:
-            for f in files:
-                if not exists(f):
-                    if f not in skiplist:
-                        missing.append(f)
     return missing
 
 def print_list(lst):

@@ -86,7 +86,7 @@ class TestInputOutputArguments(common.TempDir):
     def test_r1sff(self):
         skip = [
             'results/quality_analysis/F_fastqc.zip',
-            'results/quality_analysis/F_fastqc.zip',
+            'results/quality_analysis/F_fastqc.html',
         ]
         self.outdir = join(self.testdir, 'r1sff')
         args = ['-R1', self.f_sff, '--outdir', self.outdir]
