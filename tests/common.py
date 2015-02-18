@@ -109,7 +109,7 @@ PROJECT_FILES = [
 	('results/step1/logs/*-out.e',''),
 	('results/step1/step1.R1',''),
 	('results/analysis.log',''),
-	('results/iterative_blast_phylo_2/reports/{projectdir}.joinR1R2.smallreport.txt',''),
+	('results/iterative_blast_phylo_2/reports/{projectdir}.joinR1R2.smallreport.txt','R1R2'),
 	('results/iterative_blast_phylo_2/logs/*-out.o',''),
 	('results/iterative_blast_phylo_2/logs/*-out.e',''),
 	('results/quality_filter/logs/*-out.o',''),
