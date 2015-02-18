@@ -48,12 +48,6 @@ def copyDir(file_to_copy, file_copy):
     shutil.copytree(file_to_copy, file_copy)
     return
 
-def createParam(param_output):
-    # Gets config file as a file like object
-    fin = resource_stream(__name__, 'files/sample.param')
-    with open(param_output,'w') as fout:
-        fout.write(fin.read())
-
 def createQuality(input,output):
     """Check quality of the two fastq files
     Arguments:

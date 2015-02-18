@@ -390,7 +390,7 @@ def setup_shell_environment(config):
         os.pathsep + os.path.join(installdir,'step1') + \
         os.pathsep + os.environ['PATH']
 
-def setup_param(config):
+def setup_param(config, paramoutputfile):
     '''
     Setup sample.param file in installation directory
 
@@ -402,10 +402,9 @@ def setup_param(config):
     '''
     # Copy base sample.param.base to sample.param file
     baseFile = resource_filename(__name__, 'files/sample.param.base')
-    sampleParam = baseFile.replace('.base','')
-    shutil.copyfile(baseFile, sampleParam)
+    shutil.copyfile(baseFile, paramoutputfile)
     # replace some globals in the sample.param file such as db names
-    for line in fileinput.input(sampleParam, inplace=True, backup='.bak'):
+    for line in fileinput.input(paramoutputfile, inplace=True):
         line = re.sub(r'SEQPLATFORM',config['SEQUENCE_PLATFORM'], line.rstrip() )
         line = re.sub('NUMINST', config['NODE_NUM'], line.rstrip() )
         line = re.sub(r'HUMAN_DNA', config['human_dna'], line.rstrip())
