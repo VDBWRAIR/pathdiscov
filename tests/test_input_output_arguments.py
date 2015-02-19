@@ -86,7 +86,9 @@ class TestInputOutputArguments(common.TempDir):
     def test_r1sff(self):
         skip = [
             'results/quality_analysis/F_fastqc.zip',
-            'results/quality_analysis/F_fastqc.zip',
+            'results/quality_analysis/F_fastqc.html',
+            'results/orf_filter/R1.unmap.fastq', # There will be no unmapped reads so these will not be generated
+            'results/orf_filter/R1.orfout.fa'    # so we will just skip their checks
         ]
         self.outdir = join(self.testdir, 'r1sff')
         args = ['-R1', self.f_sff, '--outdir', self.outdir]

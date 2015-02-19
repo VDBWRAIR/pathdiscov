@@ -15,7 +15,7 @@ CentOS
 
 .. code-block:: bash
 
-    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget
+    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget java-1.6.0 dejavu*
     #> yum groupinstall Development Tools
     
 Ubuntu
@@ -36,7 +36,7 @@ Installation
         git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
         cd usamriidPathDiscov
 
-#. Setup a :ref:`virtualenv <activate>` to install into
+#. Setup a :ref:`virtualenv <activate>` to install into and build documentation
 
     .. code-block:: bash
 
@@ -44,23 +44,22 @@ Installation
         python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
         source usamriidPathDiscov/bin/activate
         pip install paver
-        cat <<EOF
 
+    If you want to view/install the built html documentation
 
+    .. code-block:: bash
 
-        **************************************************************
-        Remember this path as you will need it every time you activate
-        the pipeline:
+        paver doc_html
+        firefox docs/build/html/install.html#id1
 
+    If you want to view/install the man page documentation
 
-        $(pwd)/usamriidPathDiscov/bin/activate
+    .. code-block:: bash
 
-
-        **************************************************************
-
-
-        EOF
-        echo
+        paver doc_man
+        mkdir -p usamriidPathDiscov/man/man1
+        cp docs/build/man/* usamriidPathDiscov/man/man1
+        man usamriidPathDiscov
 
 #. Databases setup
 
@@ -93,18 +92,6 @@ Installation
     .. code-block:: bash
 
         python setup.py install
-
-#. Build and view the complete documentation
-
-    This will open a new firefox window that will display the built documentation
-    that you can continue on where you left off here
-
-    .. code-block:: bash
-
-        cd docs
-        make clean && make html
-        firefox build/html/install.html &
-        cd ..
 
 #. Quick verify of a few things
 

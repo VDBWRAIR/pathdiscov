@@ -58,6 +58,7 @@ _EOUSAGE_
 $r2="none";
 $numreads=0;
 $path_scripts=$RealBin;
+$sge=0;
 @stages=();
 
 GetOptions (	'outputdir=s' => \$outputdir,
@@ -83,20 +84,27 @@ print("Stages to be run: $strstages\n");
 if ( $help || $numarg == 0 || (not defined($sample)) || (not defined($r1)) ) {print $usage; exit;}
 
 $r1=abs_path($r1);
-$r2=abs_path($r2);
+$r2=abs_path($r2) if ($r2 ne "none");
 
 `mkdir -p $outputdir`;
 if($sge == 1)
 {
 
-    print("-|-------pathogen pipeline  run on SUNGRID engine (SGE)-------|-\n");
-    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2 --SGE $sge");
+    print("-|-------pathogen pipeline run on SUNGRID engine (SGE)-------|-\n");
 }
 else:
 {
     print("-|-------pathogen pipeline run without SUNGRID engine (SGE)  -------|-\n");
-    print_system("$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
 }
+
+my $arg_r2;
+if($r2 ne "none") {
+    $arg_r2 = "--R2 $r2"
+}
+
+my $cmd = "$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 $arg_r2 --SGE $sge";
+#print($cmd);
+print_system($cmd);
 
 # fastq files come in 4-line chunks
 $numreads=$numreads*4;
@@ -123,7 +131,7 @@ print("\n-|-------unassembled reads-------|-\n");
 print_system("$path_scripts/pathogen.pl --sample $sample --command iterative_blast_phylo_2 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
 
 print("\n-|-------read counts-------|-\n");
-system("mkdir -p $outputdir/output");
+print_system("mkdir -p $outputdir/output");
 print_system("$path_scripts/scripts/readcount.pl --sample $sample --outputdir $outputdir/output --projdir $outputdir --dirlist \"step1,quality_filter,host_map_1,ray2_assembly_1,iterative_blast_phylo_1,iterative_blast_phylo_2\" --trackread");
 
 print_system("$path_scripts/scripts/process_counts.pl --sample $sample --outputdir $outputdir/output > $outputdir/output/stats.txt");
