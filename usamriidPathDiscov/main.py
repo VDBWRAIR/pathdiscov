@@ -30,7 +30,6 @@ if R2:
 # Do all initial setup
 config = helpers.parse_config()
 helpers.setup_shell_environment(config)
-helpers.setup_param(config)
 
 # Setup initial inputs
 input_dir = join(project_dir, "input")
@@ -54,7 +53,8 @@ def createPram(output_file):
     '''
     Create param.txt inside projectdir/input
     '''
-    result = tasks.createParam(output_file)
+    config['NODE_NUM'] = str(options.cpuNum)
+    helpers.setup_param(config, output_file)
 
 def qa_outfile(input):
     ''' Generate quality_analysis output file for input file '''
