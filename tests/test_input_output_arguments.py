@@ -52,6 +52,7 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
 
+    @attr('current')
     def test_r1r2_outdir_abspath(self):
         # abspath outdir
         self.outdir = join(self.testdir, 'r1r2_relpath_outdir_abspath')
@@ -82,7 +83,6 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
 
-    @attr('current')
     def test_r1sff(self):
         skip = [
             'results/quality_analysis/F_fastqc.zip',

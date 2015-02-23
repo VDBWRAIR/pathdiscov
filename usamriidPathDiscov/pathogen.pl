@@ -406,11 +406,11 @@ for (my $i = 0; $i < scalar(@command); $i++)
                     # boolcontigname is set
                     $r1r2 .= $out_contig;
                     # r1r2 for next stage will be unmapped reads...hopefully
-                    $is_fasta = "no";				
+                    $is_fasta = "yes";				
                 } else {
                     # Otherwise use R1 and R2
                     $r1r2 .= $abs_r1 . " --R2 " . $abs_r1;
-                    $is_fasta = "yes";				
+                    $is_fasta = "no";				
                 }
                 my $cmd = "$path_scripts/$command_prefix/$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date $r1r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
 				verbose_system($cmd);
