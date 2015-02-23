@@ -34,6 +34,9 @@ Installation
     .. code-block:: bash
 
         git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
+        
+    .. code-block:: bash
+    
         cd usamriidPathDiscov
 
 #. Setup a :ref:`virtualenv <activate>` to install into and build documentation
