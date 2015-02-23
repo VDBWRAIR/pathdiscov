@@ -9,6 +9,7 @@ databases: ~/databases
 human_dna: humandna/human_dna
 human_rna: humanrna/h_sapiens_rna
 nt_db:  ncbi/blast/nt/nt
+diamond_db: diamond/diamondnr
 tax_nodes: ncbi/blast/taxonomy/nodes.dmp
 tax_names: ncbi/blast/taxonomy/names.dmp
 
