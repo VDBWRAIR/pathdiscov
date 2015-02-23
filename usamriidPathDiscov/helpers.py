@@ -412,6 +412,7 @@ def setup_param(config, paramoutputfile):
         line = re.sub(r'BLAST_NT', config['nt_db'], line.rstrip())
         line = re.sub(r'TAX_NODES', config['tax_nodes'], line.rstrip())
         line = re.sub(r'TAX_NAMES', config['tax_names'], line.rstrip())
+        line = re.sub(r'DIAMOND_NR', config['diamond_db'], line.rstrip())
         print (line)
 
 
