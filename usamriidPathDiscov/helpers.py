@@ -346,6 +346,7 @@ def parse_config():
     if h_sapiens_rna:
         config['human_rna'] = join(databases, h_sapiens_rna)
     config['nt_db']= join(databases, config['nt_db'])
+    config['diamond_db'] = join(databases, config['diamond_db'])
     config['tax_nodes'] = join(databases, config['tax_nodes'])
     config['tax_names'] = join(databases, config['tax_names'])
     config['blast_unassembled'] = str(config['blast_unassembled'])
