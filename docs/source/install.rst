@@ -34,6 +34,9 @@ Installation
     .. code-block:: bash
 
         git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/VDBWRAIR/usamriidPathDiscov.git)
+        
+    .. code-block:: bash
+    
         cd usamriidPathDiscov
 
 #. Setup a :ref:`virtualenv <activate>` to install into and build documentation
@@ -100,7 +103,7 @@ Installation
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl diamond)
+            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl )
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
 
     * See if your databases are available as specified in config
