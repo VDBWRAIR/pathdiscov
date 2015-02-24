@@ -30,11 +30,24 @@ if ($type eq "blastx" || !(defined($task)))
 {
         $task_option="";
 }
+elsif($type eq "diamond" || !(defined($task)))
+{
+    $task_option="blastx";
+}
+
 else
 {
         $task_option="-task $task";
 }
-
+if ($type eq "blastn" || ($type eq "blastx"))
+{
 my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -num_descriptions=10 $options";				
 print "[cmd] ",$cmd,"\n";
 system($cmd);
+}
+else
+{
+my $cmd = "$type $task_option -q  $query -d $db  -p 0 -v -k 10  --id 0.7 -c 6 -t /media/VD_Research/People/Dereje.Jima/tmp";
+print "[cmd] ",$cmd,"\n";
+system($cmd);
+}
