@@ -36,6 +36,11 @@ if ($type eq "blastx" || !(defined($task)))
 {
         $task_option="";
 }
+elsif ($type eq "diamond" || !(defined($task)))
+{
+    $task_option="blastx";
+
+}
 else
 {
         $task_option="-task $task";
@@ -47,9 +52,18 @@ if ($task eq "megablast" || $task eq "dc-megablast" || $task eq "blastn")
         $type="blastn";
 }
 
-print "[start]\n";
 
+if ($type eq "blastn" || ($type eq "blastx"))
+{
+print "[start]\n";
 my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
 verbose_system($cmd);
-
 print "[end]\n";
+}
+else{
+# NOTE: Pass -t from commandline
+my $cmd = "$type $task_option -q  $query -d $db  -p 0 -v -k 10  --id 0.7 -c 6 -t /media/VD_Research/People/Dereje.Jima/tmp"; 
+verbose_system($cmd);
+print "[end]\n";
+}
+
