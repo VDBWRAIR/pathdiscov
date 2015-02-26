@@ -88,6 +88,18 @@ Download human rna from the same URL, the version of the geome might be differen
    # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
    sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
 
+Download, install and index protein database for diamond blastx
+
+.. code-block:: bash
+      
+   mkdir -p ~/databases/diamond
+   pushd ~/databases/diamond
+   wget -Y ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/*non*.protein.faa.gz
+   zcat nonredundant_protein..protein.faa.gz > combined.nonredundant.protein.fa
+   diamond makedb -p 12 -d diamondpnr -v --log --in combined.nonredundant.protein.fa -b 3
+   rm -rf *.faa.gz
+   popd
+
 Verify Databases
 ================
 
