@@ -2,6 +2,8 @@
 # Upadate all database locations
 
 # Point databases to the location of your databases
+# If you have not created this path yet, then make sure
+# to follow the database setup instructions in the docs
 databases: ~/databases
 
 # These will all have the value of databases joined to them
