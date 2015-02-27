@@ -350,6 +350,8 @@ def parse_config():
     config['tax_nodes'] = join(databases, config['tax_nodes'])
     config['tax_names'] = join(databases, config['tax_names'])
     config['blast_unassembled'] = str(config['blast_unassembled'])
+    config['temp_dir'] = config['temp_dir']
+    config['nr_db'] = join(databases, config['nr_db'])
     return config
 
 def setup_shell_environment(config):
@@ -414,6 +416,8 @@ def setup_param(config, paramoutputfile):
         line = re.sub(r'TAX_NODES', config['tax_nodes'], line.rstrip())
         line = re.sub(r'TAX_NAMES', config['tax_names'], line.rstrip())
         line = re.sub(r'DIAMOND_NR', config['diamond_db'], line.rstrip())
+        line = re.sub(r'TEMPDIR', config['temp_dir'], line.rstrip())
+        line = re.sub(r'BLASTNR', config['nr_db'], line.rstrip())
         print (line)
 
 
