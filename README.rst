@@ -11,4 +11,7 @@ Configuration
 
 See `Configuration <docs/source/configuration.rst>`_
 
-.. include:: CHANGELOG.rst
+Changelog
+---------
+
+See `Changelog <CHANGELOG.rst>`_
