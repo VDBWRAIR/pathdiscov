@@ -64,12 +64,6 @@ Installation
         cp docs/build/man/* usamriidPathDiscov/man/man1
         man usamriidPathDiscov
 
-#. Databases setup
-
-    You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
-
-    See :doc:`databases` or `<databases.rst>`_ if you have not built the docs
-
 #. Setup usamriidPathDiscov/files/config.yaml.base
 
     #. Copy config.yaml.base to config.yaml
@@ -89,6 +83,12 @@ Installation
         .. code-block:: bash
 
             SEQUENCE_PLATFORM: illumina #choices are: illumina,454
+
+#. Databases setup
+
+    You must refer to built documentation to set up these databases. These databases must be built before you can verify below.
+
+    See :doc:`databases` or `<databases.rst>`_ if you have not built the docs
 
 #. Install the pipeline into the virtualenv
 
