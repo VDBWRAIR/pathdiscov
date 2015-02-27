@@ -97,6 +97,7 @@ Download, install and index protein database for diamond blastx
    wget -Y ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/*non*.protein.faa.gz
    zcat nonredundant_protein..protein.faa.gz > combined.nonredundant.protein.fa
    diamond makedb -p 12 -d diamondpnr -v --log --in combined.nonredundant.protein.fa -b 3
+   makeblastdb -in combined.nonredundant.protein.fa -dbtype 'prot' -out Blastpnr
    rm -rf *.faa.gz
    popd
 
