@@ -10,7 +10,7 @@ Directory Setup
 .. code-block:: bash
     
     mkdir -p ~/databases/{humandna,humanrna,ncbi}
-    mkdir -p ~/databases/ncbi/blast/{nt,taxonomy}
+    mkdir -p ~/databases/ncbi/blast/{nt,nr,taxonomy}
 
 Blast
 =====
@@ -21,7 +21,7 @@ This may take longer time depending on your network connection.
 
 .. code-block:: bash
 
-    usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
+    usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
 
 Taxonomy
 ========
