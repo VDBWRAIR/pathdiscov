@@ -209,7 +209,7 @@ foreach my $mate (@mates)
 				verbose_system($cmd);
 				
 				print "[echo] get phylogeny counts\n";
-                if ($blast_task_list[$i] eq "diamond")
+                if (($blast_task_list[$i] eq "diamond") and ($command eq "iterative_blast_phylo_1"))
                 {
                     # Change the protein database from diamond to Blast
                     # nr database to retrieve annotation. 
