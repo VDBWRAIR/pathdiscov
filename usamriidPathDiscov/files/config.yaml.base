@@ -9,11 +9,11 @@ databases: ~/databases
 human_dna: humandna/human_dna
 human_rna: humanrna/h_sapiens_rna
 nt_db:  ncbi/blast/nt/nt
-diamond_db: diamond/diamondpnr
+diamond_db: diamond/diamondnr
 tax_nodes: ncbi/taxonomy/nodes.dmp
 tax_names: ncbi/taxonomy/names.dmp
 temp_dir:  ~/tmp
-nr_db:  ncbi/blast/nr/nr
+nr_db:  diamond/Blastpnr
 
 PHRED_OFFSET: 33
 SEQUENCE_PLATFORM: illumina  #choices are: illumina,454
