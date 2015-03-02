@@ -70,7 +70,7 @@ def verifydatabases(config):
     dbpath = expandvars(expanduser(config['databases']))
     dbs = (
         'human_dna', 'human_rna', 'nt_db',
-        'tax_nodes', 'tax_names'
+        'tax_nodes', 'tax_names','diamond_db', 'nr_db'
     )
     ntdb = join(dbpath, config['nt_db'])
 
@@ -78,7 +78,7 @@ def verifydatabases(config):
     for db in dbs:
         pth = join(dbpath, config[db])
         try:
-            missing = all_db_files_same_prefix(pth, ['.fa', '.gz', '.nal'])
+            missing = all_db_files_same_prefix(pth, ['.fa', '.gz', '.nal', 'dmnd'])
             if missing:
                 ok = False
                 sys.stderr.write('Please check {0} as the following database extensions' \
