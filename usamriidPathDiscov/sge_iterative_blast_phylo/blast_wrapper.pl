@@ -17,7 +17,9 @@ use Verbose_Sys;
 
 # default
 
-$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen qseq\"";
+#$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen qseq\"";
+# change blastout put format to match diamond
+$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen\"";
 
 GetOptions ('query=s' => \$query,		# inputfile
             'db=s' => \$db,				# db
