@@ -14,7 +14,6 @@ use Getopt::Long;
 # default
 
 #$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen\"";
-# change blastout put format to match diamond
 $outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\"";
 
 GetOptions ('query=s' => \$query,		# inputfile
