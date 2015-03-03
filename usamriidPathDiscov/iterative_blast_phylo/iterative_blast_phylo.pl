@@ -215,7 +215,7 @@ foreach my $mate (@mates)
                     # nr database to retrieve annotation. 
                     $blast_db_list[$i] = $hoh{$command}{"blast_pro_db"};
                     my $blast_db_nr = $blast_db_list[$i];
-                    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_'.$mate.'_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
+                    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
                     verbose_system($cmd) if ($boolphylo);
                 }
 
@@ -223,7 +223,7 @@ foreach my $mate (@mates)
                 {
             
 				# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
-			    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_'.$mate.'_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
+			    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
 				verbose_system($cmd) if ($boolphylo);
                 }
 				
@@ -253,12 +253,12 @@ foreach my $mate (@mates)
                 my $blast_db_nr = $blast_db_list[$i];
 
 				# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
-                my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_'.$mate.'_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
+                my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
 				verbose_system($cmd) if ($boolphylo);
                 }
                 else
                 {
-                      my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_'.$mate.'_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
+                      my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
                       verbose_system($cmd) if ($boolphylo);
                 }
 								
