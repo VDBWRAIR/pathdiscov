@@ -1,6 +1,6 @@
-=====
+======
 fastQC
-=====
+======
 
 We added fastq quality matrix using fastqc  
 
