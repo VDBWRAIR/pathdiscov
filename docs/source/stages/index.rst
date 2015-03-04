@@ -9,6 +9,7 @@ Documentation of each stage of the pipeline including all of the output files ge
 .. toctree::
     :maxdepth: 1
 
+    fastQC
     step1
     host_map
     quality_filter
