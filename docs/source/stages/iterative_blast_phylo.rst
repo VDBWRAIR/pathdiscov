@@ -58,6 +58,24 @@ command iterative_blast_phylo
 
 Output
 ======
+Any file name that start with `1` refers to `megablast` output, `2`
+refers to `dc_megablast` and  `3` refers to `diamond blastx`
+
+There are four category files that starts with either 1,2 or 3 depending
+on whether you run `diamond blastx` or not.
+1. `*.contig.blast`: blast output either from megablast (start with 1),
+   dc_megablast (start with 2), and diamond blastx (start with 3). `*`
+   refers to either 1,2 or 3
+2. `*.contig.blast.ann`: Possible taxonomy annotation for blast hit
+3. `*.contig.*.blast.phylo`: Best taxonomy assigned to the contig that
+   has a hit in a database provided
+4. `*.contig.*.blast.t2q`: contigs assigned to taxaid
+
+`2.contig.fasta, 3.contig.fasta, 4.contig.fasta` refers to unmapped
+fasta files from megablast, dc_megablast, and diamond blastx respectivly. 
+
+Some details on  specific  output files:
+
 
 * 1.contig.fasta or 1.R1.fasta,1.R2.fasta
     Symlink to input reads
