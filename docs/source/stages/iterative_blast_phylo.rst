@@ -58,11 +58,13 @@ command iterative_blast_phylo
 
 Output
 ======
+
 Any file name that start with `1` refers to `megablast` output, `2`
 refers to `dc_megablast` and  `3` refers to `diamond blastx`
 
 There are four category files that starts with either 1,2 or 3 depending
 on whether you run `diamond blastx` or not.
+
 1. `*.contig.blast`: blast output either from megablast (start with 1),
    dc_megablast (start with 2), and diamond blastx (start with 3). `*`
    refers to either 1,2 or 3
