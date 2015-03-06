@@ -203,7 +203,8 @@ foreach my $mate (@mates)
 				# make tmp dirs (e.g., mkdir tmp_R1_1)
 				my $cmd = "mkdir -p tmp_".$mate."_$j";
 				print_system($cmd);
-			    if (($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond"))
+                $outputdir = "tmp_".$mate."_$j";
+			    if (($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond") and ($outputdir eq "tmp_R1_3" or $outputdir eq "tmp_R2_3"))
                 {
                     $blast_db_list[$i] = $blast_db_list[2];
                     print $blast_db_list[$i];
