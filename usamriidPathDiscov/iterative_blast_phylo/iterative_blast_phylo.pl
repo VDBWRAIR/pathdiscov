@@ -203,7 +203,10 @@ foreach my $mate (@mates)
 				# make tmp dirs (e.g., mkdir tmp_R1_1)
 				my $cmd = "mkdir -p tmp_".$mate."_$j";
 				print_system($cmd);
-				
+			    if (($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond"))
+                {
+                    $blast_db_list[$i] = $blast_db_list[3];
+                }
 				# blast in chunks
 				my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
 				verbose_system($cmd);
