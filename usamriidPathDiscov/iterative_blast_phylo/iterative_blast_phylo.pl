@@ -210,7 +210,7 @@ foreach my $mate (@mates)
                     print $blast_db_diamond . "\n";
                              
 				    # blast in chunks
-				    my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
+				    my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_db_diamond\"";		
 				    verbose_system($cmd);
                 }
                 else
