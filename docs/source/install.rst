@@ -79,13 +79,15 @@ Installation
 
         .. code-block:: bash
 
-            cp usamriidPathDiscov/files/config.yaml{.base.noblastx,}
+            cp usamriidPathDiscov/files/config.yaml{.base,}
+            cp usamriidPathDiscov/files/sample.param{.base.noblastx,}
 
 #. Running with diamond blastx
 
         .. code-block:: bash
 
-            cp usamriidPathDiscov/files/config.yaml{.base.diamond,}
+            cp usamriidPathDiscov/files/config.yaml{.base,}
+            cp usamriidPathDiscov/files/sample.param{.base.diamond,}
 
 
     #. Edit config.yaml to suite your setup
