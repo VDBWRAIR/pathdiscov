@@ -204,36 +204,36 @@ foreach my $mate (@mates)
 				my $cmd = "mkdir -p tmp_".$mate."_$j";
 				print_system($cmd);
                 #if ((($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond")) or (($j==3) and ($mate eq "R2")))
-                if ($blast_task_list[$i] eq "diamond")
-                {
-                    my $blast_db_diamond = $blast_db_list[2];
-                    print $blast_db_diamond . "\n";
+                #if ($blast_task_list[$i] eq "diamond")
+                #{
+                    #my $blast_db_diamond = $blast_db_list[2];
+                    #print $blast_db_diamond . "\n";
                              
-				    # blast in chunks
-				    my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_diamond --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
-				    verbose_system($cmd);
-                }
-                elsif(($mate eq "R2") and ($j==3))
-                {
-                    my $blast_db_diamond = $blast_db_list[2];
-                    print $blast_db_diamond . "\n";
-                    my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_diamond --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
-                    verbose_system($cmd);
+				     #blast in chunks
+				    #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_diamond --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
+				    #verbose_system($cmd);
+                #}
+                #elsif(($mate eq "R2") and ($j==3))
+                #{
+                    #my $blast_db_diamond = $blast_db_list[2];
+                    #print $blast_db_diamond . "\n";
+                    #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_diamond --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                    #verbose_system($cmd);
 
-                }
-                else
-                {
-                   my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
-                    verbose_system($cmd);
-                }
+                #}
+                #else
+                #{
+                my $blast_db_nr;
+                my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                verbose_system($cmd);
+                #}
 				
 				print "[echo] get phylogeny counts\n";
                 if ($blast_task_list[$i] eq "diamond")
                 {
                     # Change the protein database from diamond to Blast
                     # nr database to retrieve annotation. 
-                    $blast_db_list[$i] = $hoh{$command}{"blast_pro_db"};
-                    my $blast_db_nr = $blast_db_list[$i];
+                    $blast_db_nr = $hoh{$command}{"blast_pro_db"};
                     my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
                     verbose_system($cmd) if ($boolphylo);
                 }
@@ -268,11 +268,10 @@ foreach my $mate (@mates)
                 if ($blast_task_list[$i] eq "diamond") 
                 {
                 
-                $blast_db_list[$i] = $hoh{$command}{"blast_pro_db"};
-                my $blast_db_nr = $blast_db_list[$i];
+                     $blast_db_nr = $hoh{$command}{"blast_pro_db"};
 
-				# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
-                my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
+				     # args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
+                     my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
 				verbose_system($cmd) if ($boolphylo);
                 }
                 else
