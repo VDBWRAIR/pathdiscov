@@ -203,32 +203,11 @@ foreach my $mate (@mates)
 				# make tmp dirs (e.g., mkdir tmp_R1_1)
 				my $cmd = "mkdir -p tmp_".$mate."_$j";
 				print_system($cmd);
-                #if ((($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond")) or (($j==3) and ($mate eq "R2")))
-                #if ($blast_task_list[$i] eq "diamond")
-                #{
-                    #my $blast_db_diamond = $blast_db_list[2];
-                    #print $blast_db_diamond . "\n";
-                             
-				     #blast in chunks
-				    #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_diamond --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
-				    #verbose_system($cmd);
-                #}
-                #elsif(($mate eq "R2") and ($j==3))
-                #{
-                    #my $blast_db_diamond = $blast_db_list[2];
-                    #print $blast_db_diamond . "\n";
-                    #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_diamond --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
-                    #verbose_system($cmd);
-
-                #}
-                #else
-                #{
                 my $blast_db_nr;
                 my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
                 verbose_system($cmd);
-                #}
 				
-				print "[echo] get phylogeny counts\n";
+                print "[echo] get phylogeny counts\n";
                 if ($blast_task_list[$i] eq "diamond")
                 {
                     # Change the protein database from diamond to Blast
@@ -241,9 +220,9 @@ foreach my $mate (@mates)
                 else
                 {
             
-				# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
-			    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
-				verbose_system($cmd) if ($boolphylo);
+				    # args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
+			        my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
+				    verbose_system($cmd) if ($boolphylo);
                 }
 				
 				# get counts for top hits only (this is hack-ish! should roll into (weighted_count.pl))		
@@ -272,7 +251,7 @@ foreach my $mate (@mates)
 
 				     # args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
                      my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
-				verbose_system($cmd) if ($boolphylo);
+				     verbose_system($cmd) if ($boolphylo);
                 }
                 else
                 {
