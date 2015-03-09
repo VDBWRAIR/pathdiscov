@@ -206,13 +206,18 @@ foreach my $mate (@mates)
                 #if ((($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond")) or (($j==3) and ($mate eq "R2")))
                 if ($blast_task_list[$i] eq "diamond")
                 {
-                    $blast_db_list[$i] = $blast_db_list[2];
-                    print $blast_db_list[$i];
+                    my $blast_db_diamond = $blast_db_list[2];
+                    print $blast_db_diamond . "\n";
+                             
+				    # blast in chunks
+				    my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
+				    verbose_system($cmd);
                 }
-                
-				# blast in chunks
-				my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
-				verbose_system($cmd);
+                else
+                {
+                   my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                    verbose_system($cmd);
+                }
 				
 				print "[echo] get phylogeny counts\n";
                 if ($blast_task_list[$i] eq "diamond")
@@ -283,11 +288,6 @@ foreach my $mate (@mates)
 				my $end_time = time();
 				print "[echo] $mate iteration $j \n";	
 				print "[deltat] ",$end_time-$start_time,"\n";
-		        if (($blast_task_list[$i] eq "diamond") and ($j==3))
-                {
-                    $blast_db_list[$i] = $blast_db_list[2];
-                    print $blast_db_list[$i];
-                }  
 				# make link to final output
 				my $cmd = "ln -sf $j.$mate.noblast.fasta iterative_blast_phylo_".$run_iteration.".".$mate;
 				print_system($cmd);
