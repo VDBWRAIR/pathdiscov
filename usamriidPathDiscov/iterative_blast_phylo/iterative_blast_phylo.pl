@@ -204,7 +204,7 @@ foreach my $mate (@mates)
 				my $cmd = "mkdir -p tmp_".$mate."_$j";
 				print_system($cmd);
                 #if ((($command="iterative_blast_phylo_2")	and ($blast_task_list[$i] eq "diamond")) or (($j==3) and ($mate eq "R2")))
-                if (($blast_task_list[$i] eq "diamond") and ($j==3))
+                if ($blast_task_list[$i] eq "diamond")
                 {
                     $blast_db_list[$i] = $blast_db_list[2];
                     print $blast_db_list[$i];
@@ -283,7 +283,11 @@ foreach my $mate (@mates)
 				my $end_time = time();
 				print "[echo] $mate iteration $j \n";	
 				print "[deltat] ",$end_time-$start_time,"\n";
-		
+		        if (($blast_task_list[$i] eq "diamond") and ($j==3))
+                {
+                    $blast_db_list[$i] = $blast_db_list[2];
+                    print $blast_db_list[$i];
+                }  
 				# make link to final output
 				my $cmd = "ln -sf $j.$mate.noblast.fasta iterative_blast_phylo_".$run_iteration.".".$mate;
 				print_system($cmd);
