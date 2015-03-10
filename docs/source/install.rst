@@ -74,6 +74,7 @@ Installation
 
         .. code-block:: bash
 
+            mkdir -p ~/tmp  # or change the location  of  `tmp` dir in `usamriidPathDiscov/files/config.yaml.base` required for `diamond`
             cp usamriidPathDiscov/files/config.yaml{.base,}
 
 #. Running without diamond blastx, copy config.yaml.base.noblastx to config.yaml (WARNING: May take longer time to finish the task....)
