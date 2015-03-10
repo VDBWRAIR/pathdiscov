@@ -35,6 +35,17 @@ can extract taxonomy names for each of the blast results
     wget http://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O - | tar xzvf -
     popd
 
+Download and index protein database for diamond blastx
+
+.. code-block:: bash
+      
+   mkdir -p ~/databases/diamond
+   pushd ~/databases/diamond
+   wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
+   gunzip nr.gz
+   diamond makedb  -p 12 -d diamondnr -v --log --in nr -b 0.5
+   popd
+
 Host Genome
 ===========
 
@@ -62,6 +73,7 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
 
 .. code-block:: bash
 
+    _cwd=$(pwd)
     pushd ~/databases/humandna
     wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
     tar -xzvf hg38.chromFa.tar.gz
@@ -70,39 +82,32 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     # NOTE: If you have multiple hosts, you may download the fasta files of all hosts to same folder ('chroms/') and concatinate as show below. You may also modify the names accordingly, exmaple instead of hg38, you may name 'allHost.fa'
     cat chroms/*.fa > hg38_all.fa
     #index the database using bowite2-build
-    bowtie2-build hg38_all.fa hg38
+    ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
     popd
     # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
-    sed -i 's%GENOMEDIR/humandna/human_dna%GENOMEDIR/humandna/hg38%' usamriidPathDiscov/files/config.yaml
+    sed -i 's%humandna/human_dna%humandna/hg38%' usamriidPathDiscov/files/config.yaml
+
 
 Download human rna from the same URL, the version of the geome might be different.
 
 .. code-block:: bash
    
-   pushd ~/databases/humanrna
-   wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/mrna.fa.gz 
-   gunzip mrna.fa.gz
-   # index the database suing bowtie2-build
-   bowtie2-build mrna.fa hg38_mrna
-   popd
-   # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
-   sed -i 's%GENOMEDIR/humanrna/h_sapiens_rna%GENOMEDIR/humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
-
-Download and index protein database for diamond blastx
-
-.. code-block:: bash
-      
-   mkdir -p ~/databases/diamond
-   pushd ~/databases/diamond
-   wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
-   gunzip nr.gz
-   diamond makedb  -p 12 -d diamondnr -v --log --in nr -b 0.5
-   popd
+   _cwd=$(pwd)
+    pushd ~/databases/humanrna
+    wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/mrna.fa.gz
+    gunzip mrna.fa.gz
+    # index the database suing bowtie2-build
+    ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build mrna.fa hg38_mrna
+    popd
+    # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
+    sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
+   
 
 Verify Databases
 ================
 
-You will probably want to ensure that the pipeline can find all of your databases.
-There is now a handy script that you can use to do this prior to installing.
+Note: This command is only available after you install. Unfortuneatly at this point you cannot use verifydatabases until after you have finished the entire installation.
+
+You will probably want to ensure that the pipeline can find all of your databases. There is now a handy script that you can use to do this prior to installing.
 
 :doc:`scripts/verifydatabases`
