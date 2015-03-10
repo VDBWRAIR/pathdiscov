@@ -72,9 +72,9 @@ Installation
 
 #. Setup usamriidPathDiscov/files/config.yaml.base
 
-    .. code-block:: bash
+        .. code-block:: bash
 
-    cp usamriidPathDiscov/files/config.yaml{.base,}
+            cp usamriidPathDiscov/files/config.yaml{.base,}
 
 #. Running without diamond blastx, copy config.yaml.base.noblastx to config.yaml (WARNING: May take longer time to finish the task....)
 
@@ -106,6 +106,25 @@ Installation
     .. code-block:: bash
 
         python setup.py install
+
+#. NOTE: To shift between running with OR without blastx, you
+   need to change the `sample.param.base`. Do the following...
+     
+A. With blastx
+
+    .. code-block:: bash
+        
+       cp usamriidPathDiscov/files/sample.param.base{.diamond,}
+       python setup.py install
+
+    OR
+
+B. Without blastX
+    
+    .. code-block:: bash
+        
+       cp usamriidPathDiscov/files/sample.param.base{.noblastx,}
+       python setup.py install
 
 #. Quick verify of a few things
 
