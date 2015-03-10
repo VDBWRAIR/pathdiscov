@@ -17,12 +17,12 @@ use Verbose_Sys;
 
 # default
 
-$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen qseq\"";
-
+#$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen qseq\"";
+$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\"";
 GetOptions ('query=s' => \$query,		# inputfile
             'db=s' => \$db,				# db
             'task=s' => \$task,			# (options are: megablast dc-megablast blastn)
-            'type=s' => \$type,			# (options are: blastn blastx) 
+            'type=s' => \$type,			# (options are: blastn diamond) 
             'out=s' => \$out,			# outputfile
             'options=s' => \$options,	# (options are: any BLAST options)                                    
             'outfmt=s' => \$outfmt);	# (options are: BLAST outfmt options) 
@@ -31,15 +31,10 @@ GetOptions ('query=s' => \$query,		# inputfile
 # blastn -query tmpsplit${suffix} -db $db -task $task -out blastout${suffix} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen" -num_threads=1 -num_descriptions=10 -evalue 1e-4 -word_size 28
 
 # this is awkwardly coded. re-do ? 
-
-if ($type eq "blastx" || !(defined($task)))
-{
-        $task_option="";
-}
-else
-{
-        $task_option="-task $task";
-}
+#if ($type eq "blastx" || !(defined($task)))
+#{
+        #$task_option="";
+#}
 
 # if task defined, force type to be blastn
 if ($task eq "megablast" || $task eq "dc-megablast" || $task eq "blastn")
@@ -47,9 +42,35 @@ if ($task eq "megablast" || $task eq "dc-megablast" || $task eq "blastn")
         $type="blastn";
 }
 
-print "[start]\n";
+if ($task eq "diamond")
+{
+        $type ="diamond";
+}
 
-my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
-verbose_system($cmd);
+if ($type eq "diamond" || !(defined($task)))
+{
+    $task_option="blastx";
 
-print "[end]\n";
+}
+else
+{
+        $task_option="-task $task";
+}
+
+
+if ($type eq "blastn")
+{
+    print "[start]\n";
+    my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
+    verbose_system($cmd);
+    print "[end]\n";
+}
+
+if ($type eq "diamond")
+{
+    print "[start]\n";
+    my $cmd = "$type $task_option  $options -q  $query -d $db  -o $out"; 
+    verbose_system($cmd);
+    print "[end]\n";
+}
+

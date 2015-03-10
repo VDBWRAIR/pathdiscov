@@ -162,107 +162,129 @@ chdir($outputdir) or die "[error] cannot chdir to $outputdir";
 # loop over each mate
 foreach my $mate (@mates) 
 {
-	# check if defined, and non-zero
-	if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
-	{
+    # check if defined, and non-zero
+    if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
+    {
 
-		# if input fasta file, link to it. O.w., convert fastq to fasta
-		if ($isfasta || $fastafile eq "yes")
-		{
-			system("ln -sf $hoh{$command}{$mate} 1.".$mate.".fasta");
-		}
-		else
-		{
-			print "[echo] convert input fastq to fasta $mate \n";
-			my $cmd = "cat $hoh{$command}{$mate} | $path_scripts/fastq2fasta.awk > 1.".$mate.".fasta";
-			print_system($cmd);
-		}
+        # if input fasta file, link to it. O.w., convert fastq to fasta
+        if ($isfasta || $fastafile eq "yes")
+        {
+            system("ln -sf $hoh{$command}{$mate} 1.".$mate.".fasta");
+        }
+        else
+        {
+            print "[echo] convert input fastq to fasta $mate \n";
+            my $cmd = "cat $hoh{$command}{$mate} | $path_scripts/fastq2fasta.awk > 1.".$mate.".fasta";
+            print_system($cmd);
+        }
 
-		print "[echo] run a series of blasts $mate \n";	
-		
-		# count lines in file
-		# args: input file, filtering_program_name, output file, 2->fasta, concat
-		my $cmd = "$path_scripts/linecount.sh 1.".$mate.".fasta input $mate.count 2 0";
-		print_system($cmd);
-		
-		# blast iteratively
-		for (my $i = 0; $i < scalar(@blast_db_list); $i++) 
-		{
-			print "[echo] $blast_task_list[$i] \n";	
-			
-			# get start time to benchmark
-			my $start_time = time();
-			
-			# use 1-based, not 0-based, counting
-			my $j = $i + 1;
-			my $k = $i + 2;
-			
-			# e.g., if 1.R1.fasta nonzero
-			if ( -s $j.".".$mate.".fasta" )
-			{
-				# make tmp dirs (e.g., mkdir tmp_R1_1)
-				my $cmd = "mkdir -p tmp_".$mate."_$j";
-				print_system($cmd);
-				
-				# blast in chunks
-				my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";		
-				verbose_system($cmd);
-				
-				print "[echo] get phylogeny counts\n";
-				# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
-				my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{\"taxonomy_nodes\"} $hoh{$command}{\"taxonomy_names\"} $blast_db_list[$i]";
-				verbose_system($cmd) if ($boolphylo);
-				
-				# get counts for top hits only (this is hack-ish! should roll into (weighted_count.pl))		
-		
-				#my $cmd = "cat $j.R1.blast | awk \'{if (!x[$1]) {x[$1]=1; print}}\' > $j.R1.top.blast";
-				#system($cmd);
-				# use perl instead of awk
-				
-				# THIS SHOULD BE PUT IN A FUNCTION
-				my %tmph=();
-				open(my $infile, "<", "$j.$mate.blast"); 
-				open(my $outfile, ">", "$j.$mate.top.blast");
-				while (<$infile>)
-				{	
-					my @ln=split; 
-					if (!($tmph{$ln[0]})) {print $outfile $_;} # if no preexisting entry in the hash, print it 
-					$tmph{$ln[0]}=1;			
-				}				 		 
-				close($infile); 
-				close($outfile); 
-		
-				# args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
-				my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{\"taxonomy_nodes\"} $hoh{$command}{\"taxonomy_names\"} $blast_db_list[$i]";
-				verbose_system($cmd) if ($boolphylo);
-								
-				# get reads that didnt blast
-				# args: blast output, fasta input
-				my $cmd = "$path_scripts/get_unblast_reads.pl $j.$mate.blast $j.$mate.fasta > $j.$mate.noblast.fasta";
-				verbose_system($cmd);
-			
-				# args: input file, filtering_program_name, output file, 2->fasta, concat
-				my $cmd = "$path_scripts/linecount.sh $j.$mate.noblast.fasta $blast_task_list[$i] $mate.count 2 1";
-				print_system($cmd);			
-			
-				# previous no-blast fasta becomes next input
-				system("ln -sf $j.$mate.noblast.fasta $k.$mate.fasta");
-				
-				my $end_time = time();
-				print "[echo] $mate iteration $j \n";	
-				print "[deltat] ",$end_time-$start_time,"\n";
-		
-				# make link to final output
-				my $cmd = "ln -sf $j.$mate.noblast.fasta iterative_blast_phylo_".$run_iteration.".".$mate;
-				print_system($cmd);
-				
-				# get counts per superclass:
-				# args: outputdir, R1 or R2
-				my $cmd = "$path_scripts/prepare_plot_phylo_percents.sh . $mate";
-				verbose_system($cmd) if ($boolphylo);		
-			}
-		}
-	}
+        print "[echo] run a series of blasts $mate \n";	
+
+        # count lines in file
+        # args: input file, filtering_program_name, output file, 2->fasta, concat
+        my $cmd = "$path_scripts/linecount.sh 1.".$mate.".fasta input $mate.count 2 0";
+        print_system($cmd);
+
+        # blast iteratively
+        for (my $i = 0; $i < scalar(@blast_db_list); $i++) 
+        {
+            print "[echo] $blast_task_list[$i] \n";	
+
+            # get start time to benchmark
+            my $start_time = time();
+
+            # use 1-based, not 0-based, counting
+            my $j = $i + 1;
+            my $k = $i + 2;
+
+            # e.g., if 1.R1.fasta nonzero
+            if ( -s $j.".".$mate.".fasta" )
+            {
+                # make tmp dirs (e.g., mkdir tmp_R1_1)
+                my $cmd = "mkdir -p tmp_".$mate."_$j";
+                print_system($cmd);
+                my $blast_db_nr;
+                my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                verbose_system($cmd);
+
+                print "[echo] get phylogeny counts\n";
+                if ($blast_task_list[$i] eq "diamond")
+                {
+                    # Change the protein database from diamond to Blast
+                    # nr database to retrieve annotation. 
+                    $blast_db_nr = $hoh{$command}{"blast_pro_db"};
+                    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
+                    verbose_system($cmd) if ($boolphylo);
+                }
+
+                else
+                {
+
+                    # args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
+                    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.blast $j.$mate.blast.ann $j.$mate.blast.t2q $j.$mate.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
+                    verbose_system($cmd) if ($boolphylo);
+                }
+
+                # get counts for top hits only (this is hack-ish! should roll into (weighted_count.pl))		
+
+                #my $cmd = "cat $j.R1.blast | awk \'{if (!x[$1]) {x[$1]=1; print}}\' > $j.R1.top.blast";
+                #system($cmd);
+                # use perl instead of awk
+
+                # THIS SHOULD BE PUT IN A FUNCTION
+                my %tmph=();
+                open(my $infile, "<", "$j.$mate.blast"); 
+                open(my $outfile, ">", "$j.$mate.top.blast");
+                while (<$infile>)
+                {	
+                    my @ln=split; 
+                    if (!($tmph{$ln[0]})) {print $outfile $_;} # if no preexisting entry in the hash, print it 
+                    $tmph{$ln[0]}=1;			
+                }				 		 
+                close($infile); 
+                close($outfile); 
+
+                if ($blast_task_list[$i] eq "diamond") 
+                {
+
+                    $blast_db_nr = $hoh{$command}{"blast_pro_db"};
+
+                    # args: outputdir, input_file(form: query_id gi_number ...), outputfile_annotate, outputfile taxid2queryid, outputfile, nodes.dmp, names.dmp, ntdb
+                    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_nr";
+                    verbose_system($cmd) if ($boolphylo);
+                }
+                else
+                {
+                    my $cmd = "$path_scripts/phylogeny_wrapper.sh tmp_".$mate."_$j $j.$mate.top.blast $j.$mate.top.blast.ann $j.$mate.top.blast.t2q $j.$mate.top.blast.phylo $hoh{$command}{'taxonomy_nodes'} $hoh{$command}{'taxonomy_names'} $blast_db_list[$i]";
+                    verbose_system($cmd) if ($boolphylo);
+                }
+
+                # get reads that didnt blast
+                # args: blast output, fasta input
+                my $cmd = "$path_scripts/get_unblast_reads.pl $j.$mate.blast $j.$mate.fasta > $j.$mate.noblast.fasta";
+                verbose_system($cmd);
+
+                # args: input file, filtering_program_name, output file, 2->fasta, concat
+                my $cmd = "$path_scripts/linecount.sh $j.$mate.noblast.fasta $blast_task_list[$i] $mate.count 2 1";
+                print_system($cmd);			
+
+                # previous no-blast fasta becomes next input
+                system("ln -sf $j.$mate.noblast.fasta $k.$mate.fasta");
+
+                my $end_time = time();
+                print "[echo] $mate iteration $j \n";	
+                print "[deltat] ",$end_time-$start_time,"\n";
+                # make link to final output
+                my $cmd = "ln -sf $j.$mate.noblast.fasta iterative_blast_phylo_".$run_iteration.".".$mate;
+                print_system($cmd);
+
+                # get counts per superclass:
+                # args: outputdir, R1 or R2
+                my $cmd = "$path_scripts/prepare_plot_phylo_percents.sh . $mate";
+                verbose_system($cmd) if ($boolphylo);		
+            }
+        }
+    }
 }
 
 # make reports

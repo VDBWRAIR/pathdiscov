@@ -17,7 +17,8 @@ use Verbose_Sys;
 
 # default
 
-$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen qseq\"";
+#$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen qseq\"";
+$outfmt="\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\"";
 
 GetOptions ('query=s' => \$query,		# inputfile
             'db=s' => \$db,				# db
@@ -31,25 +32,39 @@ GetOptions ('query=s' => \$query,		# inputfile
 # blastn -query tmpsplit${suffix} -db $db -task $task -out blastout${suffix} -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen" -num_threads=1 -num_descriptions=10 -evalue 1e-4 -word_size 28
 
 # this is awkwardly coded. re-do ? 
-
-if ($type eq "blastx" || !(defined($task)))
+if ($task eq "megablast" || $task eq "dc-megablast" || $task eq "blastn")
 {
-        $task_option="";
+        $type="blastn";
+}
+
+if ($task eq "diamond")
+{
+        $type ="diamond";
+}
+
+if ($type eq "diamond" || !(defined($task)))
+{
+    $task_option="blastx";
+
 }
 else
 {
         $task_option="-task $task";
 }
 
-# if task defined, force type to be blastn
-if ($task eq "megablast" || $task eq "dc-megablast" || $task eq "blastn")
+
+if ($type eq "blastn")
 {
-        $type="blastn";
+    print "[start]\n";
+    my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -num_descriptions=10 $options";
+    verbose_system($cmd);
+    print "[end]\n";
 }
 
-print "[start]\n";
-
-my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -num_descriptions=10 $options";				
-verbose_system($cmd);
-
-print "[end]\n";
+if ($type eq "diamond")
+{
+    print "[start]\n";
+    my $cmd = "$type $task_option  $options -q  $query -d $db  -o $out";
+    verbose_system($cmd);
+    print "[end]\n";
+}

@@ -17,7 +17,7 @@ as follows.
 .. code-block:: bash
     
     mkdir -p ~/databases/{humandna,humanrna,ncbi}
-    mkdir -p ~/databases/ncbi/blast/{nt,taxonomy}
+    mkdir -p ~/databases/ncbi/blast/{nt,nr,taxonomy}
 
 Blast
 =====
@@ -28,7 +28,7 @@ This may take longer time depending on your network connection.
 
 .. code-block:: bash
 
-    usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt taxdb
+    usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
 
 Taxonomy
 ========
@@ -89,6 +89,17 @@ Download human rna from the same URL, the version of the geome might be differen
    popd
    # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
    sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
+
+Download and index protein database for diamond blastx
+
+.. code-block:: bash
+      
+   mkdir -p ~/databases/diamond
+   pushd ~/databases/diamond
+   wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
+   gunzip nr.gz
+   diamond makedb  -p 12 -d diamondnr -v --log --in nr -b 0.5
+   popd
 
 Verify Databases
 ================

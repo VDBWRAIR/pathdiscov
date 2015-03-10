@@ -66,11 +66,22 @@ Installation
 
 #. Setup usamriidPathDiscov/files/config.yaml.base
 
-    #. Copy config.yaml.base to config.yaml
+    .. code-block:: bash
+
+    cp usamriidPathDiscov/files/config.yaml{.base,}
+
+#. Running without diamond blastx, copy config.yaml.base.noblastx to config.yaml (WARNING: May take longer time to finish the task....)
 
         .. code-block:: bash
 
-            cp usamriidPathDiscov/files/config.yaml{.base,}
+            cp usamriidPathDiscov/files/sample.param.base{.noblastx,}
+
+#. Running with diamond blastx
+
+        .. code-block:: bash
+
+            cp usamriidPathDiscov/files/sample.param.base{.diamond,}
+
 
     #. Edit config.yaml to suite your setup
     
@@ -103,7 +114,7 @@ Installation
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl )
+            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl diamond)
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
 
     * See if your databases are available as specified in config

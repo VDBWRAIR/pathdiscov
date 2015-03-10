@@ -44,3 +44,7 @@ Output
     Read ids that were discarded
 * R1.cut.fastq, R2.cut.fastq
     Resulting read files
+* R1.prinseq.fastq, R2.prinseq.fastq
+  Reads passed prinseq filter
+* R1.prinseq.bad.fastq, R2.prinseq.bad.fastq
+  Reads that failed pinseq filter

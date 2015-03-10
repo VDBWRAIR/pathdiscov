@@ -52,3 +52,9 @@ Output
 * map_1, map_2, ..., map_n
     Each mapping to a host genome in mapping_db_list will generate a new map_X directory
     which will contain all files related to that mapping
+
+   Each map dir has `out.bam` which contians alignment of mapped reads,
+   `R1.map.id, R2.map.id`- ids of mapped reads, `R1.unmap.fastq,
+   R2.unmap.fastq` -fastq of umapped reads, `R1.unmap.id, R2.unmap.id` -
+   ids of unmapped reads.
+
