@@ -76,6 +76,9 @@ options(setup=setup_dict,
             olink =path('usamriidPathDiscov/bin')
 
         ),
+        snap=Bunch(
+            sfile =path('usamriidPathDiscov/download/snap')
+        ),
 
         #"""
         #local_lib=Bunch(
@@ -348,6 +351,15 @@ def ensure_line_in_file(filepath, line):
             fh.write(line)
 
 @task
+def installSnap(options):
+    """Install  snap aligner """
+    snap=join(sys.prefix,'bin','snap')
+    if not exists(snap):
+        info("Compiling nsap aligner...")
+        currwd = os.getcwd()
+        sfile = path(currwd) / options.snap.sfile
+        sh('(cd %s; make)' %(sfile))
+@task
 def modifyBashRC():
     "Append the content of setting.sh to .bashrc"
     import fileinput
@@ -399,7 +411,7 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc')
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap')
 def install_other_dependencies():
     pass
 
