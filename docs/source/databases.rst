@@ -81,8 +81,12 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     rm chroms/*alt.fa
     # NOTE: If you have multiple hosts, you may download the fasta files of all hosts to same folder ('chroms/') and concatinate as show below. You may also modify the names accordingly, exmaple instead of hg38, you may name 'allHost.fa'
     cat chroms/*.fa > hg38_all.fa
+    rm -rf chroms
+    rm hg38.chromFa.tar.gz
     #index the database using bowite2-build
     ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
+    #index snap database
+    ${_cwd}/usamriidPathDiscov/download/snap-0.15.4-linux/snap   index  hg38_all.fa  hg38 -s 20 -O800
     popd
     # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
     sed -i 's%humandna/human_dna%humandna/hg38%' usamriidPathDiscov/files/config.yaml
