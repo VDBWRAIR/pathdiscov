@@ -86,7 +86,7 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     #index the database using bowite2-build
     ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
     #index snap database
-    ${_cwd}/usamriidPathDiscov/download/snap-0.15.4-linux/snap   index  hg38_all.fa  hg38 -s 20 -O800
+    ${_cwd}/usamriidPathDiscov/download/snap/snap   index  hg38_all.fa  hg38 -s 20 -O1000
     popd
     # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
     sed -i 's%humandna/human_dna%humandna/hg38%' usamriidPathDiscov/files/config.yaml
@@ -102,6 +102,8 @@ Download human rna from the same URL, the version of the geome might be differen
     gunzip mrna.fa.gz
     # index the database suing bowtie2-build
     ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build mrna.fa hg38_mrna
+    # index snap datatabase
+    ${_cwd}/usamriidPathDiscov/download/snap/snap   index  mrna.fa   hg38_mrna -s 20 -O1000
     popd
     # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
     sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
