@@ -293,6 +293,7 @@ setup_dict = dict(
         'usamriidPathDiscov/download/ray/Ray',
         'usamriidPathDiscov/download/Ray2',
         'usamriidPathDiscov/download/bowtie2/bowtie2',
+        'usamriidPathDiscov/download/diamond/bin/diamond',
     ] + glob('usamriidPathDiscov/download/bowtie2/bowtie2-*') +
         glob('usamriidPathDiscov/download/blast-2.2.28/bin/*') +
         glob('usamriidPathDiscov/download/prinseq-lite-0.20.3/*.pl'),

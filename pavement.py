@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
-
 from __future__ import print_function
 
-import os
 import sys
+is_64bits = sys.maxsize > 2**32
+if not is_64bits:
+    print("Please upgrade your operating system to 64 bit, application such as diamond don't run on 32 bit")
+    sys.exit(0)
+
+import os
 import time
 import subprocess
 from paver.easy import *
@@ -26,6 +30,7 @@ from setup import (
 from paver.easy import options, task, needs, consume_args
 from paver.setuputils import install_distutils_tasks
 
+from usamriidPathDiscov import installers
 
 options(setup=setup_dict,
         bwa=Bunch(
@@ -76,13 +81,10 @@ options(setup=setup_dict,
             olink =path('usamriidPathDiscov/bin')
 
         ),
-
-        #"""
-        #local_lib=Bunch(
-            #sdir=path('usamriidPathDiscov/download/local-lib-2.000011'),
-            #bindir=path('usamriidPathDiscov/bin')
-        #),
-        #"""
+        diamond=Bunch(
+            src=path('usamriidPathDiscov/download/diamond-linux64.tar.gz'),
+            install_to=path('usamriidPathDiscov/download/diamond')
+        ),
         settings=Bunch(
             shell_file=path('usamriidPathDiscov/files/settings.sh'),
             shell_file_bk=path('usamriidPathDiscov/files/settings.sh.base'),
@@ -93,19 +95,6 @@ options(setup=setup_dict,
             param_base =path('usamriidPathDiscov/files/sample.param.base'),
             param_work =path('usamriidPathDiscov/files/sample.param')
         ),
-        #virtualenv=Bunch(
-            #packages_to_install=['http://bitbucket.org/ianb/pip/get/2cb1db7b2baf.gz#egg=pip', 'urlgrabber', 'jstools', 'virtualenv'],
-            #dest_dir='./',
-            #install_paver=True,
-            #script_name='bootstrap.py',
-            #no_site_packages=True,
-            #paver_command_line='post_bootstrap'
-        #virtualenv=dict(
-        #script_name="bootstrap.py",
-        #packages_to_install = [
-            ## Project dependencies
-            #],
-        #paver_command_line="init",
         virtualenv=Bunch(
             packages_to_install=[],
             no_site_packages=True
@@ -324,6 +313,11 @@ def refRay(options):
         sys.exit()
 
 @task
+def install_diamond(options):
+    """Install  diamond """
+    installers.install_diamond(options)
+
+@task
 def getorf(options):
     """Install  EMBOSS getorf """
     getorf=join(sys.prefix,'bin','getorf')
@@ -399,7 +393,7 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc')
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc', 'install_diamond')
 def install_other_dependencies():
     pass
 
