@@ -358,7 +358,9 @@ def installSnap(options):
         info("Compiling nsap aligner...")
         currwd = os.getcwd()
         sfile = path(currwd) / options.snap.sfile
-        sh('(cd %s; make)' %(sfile))
+        ddir = dirname(sfile)
+        sh('(cd %s; git clone https://github.com/amplab/snap.git; cd snap; make)' %(ddir))
+
 @task
 def modifyBashRC():
     "Append the content of setting.sh to .bashrc"
