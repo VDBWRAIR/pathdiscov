@@ -63,6 +63,7 @@ usamriidPathDiscov/download/htslib
 usamriidPathDiscov/bin
 usamriidPathDiscov/lib
 usamriidPathDiscov/include
+usamriidPathDiscov/download/snap
 lib64
 man
 virtualenv-1.11.6

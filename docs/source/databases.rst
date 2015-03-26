@@ -39,12 +39,23 @@ Download and index protein database for diamond blastx
 
 .. code-block:: bash
       
-   mkdir -p ~/databases/diamond
-   pushd ~/databases/diamond
-   wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
-   gunzip nr.gz
-   diamond makedb  -p 12 -d diamondnr -v --log --in nr -b 0.5
-   popd
+    mkdir -p ~/databases/diamond
+    pushd ~/databases/diamond
+    wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
+    gunzip nr.gz
+    diamond makedb  -p 12 -d diamondnr -v --log --in nr -b 0.5
+    popd
+
+Alternatively you can generate the diamond database from an already downloaded
+
+.. code-block:: bash
+
+    mkdir -p ~/databases/diamond
+    pushd ~/databases/diamond
+    mkfifo /tmp/blastnr
+    blastdbcmd -db ~/databases/ncbi/blast/nr/nr -query all > /tmp/blastnr &
+    diamond makedb -p 12 -d diamondnr -v --log --in /tmp/blastnr -b 0.5
+    rm /tmp/blastnr
 
 Host Genome
 ===========
