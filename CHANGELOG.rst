@@ -10,6 +10,8 @@ Version 4.2
 * Added instructions on how to create diamond indexed database
 * Changed tests/rikkcdna such that developer builds databases instead of shipping
   prebuilt diamond and blast dbs
+* Added usamriidPathDiscov_cli to verify script to make sure everything installed
+* Fixed typo in installation.rst
 
 Version 4.1
 -----------
