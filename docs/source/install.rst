@@ -7,7 +7,7 @@ Installation
 System Packages
 ===============
 
-In order to installed developer tools you will need root priveledges; that is, somebody who can use
+In order to installed developer tools you will need root privileges; that is, somebody who can use
 su or sudo
 
 CentOS
