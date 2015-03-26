@@ -177,6 +177,7 @@ There may be some instances where you need to install onto an offline workstatio
     * `samtools <https://github.com/samtools/samtools>`_
     * `bwa <https://github.com/lh3/bwa>`_
     * `fastqc <http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip>`_
+    * `snap <https://github.com/amplab/snap.git>`_
 #. Download all of the required python packages
 
     .. code-block:: bash
