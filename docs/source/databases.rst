@@ -35,6 +35,9 @@ can extract taxonomy names for each of the blast results
     wget http://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O - | tar xzvf -
     popd
 
+Diamond
+=======
+
 Download and index protein database for diamond blastx
 
 .. code-block:: bash
@@ -47,15 +50,15 @@ Download and index protein database for diamond blastx
     popd
 
 Alternatively you can generate the diamond database from an already downloaded
+blast nr database
 
 .. code-block:: bash
 
     mkdir -p ~/databases/diamond
     pushd ~/databases/diamond
-    mkfifo /tmp/blastnr
-    blastdbcmd -db ~/databases/ncbi/blast/nr/nr -query all > /tmp/blastnr &
-    diamond makedb -p 12 -d diamondnr -v --log --in /tmp/blastnr -b 0.5
-    rm /tmp/blastnr
+    blastdbcmd -db ~/databases/ncbi/blast/nr/nr -entry all > blastnr.fasta
+    diamond makedb -d diamondnr --log --in blastnr.fasta -b 0.5
+    rm blastnr.fasta
 
 Host Genome
 ===========
