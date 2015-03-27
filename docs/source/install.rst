@@ -7,7 +7,7 @@ Installation
 System Packages
 ===============
 
-In order to installed developer tools you will need root priveledges; that is, somebody who can use
+In order to installed developer tools you will need root privileges; that is, somebody who can use
 su or sudo
 
 CentOS
@@ -41,28 +41,35 @@ Installation
 
 #. Setup a :ref:`virtualenv <activate>` to install into and build documentation
 
-    .. code-block:: bash
+    #. Install virtualenv python environment
 
-        wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-        python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
-        source usamriidPathDiscov/bin/activate
-        pip install paver
+        .. code-block:: bash
 
-    If you want to view/install the built html documentation
+            wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
+            python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
 
-    .. code-block:: bash
+    #. Activate the virtualenv to install everything into
 
-        paver doc_html
-        firefox docs/build/html/install.html#id1
+        .. code-block:: bash
 
-    If you want to view/install the man page documentation
+            source usamriidPathDiscov/bin/activate
+            pip install paver
 
-    .. code-block:: bash
+    #. If you want to view/install the built html documentation
 
-        paver doc_man
-        mkdir -p usamriidPathDiscov/man/man1
-        cp docs/build/man/* usamriidPathDiscov/man/man1
-        man usamriidPathDiscov
+        .. code-block:: bash
+
+            paver doc_html
+            firefox docs/build/html/install.html#id1
+
+    #. If you want to view/install the man page documentation
+
+        .. code-block:: bash
+
+            paver doc_man
+            mkdir -p usamriidPathDiscov/man/man1
+            cp docs/build/man/* usamriidPathDiscov/man/man1
+            man usamriidPathDiscov
 
 
 #. Setup usamriidPathDiscov/files/config.yaml.base
@@ -72,30 +79,18 @@ Installation
             mkdir -p ~/tmp  # or change the location  of  `tmp` dir in `usamriidPathDiscov/files/config.yaml.base` required for `diamond`
             cp usamriidPathDiscov/files/config.yaml{.base,}
 
-#. Running without diamond blastx, copy config.yaml.base.noblastx to config.yaml (WARNING: May take longer time to finish the task....)
 
-        .. code-block:: bash
+#. Edit config.yaml to suite your setup
 
-            cp usamriidPathDiscov/files/sample.param.base{.noblastx,}
+    .. code-block:: bash
 
-#. Running with diamond blastx
+        vim usamriidPathDiscov/files/config.yaml
 
-        .. code-block:: bash
+    Example edits:
 
-            cp usamriidPathDiscov/files/sample.param.base{.diamond,}
+    .. code-block:: bash
 
-
-    #. Edit config.yaml to suite your setup
-    
-        .. code-block:: bash
-
-            vim usamriidPathDiscov/files/config.yaml
-
-        Example edits:
-
-        .. code-block:: bash
-
-            SEQUENCE_PLATFORM: illumina #choices are: illumina,454
+        SEQUENCE_PLATFORM: illumina #choices are: illumina,454
 
 #. Databases setup
 
@@ -110,25 +105,6 @@ Installation
 
         python setup.py install
 
-#. NOTE: To shift between running with OR without blastx, you
-   need to change the `sample.param.base`. Do the following...
-     
-A. With blastx
-
-    .. code-block:: bash
-        
-       cp usamriidPathDiscov/files/sample.param.base{.diamond,}
-       python setup.py install
-
-    OR
-
-B. Without blastX
-    
-    .. code-block:: bash
-        
-       cp usamriidPathDiscov/files/sample.param.base{.noblastx,}
-       python setup.py install
-
 #. Quick verify of a few things
 
     * See if required executables are available
@@ -136,7 +112,7 @@ B. Without blastX
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl diamond)
+            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard_stable4.pl fastqc prinseq-lite.pl diamond usamriidPathDiscov_cli)
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '[main]|usage|useage|qualifiers' && echo "$p ok" || echo "$p broken?"; done
 
     * See if your databases are available as specified in config

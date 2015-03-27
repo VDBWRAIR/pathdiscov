@@ -58,3 +58,39 @@ class TestCreateNewProject(unittest.TestCase):
         mexists.side_effect = [False, False]
         helpers.create_new_project(self.projdir)
         mos.makedirs.assert_called_once_with(self.projdir)
+
+class TestRunCommand(unittest.TestCase):
+    def setUp(self):
+        self.patch_popen = mock.patch('usamriidPathDiscov.helpers.subprocess.Popen')
+        self.patch_stderr = mock.patch('usamriidPathDiscov.helpers.sys.stderr')
+        self.patch_stdout = mock.patch('usamriidPathDiscov.helpers.sys.stdout')
+        self.mock_stderr = self.patch_stderr.start()
+        self.mock_stdout = self.patch_stdout.start()
+        self.mock_popen = self.patch_popen.start()
+        self.addCleanup(self.patch_popen.stop)
+        self.addCleanup(self.patch_stderr.stop)
+        self.addCleanup(self.patch_stdout.stop)
+        self.mock_popen.return_value.communicate.return_value = (None,None)
+
+    def test_runs_command_specified(self):
+        import subprocess
+        cmd = 'foo bar baz'
+        helpers.runCommand(cmd, True)
+        self.mock_popen.assert_called_once_with(
+            'foo bar baz', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        self.mock_popen.return_value.communicate.assert_called()
+
+    def test_writes_cmd_to_console_when_specified_to_do_so(self):
+        helpers.runCommand('foo bar baz', True)
+        self.assertEqual(
+            [mock.call('foo bar baz',), mock.call('\n',)],
+            self.mock_stdout.write.call_args_list
+        )
+
+    def test_just_runs_command_with_no_print_cmd_option(self):
+        helpers.runCommand('foo bar baz', False)
+        self.assertEqual(
+            [],
+            self.mock_stdout.write.call_args_list
+        )

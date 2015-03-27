@@ -10,6 +10,10 @@ Version 4.2
 * Added instructions on how to create diamond indexed database
 * Changed tests/rikkcdna such that developer builds databases instead of shipping
   prebuilt diamond and blast dbs
+* Added usamriidPathDiscov_cli to verify script to make sure everything installed
+* Fixed typo in installation.rst
+* Updated documentation for iterative_blast_phylo on how to use diamond
+* Fixed issue where fastqc was not logging stderr to analysis_quaility.log
 
 Version 4.1
 -----------

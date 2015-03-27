@@ -60,8 +60,8 @@ def createQuality(input,output):
         '-o', output,
     ]
     cmds = ' '.join(cmds)
-    cmds += "| tee -a " + output + "/analysis_quality.log"
-    sout,serr = runCommand(cmds, True)
+    cmds += " 2>&1 | tee -a " + output + "/analysis_quality.log"
+    runCommand(cmds, True)
 
 def convertHtmlToPDF(input,output):
     """Check quality of the two fastq files
