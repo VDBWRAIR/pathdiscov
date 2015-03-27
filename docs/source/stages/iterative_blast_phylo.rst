@@ -23,22 +23,29 @@ Configuration Options
 command iterative_blast_phylo
 
 * blast_db_list
-    blast db prefix
+    Database[s] that are used to blast/diamond against
 
-    Example: ``BLAST_NT,BLAST_NT``
+    The following two values are available for replacement from :ref:`config-yaml-base`
+
+        * ``BLAST_NT`` will be replaced using nt_db
+        * ``DIAMOND_NR`` will be replaced using nr_db
+
+    Choices: ``BLAST_NT``, ``DIAMOND_NR``
+
+    Example: ``BLAST_NT,BLAST_NT,DIAMOND_NR``
 * blast_task_list
     Defines the blast tasks that will be run. Must match blast_db_list in size
 
-    Choices: ``megablast``, ``dc-megablast``, ``blastn``, ``blastx``
+    Choices: ``megablast``, ``dc-megablast``, ``blastn``, ``blastx``, ``diamond``
 
-    Example: megablast,dc-megablast
+    Example: ``megablast,dc-megablast``
 * blast_options_list
     Blast options except for: ``-task -query -db -out -outfmt -num_descriptions``
     
     Example: ``-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4``
 * ninst_list
     The input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
-    If NUMINST is specified then NODE_NUM from :ref:`config-yaml-base` will be used to replace it during install
+    If ``NUMINST`` is specified then NODE_NUM from :ref:`config-yaml-base` will be used to replace it during install
     
     Must be the same size as blast_task_list
 
@@ -46,15 +53,22 @@ command iterative_blast_phylo
 * taxonomy_names
     NCBI taxonomy names dump file
 
-    If TAX_NAMES is specified then tax_names from :ref:`config-yaml-base` will be used to replace it during install
+    If ``TAX_NAMES`` is specified then tax_names from :ref:`config-yaml-base` will be used to replace it during install
 
     Example: ``TAX_NAMES``
 * taxonomy_nodes
     NCBI taxonomy nodes dump file
 
-    If TAX_NODES is specified then tax_nodes from :ref:`config-yaml-base` will be used to replace it during install
+    If ``TAX_NODES`` is specified then tax_nodes from :ref:`config-yaml-base` will be used to replace it during install
 
     Example: ``TAX_NODES``
+* blast_pro_db
+    NCBI protein database for taxonomy information lookup with blastdbcmd
+
+    If ``BLASTNR`` is specified then nr_db from :ref:`config-yaml-base` will be sued to
+    replace it during install
+
+    Example: ``BLASTNR``
 
 Output
 ======

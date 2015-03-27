@@ -117,25 +117,6 @@ Installation
 
         python setup.py install
 
-#. NOTE: To shift between running with OR without blastx, you
-   need to change the `sample.param.base`. Do the following...
-     
-A. With blastx
-
-    .. code-block:: bash
-        
-       cp usamriidPathDiscov/files/sample.param.base{.diamond,}
-       python setup.py install
-
-    OR
-
-B. Without blastX
-    
-    .. code-block:: bash
-        
-       cp usamriidPathDiscov/files/sample.param.base{.noblastx,}
-       python setup.py install
-
 #. Quick verify of a few things
 
     * See if required executables are available
