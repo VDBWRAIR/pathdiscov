@@ -12,6 +12,7 @@ Version 4.2
   prebuilt diamond and blast dbs
 * Added usamriidPathDiscov_cli to verify script to make sure everything installed
 * Fixed typo in installation.rst
+* Updated documentation for iterative_blast_phylo on how to use diamond
 
 Version 4.1
 -----------
