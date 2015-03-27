@@ -41,28 +41,35 @@ Installation
 
 #. Setup a :ref:`virtualenv <activate>` to install into and build documentation
 
-    .. code-block:: bash
+    #. Install virtualenv python environment
 
-        wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-        python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
-        source usamriidPathDiscov/bin/activate
-        pip install paver
+        .. code-block:: bash
 
-    If you want to view/install the built html documentation
+            wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
+            python virtualenv-1.11.6/virtualenv.py usamriidPathDiscov
 
-    .. code-block:: bash
+    #. Activate the virtualenv to install everything into
 
-        paver doc_html
-        firefox docs/build/html/install.html#id1
+        .. code-block:: bash
 
-    If you want to view/install the man page documentation
+            source usamriidPathDiscov/bin/activate
+            pip install paver
 
-    .. code-block:: bash
+    #. If you want to view/install the built html documentation
 
-        paver doc_man
-        mkdir -p usamriidPathDiscov/man/man1
-        cp docs/build/man/* usamriidPathDiscov/man/man1
-        man usamriidPathDiscov
+        .. code-block:: bash
+
+            paver doc_html
+            firefox docs/build/html/install.html#id1
+
+    #. If you want to view/install the man page documentation
+
+        .. code-block:: bash
+
+            paver doc_man
+            mkdir -p usamriidPathDiscov/man/man1
+            cp docs/build/man/* usamriidPathDiscov/man/man1
+            man usamriidPathDiscov
 
 
 #. Setup usamriidPathDiscov/files/config.yaml.base
