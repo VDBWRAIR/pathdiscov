@@ -79,30 +79,18 @@ Installation
             mkdir -p ~/tmp  # or change the location  of  `tmp` dir in `usamriidPathDiscov/files/config.yaml.base` required for `diamond`
             cp usamriidPathDiscov/files/config.yaml{.base,}
 
-#. Running without diamond blastx, copy config.yaml.base.noblastx to config.yaml (WARNING: May take longer time to finish the task....)
 
-        .. code-block:: bash
+#. Edit config.yaml to suite your setup
 
-            cp usamriidPathDiscov/files/sample.param.base{.noblastx,}
+    .. code-block:: bash
 
-#. Running with diamond blastx
+        vim usamriidPathDiscov/files/config.yaml
 
-        .. code-block:: bash
+    Example edits:
 
-            cp usamriidPathDiscov/files/sample.param.base{.diamond,}
+    .. code-block:: bash
 
-
-    #. Edit config.yaml to suite your setup
-    
-        .. code-block:: bash
-
-            vim usamriidPathDiscov/files/config.yaml
-
-        Example edits:
-
-        .. code-block:: bash
-
-            SEQUENCE_PLATFORM: illumina #choices are: illumina,454
+        SEQUENCE_PLATFORM: illumina #choices are: illumina,454
 
 #. Databases setup
 
