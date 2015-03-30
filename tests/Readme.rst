@@ -27,7 +27,7 @@ Setup
 -----
 
 #. Install pipeline as normal
-#. Follow `rikkcdna/Readme.rst`_ to setup test databases
+#. Follow `<rikkcdna/Readme.rst>`_ to setup test databases
 #. Run nosetests
 
     The following will run all test scripts that start with ``test``
