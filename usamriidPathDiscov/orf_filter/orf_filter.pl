@@ -4,6 +4,7 @@ use Pod::Usage;
 use Data::Dumper;
 use Getopt::Long;
 use Cwd 'abs_path';
+use File::Spec;
 
 use FindBin qw($RealBin);
 use lib "$RealBin/../Local_Module";
@@ -90,8 +91,8 @@ foreach my $mate (@mates)
 	# check if defined, and non-zero
 	if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
 	{
-		# system("ln -sf $hoh{$command}{$mate} $command.$mate");		
-		verbose_system("ln -sf $hoh{$command}{$mate}");		
+        my $mate_rel = File::Spec->abs2rel($hoh{$command}{$mate});
+		verbose_system("ln -sf $mate_rel");		
 
 		if ($hoh{$command}{"getorf_options"})
 		{

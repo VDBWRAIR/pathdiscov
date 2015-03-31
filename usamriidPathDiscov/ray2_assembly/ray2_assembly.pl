@@ -5,6 +5,7 @@ use Pod::Usage;
 use Data::Dumper;
 use Getopt::Long;
 use Cwd 'abs_path';
+use File::Spec;
 
 use FindBin qw($RealBin);
 use lib "$RealBin/../Local_Module";
@@ -113,7 +114,7 @@ if ( $r1 ne "none" && defined($r1) )
 if ( $r2 ne "none" && defined($r2) )
 {
 	$abs_r2 = abs_path($r2);
-	$hoh{$command}{"R2"}=$abs_r2;		
+	$hoh{$command}{"R2"}=$abs_r2;
 }
 
 if ( $hoh{$command}{"ninst"} )	
@@ -167,7 +168,9 @@ if ($isfasta || $fastafile eq "yes")
 	{
 		print "[echo] ray2 assembly - single end fasta\n";
 
-		my $cmd = "ln -sf $hoh{$command}{\"R1\"} R1.single.fasta";
+        # Get relative path for link destination
+        my $r1_rel = File::Spec->abs2rel($hoh{$command}{"R1"});
+		my $cmd = "ln -sf $r1_rel R1.single.fasta";
 		system($cmd);		
 		
 		my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fasta > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
@@ -215,8 +218,10 @@ else
 	{
 		print "[echo] ray2 assembly - single end fastq\n";
 		
-		my $cmd = "ln -sf $hoh{$command}{\"R1\"} R1.single.fastq";
-		system($cmd);		
+        # Get relative path for link destination
+        my $r1_rel = File::Spec->abs2rel($hoh{$command}{"R1"});
+		my $cmd = "ln -sf $r1_rel R1.single.fastq";
+		print_system($cmd);		
 		
 		my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 		verbose_system($cmd);		
@@ -242,7 +247,7 @@ if ( $hoh{$command}{"cap"} )
 	my $cmd = "$path_scripts/joinlines.sh $path_scripts/../scripts $output_ray.cap.concat $output_cap";
 	print_system($cmd);
 
-	system("ln -sf $output_cap $output");		
+	print_system("ln -sf $output_cap $output");		
 }
 
 # args: input file, filtering_program_name, output file, 2->fasta, concat

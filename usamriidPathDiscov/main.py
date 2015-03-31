@@ -89,7 +89,7 @@ def fastQC(input, output):
 )
 def priStage(input, output):
     '''
-    Run run_standard_stable4.pl with all supplied options
+    Run run_standard.pl with all supplied options
     '''
     result = tasks.priStage(
         input, project_dir, paramFile,

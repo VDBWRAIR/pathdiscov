@@ -14,6 +14,10 @@ Version 4.2
 * Fixed typo in installation.rst
 * Updated documentation for iterative_blast_phylo on how to use diamond
 * Fixed issue where fastqc was not logging stderr to analysis_quaility.log
+* Renamed run_standard_stable4.pl -> run_standard.pl
+* Removed duplicated run_standard_*.pl scripts
+* Pipeline no longer creates absolute path'd symlinks which makes the output
+  directory portable
 
 Version 4.1
 -----------

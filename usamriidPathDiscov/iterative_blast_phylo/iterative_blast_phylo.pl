@@ -5,6 +5,7 @@ use Pod::Usage;
 use Data::Dumper;
 use Getopt::Long;
 use Cwd 'abs_path';
+use File::Spec;
 
 use FindBin qw($RealBin);
 use lib "$RealBin/../Local_Module";
@@ -169,7 +170,8 @@ foreach my $mate (@mates)
         # if input fasta file, link to it. O.w., convert fastq to fasta
         if ($isfasta || $fastafile eq "yes")
         {
-            system("ln -sf $hoh{$command}{$mate} 1.".$mate.".fasta");
+            my $mate_rel = File::Spec->abs2rel($hoh{$command}{$mate});
+            system("ln -sf $mate_rel 1.".$mate.".fasta");
         }
         else
         {

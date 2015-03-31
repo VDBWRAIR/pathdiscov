@@ -95,7 +95,7 @@ def priStage(input, project_dir, paramFile,numreads,sge, output):
     """
     ffastq, rfastq = input
     cmds = [
-        'run_standard_stable4.pl',
+        'run_standard.pl',
         '--sample', os.path.basename(project_dir),
         '--paramfile', paramFile,
         '--outputdir', output,
