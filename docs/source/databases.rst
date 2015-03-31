@@ -46,7 +46,7 @@ Download and index protein database for diamond blastx
     pushd ~/databases/diamond
     wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
     gunzip nr.gz
-    diamond makedb  -p 12 -d diamondnr -v --log --in nr -b 0.5
+    diamond makedb -p 12 -d diamondnr -v --log --in nr -b 0.5
     popd
 
 Alternatively you can generate the diamond database from an already downloaded
@@ -100,7 +100,7 @@ Ensure you are in the usamriidPathDiscov git cloned directory then execute the f
     #index the database using bowite2-build
     ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
     #index snap database
-    ${_cwd}/usamriidPathDiscov/download/snap/snap   index  hg38_all.fa  hg38 -s 20 -O1000
+    ${_cwd}/usamriidPathDiscov/download/snap/snap index hg38_all.fa hg38 -s 20 -O1000
     popd
     # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
     sed -i 's%humandna/human_dna%humandna/hg38%' usamriidPathDiscov/files/config.yaml
@@ -117,7 +117,7 @@ Download human rna from the same URL, the version of the geome might be differen
     # index the database suing bowtie2-build
     ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build mrna.fa hg38_mrna
     # index snap datatabase
-    ${_cwd}/usamriidPathDiscov/download/snap/snap   index  mrna.fa   hg38_mrna -s 20 -O1000
+    ${_cwd}/usamriidPathDiscov/download/snap/snap index mrna.fa hg38_mrna -s 20 -O1000
     popd
     # replace the location of indexed database in the template config file 'usamriidPathDiscov/files/config.yaml'
     sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
