@@ -18,6 +18,11 @@ Version 4.2
 * Removed duplicated run_standard_*.pl scripts
 * Pipeline no longer creates absolute path'd symlinks which makes the output
   directory portable
+* Broke up the databases documentation a bit for each of the indexing steps
+  such that the user can more clearly see how each database is created
+* Added references in databases documentation to the cooresponding 
+  stage's documentation to link the two together.
+* Added more documentation about the databases directory structure
 
 Version 4.1
 -----------
