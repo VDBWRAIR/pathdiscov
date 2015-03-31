@@ -19,6 +19,18 @@ class TestInputOutputArguments(common.TempDir):
         super(TestInputOutputArguments, self).setUp()
         self.keep_temp_dir = True
 
+    def get_abspath_symlinks(self, rootpath):
+        '''
+        Checks to make sure project does not contain any absolute symlinks
+        '''
+        abspathsymlinks = []
+        for root, dirs, files in os.walk(rootpath):
+            for file in files:
+                p = join(root,file)
+                if islink(p) and isabs(os.readlink(p)):
+                    abspathsymlinks.append(p)
+        return abspathsymlinks
+
     def make_param(self, args):
         '''
         run with --param so that param.txt can be modified and then run
@@ -72,7 +84,6 @@ class TestInputOutputArguments(common.TempDir):
         # Now run with --noparam to use modified param.txt
         return common.run_path_discov(args + ['--noparam'])
 
-    @attr('current')
     def test_diamond_db(self):
         self.outdir = 'diamond_test'
         f = self.f_fastq
@@ -87,7 +98,9 @@ class TestInputOutputArguments(common.TempDir):
         print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
+        self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
+    @attr('current')
     def test_r1only_abspath(self):
         # relative path outdir
         self.outdir = 'r1_abspath_outdir_relpath'
@@ -103,6 +116,7 @@ class TestInputOutputArguments(common.TempDir):
         print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
+        self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
     def test_r1r2_outdir_abspath(self):
         # abspath outdir
@@ -120,6 +134,7 @@ class TestInputOutputArguments(common.TempDir):
         print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
+        self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
     def test_r1gzip(self):
         self.outdir = join(self.testdir, 'r1gzip')
@@ -133,6 +148,7 @@ class TestInputOutputArguments(common.TempDir):
         print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
+        self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
     def test_r1sff(self):
         skip = [
@@ -152,3 +168,4 @@ class TestInputOutputArguments(common.TempDir):
         print e
         self.assertEqual([], missingfiles, 'Required files missing from project')
         self.assertEqual(0, r, 'Return code was not 0')
+        self.assertEqual([], self.get_abspath_symlinks(self.outdir))
