@@ -2,6 +2,7 @@ from os.path import *
 import fileinput
 import sys
 import os
+import re
 
 import unittest2 as unittest
 from nose.plugins.attrib import attr
@@ -9,9 +10,14 @@ import mock
 
 import common
 
-RIKKNT = join(common.TESTDIR, 'rikkcdna', 'rikkcdna')
-RIKKNR = join(common.TESTDIR, 'rikkcdna', 'rikkrna')
-DIAMOND = join(common.TESTDIR, 'rikkcdna', 'rikknr')
+DBDIR = join(common.TESTDIR, 'rikkcdna')
+RIKKNT = join(DBDIR, 'rikkcdna')
+RIKKNR = join(DBDIR, 'rikkrna')
+DIAMOND = join(DBDIR, 'rikknr')
+SNAPDNA = join(DBDIR, 'rikkdna')
+SNAPRNA = join(DBDIR, 'rikkrna')
+BOWTIEDNA = join(DBDIR, 'rikkdna')
+BOWTIERNA = join(DBDIR, 'rikkrna')
 
 @attr('slow')
 class TestInputOutputArguments(common.TempDir):
@@ -54,6 +60,35 @@ class TestInputOutputArguments(common.TempDir):
             else:
                 sys.stdout.write(line)
         # Now run with --noparam to use modified param.txt
+        return common.run_path_discov(args + ['--noparam'])
+
+    def edit_hostmap(self, paramtxt, mappers, dbs, names, options):
+        for line in fileinput.input(paramtxt, inplace=True):
+            nocommentline = line.split('#')[0].rstrip()
+            p = nocommentline.split(None, 1)
+            opname = ''
+            if len(p) == 2:
+                opname,opvalue = p
+            if opname == 'mapper_program_list':
+                sys.stdout.write('mapper_program_list {0}\n'.format(mappers))
+            elif opname == 'mapper_db_list':
+                sys.stdout.write('mapper_db_list {0}\n'.format(dbs))
+            elif opname == 'mapper_name_list':
+                sys.stdout.write('mapper_name_list {0}\n'.format(names))
+            elif opname == 'mapper_options_list':
+                sys.stdout.write('mapper_options_list {0}\n'.format(options))
+            else:
+                sys.stdout.write(nocommentline + '\n')
+
+    def run_with_snap(self, args):
+        paramtxt = self.make_param(args)
+        self.edit_hostmap(
+            paramtxt,
+            'snap,snap',
+            ','.join([SNAPDNA,SNAPRNA]),
+            'snap_dna,snap_rna',
+            '-t 1,-t 1', # Use 1 thread per run
+        )
         return common.run_path_discov(args + ['--noparam'])
 
     def run_with_diamond(self, args):
@@ -100,7 +135,6 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual(0, r, 'Return code was not 0')
         self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
-    @attr('current')
     def test_r1only_abspath(self):
         # relative path outdir
         self.outdir = 'r1_abspath_outdir_relpath'
@@ -118,6 +152,7 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual(0, r, 'Return code was not 0')
         self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
+    #@attr('current')
     def test_r1r2_outdir_abspath(self):
         # abspath outdir
         self.outdir = join(self.testdir, 'r1r2_relpath_outdir_abspath')
@@ -162,6 +197,23 @@ class TestInputOutputArguments(common.TempDir):
         o,e,r = self.run_with_rikkcdna(args)
         missingfiles = common.verify_project(
             self.outdir, common.PROJECT_FILES, r1r2='R1', skiplist=skip
+        )
+        common.print_list(missingfiles)
+        print o
+        print e
+        self.assertEqual([], missingfiles, 'Required files missing from project')
+        self.assertEqual(0, r, 'Return code was not 0')
+        self.assertEqual([], self.get_abspath_symlinks(self.outdir))
+
+    @attr('current')
+    def test_snap_hostmap(self):
+        self.outdir = 'snap_test'
+        f = self.f_fastq
+        r = self.r_fastq
+        args = ['-R1', f, '-R2', r, '--outdir', self.outdir]
+        o,e,r = self.run_with_snap(args)
+        missingfiles = common.verify_project(
+            self.outdir, common.PROJECT_FILES, r1r2='R1R2'
         )
         common.print_list(missingfiles)
         print o

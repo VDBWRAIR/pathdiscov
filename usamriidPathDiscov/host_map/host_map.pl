@@ -168,10 +168,13 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 	my $cmd = "mkdir -p map_$j";
 	print_system($cmd);	
 	
-# ONLY ONE CHOICE NOW - add bwa option	
-# my $aligner="bowtie2";
-# if bwa:
-# $aligner="bwa" if ($mapper_program_list[$i] eq "bwa" );
+    # Pull out aligner
+    my $aligner = $mapper_program_list[$i];
+    if($aligner eq "bowtie2" || $aligner eq "snap") {
+        print "[echo] Aligner to use: $aligner\n";
+    } else {
+        print "[ERROR] Aligner specified $aligner is not a valid mapper program\n";
+    }
 	
 	# - - - - - - - 
 	# do the mapping 
@@ -179,11 +182,19 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 	# paired data
 	if ( defined($hoh{$command}{"R2"}) && -s $hoh{$command}{"R2"} )
 	{
+        print "[echo] Paired data detected\n";
+        print "[echo] wellpaired is set as: $wellpaired\n";
 		# well paired - the idea is, if we know well paired in advance, get speed up b/c dont have to check
 		if ($wellpaired)
 		{
+            print "[echo] Doing wellpaired mapping\n";
 			# map
-			my $cmd = "bowtie2 -q -x $mapper_db_list[$i] -1 $hoh{$command}{\"R1\"} -2 $hoh{$command}{\"R2\"} -S map_$j/out.sam $mapper_options_list[$i]";
+            my $cmd = "";
+            if($aligner eq "bowtie2") {
+                $cmd = "bowtie2 -q -x $mapper_db_list[$i] -1 $hoh{$command}{\"R1\"} -2 $hoh{$command}{\"R2\"} -S map_$j/out.sam $mapper_options_list[$i]";
+            } elsif($aligner eq "snap") {
+                $cmd = "snap paired $mapper_db_list[$i] $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} -o map_$j/out.sam $mapper_options_list[$i]";
+            }
 			verbose_system($cmd);
 			
 			# get unmapped read IDs
@@ -204,28 +215,34 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 		# paired but not well paired
 		else
 		{
+            print "[echo] Doing non wellpaired mapping\n";
 			# get well paired reads and non-well paired reads
 			my $cmd="$path_scripts/perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} map_$j/R1.single.fastq map_$j/R1.paired.fastq map_$j/R2.single.fastq map_$j/R2.paired.fastq";
 			verbose_system($cmd);
-			
-			# map
-			# check what's zero and what's non zero and run bowtie accordingly
-			if ( -s "map_$j/R1.single.fastq" && -s "map_$j/R2.single.fastq" )
-			{
-				$cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -U map_$j/R1.single.fastq,map_$j/R2.single.fastq -S map_$j/out.sam $mapper_options_list[$i]";
-			}
-			elsif ( -s "map_$j/R1.single.fastq" )
-			{
-				$cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -U map_$j/R1.single.fastq -S map_$j/out.sam $mapper_options_list[$i]";
-			}
-			elsif ( -s "map_$j/R2.single.fastq" )
-			{
-				$cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -U map_$j/R2.single.fastq -S map_$j/out.sam $mapper_options_list[$i]";
-			}
-			else
-			{
-				$cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -S map_$j/out.sam $mapper_options_list[$i]";	
-			}
+
+            if($aligner eq "bowtie2") {
+                # map
+                # check what's zero and what's non zero and run bowtie accordingly
+                if ( -s "map_$j/R1.single.fastq" && -s "map_$j/R2.single.fastq" )
+                {
+                    $cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -U map_$j/R1.single.fastq,map_$j/R2.single.fastq -S map_$j/out.sam $mapper_options_list[$i]";
+                }
+                elsif ( -s "map_$j/R1.single.fastq" )
+                {
+                    $cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -U map_$j/R1.single.fastq -S map_$j/out.sam $mapper_options_list[$i]";
+                }
+                elsif ( -s "map_$j/R2.single.fastq" )
+                {
+                    $cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -U map_$j/R2.single.fastq -S map_$j/out.sam $mapper_options_list[$i]";
+                }
+                else
+                {
+                    $cmd="bowtie2 -q -x $mapper_db_list[$i] -1 map_$j/R1.paired.fastq -2 map_$j/R2.paired.fastq -S map_$j/out.sam $mapper_options_list[$i]";	
+                }
+            } elsif($aligner eq "snap") {
+                # Just map paired data and let snap handle non-wellpaired data
+                $cmd = "snap paired $mapper_db_list[$i] $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} -o map_$j/out.sam $mapper_options_list[$i]";
+            }
 			verbose_system($cmd);
 			
 			# get unmapped read IDs
@@ -252,8 +269,14 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 	# non paired data
 	else
 	{
+        print "[echo] Doing single read mapping\n";
 		# map
-		my $cmd = "bowtie2 -q -x $mapper_db_list[$i] -U $hoh{$command}{\"R1\"} -S map_$j/out.sam $mapper_options_list[$i]";
+        my $cmd = "";
+        if($aligner eq "bowtie2") {
+            $cmd = "bowtie2 -q -x $mapper_db_list[$i] -U $hoh{$command}{\"R1\"} -S map_$j/out.sam $mapper_options_list[$i]";
+        } elsif($aligner eq "snap") {
+            $cmd = "snap single $mapper_db_list[$i] $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} -o map_$j/out.sam $mapper_options_list[$i]";
+        }
 		verbose_system($cmd);
 		
 		# get unmapped read IDs
