@@ -23,6 +23,9 @@ Version 4.2
 * Added references in databases documentation to the cooresponding 
   stage's documentation to link the two together.
 * Added more documentation about the databases directory structure
+* Added ability to select snap as host_map aligner
+* Added documentation inside of host_map stage about snap as well as a more
+  thourough description of each output file
 
 Version 4.1
 -----------
