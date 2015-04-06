@@ -20,12 +20,12 @@ Version 4.2
   directory portable
 * Broke up the databases documentation a bit for each of the indexing steps
   such that the user can more clearly see how each database is created
-* Added references in databases documentation to the cooresponding 
+* Added references in databases documentation to the corresponding 
   stage's documentation to link the two together.
 * Added more documentation about the databases directory structure
 * Added ability to select snap as host_map aligner
 * Added documentation inside of host_map stage about snap as well as a more
-  thourough description of each output file
+  thorough description of each output file
 
 Version 4.1
 -----------
@@ -59,5 +59,5 @@ Version 4.1
 * Added gzip compressed input file support(.fastq.gz and .sff.gz)
 * Added single read support. Previously both --R1 and --R2 needed to be supplied
 * Added support to use --R1/--R2 as well as -R1/-R2 to usamriidPathDiscov_cli
-* Various imporvements to the documentation
+* Various improvements to the documentation
 * Documentation now has instructions for offline installation
