@@ -26,6 +26,8 @@ Version 4.2
 * Added ability to select snap as host_map aligner
 * Added documentation inside of host_map stage about snap as well as a more
   thorough description of each output file
+* Added -amos flag for Ray2 so that AMOS.afg file is created inside of
+  results/ray2_assembly_X/results/
 
 Version 4.1
 -----------
