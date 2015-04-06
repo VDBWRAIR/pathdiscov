@@ -160,7 +160,7 @@ if ($isfasta || $fastafile eq "yes")
 		verbose_system($cmd);		
 		
 		print "[echo] ray2 assembly - paired end fasta\n";
-		my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fasta -s R2.single.fasta -p R1.paired.fasta R2.paired.fasta > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+		my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fasta -s R2.single.fasta -p R1.paired.fasta R2.paired.fasta > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 		# And you can have as many -s and -p flags as you want, so you can have multiple paired end datasets; plus, Ray2 uses suffix to determine fastq or fasta
 		verbose_system($cmd);		
 	}
@@ -173,7 +173,7 @@ if ($isfasta || $fastafile eq "yes")
 		my $cmd = "ln -sf $r1_rel R1.single.fasta";
 		system($cmd);		
 		
-		my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fasta > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+		my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fasta > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 		verbose_system($cmd);
 	}
 	
@@ -195,22 +195,22 @@ else
 		# do assembly according to which files exist 
 		if ( -s "R1.single.fastq" && -s "R2.single.fastq" )
 		{
-			my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq -s R2.single.fastq -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+			my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq -s R2.single.fastq -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 			verbose_system($cmd);	
 		}
 		elsif ( -s "R1.single.fastq" )
 		{
-			my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+			my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 			verbose_system($cmd);	
 		}
 		elsif ( -s "R2.single.fastq" )
 		{
-			my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R2.single.fastq -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+			my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -s R2.single.fastq -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 			verbose_system($cmd);			
 		}
 		else
 		{
-			my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+			my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -p R1.paired.fastq R2.paired.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 			verbose_system($cmd);		
 		}
 	}
@@ -223,7 +223,7 @@ else
 		my $cmd = "ln -sf $r1_rel R1.single.fastq";
 		print_system($cmd);		
 		
-		my $cmd = "mpiexec -n $ninst Ray2 -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
+		my $cmd = "mpiexec -n $ninst Ray2 -amos -o results -k $hoh{$command}{\"kmer\"} -s R1.single.fastq > logs_assembly/assembly.o 2> logs_assembly/assembly.e";
 		verbose_system($cmd);		
 	}
 }

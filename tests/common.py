@@ -45,6 +45,7 @@ PROJECT_FILES = [
 	('results/ray2_assembly_1/results/RaySmartCommand.txt',''),
 	('results/ray2_assembly_1/results/RayCommand.txt',''),
 	('results/ray2_assembly_1/results/RayVersion.txt',''),
+	('results/ray2_assembly_1/results/AMOS.afg',''),
 	('results/ray2_assembly_1/out.cap.fa',''),
 	('results/ray2_assembly_1/contig_numreads.txt',''),
 	('results/ray2_assembly_1/head.1.R1.unmap.fastq',''),
