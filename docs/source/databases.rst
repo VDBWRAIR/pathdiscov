@@ -164,7 +164,7 @@ DNA
 
     .. code-block:: bash
 
-        cat chroms/*.fa > hg38_all.fa
+        cat chroms/\*.fa > hg38_all.fa
 
 #. Index the downloaded fasta
 
@@ -175,6 +175,7 @@ DNA
             ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
 
     * Snap
+
         .. code-block:: bash
 
             ${_cwd}/usamriidPathDiscov/download/snap/snap index hg38_all.fa hg38 -s 20 -O1000
