@@ -164,7 +164,7 @@ DNA
 
     .. code-block:: bash
 
-        cat chroms/\*.fa > hg38_all.fa
+        cat chroms/*.fa > hg38_all.fa
 
 #. Index the downloaded fasta
 
