@@ -21,6 +21,17 @@ command host_map
     Choices: ``snap``, ``bowtie2``
 
     Example: ``bowtie2,snap``
+
+    *NOTE*:
+        Selecting Snap takes a lot more memory than bowtie2 to run. For the
+        built hg38 genome, approximately 30GB of memory is needed for Snap
+        to run. You can estimate memory requirements by checking the size of
+        the snap database with:
+
+        .. code-block:: bash
+
+            du -hs /path/to/snap/database
+
 * mapper_db_list
     Paths to bowtie indexed genomes as a comma separated list
     These values will be replaced when the pipeline installs by setting human_dna and h_sapiens_rna in the :ref:`config-yaml-base`
