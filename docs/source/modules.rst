@@ -1,5 +1,5 @@
 pathdiscov
-==================
+==========
 
 .. toctree::
    :maxdepth: 4

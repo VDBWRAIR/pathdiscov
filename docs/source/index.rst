@@ -1,5 +1,5 @@
 ===========================
-USAMRIID Pathogen Discovery
+Pathogen Discovery Pipeline
 ===========================
 
 Table of Contents:
