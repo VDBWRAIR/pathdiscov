@@ -17,7 +17,7 @@ You need to specify the full path to the activate script such as
 
 .. code-block:: bash
 
-    $> . /path/to/usamriidPathDiscov/usamriidPathDiscov/bin/activate
+    $> . /path/to/pathdiscov/pathdiscov/bin/activate
 
 When you ran the :doc:`install` the full path to activate should have been printed
 during step #2
@@ -29,7 +29,7 @@ To get help
 
 .. code-block:: bash
 
-    usamriidPathDiscov_cli -h 
+    pathdiscov_cli -h 
 
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension.
 The name of the fastq file doesn't matter.
@@ -46,7 +46,7 @@ To run with default **param.txt** file created during ``python setup.py``
 
 .. code-block:: bash
 
-    usamriidPathDiscov_cli -R1 F.fastq -R2 R.fastq --outdir testoutDir 
+    pathdiscov_cli -R1 F.fastq -R2 R.fastq --outdir testoutDir 
 
 Single Read file
 ----------------
@@ -64,7 +64,7 @@ param.txt file.
 
 .. code-block:: bash
 
-    usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --param --outdir testoutDir
+    pathdiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --param --outdir testoutDir
 
 Then, open :ref:`testoutDir/input/param.txt <paramtxt>` and manually edit the databases and 
 paramaters you would like to change.
@@ -73,7 +73,7 @@ Execute the following line to use the :ref:`paramtxt` you have edited to complet
 
 .. code-block:: bash
 
-    usamriidPathDiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --noparam --outdir testoutDir
+    pathdiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --noparam --outdir testoutDir
 
 Using Sun Grid Engine
 ---------------------
@@ -82,7 +82,7 @@ If your cluster support SGE, use ``--use-sge`` to activate sge_iterative_blast_p
 
 .. code-block:: bash
 
-     usamriidPathDiscov_cli -R1 testData/F.fastq.gz -R2 testData/R.fastq.gz --outdir testoutDir --use-sge
+     pathdiscov_cli -R1 testData/F.fastq.gz -R2 testData/R.fastq.gz --outdir testoutDir --use-sge
 
 **Note**: The pipeline, by default, runs in the following order::
 

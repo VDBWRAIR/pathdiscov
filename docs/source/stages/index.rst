@@ -4,7 +4,7 @@ Pipeline Stages
 
 Documentation of each stage of the pipeline including all of the output files generated and how they are used
 
-.. image:: ../_static/images/usamriidPathDiscov_excution_stages.png
+.. image:: ../_static/images/pathdiscov_excution_stages.png
 
 .. toctree::
     :maxdepth: 1

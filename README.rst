@@ -1,4 +1,4 @@
-usamriidPathDiscov
+pathdiscov
 ==================
 
 Installation

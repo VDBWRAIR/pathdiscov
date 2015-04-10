@@ -23,7 +23,7 @@ They can be run as follows:
 Unit Tests
 ----------
 
-Unit tests are all located under the usamriidPathDiscov/tests directory.
+Unit tests are all located under the pathdiscov/tests directory.
 Unit tests are smaller in size and test the smaller logic units of the
 pipeline such as individual python functions or the individual pipeline
 stages.
@@ -34,7 +34,7 @@ They can be run as follows:
 
 .. code-block:: bash
 
-    nosetests -vx usamriidPathDiscov/tests
+    nosetests -vx pathdiscov/tests
 
 Setup
 -----

@@ -16,7 +16,7 @@ class TestEnvironSetup(common.TempDir):
         self.mock_args.R1 = self.f_fastq
         self.mock_args.R2 = None
         self.mock_args.outdir = 'outdir'
-        self.upd = join(dirname(common.TESTDIR), 'usamriidPathDiscov')
+        self.upd = join(dirname(common.TESTDIR), 'pathdiscov')
 
     def test_sets_up_environment(self):
         # Get globals

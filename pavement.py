@@ -29,72 +29,72 @@ from paver.setuputils import install_distutils_tasks
 
 options(setup=setup_dict,
         bwa=Bunch(
-            sdir=path('usamriidPathDiscov/download'),
-            bindir=path('usamriidPathDiscov/bin')
+            sdir=path('pathdiscov/download'),
+            bindir=path('pathdiscov/bin')
         ),
          prinseq=Bunch(
-            sdir=path('usamriidPathDiscov/download/prinseq-lite-0.20.3'),
-            bindir=path('usamriidPathDiscov/bin')
+            sdir=path('pathdiscov/download/prinseq-lite-0.20.3'),
+            bindir=path('pathdiscov/bin')
         ),
         minilib=Bunch(
             # extra_files=['doctools','virtual']
         ),
          samtools=Bunch(
-              sdir=path('usamriidPathDiscov/download'),
-              bindir=path('usamriidPathDiscov/bin')
+              sdir=path('pathdiscov/download'),
+              bindir=path('pathdiscov/bin')
           ),
         Ray=Bunch(
-            src = path('usamriidPathDiscov/download'),
-            sfile =path('usamriidPathDiscov/download/ray'),
-            sfile2 =path('usamriidPathDiscov/download/Ray2'),
-            olink =path('usamriidPathDiscov/bin')
+            src = path('pathdiscov/download'),
+            sfile =path('pathdiscov/download/ray'),
+            sfile2 =path('pathdiscov/download/Ray2'),
+            olink =path('pathdiscov/bin')
         ),
         CAP3=Bunch(
-            sfile = path('usamriidPathDiscov/download/CAP3/cap3'),
-            olink =path('usamriidPathDiscov/bin')
+            sfile = path('pathdiscov/download/CAP3/cap3'),
+            olink =path('pathdiscov/bin')
 
         ),
         FastQC=Bunch(
             url='http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip',
-            downloads=path('usamriidPathDiscov/download'),
+            downloads=path('pathdiscov/download'),
             installdir=join(sys.prefix,'lib')
         ),
 
         wkhtmltopdf=Bunch(
-            sfile = path('usamriidPathDiscov/download/wkhtmltopdf'),
-            olink =path('usamriidPathDiscov/bin')
+            sfile = path('pathdiscov/download/wkhtmltopdf'),
+            olink =path('pathdiscov/bin')
         ),
 
         bowtie2=Bunch(
-            sfile =path('usamriidPathDiscov/download/bowtie2/bowtie2*'),
-            olink =path('usamriidPathDiscov/bin')
+            sfile =path('pathdiscov/download/bowtie2/bowtie2*'),
+            olink =path('pathdiscov/bin')
 
         ),
         getorf=Bunch(
-            src=path('usamriidPathDiscov/download'),
-            sfile =path('usamriidPathDiscov/download/EMBOSS-6.6.0'),
-            olink =path('usamriidPathDiscov/bin')
+            src=path('pathdiscov/download'),
+            sfile =path('pathdiscov/download/EMBOSS-6.6.0'),
+            olink =path('pathdiscov/bin')
 
         ),
         snap=Bunch(
-            sfile =path('usamriidPathDiscov/download/snap')
+            sfile =path('pathdiscov/download/snap')
         ),
 
         #"""
         #local_lib=Bunch(
-            #sdir=path('usamriidPathDiscov/download/local-lib-2.000011'),
-            #bindir=path('usamriidPathDiscov/bin')
+            #sdir=path('pathdiscov/download/local-lib-2.000011'),
+            #bindir=path('pathdiscov/bin')
         #),
         #"""
         settings=Bunch(
-            shell_file=path('usamriidPathDiscov/files/settings.sh'),
-            shell_file_bk=path('usamriidPathDiscov/files/settings.sh.base'),
-            bash_rc =path('usamriidPathDiscov/files/bashrc'),
-            config =path('usamriidPathDiscov/files/config.yaml'),
-            config_bk =path('usamriidPathDiscov/files/config.yaml.base'),
+            shell_file=path('pathdiscov/files/settings.sh'),
+            shell_file_bk=path('pathdiscov/files/settings.sh.base'),
+            bash_rc =path('pathdiscov/files/bashrc'),
+            config =path('pathdiscov/files/config.yaml'),
+            config_bk =path('pathdiscov/files/config.yaml.base'),
             dist_dir =path('.'),
-            param_base =path('usamriidPathDiscov/files/sample.param.base'),
-            param_work =path('usamriidPathDiscov/files/sample.param')
+            param_base =path('pathdiscov/files/sample.param.base'),
+            param_work =path('pathdiscov/files/sample.param')
         ),
         #virtualenv=Bunch(
             #packages_to_install=['http://bitbucket.org/ianb/pip/get/2cb1db7b2baf.gz#egg=pip', 'urlgrabber', 'jstools', 'virtualenv'],
@@ -118,7 +118,7 @@ options(setup=setup_dict,
 
 INSTRUCTIONS = """
 Run
-   $ source usamriidPathDiscov/bin/activate
+   $ source pathdiscov/bin/activate
 to enter the virtual environment and
    $ deactivate
 to exit the environment.
@@ -419,7 +419,7 @@ def install_other_dependencies():
 
 @task
 def install_python_dependencies():
-    sh('pip install -r requirements-dev.txt --download-cache usamriidPathDiscov/download/.pip_cache')
+    sh('pip install -r requirements-dev.txt --download-cache pathdiscov/download/.pip_cache')
 
 @task
 @needs('install_dependencies')

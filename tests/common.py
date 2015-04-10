@@ -211,7 +211,7 @@ def exec_main(mock_args):
     things
     '''
     # Path to main.py
-    PATH_TO_MAIN = join(dirname(TESTDIR), 'usamriidPathDiscov', 'main.py')
+    PATH_TO_MAIN = join(dirname(TESTDIR), 'pathdiscov', 'main.py')
     sys.path.append(dirname(PATH_TO_MAIN))
     # Blank globals(i have no idea what I'm doing here probably wrong)
     _g = {
@@ -233,9 +233,9 @@ def exec_main(mock_args):
 
 def run_path_discov(args):
     '''
-    Run usamriidPathDiscov_cli with args
+    Run pathdiscov_cli with args
     '''
-    cmd = ['usamriidPathDiscov_cli'] + args
+    cmd = ['pathdiscov_cli'] + args
     print "Running {0}".format(' '.join(cmd))
     try:
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

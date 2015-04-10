@@ -5,7 +5,7 @@ step1
 Handles converting sff -> fastq and renaming read names to easy integers
 
 #. Convert sff -> fastq if SEQUENCE_PLATFORM is set to 454
-    Option is configured through `usamriidPathDiscov/files/config.yaml.base <../../../../usamriidPathDiscov/files/config.yaml.base>`_ during install
+    Option is configured through `pathdiscov/files/config.yaml.base <../../../../pathdiscov/files/config.yaml.base>`_ during install
 #. Unzip gzip files if necessary
 #. Change all fastq id's to sequenctial integers
 #. Count each mate
