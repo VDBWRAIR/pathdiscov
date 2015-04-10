@@ -355,7 +355,7 @@ def installSnap(options):
     """Install  snap aligner """
     snap=join(sys.prefix,'bin','snap')
     if not exists(snap):
-        info("Compiling nsap aligner...")
+        info("Compiling snap aligner...")
         currwd = os.getcwd()
         sfile = path(currwd) / options.snap.sfile
         ddir = dirname(sfile)
