@@ -54,7 +54,7 @@ then
     exit 1
 fi
 
-####### Run RIID #######
+####### Run #######
 # Drop env to a file for logging
 env > ${analysisdir}/env.txt
 
@@ -67,10 +67,10 @@ echo "Finished combining read files"
 # Setup params.txt file
 pathogen.pl --example > param.txt
 
-# Run RIID pipeline
-echo "RIID Pipeline started -- $(date)"
+# Run pipeline
+echo "Pipeline started -- $(date)"
 run_standard.pl --sample $samplename --outputdir ../results --R1 F.fastq --R2 R.fastq | tee ${analysisdir}/analysis.log
-echo "RIID Pipeline finished -- $(date)"
+echo "Pipeline finished -- $(date)"
 
 # Make some convienience symlinks
 cd ..

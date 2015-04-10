@@ -15,7 +15,7 @@ from pathdiscov.make_summary import MissingProjectFile
 
 class Base(object):
     def setUp( self ):
-        self.tdir = tempfile.mkdtemp( suffix='riidtest' )
+        self.tdir = tempfile.mkdtemp( suffix='pathdiscovtest' )
         os.chdir( self.tdir )
 
     def tearDown( self ):

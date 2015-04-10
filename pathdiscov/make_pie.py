@@ -130,7 +130,7 @@ def parse_args( args=sys.argv[1:] ):
     parser.add_argument(
         'project_path',
         nargs='+',
-        help='Path to riidpipeline project[s] path'
+        help='Path to pathdiscov project[s] path'
     )
 
     parser.add_argument(

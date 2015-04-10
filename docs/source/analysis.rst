@@ -53,7 +53,7 @@ Single Read file
 
    .. code-block:: bash
            
-       samriidPathDiscov_cli -R1 testData/454Reads.sff --outdir testoutDir
+       pathdiscov_cli -R1 testData/454Reads.sff --outdir testoutDir
 
 
 Creating custom param.txt

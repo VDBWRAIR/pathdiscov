@@ -355,7 +355,7 @@ def installSnap(options):
     """Install  snap aligner """
     snap=join(sys.prefix,'bin','snap')
     if not exists(snap):
-        info("Compiling nsap aligner...")
+        info("Compiling snap aligner...")
         currwd = os.getcwd()
         sfile = path(currwd) / options.snap.sfile
         ddir = dirname(sfile)
@@ -489,7 +489,7 @@ def run(args):
     # executable. So we just pass the package name in as the executable name,
     # since it's close enough. This should never be seen by an end user
     # installing through Setuptools anyway.
-    from usamriidPatDescov.main import main
+    from pathdiscov.main import main
     raise SystemExit(main([CODE_DIRECTORY] + args))
 
 
