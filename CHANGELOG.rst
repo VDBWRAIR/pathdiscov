@@ -10,7 +10,7 @@ Version 4.2
 * Added instructions on how to create diamond indexed database
 * Changed tests/rikkcdna such that developer builds databases instead of shipping
   prebuilt diamond and blast dbs
-* Added usamriidPathDiscov_cli to verify script to make sure everything installed
+* Added pathdiscov_cli to verify script to make sure everything installed
 * Fixed typo in installation.rst
 * Updated documentation for iterative_blast_phylo on how to use diamond
 * Fixed issue where fastqc was not logging stderr to analysis_quaility.log
@@ -54,12 +54,12 @@ Version 4.1
 * Fixed a bug where if --outdir was given an absolute path many bad side-effects
   happened.
 * Added SGE/PBS support for iterative_blast_phylo
-* Added --cpu option to usamriidPathDiscov_cli
+* Added --cpu option to pathdiscov_cli
 * Fixed a bug where --R1 and --R2 input files were copied into the input folder
   of the analysis creating duplicate files. Now input will only have input files
   if they are unpacked(.gz) or are sff files and converted to .fastq
 * Added gzip compressed input file support(.fastq.gz and .sff.gz)
 * Added single read support. Previously both --R1 and --R2 needed to be supplied
-* Added support to use --R1/--R2 as well as -R1/-R2 to usamriidPathDiscov_cli
+* Added support to use --R1/--R2 as well as -R1/-R2 to pathdiscov_cli
 * Various improvements to the documentation
 * Documentation now has instructions for offline installation

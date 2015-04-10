@@ -1,7 +1,7 @@
-usamriidPathDiscov
+pathdiscov
 ==================
 
 .. toctree::
    :maxdepth: 4
 
-   usamriidPathDiscov
+   pathdiscov

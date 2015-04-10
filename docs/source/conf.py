@@ -37,7 +37,7 @@ PROJPATH = dirname(dirname(dirname(abspath(__file__))))
 sys.path.insert(0, PROJPATH)
 
 # Import project metadata
-from usamriidPathDiscov import metadata
+from pathdiscov import metadata
 
 # -- General configuration ----------------------------------------------------
 

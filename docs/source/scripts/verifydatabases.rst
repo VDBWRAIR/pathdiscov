@@ -9,4 +9,4 @@ Usage
 
 .. code-block:: bash
 
-    $> verifydatabases usamriidPathDiscov/files/config.yaml
+    $> verifydatabases pathdiscov/files/config.yaml

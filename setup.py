@@ -38,15 +38,15 @@ except ImportError:
 sys.path.append('.')
 
 # Constants
-CODE_DIRECTORY = 'usamriidPathDiscov'
+CODE_DIRECTORY = 'pathdiscov'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
 PYTEST_FLAGS = ['--doctest-modules']
 # Import metadata. Normally this would just be:
 #
-#     from usamriidPathDiscov import metadata
+#     from pathdiscov import metadata
 #
-# However, when we do this, we also import `usamriidPathDiscov/__init__.py'. If this
+# However, when we do this, we also import `pathdiscov/__init__.py'. If this
 # imports names from some other modules and these modules have third-party
 # dependencies that need installing (which happens after this file is run), the
 # script will crash. What we do instead is to load the metadata module by path
@@ -253,8 +253,8 @@ setup_dict = dict(
         'Topic :: System :: Software Distribution',
     ],
     # bwa=Bunch(
-    #sdir = path('usamriidPathDiscov/download/bwa'),
-    #bindir =path('usamriidPathDiscov/bin'),
+    #sdir = path('pathdiscov/download/bwa'),
+    #bindir =path('pathdiscov/bin'),
     #),
     # minilib = Bunch(
     # extra_files=['doctools','virtual']
@@ -273,33 +273,33 @@ setup_dict = dict(
     zip_safe=False,  # don't use eggs
     entry_points={
         'console_scripts': [
-            'usamriidPathDiscov_cli = usamriidPathDiscov.main:main',
-            'verifyproject = usamriidPathDiscov.verifyproject:main',
-            'make_summary = usamriidPathDiscov.make_summary:main',
-            'make_pie = usamriidPathDiscov.make_pie:main',
-            'verifydatabases = usamriidPathDiscov.verifydatabases:main',
-            'linecount = usamriidPathDiscov.linecount:main',
-            'sff2fastq = usamriidPathDiscov.sff2fastq:main',
-            'step1 = usamriidPathDiscov.stages.step1:main',
+            'pathdiscov_cli = pathdiscov.main:main',
+            'verifyproject = pathdiscov.verifyproject:main',
+            'make_summary = pathdiscov.make_summary:main',
+            'make_pie = pathdiscov.make_pie:main',
+            'verifydatabases = pathdiscov.verifydatabases:main',
+            'linecount = pathdiscov.linecount:main',
+            'sff2fastq = pathdiscov.sff2fastq:main',
+            'step1 = pathdiscov.stages.step1:main',
         ],
     },
     # These all get copied to our installation's bin folder for us
     scripts = [
-        'usamriidPathDiscov/download/bwa/bwa',
-        'usamriidPathDiscov/download/samtools/samtools',
-        'usamriidPathDiscov/download/EMBOSS-6.6.0/emboss/getorf',
-        'usamriidPathDiscov/download/CAP3/cap3',
-        'usamriidPathDiscov/download/wkhtmltopdf',
-        'usamriidPathDiscov/download/ray/Ray',
-        'usamriidPathDiscov/download/Ray2',
-        'usamriidPathDiscov/download/bowtie2/bowtie2',
-        'usamriidPathDiscov/download/diamond64/diamond',
-        'usamriidPathDiscov/download/snap/snap',
-    ] + glob('usamriidPathDiscov/download/bowtie2/bowtie2-*') +
-        glob('usamriidPathDiscov/download/blast-2.2.28/bin/*') +
-        glob('usamriidPathDiscov/download/prinseq-lite-0.20.3/*.pl'),
+        'pathdiscov/download/bwa/bwa',
+        'pathdiscov/download/samtools/samtools',
+        'pathdiscov/download/EMBOSS-6.6.0/emboss/getorf',
+        'pathdiscov/download/CAP3/cap3',
+        'pathdiscov/download/wkhtmltopdf',
+        'pathdiscov/download/ray/Ray',
+        'pathdiscov/download/Ray2',
+        'pathdiscov/download/bowtie2/bowtie2',
+        'pathdiscov/download/diamond64/diamond',
+        'pathdiscov/download/snap/snap',
+    ] + glob('pathdiscov/download/bowtie2/bowtie2-*') +
+        glob('pathdiscov/download/blast-2.2.28/bin/*') +
+        glob('pathdiscov/download/prinseq-lite-0.20.3/*.pl'),
     package_data = {
-        'usamriidPathDiscov': ['files/*', 'output_files_templates/*'],
+        'pathdiscov': ['files/*', 'output_files_templates/*'],
     }
 )
 

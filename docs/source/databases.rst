@@ -28,7 +28,7 @@ databases. If you choose a different location you will need to
 modify all the instructions below replacing ``~/databases`` with
 the path you choose.
 
-You will also need to change the ``usamriidPathDiscov/files/config.yaml``
+You will also need to change the ``pathdiscov/files/config.yaml``
 file to point to that location as well. It by defualt also points to
 ~/databases.
 
@@ -54,7 +54,7 @@ This may take a long time depending on your network connection.
 
 .. code-block:: bash
 
-    usamriidPathDiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
+    pathdiscov/scripts/get_blast_dbs.sh ~/databases/ncbi/blast nt nr taxdb
 
 Taxonomy
 ========
@@ -132,7 +132,7 @@ If you want to build different host genomes you can download the fasta file from
 one of the sources listed above and index them using the steps below
 (replacing the hg38 fasta file with the path to the fasta file you download).
 
-Ensure you are in the usamriidPathDiscov git cloned directory then proceed.
+Ensure you are in the pathdiscov git cloned directory then proceed.
 
 DNA
 ^^^
@@ -172,20 +172,20 @@ DNA
 
         .. code-block:: bash
 
-            ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
+            ${_cwd}/pathdiscov/download/bowtie2/bowtie2-build hg38_all.fa hg38
 
     * Snap
 
         .. code-block:: bash
 
-            ${_cwd}/usamriidPathDiscov/download/snap/snap index hg38_all.fa hg38 -s 20 -O1000
+            ${_cwd}/pathdiscov/download/snap/snap index hg38_all.fa hg38 -s 20 -O1000
 
 #. Setup config.yaml to utilize indexed database
 
     .. code-block:: bash
 
         popd
-        sed -i 's%humandna/human_dna%humandna/hg38%' usamriidPathDiscov/files/config.yaml
+        sed -i 's%humandna/human_dna%humandna/hg38%' pathdiscov/files/config.yaml
 
 RNA
 ^^^
@@ -207,20 +207,20 @@ Download human rna from the same URL, the version of the geome might be differen
 
         .. code-block:: bash
 
-            ${_cwd}/usamriidPathDiscov/download/bowtie2/bowtie2-build mrna.fa hg38_mrna
+            ${_cwd}/pathdiscov/download/bowtie2/bowtie2-build mrna.fa hg38_mrna
 
     * Snap
 
         .. code-block:: bash
 
-            ${_cwd}/usamriidPathDiscov/download/snap/snap index mrna.fa hg38_mrna -s 20 -O1000
+            ${_cwd}/pathdiscov/download/snap/snap index mrna.fa hg38_mrna -s 20 -O1000
 
 #. Setup config.yaml to utilize indexed database
 
     .. code-block:: bash
 
         popd
-        sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' usamriidPathDiscov/files/config.yaml
+        sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' pathdiscov/files/config.yaml
 
 Verify Databases
 ================
