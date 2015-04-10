@@ -316,13 +316,13 @@ def main( ):
 
 def parse_args( args=sys.argv[1:] ):
     parser = argparse.ArgumentParser(
-        description='Generate summary report for riidpipeline sample'
+        description='Generate summary report for pathdiscov sample'
     )
 
     parser.add_argument(
         'projdir',
         nargs='+',
-        help='Project directory path for riidpipeline project'
+        help='Project directory path for pathdiscov project'
     )
 
     parser.add_argument(

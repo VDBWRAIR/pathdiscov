@@ -6,10 +6,10 @@ Information describing the project.
 
 # The package name, which is also the "UNIX name" for the project.
 package = 'pathdiscov'
-project = "USAMRIID Pathogen Discovery"
+project = "Pathogen Discovery Pipeline"
 project_no_spaces = project.replace(' ', '')
 version = '4.1.0-beta'
-description = 'USAMRIID Pathogen Discovery Pipleline'
+description = 'Pathogen Discovery Pipleline'
 authors = [
     'Mike Wiley',
 	'Gustavo Palacios',

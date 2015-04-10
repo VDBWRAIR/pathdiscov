@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""USAMRIID Pathogen Discovery Pipleline"""
+"""Pathogen Discovery Pipeline"""
 
 from pathdiscov import metadata
 
