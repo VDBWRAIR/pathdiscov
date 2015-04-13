@@ -88,6 +88,31 @@ If your cluster support SGE, use ``--use-sge`` to activate sge_iterative_blast_p
 
     step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter
 
+Specifying number of unassembled reads to blast
+-----------------------------------------------
+
+During the Ray assembly stage, all reads that passed quality filter and host_map
+are Denovo Assembled using Ray. Then the same reads are mapped back to the
+contigs so that the reads that mapped and those that did not map can be 
+separated. This is where the unassembled reads are pulled from.
+
+The iterative_blast_phylo_2 step blasts these unassembled reads and generates
+reports to tell you what your unassembled reads are composed of. In some cases
+you can end up with too many reads to blast(which may take an indefinate amount
+of time).
+
+The option ``--blast-unassembled`` will allow you to limit the amount of unassembled
+reads that will be sent into the interative_blast_phylo_2 step.
+
+By default, the pipeline uses 1000(configured in config.yaml) but you can
+override this as follows:
+
+Use top 100 reads from unassembled reads files.
+
+.. code-block:: bash
+
+    pathdiscov_cli --R1 testData/F.fastq --R2 testData/R.fastq --outdir testoutDir --blast-unassembled 100
+
 Checking error logs
 ===================
 
