@@ -132,15 +132,9 @@ Installation
     
         source ~/pathdiscov/pathdiscov/bin/activate
 
-    You may change the number of CPU based on the resource in your
-    system.
-
     .. code-block:: bash
 
-        pathdiscov_cli -R1 testData/F.fastq -R2 testData/R.fastq --outdir testoutDir --cpuNum 12
-
-    If your blast database is quite large (like the default nt database) this could take up to 2 hours...
-    It is recommended that you trim down your nt databases to just the things that you are interested in.
+        pathdiscov_cli --R1 testData/F.fastq --R2 testData/R.fastq --outdir testoutDir
 
 Offline Installation
 ====================

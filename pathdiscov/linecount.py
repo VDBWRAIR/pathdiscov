@@ -86,7 +86,7 @@ def parse_args():
 
     parser.add_argument(
         'concat',
-        help='Concat to file or write new file'
+        help='Concat to file or write new file. 1 - Append. 0 - Write new file'
     )
 
     return parser.parse_args()

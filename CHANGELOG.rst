@@ -33,6 +33,9 @@ Version 4.2
 * Main script now echos run_standard.pl command used into the analysis.log
 * run_standard.pl now echos more about unassembled read numbers that are used
   into analysis.log
+* orf_filter can now work on files that are not specifically formatted with
+  @1 or >1. That is, default miseq fastq files work now
+* added count files for orf_filter
 
 Version 4.1
 -----------
