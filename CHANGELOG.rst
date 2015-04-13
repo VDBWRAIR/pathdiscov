@@ -28,6 +28,8 @@ Version 4.2
   thorough description of each output file
 * Added -amos flag for Ray2 so that AMOS.afg file is created inside of
   results/ray2_assembly_X/results/
+* orf_filter can now work on files that are not specifically formatted with
+  @1 or >1. That is, default miseq fastq files work now
 
 Version 4.1
 -----------

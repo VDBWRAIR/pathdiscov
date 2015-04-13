@@ -110,8 +110,10 @@ foreach my $mate (@mates)
             # orf fasta file identifiers look like this
             # >6_1 [109 - 192]
             # So make a hash of all the unique first digits
-			my %h_fasta = map {/>(\w+)_(\w+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
-			# print Dumper \ %h_fasta;
+			#my %h_fasta = map {/>(\w+)_(\w+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
+            # Should be >(anything)_\d\s(.*
+			my %h_fasta = map {/>(.*?)_(\d+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
+			print Dumper \ %h_fasta;
 
 			print "[echo] filter $hoh{$command}{$mate} by orfs in $command.$mate\n";
 			get_subset_by_fastaid($hoh{$command}{$mate}, "$command.$mate", \%h_fasta);
@@ -214,7 +216,7 @@ sub get_subset_by_fastaid
             
             # parse out id line
             $_ =~ m/[>@](\S+)(.*)/;
-            print("$format ID: $_\n");
+            #print("$format ID: $_\n");
             # don't print leading ">"
             my $key = $1;
             # print ($key,"\n");			
