@@ -112,12 +112,14 @@ $numreads=$numreads*4;
 # default is use all unassembled reads
 if ($numreads == 0)
 {
+    print("Using all reads from unmapped read files because --blast_unassembled not set\n");
 	$r1="$outputdir/ray2_assembly_1/1.R1.unmap.fastq";
 	$r2="$outputdir/ray2_assembly_1/1.R2.unmap.fastq" if ($r2 ne "none");
 }
 # else if num reads specified
 else
 {
+    print("Using top $numreads from unmapped read files because --blast_unassembled set\n");
 	# R1
 	verbose_system("cat $outputdir/ray2_assembly_1/1.R1.unmap.fastq | head -$numreads > $outputdir/ray2_assembly_1/head.1.R1.unmap.fastq");
 	$r1="$outputdir/ray2_assembly_1/head.1.R1.unmap.fastq";

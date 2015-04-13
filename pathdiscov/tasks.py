@@ -113,6 +113,12 @@ def priStage(input, project_dir, paramFile,numreads,sge, output):
 
     cmds += ['--blast_unassembled', str(numreads)]
     cmds = ' '.join(cmds)
+    # Write command we are using to run pipeline into analysis.log
+    runCommand(
+        "echo {0} >> {1}".format(
+            cmds, os.path.join(output,'analysis.log')),
+        False
+    )
     cmds += " 2>&1 | tee -a " + output + "/analysis.log"
 
     runCommand(cmds, True)

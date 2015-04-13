@@ -150,6 +150,7 @@ def get_options():
     """
     config = parse_config()
     parser = ArgumentParser()
+    '''
     parser.add_argument("-v", "--verbose", dest="verbose",
                         action="count", default=0,
                         help="Print more verbose messages for each "
@@ -164,12 +165,6 @@ def get_options():
                         metavar="JOBNAME",
                         type=str,
                         help="Target task(s) of pipeline.")
-    parser.add_argument("--use-sge",
-                        dest='sge',
-                        default=False,
-                        action="store_true",
-                        help="bool for sun grid engine"
-                             )
     parser.add_argument("-n", "--just_print", dest="just_print",
                         action="store_true", default=False,
                         help="Don't actually run any commands; just print "
@@ -192,21 +187,60 @@ def get_options():
                         type=str,
                         help="Pipeline task(s) which will be included "
                              "even if they are up to date.")
-    parser.add_argument('--outdir', required=True, help='output directory')
-    parser.add_argument('--R1', '-R1', required=True, help="Path to forward fastq file")
-    parser.add_argument('--R2', '-R2', default=None, help ="Path to reverse fastq file")
-    parser.add_argument('--param', action='store_true', help = "Generate sample param.txt file and edit after generating directory tree")
-    parser.add_argument('--noparam', action='store_false', help = "Use the default param.txt file")
-    parser.add_argument('-c','--cpuNum', dest="cpuNum", default=config['NODE_NUM'], type=int, help="Number of CPU to use, default is %(default)s")
+    '''
+    parser.add_argument(
+        "--use-sge",
+        dest='sge',
+        default=False,
+        action="store_true",
+        help="Flag to use sge[Default: %(default)s"
+    )
+    parser.add_argument(
+        '--outdir',
+        required=True,
+        help='output directory'
+    )
+    parser.add_argument(
+        '--R1',
+        '-R1',
+        required=True,
+        help="Path to forward fastq file"
+    )
+    parser.add_argument(
+        '--R2',
+        '-R2',
+        default=None,
+        help ="Path to reverse fastq file"
+    )
+    parser.add_argument(
+        '--param',
+        action='store_true',
+        help="Generate sample param.txt file and edit after generating " \
+                "directory tree"
+    )
+    parser.add_argument(
+        '--noparam',
+        action='store_false',
+        help="Use modified param.txt file after running with --param"
+    )
+    parser.add_argument(
+        '-c',
+        '--cpuNum',
+        dest="cpuNum",
+        default=config['NODE_NUM'],
+        type=int,
+        help="Number of CPU to use[Default: %(default)s]"
+    )
+    parser.add_argument(
+        '--blast-unassembled',
+        '--blast_unassembled',
+        type=int,
+        default=config['blast_unassembled'],
+        help="Number of reads to use for all iterative_blast_phlo " \
+                "steps[Default: %(default)s]" 
+    )
 
-    # get help string
-    f = StringIO.StringIO()
-    parser.print_help(f)
-    helpstr = f.getvalue()
-    options = parser.parse_args()
-
-    return options
-
+    return parser.parse_args()
 
 def runCommand(cmd, printCMD):
     import subprocess
