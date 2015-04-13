@@ -30,6 +30,7 @@ R1 = os.path.abspath(options.R1)
 R2 = options.R2
 if R2:
     R2 = os.path.abspath(options.R2)
+blast_unassembled = options.blast_unassembled
 # Do all initial setup
 config = helpers.parse_config()
 helpers.setup_shell_environment(config)
@@ -93,7 +94,7 @@ def priStage(input, output):
     '''
     result = tasks.priStage(
         input, project_dir, paramFile,
-        config['blast_unassembled'], sge, results_dir
+        blast_unassembled, sge, results_dir
     )
     return result
 
