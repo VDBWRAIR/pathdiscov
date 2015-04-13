@@ -30,6 +30,7 @@ Version 4.2
   results/ray2_assembly_X/results/
 * orf_filter can now work on files that are not specifically formatted with
   @1 or >1. That is, default miseq fastq files work now
+* added count files for orf_filter
 
 Version 4.1
 -----------
