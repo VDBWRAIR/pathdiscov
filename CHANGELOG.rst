@@ -38,6 +38,8 @@ Version 4.2
 * added count files for orf_filter
 * orf_filter now accepts --contig argument to work on single contig file and 
   will produce contig.* files instead of R1.*/R2.*
+* no longer runs orf_filter as separate stage. Now runs only if blastx or
+  diamond are in the blast_task_list of iterative_blast_phylo
 
 Version 4.1
 -----------

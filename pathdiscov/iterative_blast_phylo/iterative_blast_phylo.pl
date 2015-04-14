@@ -83,6 +83,8 @@ $boolphylo=!($boolphylo);	# default - boolean to do phylogeny stuff is true
 my $href = &parse_param($pfile);
 # get hash of parameters
 my %hoh=%$href;
+# Will need this path to be absolute later
+my $abs_pfile = abs_path($pfile);
 
 # --------------------------------------
 # param 
@@ -205,8 +207,25 @@ foreach my $mate (@mates)
                 # make tmp dirs (e.g., mkdir tmp_R1_1)
                 my $cmd = "mkdir -p tmp_".$mate."_$j";
                 print_system($cmd);
+
+                my $inputfasta = "$outputdir/$j.$mate.fasta";
+
+                # Filter using get_orf
+                if( $blast_task_list[$i] eq "diamond" || $blast_task_list[$i] eq "blastx" )
+                {
+                    print "[echo] orf filtering $mate prior to $blast_task_list[$i]\n";
+                    my $odir = "tmp_${mate}_${j}/orf_filter";
+                    my $logs = "$odir/logs";
+                    print_system("mkdir -p $logs");
+                    my $cmd = "$path_scripts/../orf_filter/orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
+                    verbose_system($cmd);
+                    # New input for diamond/blastx will be orf filtered fasta
+                    $inputfasta = "$outputdir/$odir/orf_filter.R1";
+                    print "[debug] orf_filtered input $inputfasta\n";
+                }
+
                 my $blast_db_nr;
-                my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $outputdir/$j.$mate.fasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $inputfasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
                 verbose_system($cmd);
 
                 print "[echo] get phylogeny counts\n";
