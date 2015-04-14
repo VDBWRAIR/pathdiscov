@@ -25,6 +25,7 @@ my ($sample);					# sample name
 my $timestamp="0";				# time stamp (default is 0)
 my ($output_r1);				# output R1
 my ($output_r2);				# output R2
+my $contig = 0;			# contig bool
 my $path_scripts=$RealBin;			# get abs path to directory in which script resides (where to look for sister scripts)
 my @mates=("R1","R2");				# strings for mates
 my $command="orf_filter";			# set command
@@ -36,9 +37,12 @@ GetOptions (	'outputdir=s' => \$outputdir,	# outputdir
 		'R1=s' => \$r1,			# R1
 		'R2=s' => \$r2,			# R2
 		'sample=s' => \$sample,		# sample
+        'contig=i' => \$contig, 			# contig bool
 		'timestamp=s' => \$timestamp);	# time stamp
             
 die "[error] required input parameters not found" if (!( defined($outputdir) && defined($logs) && defined($pfile) && defined($r1) ));
+
+@mates=("contig") if ($contig);  # Reset mates to the name contig
             
 # get hash ref
 my $href = &parse_param($pfile);
@@ -69,12 +73,12 @@ open STDERR, '>&', $elog;
 
 if ( $r1 ne "none" && defined($r1) )
 {
-	$hoh{$command}{"R1"}=abs_path($r1);
+	$hoh{$command}{$mates[0]} = abs_path($r1);
 }
 
 if ( $r2 ne "none" && defined($r2) )
 {
-	$hoh{$command}{"R2"}=abs_path($r2);
+	$hoh{$command}{$mates[1]} = abs_path($r2);
 } 	
 
 print "[START]\n";

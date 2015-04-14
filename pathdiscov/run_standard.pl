@@ -76,7 +76,7 @@ GetOptions (	'outputdir=s' => \$outputdir,
 $strstages = join(' ', @stages);
 # Set default stages if not set by options
 if( $strstages eq "" ) {
-    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo orf_filter';
+    $strstages = 'step1 host_map quality_filter ray2_assembly iterative_blast_phylo';
 }
 
 print("Stages to be run: $strstages\n");

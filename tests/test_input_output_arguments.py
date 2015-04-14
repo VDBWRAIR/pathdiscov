@@ -55,8 +55,16 @@ class TestInputOutputArguments(common.TempDir):
         paramtxt = self.make_param(args)
         param = None
         for line in fileinput.input(paramtxt, inplace=True):
+            nocommentline = line.split('#')[0].rstrip()
             if 'blast_db_list' in line:
                 sys.stdout.write('blast_db_list {0},{0}\n'.format(RIKKNT))
+            elif 'blast_task_list' in line:
+                sys.stdout.write('blast_task_list megablast,dc-megablast\n')
+            elif 'blast_options_list' in line:
+                sys.stdout.write('blast_options_list -evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12\n')
+            elif 'ninst_list' in line:
+                ninst = nocommentline.replace('ninst_list','').strip().split(',')[0]
+                sys.stdout.write('ninst_list {0},{0}\n'.format(ninst))
             else:
                 sys.stdout.write(line)
         # Now run with --noparam to use modified param.txt
@@ -152,7 +160,6 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual(0, r, 'Return code was not 0')
         self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
-    #@attr('current')
     def test_r1r2_outdir_abspath(self):
         # abspath outdir
         self.outdir = join(self.testdir, 'r1r2_relpath_outdir_abspath')
@@ -171,6 +178,7 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual(0, r, 'Return code was not 0')
         self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
+    @attr('current')
     def test_r1gzip(self):
         self.outdir = join(self.testdir, 'r1gzip')
         args = ['-R1', self.f_fastq_gz, '--outdir', self.outdir]
@@ -205,7 +213,6 @@ class TestInputOutputArguments(common.TempDir):
         self.assertEqual(0, r, 'Return code was not 0')
         self.assertEqual([], self.get_abspath_symlinks(self.outdir))
 
-    @attr('current')
     def test_snap_hostmap(self):
         self.outdir = 'snap_test'
         f = self.f_fastq

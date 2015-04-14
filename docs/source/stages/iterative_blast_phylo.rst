@@ -6,6 +6,8 @@ iterative_blast_phylo
     #. Symlink input reads and/or convert fastq->fasta
     #. Count input lines
     #. For each blast_db_list
+        #. If diamond or blastx then run orf_filter to filter
+           input reads prior to blast
         #. Blast in chunks defined by ninst_list
         #. Generate x.mate.blast.phylo for blast report
         #. Pull out top blast results only
@@ -25,7 +27,8 @@ command iterative_blast_phylo
 * blast_db_list
     Database[s] that are used to blast/diamond against
 
-    The following two values are available for replacement from :ref:`config-yaml-base`
+    The following two values are available for replacement from 
+    :ref:`config-yaml-base`
 
         * ``BLAST_NT`` will be replaced using nt_db
         * ``DIAMOND_NR`` will be replaced using nr_db
@@ -44,8 +47,10 @@ command iterative_blast_phylo
     
     Example: ``-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4``
 * ninst_list
-    The input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
-    If ``NUMINST`` is specified then NODE_NUM from :ref:`config-yaml-base` will be used to replace it during install
+    The input file will be broken into chunks and blasted in parallel - this 
+    parameter is the number of instances of BLAST you want to run in parallel
+    If ``NUMINST`` is specified then ``NODE_NUM`` from 
+    :ref:`config-yaml-base` will be used to replace it during install
     
     Must be the same size as blast_task_list
 
@@ -53,79 +58,86 @@ command iterative_blast_phylo
 * taxonomy_names
     NCBI taxonomy names dump file
 
-    If ``TAX_NAMES`` is specified then tax_names from :ref:`config-yaml-base` will be used to replace it during install
+    If ``TAX_NAMES`` is specified then ``tax_names`` from 
+    :ref:`config-yaml-base` will be used to replace it during install
 
     Example: ``TAX_NAMES``
 * taxonomy_nodes
     NCBI taxonomy nodes dump file
 
-    If ``TAX_NODES`` is specified then tax_nodes from :ref:`config-yaml-base` will be used to replace it during install
+    If ``TAX_NODES`` is specified then ``tax_nodes`` from 
+    :ref:`config-yaml-base` will be used to replace it during install
 
     Example: ``TAX_NODES``
 * blast_pro_db
     NCBI protein database for taxonomy information lookup with blastdbcmd
 
-    If ``BLASTNR`` is specified then nr_db from :ref:`config-yaml-base` will be sued to
-    replace it during install
+    If ``BLASTNR`` is specified then ``nr_db`` from :ref:`config-yaml-base` will 
+    be used to replace it during install
 
     Example: ``BLASTNR``
 
 Output
 ======
 
-Any file name that start with `1` refers to `megablast` output, `2`
-refers to `dc_megablast` and  `3` refers to `diamond blastx`
+Since iterative_blast_phylo can be run more than once and also it can be
+(and usually is) configured to run multiple blast steps, there are quite a few
+files generated.
 
-There are four category files that starts with either 1,2 or 3 depending
-on whether you run `diamond blastx` or not.
+The files will contain some combination of the following as a prefix or
+sometimes somewhere in the middle of the file.
 
-1. `*.contig.blast`: blast output either from megablast (start with 1),
-   dc_megablast (start with 2), and diamond blastx (start with 3). `*`
-   refers to either 1,2 or 3
-2. `*.contig.blast.ann`: Possible taxonomy annotation for blast hit
-3. `*.contig.*.blast.phylo`: Best taxonomy assigned to the contig that
-   has a hit in a database provided
-4. `*.contig.*.blast.t2q`: contigs assigned to taxaid
+The following files and directories use \* where one of the following
+will replace it in the actual output name
 
-`2.contig.fasta, 3.contig.fasta, 4.contig.fasta` refers to unmapped
-fasta files from megablast, dc_megablast, and diamond blastx respectivly. 
+* ``contig``
+* ``R1`` and/or ``R2``
 
-Some details on  specific  output files:
+Additionally, anywhere you see ``X`` it will be replaced with
+a number representing the blast_task_list item it was generated from.
 
 
-* 1.contig.fasta or 1.R1.fasta,1.R2.fasta
-    Symlink to input reads
-* contig.count
+Output Files/Directories
+------------------------
+
+* \*.fasta
+    Input reads for the stage. May be a symlink if the input files
+    were originally fasta files.
+* \*.count
     Counts for all stages with names from blast_task_list
-* tmp_contig_1, tmp_contig_2
-    Contains files that were split during initial blasting
-* x.contig.blast
-    Blast results for each blast_task_list where x is the index of the blast_task in the list
-* x.contig.top.blast
-    Only the top result for each read
-* x.contig.blast.phylo
+* tmp\_\*_X
+    Read file's are divided into ninst numbers and placed into this directory
+
+    * orf_filter
+        If diamond or blastx were in blast_task_list then :doc:`orf_filter` is run
+        in this directory to filter out reads
+* X.\*.blast
+    Blast results from each blast task run
+* X.\*.top.blast
+    Top result from each X.\*.blast file for each read
+* X.\*.blast.phylo
     Blast report, with counts for each taxid
-* x.contig.top.blast.phylo
-    Top blast results, with counts for each taxid
-* x.contig.noblast.fasta
-    Reads that didn't blast for an iteration
-* 2.contig.fasta, or 2.R1.fasta,2.R2.fasta
-    Symlink to 1.mate.noblast.fasta
-* iterative_blast_phylo_1.contig
-    Symlink to final noblast.fasta
-* contig.count.superclass
+* X.\*.top
+    Top result from each X.\*.blast.phylo 
+* X.\*.noblast.fasta
+    Reads that did not blast. The final result will be in the highest
+    number. So if you have 3 blast_task_list items, 4.\*.noblast.fasta will
+    be the final result.
+* X.\*
+    Symlink to X.\*.noblast.fasta
+* \*.count.superclass
     Superclass count file from blast.phylo
-* contig.top.count.superclass
+* \*.top.count.superclass
     Superclass count from top.blast.phylo
+* iterative_blast_phylo_N.\*
+    Symlink to final noblast.fasta file. Represents the resulting
+    reads that had no blast results for the entire stage. Would be used
+    by next stage in the pipeline as input.
 * reports/
     Contains all reports from all blast_task_list joined together
 
-    * x.contig.top.blast
-    * contig.samplename.phylo.txt
-        x.mate.blast.phylo joined
-    * contig.samplename.top.phylo.txt
-        x.mate.top.blast.phylo joined
-    * contig.samplename.top.report.txt
-        x.mate.top.blast joined
-    * contig.samplename.top.smallreport.txt
+    * \*.samplename.phylo.txt
+    * \*.samplename.top.phylo.txt
+    * \*.samplename.top.report.txt
+    * \*.samplename.top.smallreport.txt
         sequence columns removed from report
