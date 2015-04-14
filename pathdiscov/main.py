@@ -128,9 +128,6 @@ def verify_standard_stages_files(projectpath):
             elif fname == "out.ray.fa":
                 print colored("WARNING! : Unable to run Ray assembly, please check if Ray2 program is running and possible error in the log file", "red")
                 sys.exit(1)
-            elif fname == "orf_filter.R1":
-                print colored("WARNING! : Unable to run getorf, please check if getorf program is running", "red")
-                sys.exit(1)
             elif fname == "1.contig.blast":
                 print colored("WARNING! : Unable to run iterative_blast_phylo_1, please check the log file under iterative_blast_phylo_1", "red")
                 sys.exit(1)
