@@ -209,6 +209,22 @@ foreach my $mate (@mates)
 				# make tmp dirs (e.g., mkdir tmp_R1_1)
 				my $cmd = "mkdir -p tmp_".$mate."_$j";
 				print_system($cmd);			
+
+                my $inputfasta = "$outputdir/$j.$mate.fasta";
+
+                # Filter using get_orf
+                if( $blast_task_list[$i] eq "diamond" || $blast_task_list[$i] eq "blastx" )
+                {
+                    print "[echo] orf filtering $mate prior to $blast_task_list[$i]\n";
+                    my $odir = "tmp_${mate}_${j}/orf_filter";
+                    my $logs = "$odir/logs";
+                    print_system("mkdir -p $logs");
+                    my $cmd = "$path_scripts/../orf_filter/orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
+                    verbose_system($cmd);
+                    # New input for diamond/blastx will be orf filtered fasta
+                    $inputfasta = "$outputdir/$odir/orf_filter.R1";
+                    print "[debug] orf_filtered input $inputfasta\n";
+                }
 					
 				# submit second step first, and immediately hold it. second must release next iteration of first
 				my $cmd = "$path_scripts/sge_iterative_blast_phylo_second.pl --iteration_j $j --iteration_i $i --iteration_k $k --paramfile $pfile --mate $mate --path_scripts $path_scripts --run_iteration $run_iteration --output $outputdir/iterative_blast_phylo_".$run_iteration.".$mate --qrls $jid_next --phylo $boolphylo";
@@ -222,7 +238,7 @@ foreach my $mate (@mates)
 				# submit first step, and release second step when done
 			
 				# blast in chunks	
-				my $cmd = "$path_scripts/sge_block_blast.pl --inputfasta $outputdir/$j.$mate.fasta --outputdir tmp_".$mate."_$j --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --scripts $path_scripts --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --blast_options \'".$blast_options_list[$i]."\' --qtime $qtime_list[$i] --qmem $qmem_list[$i] --qrls $jid2 --iteration_j $j --mate $mate";		
+				my $cmd = "$path_scripts/sge_block_blast.pl --inputfasta $inputfasta --outputdir tmp_".$mate."_$j --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --scripts $path_scripts --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --blast_options \'".$blast_options_list[$i]."\' --qtime $qtime_list[$i] --qmem $qmem_list[$i] --qrls $jid2 --iteration_j $j --mate $mate";		
 				
 				my $qcmd="qsub -V -N R1.first$j -e ./logs -o ./logs -l mem=".$qmem."G,time=".$qtime.":: -S /usr/bin/perl -cwd $cmd";	
 				
