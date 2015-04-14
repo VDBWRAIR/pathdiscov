@@ -36,6 +36,8 @@ Version 4.2
 * orf_filter can now work on files that are not specifically formatted with
   @1 or >1. That is, default miseq fastq files work now
 * added count files for orf_filter
+* orf_filter now accepts --contig argument to work on single contig file and 
+  will produce contig.* files instead of R1.*/R2.*
 
 Version 4.1
 -----------
