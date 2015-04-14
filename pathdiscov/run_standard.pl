@@ -132,6 +132,10 @@ else
 print("\n-|-------unassembled reads-------|-\n");
 print_system("$path_scripts/pathogen.pl --sample $sample --command iterative_blast_phylo_2 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
 
+print("\n-|-------blastx/diamond contigs-------|-\n");
+$r1 = "$outputdir/orf_filter/orf_filter.contig";
+print_system("$path_scripts/pathogen.pl --sample $sample --command iterative_blast_phylo_3 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --fastafile yes");
+
 print("\n-|-------read counts-------|-\n");
 print_system("mkdir -p $outputdir/output");
 print_system("$path_scripts/scripts/readcount.pl --sample $sample --outputdir $outputdir/output --projdir $outputdir --dirlist \"step1,quality_filter,host_map_1,ray2_assembly_1,iterative_blast_phylo_1,iterative_blast_phylo_2\" --trackread");

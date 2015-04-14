@@ -313,22 +313,40 @@ for (my $i = 0; $i < scalar(@command); $i++)
 			if ($boolrun)
 			{				
 				# if more than one module, output from prev stage becomes input for next stage
-				if (scalar(@command)>1 && $i>0) {$abs_r1=$out_r1; $abs_r2=$out_r2;}
+                my $r1r2 = "--R1 $abs_r1 --R2 $abs_r2";
+				if (scalar(@command)>1 && $i>0){
+                    if(-e $out_contig) {
+                        # Use contig from previous stage if exists and
+                        $r1r2 = "--R1 $out_contig --contig 1";
+                    } else {
+                        # Otherwise use R1 and R2
+                        $r1r2 = "--R1 " . $out_r1 . " --R2 " . $out_r2;
+                    }
+                }
 				
 				# make module's logs directory
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 						
-				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
+				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date $r1r2";
 				verbose_system($cmd);
 
-				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
-				$out_r2 = "$path_output/$command[$i]/$command[$i].R2" if ( -e "$path_output/$command[$i]/$command[$i].R2" );												
 			}
+
+            $out_r2 = "";
+            $out_contig = "";
+            if(-e $out_contig) {
+                $out_r1 = "$path_output/$command[$i]/$command[$i].contig" if ( -e "$path_output/$command[$i]/$command[$i].contig" );	
+            } else {
+                $out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
+            }
+            $out_r2 = "$path_output/$command[$i]/$command[$i].R2" if ( -e "$path_output/$command[$i]/$command[$i].R2" );												
 			
 			# the output of this stage, for the next stage, is a fasta file so set this:
 			$is_fasta = "yes";	
-            print("[orf_filter] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            # reset use contig name flag to off
+            $boolcontigname = 0;
+            print("[orf_filter] Output: out_r1: $out_r1 -- out_r2: $out_r2 -- out_contig: $out_contig\n");
             print "\n";
 		}
 		elsif ( $command[$i] eq "nohost_blast" )
@@ -409,7 +427,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
                     $is_fasta = "yes";				
                 } else {
                     # Otherwise use R1 and R2
-                    $r1r2 .= $abs_r1 . " --R2 " . $abs_r1;
+                    $r1r2 .= $abs_r1 . " --R2 " . $abs_r2;
                     $is_fasta = "no";				
                 }
                 my $cmd = "$path_scripts/$command_prefix/$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date $r1r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
@@ -422,7 +440,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
 			}
 			
 
-            print("[iterative_blast_phylo_$num] Output: out_r1: $out_r1 -- out_r2: $out_r2\n");
+            print("[iterative_blast_phylo_$num] Output: out_r1: $out_r1 -- out_r2: $out_r2 -- out_contig: $out_contig\n");
             print "\n";
 		}		
 		elsif ( $command[$i] eq "ray2_assembly" || $command[$i] =~ m/^ray2_assembly_(\d){1}$/ )		

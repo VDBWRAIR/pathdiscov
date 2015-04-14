@@ -67,6 +67,18 @@ taxonomy_names				TAX_NAMES					# NCBI taxonomy names dump file
 taxonomy_nodes				TAX_NODES					# NCBI taxonomy nodes dump file
 
 # explanation: run another instance of the iterative_blast_phylo module. you can run more instances by adding entries in this parameter file for "iterative_blast_3", "iterative_blast_4", etc
+#
+command iterative_blast_phylo_3
+# Run diamond on get_orf output
+
+blast_db_list				DIAMOND_NR # blast db prefix
+blast_task_list				diamond								# options are: megablast dc-megablast blastn diamond
+# blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are 
+blast_options_list			 --compress 0 -p 0 -v -k 10 -w 28 --id 0.7 -c 4 -t TEMPDIR
+ninst_list				    NUMINST
+taxonomy_names				TAX_NAMES					# NCBI taxonomy names dump file
+taxonomy_nodes				TAX_NODES					# NCBI taxonomy nodes dump file
+blast_pro_db                BLASTNR
 
 # -------------------
 command ray2_assembly
