@@ -78,6 +78,8 @@ $boolphylo=!($boolphylo);	# default - boolean to do phylogeny stuff is true
 my $href = &parse_param($pfile);
 # get hash of parameters
 my %hoh=%$href;
+# Will need this path to be absolute later
+my $abs_pfile = abs_path($pfile);
 
 # --------------------------------------
 # param 
