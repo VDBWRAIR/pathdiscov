@@ -86,9 +86,9 @@ foreach my $mate (@mates)
 		open(my $outphylo_top, ">", "$outputdir/$mate.$prefix.top.phylo.txt");			# phylo top hit report 
 		
 		# again, not great style, because header is dependent on blast format
-		$header="qseq"."\t"."blast_alg"."\t"."qseqid"."\t"."sseqid"."\t"."pident"."\t"."length"."\t"."mismatch"."\t"."gapopen"."\t"."qstart"."\t"."qend"."\t"."sstart"."\t"."send"."\t"."evalue"."\t"."bitscore"."\t"."qlen"."\t"."slen"."\t"."aligned_qseq"."\t"."taxid"."\t"."superkingdom"."\t"."order"."\t"."family"."\t"."genus"."\t"."descrip"."\n";
+		$header="qseq\tblast_alg\tqseqid\tsseqid\tpident\tlength\tmismatch\tgapopen\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\ttaxid\tsuperkingdom\torder\tfamily\tgenus\tdescrip\n";
 		
-		$header_phylo="blast_alg"."\t"."taxid"."\t"."count"."\t"."superkingdom"."\t"."kingdom"."\t"."class"."\t"."order"."\t"."family"."\t"."genus"."\t"."species"."\t"."descrip"."\n";	
+		$header_phylo="blast_alg\ttaxid\tcount\tsuperkingdom\tkingdom\tclass\torder\tfamily\tgenus\tspecies\tdescrip\n";	
 		
 		print $outfile $header if ($bigreport);
 		print $outfile_top $header;	
