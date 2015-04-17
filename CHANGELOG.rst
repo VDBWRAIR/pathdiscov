@@ -41,6 +41,7 @@ Version 4.2
 * no longer runs orf_filter as separate stage. Now runs only if blastx or
   diamond are in the blast_task_list of iterative_blast_phylo
 * fixed a bug where ``paver doc_man`` didn't work
+* Fixed a bug with make_summary where contig may have wrong length/numreads
 
 Version 4.1
 -----------
