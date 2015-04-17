@@ -40,6 +40,7 @@ Version 4.2
   will produce contig.* files instead of R1.*/R2.*
 * no longer runs orf_filter as separate stage. Now runs only if blastx or
   diamond are in the blast_task_list of iterative_blast_phylo
+* fixed a bug where ``paver doc_man`` didn't work
 
 Version 4.1
 -----------
