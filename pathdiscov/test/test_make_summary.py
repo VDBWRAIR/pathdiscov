@@ -331,24 +331,29 @@ class TestContigInfo( BaseTest ):
         self.make_tmp_proj()
         clenf  = join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_len.txt' )
         nreadsf = join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_numreads.txt' )
-        # Create a mocked smaller version with 10 contigs
-        contigs = [('c'+str(i),i,i) for i in range(1,11)]
-        with nested(open(nreadsf,'w'), open(clenf,'w')) as (nrfh,clfh):
-            for cn, l, nr in contigs:
-                # Contig number
-                cnum = int(cn[1:])
-                if cnum <= 8:
-                    # Write numreads for contigs <= 8 so c9,c10 do not exist
-                    nrfh.write( '{0}\t1{1}\n'.format(cn,nr) )
-                # Write all contig.id
-                clfh.write( '{0}\t{2}\n'.format(cn,cnum-1,l) )
+
+        # contig lengths in order containing c1 - c5
+        with open(clenf,'w') as clfh:
+            clfh.write('c1\t1000\n')
+            clfh.write('c2\t2000\n')
+            clfh.write('c3\t3000\n')
+            clfh.write('c4\t4000\n')
+            clfh.write('c5\t5000\n')
+
+        # Unordered contig numreads missing c2, c3
+        with open(nreadsf,'w') as nrfh:
+            nrfh.write('c4\t400\n')
+            nrfh.write('c1\t100\n')
+            nrfh.write('c5\t500\n')
+
+        # Get results
         r = self._C( self.mockproj )
-        # Assert that 1-8 exist
-        ok_( [r['c'+str(i)] for i in range(1,9)] )
-        # Assert that 9 & 10 are missing
-        # and were set to -1
-        eq_( ('9',-1), r.get( 'c9', False ) )
-        eq_( ('10',-1), r.get( 'c10', False ) )
+
+        eq_(['1000','100'], r['c1'])
+        eq_(['2000','0'], r['c2'])
+        eq_(['3000','0'], r['c3'])
+        eq_(['4000','400'], r['c4'])
+        eq_(['5000','500'], r['c5'])
 
 class TestContigsFor( BaseTest ):
     def _C( self, *args, **kwargs ):
@@ -393,7 +398,7 @@ class TestContigsFor( BaseTest ):
         open(readsfile, 'w' ).close()
         r = list( self._C( self.mockproj, 'superkingdom', 'Bacteria' ) )
         for c in r:
-            eq_( c['numreads'], -1 )
+            eq_( c['numreads'], 0 )
 
 class TestUnassembledReads( BaseTest ):
     def _C( self, *args, **kwargs ):

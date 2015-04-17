@@ -122,7 +122,7 @@ def blast_results_for_( blastfile, blastcol, filterval ):
 
 def contig_info( projdir ):
     '''
-    Merge together results from contig.id and contig_numreads.txt file
+    Merge together results from contig_len.txt and contig_numreads.txt file
     and return as a dictionary keyed by contigname
     '''
     d = join( projdir, 'results', 'ray2_assembly_1' )
@@ -133,18 +133,21 @@ def contig_info( projdir ):
         raise MissingProjectFile( '{0} or {1} are missing from {2}'.format(contiglenfile,contignreadsfile,projdir) )
     cl = list( parse_tab_file( contiglenfile, ['contig', 'lenstr'] ) )
     cr = list( parse_tab_file( contignreadsfile, ['contig', 'nreads'] ) )
-    # Sort on numeric portion of contig name
-    sortkey = lambda x: int(x['contig'][1:])
-    # Make sure sorted
-    cl.sort( key=sortkey )
-    cr.sort( key=sortkey )
-    # Sometimes one list is not the same length as the other
-    for l, nr in itertools.izip_longest( cl, cr, fillvalue={'contig':'','nreads':-1,'lenstr':'contig-c000000 -1 nucleotides'} ):
-        contigname = l['contig']
-        length = l['lenstr']
-        nreads = nr['nreads']
-        info[contigname] = (length,nreads)
-    return info
+
+    # Index lengths by contig name
+    length_index = {}
+    for contig in cl:
+        cname = contig['contig']
+        length = contig['lenstr']
+        # Default is 0 num reads
+        length_index[cname] = [length,'0']
+    # Now fill in numreads for known contig numreads
+    for contig in cr:
+        cname = contig['contig']
+        nreads = contig['nreads']
+        length_index[cname][1] = nreads
+
+    return length_index
 
 def contigs_for( projdir, blastcol, blastval ):
     '''
@@ -265,11 +268,11 @@ def format_summary( summary ):
             rows[-1] += format_dict( contig, contigkeys )
         else:
             # Insert blank cells when there is no more contig info but more unassembled
-            rows[-1] += '\t'*len(contigkeys)
+            rows[-1] += '\t' * len(contigkeys)
 
         # Then the number of unassembled reads
         if prefix[0] == '\t':
-            rows[-1] += '\t'*2
+            rows[-1] += '\t' * 2
         else:
             rows[-1] += '\t' + format_dict( summary, ('numreadsunassembled','numblastunassembled') )
 
@@ -277,10 +280,10 @@ def format_summary( summary ):
         if unassembled is not None:
             rows[-1] += '\t' + format_dict( unassembled[1], unasskeys )
         else:
-            rows[-1] += '\t'*4
+            rows[-1] += '\t' * 4
 
         # Only the first time should prefix have values
-        prefix = '\t'*5
+        prefix = '\t' * 5
     return rows
 
 def format_dict( contig, keys ):
