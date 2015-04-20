@@ -42,6 +42,10 @@ Version 4.2
   diamond are in the blast_task_list of iterative_blast_phylo
 * fixed a bug where ``paver doc_man`` didn't work
 * Fixed a bug with make_summary where contig may have wrong length/numreads
+* Changed config.yaml such that human_dna and human_rna are now host_dna
+  and host_rna
+* Fixed error in install documentation where the verify executables step
+  would always return 'ok'
 
 Version 4.1
 -----------
