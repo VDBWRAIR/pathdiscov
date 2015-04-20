@@ -2,7 +2,7 @@
 
 import argparse
 import os
-from os.path import join, basename, dirname, exists, isdir, isfile
+from os.path import join, basename, dirname, exists, isdir, isfile, normpath
 import sys
 from glob import glob
 import re
@@ -309,7 +309,7 @@ def main( ):
             sys.stderr.write( p + '\n' )
             s = summary( p, args.filter_column, args.filter_value, args.group_by )
             rows = format_summary( s )
-            samplename = basename(p)
+            samplename = basename(normpath(p))
             print samplename + ('\n'+samplename).join( rows )
         except Exception as e:
             import traceback
