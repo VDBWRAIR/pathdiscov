@@ -268,7 +268,7 @@ def format_summary( summary ):
             rows[-1] += format_dict( contig, contigkeys )
         else:
             # Insert blank cells when there is no more contig info but more unassembled
-            rows[-1] += '\t' * len(contigkeys)
+            rows[-1] += '\t' * (len(contigkeys)-1)
 
         # Then the number of unassembled reads
         if prefix[0] == '\t':

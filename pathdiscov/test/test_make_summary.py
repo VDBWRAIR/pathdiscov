@@ -543,7 +543,9 @@ class TestFormatSummary( BaseTest ):
             'Virus1':
                 self.mock_unassembled(count=1,accession='acc1',family='family1',genus='genus1',descrip='descrip1'),
             'Virus2':
-                self.mock_unassembled(count=2,accession='acc2',family='family2',genus='genus2',descrip='descrip2')
+                self.mock_unassembled(count=2,accession='acc2',family='family2',genus='genus2',descrip='descrip2'),
+            'Virus3':
+                self.mock_unassembled(count=3,accession='acc3',family='family3',genus='genus3',descrip='descrip3')
         }
         contig = [
             self.mock_contig(length=1,numreads=2,contigname='c1',accession='ca',family='cfam',genus='cgen',description='cdesc'),
@@ -552,16 +554,21 @@ class TestFormatSummary( BaseTest ):
         summary = self.mock_summary(contigs=contig, unassembled=una)
         # Check summary line with contig and unassembled read
         r = self._C( summary )
-        e = ['','1','2','3','4','7','8','c1','1','2','ca','cfam','cgen','cdesc','5','6','2','acc2','family2','genus2','descrip2']
+        e = ['','1','2','3','4','7','8','c1','1','2','ca','cfam','cgen','cdesc','5','6','3','acc3','family3','genus3','descrip3']
         print e
         print r[0].split('\t')
         print '---------'
         eq_(e, r[0].split('\t'))
-        # Check summary line with only unassembled read
-        e = ['','','','','','','','c2','10','20','cb','cfam','cgen','cdesc','','','1','acc1','family1','genus1','descrip1']
+        # Check summary line with contig and unassembled read
+        e = ['','','','','','','','c2','10','20','cb','cfam','cgen','cdesc','','','2','acc2','family2','genus2','descrip2']
         print e
         print r[1].split('\t')
         eq_( e, r[1].split('\t') )
+        # Check summary line with only unassembled read
+        e = ['','','','','','','','','','','','','','','','','1','acc1','family1','genus1','descrip1']
+        print e
+        print r[2].split('\t')
+        eq_( e, r[2].split('\t') )
 
     def test_sorted_unassembled( self ):
         una = {}
@@ -577,7 +584,7 @@ class TestFormatSummary( BaseTest ):
             print r
             line = r.split('\t')
             print line
-            count = line[17]
+            count = line[16]
             eq_( e, int(count), 'Count should be {0} but got {1} at index {2}'.format(e,count,i) )
 
 class TestFormatDic( BaseTest ):
