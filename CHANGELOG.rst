@@ -46,6 +46,10 @@ Version 4.2
   make_summary would not produce sample names in the summary
 * Fixed a bug when there were more unassembled reads than contigs that the
   unassembled reads would have an extra column
+* Changed config.yaml such that human_dna and human_rna are now host_dna
+  and host_rna
+* Fixed error in install documentation where the verify executables step
+  would always return 'ok'
 
 Version 4.1
 -----------

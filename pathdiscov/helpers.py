@@ -375,10 +375,10 @@ def parse_config():
     config['NODE_NUM'] = str(config['NODE_NUM'])
     databases = expanduser(expandvars(config['databases']))
     config['databases'] = databases
-    config['human_dna'] = join(databases, config['human_dna'])
-    h_sapiens_rna = config.get('human_rna','')
+    config['host_dna'] = join(databases, config['host_dna'])
+    h_sapiens_rna = config.get('host_rna','')
     if h_sapiens_rna:
-        config['human_rna'] = join(databases, h_sapiens_rna)
+        config['host_rna'] = join(databases, h_sapiens_rna)
     config['nt_db']= join(databases, config['nt_db'])
     if config['diamond_db']:
         config['diamond_db'] = join(databases, config['diamond_db'])
@@ -405,8 +405,8 @@ def setup_shell_environment(config):
     os.environ['INNO_PHRED_OFFSET'] = config['PHRED_OFFSET']
     os.environ['INNO_SEQUENCE_PLATFORM'] = config['SEQUENCE_PLATFORM']
     os.environ['INNO_NODE_NUM'] = config['NODE_NUM']
-    os.environ['INNO_BOWTIE_HUMAN_GENOME_DB'] = config['human_dna']
-    os.environ['INNO_BOWTIE_HUMAN_TRAN_DB'] = config['human_rna']
+    os.environ['INNO_BOWTIE_HUMAN_GENOME_DB'] = config['host_dna']
+    os.environ['INNO_BOWTIE_HUMAN_TRAN_DB'] = config['host_rna']
     os.environ['INNO_BLAST_NT_DB'] = config['nt_db']
     os.environ['INNO_TAX_NODES'] = config['tax_nodes']
     os.environ['INNO_TAX_NAMES'] = config['tax_names']
@@ -447,8 +447,8 @@ def setup_param(config, paramoutputfile):
     for line in fileinput.input(paramoutputfile, inplace=True):
         line = re.sub(r'SEQPLATFORM',config['SEQUENCE_PLATFORM'], line.rstrip() )
         line = re.sub('NUMINST', config['NODE_NUM'], line.rstrip() )
-        line = re.sub(r'HUMAN_DNA', config['human_dna'], line.rstrip())
-        line = re.sub(r'H_SAPIENS_RNA', config['human_rna'], line.rstrip())
+        line = re.sub(r'HOST_DNA', config['host_dna'], line.rstrip())
+        line = re.sub(r'HOST_RNA', config['host_rna'], line.rstrip())
         line = re.sub(r'BLAST_NT', config['nt_db'], line.rstrip())
         line = re.sub(r'TAX_NODES', config['tax_nodes'], line.rstrip())
         line = re.sub(r'TAX_NAMES', config['tax_names'], line.rstrip())
