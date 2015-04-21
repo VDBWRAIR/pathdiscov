@@ -2,7 +2,7 @@
 
 import argparse
 import os
-from os.path import join, basename, dirname, exists, isdir, isfile
+from os.path import join, basename, dirname, exists, isdir, isfile, normpath
 import sys
 from glob import glob
 import re
@@ -268,7 +268,7 @@ def format_summary( summary ):
             rows[-1] += format_dict( contig, contigkeys )
         else:
             # Insert blank cells when there is no more contig info but more unassembled
-            rows[-1] += '\t' * len(contigkeys)
+            rows[-1] += '\t' * (len(contigkeys)-1)
 
         # Then the number of unassembled reads
         if prefix[0] == '\t':
@@ -309,7 +309,7 @@ def main( ):
             sys.stderr.write( p + '\n' )
             s = summary( p, args.filter_column, args.filter_value, args.group_by )
             rows = format_summary( s )
-            samplename = basename(p)
+            samplename = basename(normpath(p))
             print samplename + ('\n'+samplename).join( rows )
         except Exception as e:
             import traceback

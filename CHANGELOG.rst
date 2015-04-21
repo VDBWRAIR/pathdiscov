@@ -42,6 +42,10 @@ Version 4.2
   diamond are in the blast_task_list of iterative_blast_phylo
 * fixed a bug where ``paver doc_man`` didn't work
 * Fixed a bug with make_summary where contig may have wrong length/numreads
+* Fixed a bug where having trailing slash on a project path when using
+  make_summary would not produce sample names in the summary
+* Fixed a bug when there were more unassembled reads than contigs that the
+  unassembled reads would have an extra column
 
 Version 4.1
 -----------
