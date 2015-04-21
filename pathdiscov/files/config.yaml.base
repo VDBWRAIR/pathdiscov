@@ -6,8 +6,8 @@ databases: ~/databases
 
 # These will all have the value of databases joined to them
 # when the pipeline runs
-human_dna: humandna/human_dna
-human_rna: humanrna/h_sapiens_rna
+host_dna: humandna/hg38
+host_rna: humanrna/hg38_mrna
 nt_db:  ncbi/blast/nt/nt
 diamond_db: diamond/diamondnr
 tax_nodes: ncbi/taxonomy/nodes.dmp

@@ -185,7 +185,7 @@ DNA
     .. code-block:: bash
 
         popd
-        sed -i 's%humandna/human_dna%humandna/hg38%' pathdiscov/files/config.yaml
+        sed -i 's%host_dna:.*%host_dna: humandna/hg38%' pathdiscov/files/config.yaml
 
 RNA
 ^^^
@@ -220,7 +220,7 @@ Download human rna from the same URL, the version of the geome might be differen
     .. code-block:: bash
 
         popd
-        sed -i 's%humanrna/h_sapiens_rna%humanrna/hg38_mrna%' pathdiscov/files/config.yaml
+        sed -i 's%host_rna:.*%host_rna: humanrna/hg38_mrna%' pathdiscov/files/config.yaml
 
 Verify Databases
 ================
