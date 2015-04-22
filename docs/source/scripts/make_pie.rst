@@ -2,10 +2,10 @@
 make_pie
 ========
 
-Creates a graphic for each supplied project based on all of the .top.blast.phylo files found in both the
-iterative_blast_phylo output directories.
-Likely these counts will not reflect all your input reads as the host_map stage typically runs prior to these
-and will remove reads that mapped to your host
+Creates a graphic for each supplied project based on all of the .top.blast.phylo 
+files found in both the iterative_blast_phylo output directories.
+Likely these counts will not reflect all your input reads as the host_map stage 
+typically runs prior to these and will remove reads that mapped to your host
 
 The graphic depicts sample compisition in the form of 4 pie graphics depicting:
 
@@ -23,8 +23,9 @@ This example was built using the testoutDir created via the example in the :doc:
 
     make_pie testoutDir
 
-This will create a directory called host_vector_pathogen inside of the current directory. Inside of that directory
-you will find the file testoutDir.png that looks like this:
+This will create a directory called host_vector_pathogen inside of the current 
+directory. Inside of that directory you will find the file testoutDir.png that 
+looks like this:
 
 .. image:: ../_static/example_make_pie.png
     :width: 100%

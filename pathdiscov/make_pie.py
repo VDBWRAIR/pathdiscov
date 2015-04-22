@@ -79,8 +79,26 @@ def host_vector_pathogen(phylo_files, hostclass, vectorclass, pathogenclass):
     return hosts, hosts_ct, vectors, vectors_ct, pathogens, pathogens_ct
 
 def graph_( ax, counts, **kwargs ):
+    counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+    unique_counts = defaultdict(list)
+    for label, count in counts:
+        unique_counts[count].append(label)
     ax.set_title( kwargs['title'] )
-    ax.pie( [ct for l,ct in counts.items()], labels=[l for l,ct in counts.items()], autopct='%1.1f%%' )
+    cts = [ct+len(l)-1 for ct,l in unique_counts.items()]
+    labels = []
+    for counts,_labels in unique_counts.items():
+        label = _labels[0]
+        l = len(_labels)
+        if l > 5:
+            label = '{0}\n({1} more...)'.format('\n'.join(_labels[0:5]),l)
+        labels.append(label)
+    print labels
+            
+    xs = xrange(len(cts))
+    #bars = ax.bar( xs, cts )#, labels=[l for l,ct in counts.items()], autopct='%1.1f%%' )
+    ax.pie(cts, labels=labels, autopct='%1.1f%%' )
+    #ax.set_xticks(xs)
+    #ax.set_xticklabels(labels, rotation=90, ha='left')
 
 def graph_vectors( ax, vector_counts ):
     graph_( ax, vector_counts, title='Vectors' )
