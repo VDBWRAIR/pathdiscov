@@ -55,7 +55,8 @@ The unasembled report contains information on the reads that did not map
 The rows are compiled from multiple files
 
 * Num unassem
-    Number of reads that were not mapped
+    Number of reads that were not used to make contigs and were
+    used for unassembled report
 * Num blast0 Unassem
     Number of reads that had 0 blast results
     Essentially the last value in iterative_blast_phylo_2/\*.counts
