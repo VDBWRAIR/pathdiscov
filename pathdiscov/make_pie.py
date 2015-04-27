@@ -127,6 +127,7 @@ def graph_(ax1, ax2, counts, **kwargs):
         val = int(pct * totalcnt / 100.0)
         return '{p:.2f}% ({v:d})'.format(p=pct,v=val)
 
+    ax2.set_aspect('equal')
     pta = ax2.pie(
         pievalues,
         labels=pielabels,
@@ -196,6 +197,7 @@ def graph_all(ax, host_vector_pathogen, **kwargs):
     hvp = [('Mamalia',hc), ('Insecta',vc), ('Virus/Bacteria',pc)]
     for k,v in hvp:
         sys.stdout.write('{0}: {1}\n'.format(k,v))
+    ax.set_aspect('equal')
     ax.set_title( kwargs['title'] )
 
     cts = [ct for l,ct in hvp]
@@ -214,10 +216,10 @@ def create_image( project_path, **kwargs ):
     fig = plt.figure()
 
     fig.suptitle( basename(kwargs['output_path']) )
-    fig.set_size_inches( 100, 67 )
+    fig.set_size_inches( 100, 20 )
 
-    ratios = [2,1,2,1,2,1,2]
-    gs = gridspec.GridSpec(1, 7, width_ratios=ratios, height_ratios=ratios)
+    #ratios = [2,1,2,1,2,1,2]
+    gs = gridspec.GridSpec(1, 7)#, width_ratios=ratios, height_ratios=ratios)
     ax1 = plt.subplot( gs[0] )
     ax2 = plt.subplot( gs[1] )
     ax3 = plt.subplot( gs[2] )
