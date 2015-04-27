@@ -1,9 +1,11 @@
 import unittest2 as unittest
 import mock
 
+from StringIO import StringIO
+
 from .. import make_pie
 
-PHYLO = '''taxid	count	superkingdom	kingdom	class	order	family	genus	species	descrip
+PHYLO = '''taxid\tcount\tsuperkingdom\tkingdom\tclass\torder\tfamily\tgenus\tspecies\tdescrip
 1\t1.0\tBacteria\tKingdom\tClass\tOrder\tFamily\tGenus\tBact1\tDescription
 1\t1.0\tBacteria\tBact2\t-\t-\t-\t-\t-\tDescription
 1\t1.0\tViruses\tKingdom\tClass\tOrder\tFamily\tGenus\tVirus1\tDescription
@@ -19,94 +21,105 @@ PHYLO = '''taxid	count	superkingdom	kingdom	class	order	family	genus	species	des
 class TestFindBestName(unittest.TestCase):
     def setUp(self):
         self.phylo_headers = [
-            'taxid', 'count', 'superkingdom',
-            'kingdom', 'class', 'order',
-            'family', 'genus', 'species',
-            'descrip'
+            'species', 'genus', 'family',
+            'order', 'class', 'kingdom',
+            'superkingdom'
         ]
+        self.row = {
+            'count': '1.0',
+            'superkingdom': 'superkingdom',
+            'species': 'species',
+            'family': 'family',
+            'taxid': '1',
+            'class': 'class',
+            'descrip': 'Description',
+            'kingdom': 'kingdom',
+            'genus': 'genus',
+            'order': 'order',
+        }
 
     def test_uses_species(self):
         cols = self.phylo_headers
-        r = make_pie.find_best_name(cols)
-        self.assertEqual(
-            cols[8],
-            r
-        )
+        r = make_pie.find_best_name(self.row, self.phylo_headers)
+        self.assertEqual('species', r)
 
     def test_works_backwords_and_finds_non_dash(self):
         # Make all -
-        cols = ['-' for i in range(len(self.phylo_headers))]
-        cols[2] = 'Superkingdom'
-        r = make_pie.find_best_name(cols)
-        self.assertEqual(
-            cols[2],
-            r
-        )
+        row = {k:'-' for k,v in self.row.items()}
+        row['superkingdom'] = 'foo'
+        r = make_pie.find_best_name(row, self.phylo_headers)
+        self.assertEqual('foo', r)
 
     def test_falls_back_on_description(self):
         # Make all -
-        cols = ['-' for i in range(len(self.phylo_headers))]
-        cols[-1] = 'description'
-        r = make_pie.find_best_name(cols)
-        self.assertEqual(
-            cols[-1],
-            r
-        )
+        row = {k:'-' for k,v in self.row.items()}
+        row['descrip'] = 'foo'
+        r = make_pie.find_best_name(row, self.phylo_headers)
+        self.assertEqual('foo', r)
 
     def test_raises_valueerror_if_none_found(self):
         # Make all -
-        cols = ['-' for i in range(len(self.phylo_headers))]
+        row = {k:'-' for k,v in self.row.items()}
+        row['descrip'] = '-'
         self.assertRaises(
             ValueError,
-            make_pie.find_best_name, cols
+            make_pie.find_best_name, row, self.phylo_headers
         )
 
 class TestHostVectorPathogen(unittest.TestCase):
     def setUp(self):
         self.phylo = PHYLO
+        self.phylo_file = mock.MagicMock(
+            __enter__ = mock.MagicMock(return_value=StringIO(self.phylo))
+        )
 
     @mock.patch('__builtin__.open')
     def test_correct_calls(self, mopen):
-        mopen.return_value.read.return_value = self.phylo
+        #mopen.return_value.read.return_value = self.phylo
+        mopen.return_value = self.phylo_file
         r = make_pie.host_vector_pathogen(
             ['foo.phylo','bar.phylo'],
             ['Mammalia'], ['Insecta'], ['Viruses','Bacteria']
         )
         mopen.assert_has_calls([
             mock.call('foo.phylo'),
-            mock.call().read(),
+            mock.call().__enter__(),
+            mock.call().__exit__(None, None, None),
             mock.call('bar.phylo'),
-            mock.call().read(),
+            mock.call().__enter__(),
+            mock.call().__exit__(None, None, None),
         ])
 
     @mock.patch('__builtin__.open')
     def test_correct_defaults(self, mopen):
-        mopen.return_value.read.return_value = self.phylo
+        #mopen.return_value.read.return_value = self.phylo
+        mopen.return_value = self.phylo_file
         r = make_pie.host_vector_pathogen(
-            ['foo.phylo','bar.phylo'],
+            ['foo.phylo'],
             ['Mammalia'], ['Insecta'], ['Viruses','Bacteria']
         )
-        self.assertEqual(2.0, r[0]['Mammal1'])
-        self.assertEqual(2, r[1])
-        self.assertEqual(2.0, r[2]['Insecta1'])
-        self.assertEqual(2, r[3])
-        self.assertEqual(2.0, r[4]['Bact1'])
-        self.assertEqual(2.0, r[4]['Bact2'])
-        self.assertEqual(2.0, r[4]['Virus1'])
-        self.assertEqual(2.0, r[4]['Viruses'])
-        self.assertEqual(8, r[5])
+        self.assertEqual(1.0, r[0]['Mammal1'])
+        self.assertEqual(1, r[1])
+        self.assertEqual(1.0, r[2]['Insecta1'])
+        self.assertEqual(1, r[3])
+        self.assertEqual(1.0, r[4]['Bact1'])
+        self.assertEqual(1.0, r[4]['Bact2'])
+        self.assertEqual(1.0, r[4]['Virus1'])
+        self.assertEqual(1.0, r[4]['Viruses'])
+        self.assertEqual(4, r[5])
 
     @mock.patch('__builtin__.open')
     def test_can_change_hostvectorpath_classnames(self, mopen):
-        mopen.return_value.read.return_value = self.phylo
+        #mopen.return_value.read.return_value = self.phylo
+        mopen.return_value = self.phylo_file
         r = make_pie.host_vector_pathogen(
-            ['foo.phylo','bar.phylo'],
+            ['foo.phylo'],
             ['Foo'], ['Foo2'], ['Pathogens1','Pathogens2']
         )
-        self.assertEqual(2.0, r[0]['Bar1'])
-        self.assertEqual(2, r[1])
-        self.assertEqual(2.0, r[2]['Bar2'])
-        self.assertEqual(2, r[3])
-        self.assertEqual(2.0, r[4]['Bar3'])
-        self.assertEqual(2.0, r[4]['Bar4'])
-        self.assertEqual(4, r[5])
+        self.assertEqual(1.0, r[0]['Bar1'])
+        self.assertEqual(1, r[1])
+        self.assertEqual(1.0, r[2]['Bar2'])
+        self.assertEqual(1, r[3])
+        self.assertEqual(1.0, r[4]['Bar3'])
+        self.assertEqual(1.0, r[4]['Bar4'])
+        self.assertEqual(2, r[5])
