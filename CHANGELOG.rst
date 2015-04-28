@@ -50,6 +50,8 @@ Version 4.2
   and host_rna
 * Fixed error in install documentation where the verify executables step
   would always return 'ok'
+* make_pie now will parse pretty much any tab delimited file to get results
+* make_pie now places total count next to percentages
 
 Version 4.1
 -----------
