@@ -42,10 +42,10 @@ command iterative_blast_phylo
 
 # for the "_list" settings, use a comma-delimited list with no spaces
 
-blast_db_list				BLAST_NT,BLAST_NT # blast db prefix
+blast_db_list				BLAST_NT,BLAST_NT #,DIAMOND_NR blast db prefix
 blast_task_list				megablast,dc-megablast								# options are: megablast dc-megablast blastn, diamond
 # blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are 
-blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12		# blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
+blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12		##,--compress 0 -p 0 -v -k 10 -w 28 --id 0.7 -c 4 -t TEMPDIR blast options (except for: -task -query -db -out -outfmt -num_descriptions; these are hardwired)
 ninst_list				NUMINST,NUMINST									# the input file will be broken into chunks and blasted in parallel - this parameter is the number of instances of BLAST you want to run in parallel
 taxonomy_names				TAX_NAMES					# NCBI taxonomy names dump file
 taxonomy_nodes				TAX_NODES					# NCBI taxonomy nodes dump file
