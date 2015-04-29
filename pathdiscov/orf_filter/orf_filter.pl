@@ -125,6 +125,9 @@ foreach my $mate (@mates)
 			get_subset_by_fastaid($hoh{$command}{$mate}, "$command.$mate", \%h_fasta);
             verbose_system("linecount $command.$mate orf_filter $mate.count fastq 1");
 		}
+        else {
+            print "Doing nothing because there are no getorf_options set\n";
+        }
 	} # defined
 	elsif ($mate eq "R1")
 	{

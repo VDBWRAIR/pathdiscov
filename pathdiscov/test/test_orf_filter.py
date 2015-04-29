@@ -94,6 +94,8 @@ class TestOrfFilter(unittest.TestCase):
             contig=1
         )
         self.assertEqual(0,rc)
+        print self.outputdir
+        print os.listdir(self.outputdir)
         for f in self.r1outputs:
             self.notEmpty(f.replace('R1','contig'))
 

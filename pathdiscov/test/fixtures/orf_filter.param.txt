@@ -1,0 +1,2 @@
+command orf_filter
+getorf_options				-minsize 60 -find 0
