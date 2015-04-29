@@ -95,7 +95,7 @@ def graph_(ax1, ax2, counts, **kwargs):
     ax1 - line plot axes
     ax2 - pie axes
     counts - (('label',value),...)
-    **kwargs - kwargs for plot like 'title'
+    \*\*kwargs - kwargs for plot like 'title'
     '''
     # Sorting makes the graphic look nicer
     counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
