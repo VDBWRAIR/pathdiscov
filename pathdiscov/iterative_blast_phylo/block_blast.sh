@@ -51,7 +51,7 @@ else
 	# make sure the header matches the BLAST output format you choose below
 	# bad style ! the header comes from the blast_wrapper.pl script
 #	echo "qseqid	sseqid	pident	length	mismatch	gapopen	qstart	qend	sstart	send	evalue	bitscore	qlen	slen" > $outheader
-	echo "qseqid	sseqid	pident	length	mismatch	gapopen	qstart	qend	sstart	send	evalue	bitscore	qlen	slen	aligned_qseq" > $outheader
+	echo "qseqid	sseqid	pident	length	mismatch	gapopen	qstart	qend	sstart	send	evalue	bitscore	aligned_qseq" > $outheader
 		
 	# KEEP IN MIND, MAX ALLOWED LINES IN FILE LIMITED TO TO 1000*${chunk}
 	if [ ${len} -gt $((1000*${chunk})) ]; then 
