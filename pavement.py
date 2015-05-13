@@ -359,7 +359,7 @@ def installSnap(options):
         currwd = os.getcwd()
         sfile = path(currwd) / options.snap.sfile
         ddir = dirname(sfile)
-        sh('(cd %s; git clone https://github.com/amplab/snap.git; cd snap; make)' %(ddir))
+        sh('(cd %s; git clone https://github.com/amplab/snap.git; cd snap;git checkout v0.15; make)' %(ddir))
 
 @task
 def modifyBashRC():
