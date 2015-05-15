@@ -222,7 +222,7 @@ Download human rna from the same URL, the version of the geome might be differen
 
         .. code-block:: bash
 
-            ${_cwd}/pathdiscov/download/snap/snap index mrna.fa hg38_mrna -s 20 -O1000
+            ${_cwd}/pathdiscov/download/snap/snap index mrna.fa hg38_mrna -s 20
 
 #. Setup config.yaml to utilize indexed database
 
