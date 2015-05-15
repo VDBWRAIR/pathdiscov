@@ -178,7 +178,7 @@ DNA
 
         .. code-block:: bash
 
-            ${_cwd}/pathdiscov/download/snap/snap index hg38_all.fa hg38 -s 20 -O1000
+            ${_cwd}/pathdiscov/download/snap/snap index hg38_all.fa hg38 -s 20
 
 #. Setup config.yaml to utilize indexed database
 

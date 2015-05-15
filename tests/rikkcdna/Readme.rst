@@ -50,5 +50,5 @@ Build Snap
 
 .. code-block:: bash
 
-    snap index rikkhostdna.fasta rikkdna -s 20 -O1000
-    snap index rikkhostrna.fasta rikkrna -s 20 -O1000
+    snap index rikkhostdna.fasta rikkdna -s 20
+    snap index rikkhostrna.fasta rikkrna -s 20
