@@ -77,7 +77,7 @@ pathdiscov/files/sample.param.bak
 pathdiscov/files/settings.sh.bak
 pathdiscov/files/sample.param
 .vagrant
-pathdiscov/download/prinseq-lite-*
+#pathdiscov/download/prinseq-lite-*
 pathdiscov/download/bwa-*
 pathdiscov/download/htslib-*
 pathdiscov/download/samtools-*
