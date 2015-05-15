@@ -8,7 +8,7 @@ Information describing the project.
 package = 'pathdiscov'
 project = "Pathogen Discovery Pipeline"
 project_no_spaces = project.replace(' ', '')
-version = '4.1.0-beta'
+version = '4.2.1'
 description = 'Pathogen Discovery Pipleline'
 authors = [
     'Mike Wiley',
