@@ -2,7 +2,16 @@
 Databases
 =========
 
-The pipeline requires that you have blast databases and host genome indexes available for some of the stages such as :doc:`stages/host_map` and :doc:`stages/iterative_blast_phylo`
+The pipeline requires that you have blast databases and host genome indexes 
+available for some of the stages such as :doc:`stages/host_map` 
+and :doc:`stages/iterative_blast_phylo`
+
+*Note* Most of the commands below may not exist on your system until after you
+have completed the normal installation in which the commands are placed into
+your virtualenv's bin directory.
+It is fine to complete the installation(``python setup.py install``) prior
+to setting up your databases, but just know that ``verifydatabases`` will report
+errors until after you have completed setting up your databases.
 
 Directory Setup
 ===============
@@ -178,7 +187,7 @@ DNA
 
         .. code-block:: bash
 
-            ${_cwd}/pathdiscov/download/snap/snap index hg38_all.fa hg38 -s 20 -O1000
+            ${_cwd}/pathdiscov/download/snap/snap index hg38_all.fa hg38 -s 20
 
 #. Setup config.yaml to utilize indexed database
 

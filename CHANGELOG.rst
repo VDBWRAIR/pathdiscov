@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 4.2.1
+-------------
+
+* Fixed the version of snap to 0.15
+* Fixed some errors with prinseq perl scripts not using correct perl path
+* Fixed documentation in reference to some commands not existing during
+  database setup steps
+
 Version 4.2
 -----------
 
