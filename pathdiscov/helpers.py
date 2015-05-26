@@ -376,9 +376,9 @@ def parse_config():
     databases = expanduser(expandvars(config['databases']))
     config['databases'] = databases
     config['host_dna'] = join(databases, config['host_dna'])
-    h_sapiens_rna = config.get('host_rna','')
-    if h_sapiens_rna:
-        config['host_rna'] = join(databases, h_sapiens_rna)
+    host_rna = config.get('host_rna','')
+    if host_rna:
+        config['host_rna'] = join(databases, host_rna)
     config['nt_db']= join(databases, config['nt_db'])
     if config['diamond_db']:
         config['diamond_db'] = join(databases, config['diamond_db'])

@@ -69,7 +69,7 @@ def verifydatabases(config):
     '''
     dbpath = expandvars(expanduser(config['databases']))
     dbs = (
-        'human_dna', 'human_rna', 'nt_db',
+        'host_dna', 'host_rna', 'nt_db',
         'tax_nodes', 'tax_names'
     )
     ntdb = join(dbpath, config['nt_db'])

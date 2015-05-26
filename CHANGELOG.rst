@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 4.2.2
+-------------
+
+* Fixed a bug with verifydatabases introduced when config.yaml had host_dna and
+  host_rna implemented
+* Fixed host_map documentation to reflect above bug fix
+
 Version 4.2.1
 -------------
 
