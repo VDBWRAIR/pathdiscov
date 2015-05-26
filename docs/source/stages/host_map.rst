@@ -34,10 +34,10 @@ command host_map
 
 * mapper_db_list
     Paths to bowtie indexed genomes as a comma separated list
-    These values will be replaced when the pipeline installs by setting human_dna and h_sapiens_rna in the :ref:`config-yaml-base`
-    The pipeline looks for HUMAN_DNA and H_SAPIENS_RNA and replaces them during install
+    These values will be replaced when the pipeline installs by setting ``host_dna`` and ``host_rna`` in the :ref:`config-yaml-base`
+    The pipeline looks for HOST_DNA and HOST_RNA and replaces them during install
 
-    Example: ``HUMAN_DNA,H_SAPIENS_RNA``
+    Example: ``HOST_DNA,HOST_RNA``
 * mapper_name_list
     Simply names the mapping assemblies for graphic generation
 
