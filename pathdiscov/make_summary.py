@@ -178,6 +178,8 @@ def contigs_for( projdir, blastcol, blastval ):
         info['accession'] = contig['sseqid'].split('|')[3]
         info['family'] = contig['family']
         info['genus'] = contig['genus']
+        info['superkingdom'] = contig['superkingdom']
+        info['order'] = contig['order']
         info['description'] = contig['descrip']
         yield info
 
@@ -256,8 +258,8 @@ def format_summary( summary ):
     rows = []
     import itertools
     # Iterate over longsest of the two and fill the other in with ''
-    contigkeys = ('contigname','length','numreads','accession','family','genus','description')
-    unasskeys = ('count','accession','family','genus','descrip')
+    contigkeys = ('contigname','length','numreads','accession','superkingdom', 'order', 'family','genus','description')
+    unasskeys = ('count','accession','superkingdom', 'order', 'family','genus','descrip')
     prefix = format_dict( summary, ('numreads','nonhostreads','numcontig','numblastcontig','n50','assemblylength') )
     unassembled = sorted( summary['unassembled'].items(), key=lambda x: x[1]['count'], reverse=True )
     for contig, unassembled in itertools.izip_longest( summary['contigs'], unassembled, fillvalue=None ):
@@ -298,11 +300,11 @@ def main( ):
     # These come from summary
     hdr += ['Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'N50', 'Assembly Length']
     # These come from summary['contig']
-    hdr += ['Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Family', 'Genus', 'description']
+    hdr += ['Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Superkingdom', 'Order', 'Family', 'Genus', 'description']
     # These come from summary
     hdr += ['Num unassem', 'Num blast0 Unassem']
     # These come from summary['unassembled']
-    hdr += ['num reads', 'Accession', 'Family', 'Virus Genus', 'descrip']
+    hdr += ['num reads', 'Accession', 'Superkingdom', 'Order', 'Family', 'Genus', 'descrip']
     print '\t'.join( hdr )
     for p in args.projdir:
         try:
