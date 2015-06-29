@@ -60,6 +60,8 @@ class BaseTest(Base):
             'accession': 'accession',
             'contigname': 'contigname',
             'description': 'description',
+            'superkingdom' : 'sk',
+            'order' : 'ord',
             'family': 'family',
             'genus': 'genus',
             'length': 1,
@@ -554,18 +556,18 @@ class TestFormatSummary( BaseTest ):
         summary = self.mock_summary(contigs=contig, unassembled=una)
         # Check summary line with contig and unassembled read
         r = self._C( summary )
-        e = ['','1','2','3','4','7','8','c1','1','2','ca','cfam','cgen','cdesc','5','6','3','acc3','family3','genus3','descrip3']
+        e = ['','1','2','3','4','7','8','c1','1','2','ca', 'sk', 'ord', 'cfam','cgen','cdesc','5','6','3','acc3', 'Bacteria', '-', 'family3','genus3','descrip3']
         print e
         print r[0].split('\t')
         print '---------'
         eq_(e, r[0].split('\t'))
         # Check summary line with contig and unassembled read
-        e = ['','','','','','','','c2','10','20','cb','cfam','cgen','cdesc','','','2','acc2','family2','genus2','descrip2']
+        e = ['','','','','','','','c2','10','20','cb','sk','ord','cfam','cgen','cdesc','','','2','acc2','Bacteria', '-', 'family2','genus2','descrip2']
         print e
         print r[1].split('\t')
         eq_( e, r[1].split('\t') )
         # Check summary line with only unassembled read
-        e = ['','','','','','','','','','','','','','','','','1','acc1','family1','genus1','descrip1']
+        e = ['','','','','','','','','','','','','','','','','','','1','acc1', 'Bacteria', '-', 'family1','genus1','descrip1']
         print e
         print r[2].split('\t')
         eq_( e, r[2].split('\t') )
@@ -584,7 +586,7 @@ class TestFormatSummary( BaseTest ):
             print r
             line = r.split('\t')
             print line
-            count = line[16]
+            count = line[18]
             eq_( e, int(count), 'Count should be {0} but got {1} at index {2}'.format(e,count,i) )
 
 class TestFormatDic( BaseTest ):
