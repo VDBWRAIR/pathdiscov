@@ -7,6 +7,8 @@ Version 4.2.2
 * Fixed a bug with verifydatabases introduced when config.yaml had host_dna and
   host_rna implemented
 * Fixed host_map documentation to reflect above bug fix
+* ray2_assembly_1 now produces reads_by_contig that contains fastq files for each
+  contig containing the reads that mapped to it
 
 Version 4.2.1
 -------------

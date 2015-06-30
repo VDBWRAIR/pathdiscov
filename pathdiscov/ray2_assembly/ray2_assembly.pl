@@ -355,12 +355,12 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 	$cmd="samtools view -bS bowtie2_mapping/out.sam > bowtie2_mapping/out.bam";
 	print_system($cmd);		
 
-        # Pull the fastq records out by contigs
-        $cmd="parse_contigs bowtie2_mapping/out.sam --outdir reads_by_contig";
-        system($cmd);
+    # Pull the fastq records out by contigs
+    $cmd="parse_contigs bowtie2_mapping/out.sam --outdir reads_by_contig";
+    print_system($cmd);
 
 	$cmd="rm bowtie2_mapping/out.sam";
-	system($cmd);
+	print_system($cmd);
 	
 	print "[stats] paired stats\n";
 	$cmd="samtools flagstat bowtie2_mapping/out.bam";	
