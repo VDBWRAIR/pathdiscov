@@ -42,3 +42,4 @@ matplotlib
 pandas
 docopt
 schema
+sh

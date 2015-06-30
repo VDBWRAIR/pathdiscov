@@ -79,6 +79,7 @@ map2contigs				yes											# if "yes" or "1", map reads back onto assembly
 bowtie2_options			--local -p NUMINST											# only nec if map2contigs. Options for the mapper(-p specifies how many threads)
 
 # explanation: perform an assembly using Ray
+parse_contigs                           yes                                             #if yes or 1 parse contigs into reads
 
 
 # -------------------

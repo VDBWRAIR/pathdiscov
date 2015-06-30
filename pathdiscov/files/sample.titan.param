@@ -118,6 +118,7 @@ kmer					25											# assembler k-mer
 map2contigs				yes											# if "yes" or "1", map reads back onto assembly
 bowtie2_options			--local										# only nec if map2contigs. Options for the mapper		
 
+parse_contigs                           yes                                             #if yes or 1 parse contigs into reads
 # explanation: run another instance of the ray2_assembly module. you can run more instances by adding entries in this parameter file for "ray2_assembly_3", "ray2_assembly_4", etc
 
 
