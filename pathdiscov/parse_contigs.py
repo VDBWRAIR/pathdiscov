@@ -23,7 +23,7 @@ def samview_to_df(rawtext):
     samtext = '\n'.join( fixline(row) for row in str(rawtext).split('\n') )
     as_bytes = BytesIO(samtext)
     #Write test to ensure handles varaibles #columns
-    return pd.read_csv(as_bytes, names=sam_columns, usecols=sam_columns, delimiter='\t', header=None, squeeze=True, error_bad_lines=False)
+    return pd.read_csv(as_bytes, names=sam_columns, usecols=sam_columns, delimiter='\t', header=None, squeeze=True)
 
 def fixline(row):
     newrow = []
