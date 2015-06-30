@@ -79,6 +79,9 @@ Output
     Count of resulting R1 and R2 unmapped reads
 * results
     Directory containing Ray2 assembly
+* reads_by_contig
+    Directory containing fastq files for each contig that contain reads that
+    mapped to each contig 
 
 Undocumented Ouput
 ------------------

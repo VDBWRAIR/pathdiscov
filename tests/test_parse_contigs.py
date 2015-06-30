@@ -3,6 +3,7 @@ import unittest
 from bio_pieces import parse_contigs as pc
 from Bio import SeqIO
 from os.path import join, dirname, abspath
+import os
 if sys.version[0] == '3':
     from io import StringIO as BytesIO
 else:
@@ -13,6 +14,10 @@ THISD = dirname(abspath(__file__))
 class TestParseContigs(unittest.TestCase):
 
     def setUp(self):
+        try:
+            os.makedirs('tests/testoutput')
+        except:
+            pass
         self.columns = ["QNAME", "FLAG", "RNAME", "POS", "MAPQ", "CIGAR", "RNEXT", "PNEXT", "TLEN", "SEQ", "QUAL"]
         self.samtext	=	'\n'.join(['read1\t1\tchr1\t1\t60	10M	=	1	1	TTTCGAATC	FFFFFFFFF	NM:i:3	AS:i:231	XS:i:0	RG:Z:MiSeq',
                                   'read2	1	chr2	1	60	10M	=	1	1	CTTCGATC	AFFDDDDD	NM:i:3	AS:i:231	XS:i:0	RG:Z:MiSeq',
