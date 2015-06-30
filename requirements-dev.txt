@@ -39,6 +39,7 @@ bunch==1.0.1
 path.py==5.2
 termcolor
 matplotlib
-#autoenv
-#libpng>=1.2
-#dateutil>=1.1
+pandas
+docopt
+schema
+sh

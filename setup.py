@@ -281,6 +281,7 @@ setup_dict = dict(
             'linecount = pathdiscov.linecount:main',
             'sff2fastq = pathdiscov.sff2fastq:main',
             'step1 = pathdiscov.stages.step1:main',
+            'parse_contigs = pathdiscov.parse_contigs:main'
         ],
     },
     # These all get copied to our installation's bin folder for us

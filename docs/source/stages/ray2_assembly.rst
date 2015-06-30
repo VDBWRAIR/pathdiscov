@@ -36,6 +36,12 @@ command ray2_assembly
     Options for bowtie when map2contigs is ``1``
 
     Example: ``--local``
+* parse_contigs
+    If set to ``yes`` then runs parse_contigs on bowtie_mapping/out.sam and creates
+    reads_by_contig directory with fastq files for each contig that contain reads
+    that mapped to each contig
+
+    Choices: ``yes`` or ``1``, ``no`` or ``0``
 
 Output
 ======
@@ -79,6 +85,9 @@ Output
     Count of resulting R1 and R2 unmapped reads
 * results
     Directory containing Ray2 assembly
+* reads_by_contig
+    Directory containing fastq files for each contig that contain reads that
+    mapped to each contig 
 
 Undocumented Ouput
 ------------------
