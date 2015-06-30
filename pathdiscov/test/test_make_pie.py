@@ -45,21 +45,27 @@ class TestFindBestName(unittest.TestCase):
 
     def test_works_backwords_and_finds_non_dash(self):
         # Make all -
-        row = {k:'-' for k,v in self.row.items()}
+        row = {}
+        for k,v in self.row.items():
+            row[k] = '-' 
         row['superkingdom'] = 'foo'
         r = make_pie.find_best_name(row, self.phylo_headers)
         self.assertEqual('foo', r)
 
     def test_falls_back_on_description(self):
         # Make all -
-        row = {k:'-' for k,v in self.row.items()}
+        row = {}
+        for k,v in self.row.items():
+            row[k] = '-' 
         row['descrip'] = 'foo'
         r = make_pie.find_best_name(row, self.phylo_headers)
         self.assertEqual('foo', r)
 
     def test_raises_valueerror_if_none_found(self):
         # Make all -
-        row = {k:'-' for k,v in self.row.items()}
+        row = {}
+        for k,v in self.row.items():
+            row[k] = '-' 
         row['descrip'] = '-'
         self.assertRaises(
             ValueError,
