@@ -39,7 +39,4 @@ bunch==1.0.1
 path.py==5.2
 termcolor
 matplotlib
-pandas
-docopt
-schema
-sh
+https://github.com/VDBWRAIR/bio_pieces/archive/v1.1.0.zip
