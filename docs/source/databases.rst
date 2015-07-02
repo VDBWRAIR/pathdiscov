@@ -191,6 +191,7 @@ DNA
         rm chroms/\*alt.fa
         rm -rf chroms
         rm hg38.chromFa.tar.gz
+        rm hg38_all.fa
 
 #. Setup config.yaml to utilize indexed database
 
@@ -225,6 +226,12 @@ Download human rna from the same URL, the version of the genome might be differe
         .. code-block:: bash
 
             snap index mrna.fa hg38_mrna -s 20
+
+#. Cleanu up download
+
+    .. code-block:: bash
+
+        rm mrna.fa
 
 #. Setup config.yaml to utilize indexed database
 
