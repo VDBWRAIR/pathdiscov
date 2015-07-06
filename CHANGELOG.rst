@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 4.2.3
+-------------
+
+* Fixed a bug with make_summary looking for missing order column
+* Fixed documentation for database generation
+
 Version 4.2.2
 -------------
 
