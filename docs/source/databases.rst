@@ -51,7 +51,8 @@ Create databases directory structure
 .. code-block:: bash
     
     mkdir -p ~/databases/{humandna,humanrna,ncbi}
-    mkdir -p ~/databases/ncbi/blast/{nt,nr,taxonomy}
+    mkdir -p ~/databases/ncbi/blast/{nt,nr}
+    mkdir -p ~/databases/ncbi/taxonomy
 
 Blast
 =====
@@ -60,7 +61,7 @@ Blast databases correspond to :doc:`stages/iterative_blast_phylo`'s
 ``blast_db_list`` and ``blast_pro_db``
 
 In general you just need to unpack the nt/nr databases from ncbi(or wherever) 
-into ~/databases/ncbi/blast/nt,nr,taxdb
+into ~/databases/ncbi/blast/nt,nr
 
 There is a shell script included that you can use to do this for you.
 This may take a long time depending on your network connection.
@@ -80,7 +81,7 @@ can extract taxonomy names for each of the blast results
 
 .. code-block:: bash
 
-    pushd ~/databases/ncbi/blast/taxonomy
+    pushd ~/databases/ncbi/taxonomy
     wget http://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O - | tar xzvf -
     popd
 
