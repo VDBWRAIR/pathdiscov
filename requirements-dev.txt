@@ -40,3 +40,4 @@ path.py==5.2
 termcolor
 matplotlib
 https://github.com/VDBWRAIR/bio_pieces/archive/v1.1.0.zip
+tempdir

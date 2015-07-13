@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 4.3.0
+-------------
+
+* Added get_blast_reads script which allows user to retrieve all reads for a specific
+  blast col=>val pair
+
 Version 4.2.3
 -------------
 

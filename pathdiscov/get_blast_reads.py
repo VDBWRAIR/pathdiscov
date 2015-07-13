@@ -22,8 +22,8 @@ projdir/results/iterative_blast_phylo_2/reports and all
 rows where the matching supplied ``--blastcol`` matches the ``blastvalue`` are
 used.
 The resulting matched columns will then be used to match reads inside of the input
-R1 and R2 fastq files. Reads are extracted and concatenated into the requested
-output file.
+R1 and R2 fastq files(results/step1/R*.fastq). Reads are extracted and concatenated 
+into the requested output file.
 
 
 The end result is a single fastq file that contains all input reads that compose
@@ -67,13 +67,16 @@ def get_fastq_records_for_unassembled(projpath, blastcol, blastval, writefqidsli
         raise ValueError('Missing {0} files'.format(_inputfiles))
 
     fqrecs = []
-    with open('fastqids.lst', 'w') as fh:
-        # Iterate over the input and report together
-        for inputfile, smallreport in zip(inputfiles, reportpaths):
-            fqids = get_qseqids_from_blastreport(smallreport, blastcol, blastval)
-            fqg = filter_fastq_by_ids(inputfile, fqids)
-            fqrecs.append(fqg)
-            for _id in fqids:
+    fq_ids = []
+    # Iterate over the input and report together
+    for inputfile, smallreport in zip(inputfiles, reportpaths):
+        fqids = get_qseqids_from_blastreport(smallreport, blastcol, blastval)
+        fqg = filter_fastq_by_ids(inputfile, fqids)
+        fqrecs.append(fqg)
+        fq_ids += fqids
+    if writefqidslist:
+        with open('fastqids.lst','w') as fh:
+            for _id in fq_ids:
                 fh.write(_id + '\n')
     return fqrecs
 
