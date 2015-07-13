@@ -39,5 +39,12 @@ bunch==1.0.1
 path.py==5.2
 termcolor
 matplotlib
-https://github.com/VDBWRAIR/bio_pieces/archive/v1.1.0.zip
 tempdir
+
+# bio_pieces
+argparse
+future
+pandas
+docopt
+schema
+git+https://github.com/VDBWRAIR/bio_pieces.git@v1.1.0#egg=bio_pieces
