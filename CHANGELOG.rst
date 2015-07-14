@@ -6,6 +6,8 @@ Version 4.3.0
 
 * Added get_blast_reads script which allows user to retrieve all reads for a specific
   blast col=>val pair
+* Fixed a minor bug where par_block_blast.pl in iterative_blast_phylo would spawn
+  an extra blast process in some cases
 
 Version 4.2.3
 -------------
