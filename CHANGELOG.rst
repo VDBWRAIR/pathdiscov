@@ -8,6 +8,7 @@ Version 4.3.0
   blast col=>val pair
 * Fixed a minor bug where par_block_blast.pl in iterative_blast_phylo would spawn
   an extra blast process in some cases
+* Fixed issue with make_pie where debug lines were printed
 
 Version 4.2.3
 -------------
