@@ -22,7 +22,6 @@ if not is_64bits:
 options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
 
-basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
 pro_dir= os.path.basename(project_dir)
 sge = options.sge
@@ -181,7 +180,7 @@ def main():
         (__name__ + '.createPram', createPram),
     ]
 
-    print "....................." + basedir + "/" + project_dir
+    print "....................." + project_dir
 
     if options.param:
         helpers.create_new_project(project_dir)
