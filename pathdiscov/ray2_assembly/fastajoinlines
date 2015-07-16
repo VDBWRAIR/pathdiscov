@@ -1,7 +1,0 @@
-#!/bin/awk -f
-
-# copyright Vladimir Trifonov 2012. contact: vladot@c2b2.columbia.edu
-
-BEGIN{f=0}
-{if ($0~/^>/) {if (f) printf "\n"; print $0; f=1} else printf $0}
-END{printf "\n"}
