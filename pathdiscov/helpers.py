@@ -424,10 +424,7 @@ def setup_shell_environment(config):
     # TODO: This needs to be better written as these paths are assumed and
     # really scripts path should not be necessary
     os.environ['PATH'] = installdir + os.pathsep + \
-        os.path.join('/usr','lib64','openmpi','bin') + os.pathsep + \
-        os.path.join(installdir,'bin') + os.pathsep + \
-        os.path.join(installdir,'scripts') + \
-        os.pathsep + os.path.join(installdir,'step1') + \
+        os.path.join('/usr','lib64','openmpi','bin') + \
         os.pathsep + os.environ['PATH']
 
 def setup_param(config, paramoutputfile):
