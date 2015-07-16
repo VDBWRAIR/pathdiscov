@@ -12,6 +12,13 @@ Version 4.3.0
 * Removed/Consolidated redundant scripts
 * pathdiscov/scripts/* now copied into virtualenv's bin and are referenced
   without need for path_scripts
+* All stages can now be run independently with minimal effort. That is, you can run
+  host_map.pl, iterative_blast_phylo.pl, ray2_assembly.pl, quality_filter.pl
+  orf_filter.pl, or any script that came with the pipeline inside of the
+  pathdiscov/scripts directory directly.
+  This makes debugging the pipeline much easier as you can simply ensure the 
+  virtualenv is activated and copy/paste any command from the log files into your
+  terminal and it should run.
 
 Version 4.2.3
 -------------
