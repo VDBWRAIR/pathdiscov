@@ -24,8 +24,6 @@ GetOptions ('outputdir=s' => \$outputdir,					# outputdir
 
 # get abs path to directory in which script resides:
 my $mytmp=`readlink -m $0`; 					# perl's readlink function is lousy, so use bash
-my $path_scripts=`dirname $mytmp`; 
-chomp $path_scripts;
 
 # get absolute path to outputdir
 my $mytmp=`readlink -m $outputdir`;
@@ -147,7 +145,7 @@ while ( $i < $ninst )
 	
 # 	print $prefix.$suffix,"\n";
 	
-	my $cmd = "$path_scripts/blast_wrapper.pl --type ${blast_type} --query $prefix$suffix --db ${db} --task ${task} --out blastout${suffix} --options \"${blast_options}\"";
+	my $cmd = "blast_wrapper.pl --type ${blast_type} --query $prefix$suffix --db ${db} --task ${task} --out blastout${suffix} --options \"${blast_options}\"";
 	print "[cmd] ",$cmd,"\n";
 	system($cmd);	
 		

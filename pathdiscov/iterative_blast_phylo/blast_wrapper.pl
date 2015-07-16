@@ -9,10 +9,8 @@
 # e.g., blast_wrapper.pl --type blastn --query input.fasta --db /my/db --task megablast --out output.blast --options '-evalue 1e-4 -word_size 28'
 
 use Getopt::Long;
-# use FindBin;
-# use lib "$FindBin::Bin/../Local_Module";
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 use Verbose_Sys;
 
 # default

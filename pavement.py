@@ -78,7 +78,7 @@ options(setup=setup_dict,
         ),
         perl_modules=Bunch(        
             srcdir=path('pathdiscov/Local_Module'),
-            dstdir=path('pathdiscov/lib')
+            dstdir=path(sys.prefix) / 'lib'
         ),
         snap=Bunch(
             sfile =path('pathdiscov/download/snap')

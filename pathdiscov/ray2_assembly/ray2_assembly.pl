@@ -8,7 +8,7 @@ use Cwd 'abs_path';
 use File::Spec;
 
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 # local modules:
 use Verbose_Sys;
 use Parse_ParameterFile;
