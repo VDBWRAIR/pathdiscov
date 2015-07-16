@@ -33,7 +33,6 @@ my ($man);					# man bool
 my $timestamp="0";				# time stamp (default is 0)
 my ($output_r1);				# output R1
 my ($output_r2);				# output R2
-my $path_scripts=$RealBin;			# get abs path to directory in which script resides (where to look for sister scripts)
 my @mates=("R1","R2");				# strings for mates
 my $command="quality_filter";			# set command
 
@@ -83,7 +82,7 @@ open STDERR, '>&', $elog;
 if ( $r1 ne "none" && defined($r1) )
 {
 	$hoh{$command}{"R1"}=abs_path($r1);
-    my $cmd = "linecount $hoh{$command}{$mate} input $mate.count 1 1";
+    my $cmd = "linecount $hoh{$command}{'R1'} input ${outputdir}/R1.count 1 0";
     print "[cmd] ",$cmd,"\n";
     system($cmd);
 }
@@ -91,7 +90,7 @@ if ( $r1 ne "none" && defined($r1) )
 if ( $r2 ne "none" && defined($r2) )
 {
 	$hoh{$command}{"R2"}=abs_path($r2);
-    my $cmd = "linecount $hoh{$command}{$mate} input $mate.count 1 1";
+    my $cmd = "linecount $hoh{$command}{'R2'} input ${outputdir}/R2.count 1 0";
     print "[cmd] ",$cmd,"\n";
     system($cmd);
 } 	

@@ -19,6 +19,9 @@ SCRATCH = join(TESTDIR, 'test_runs')
 # testData directory
 TESTDATA = join(dirname(TESTDIR), 'testData')
 
+# pathdiscov directory
+PATHDISCOV = join(dirname(TESTDIR), 'pathdiscov')
+
 # All projects need these files regardless of -R1 -R2
 # Paths are relative to --outdir
 PROJECT_FILES = [

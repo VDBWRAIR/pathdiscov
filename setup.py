@@ -296,6 +296,7 @@ setup_dict = dict(
         'pathdiscov/download/bowtie2/bowtie2',
         'pathdiscov/download/diamond64/diamond',
         'pathdiscov/download/snap/snap',
+        'pathdiscov/quality_filter/quality_filter.pl',
     ] + glob('pathdiscov/download/bowtie2/bowtie2-*') +
         glob('pathdiscov/download/blast-2.2.28/bin/*') +
         glob('pathdiscov/download/prinseq-lite-0.20.3/*.pl') +
