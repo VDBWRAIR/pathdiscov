@@ -22,6 +22,9 @@ TESTDATA = join(dirname(TESTDIR), 'testData')
 # pathdiscov directory
 PATHDISCOV = join(dirname(TESTDIR), 'pathdiscov')
 
+# Rikkcdna test db path
+RIKKDB = join(TESTDIR, 'rikkcdna')
+
 # All projects need these files regardless of -R1 -R2
 # Paths are relative to --outdir
 PROJECT_FILES = [
