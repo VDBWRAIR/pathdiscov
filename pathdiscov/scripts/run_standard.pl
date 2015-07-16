@@ -7,7 +7,7 @@ use Getopt::Long;
 use Cwd 'abs_path';
 
 use FindBin qw($RealBin);
-use lib "$RealBin/Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 
 # local modules:
 use Verbose_Sys;
@@ -102,7 +102,7 @@ if($r2 ne "none") {
     $arg_r2 = "--R2 $r2"
 }
 
-my $cmd = "$path_scripts/pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 $arg_r2 --SGE $sge";
+my $cmd = "pathogen.pl --sample $sample --command $strstages --paramfile $paramFile --outputdir $outputdir --R1 $r1 $arg_r2 --SGE $sge";
 #print($cmd);
 print_system($cmd);
 
@@ -130,24 +130,24 @@ else
 }
 
 print("\n-|-------unassembled reads-------|-\n");
-print_system("$path_scripts/pathogen.pl --sample $sample --command iterative_blast_phylo_2 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
+print_system("pathogen.pl --sample $sample --command iterative_blast_phylo_2 --paramfile $paramFile --outputdir $outputdir --R1 $r1 --R2 $r2");
 
 print("\n-|-------read counts-------|-\n");
 print_system("mkdir -p $outputdir/output");
-print_system("$path_scripts/scripts/readcount.pl --sample $sample --outputdir $outputdir/output --projdir $outputdir --dirlist \"step1,quality_filter,host_map_1,ray2_assembly_1,iterative_blast_phylo_1,iterative_blast_phylo_2\" --trackread");
+print_system("readcount.pl --sample $sample --outputdir $outputdir/output --projdir $outputdir --dirlist \"step1,quality_filter,host_map_1,ray2_assembly_1,iterative_blast_phylo_1,iterative_blast_phylo_2\" --trackread");
 
-print_system("$path_scripts/scripts/process_counts.pl --sample $sample --outputdir $outputdir/output > $outputdir/output/stats.txt");
+print_system("process_counts.pl --sample $sample --outputdir $outputdir/output > $outputdir/output/stats.txt");
 
-print_system("$path_scripts/scripts/augment_report.sh $outputdir $sample");
+print_system("augment_report.sh $outputdir $sample");
 
 if ($r2 ne "none")
 {
-	print_system("$path_scripts/scripts/join_smallreport.pl --outputdir $outputdir/iterative_blast_phylo_2/reports --prefix $sample --R1report $outputdir/iterative_blast_phylo_2/reports/R1.$sample.top.smallreport.txt --R2report $outputdir/iterative_blast_phylo_2/reports/R2.$sample.top.smallreport.txt --R1qualdiscard $outputdir/quality_filter/R1.discard --R1hostdiscard $outputdir/host_map_1/R1.discard --R2qualdiscard $outputdir/quality_filter/R2.discard --R2hostdiscard $outputdir/host_map_1/R2.discard");
+	print_system("join_smallreport.pl --outputdir $outputdir/iterative_blast_phylo_2/reports --prefix $sample --R1report $outputdir/iterative_blast_phylo_2/reports/R1.$sample.top.smallreport.txt --R2report $outputdir/iterative_blast_phylo_2/reports/R2.$sample.top.smallreport.txt --R1qualdiscard $outputdir/quality_filter/R1.discard --R1hostdiscard $outputdir/host_map_1/R1.discard --R2qualdiscard $outputdir/quality_filter/R2.discard --R2hostdiscard $outputdir/host_map_1/R2.discard");
 
 }
 
 print("\n-|-------checkerror-------|-\n");
-print_system("$path_scripts/pathogen.pl --checkerror --outputdir $outputdir");
+print_system("pathogen.pl --checkerror --outputdir $outputdir");
 
 print("\n-|-------cleanup-------|-\n");
 # print_system("$path_scripts/pathogen.pl --cleanup --outputdir $outputdir");

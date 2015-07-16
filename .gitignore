@@ -83,5 +83,7 @@ pathdiscov/download/htslib-*
 pathdiscov/download/samtools-*
 pathdiscov/download/fastqc*
 pathdiscov/download/.pip_cache
+tests/test_runs
+docs/pathdiscov
 
 #Negate, include the file

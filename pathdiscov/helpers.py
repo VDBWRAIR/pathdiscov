@@ -412,7 +412,7 @@ def setup_shell_environment(config):
     os.environ['INNO_TAX_NAMES'] = config['tax_names']
 
     os.environ['INNO_SCRIPTS_PATH'] = installdir
-    os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
+    #os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
     os.environ['R_LIBS'] = os.path.join(installdir, 'scripts')
     # Set LD_LIBRARY_PATH
     # TODO: This needs to be better written as it may be 32 bit arch

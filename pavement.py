@@ -76,6 +76,10 @@ options(setup=setup_dict,
             olink =path('pathdiscov/bin')
 
         ),
+        perl_modules=Bunch(        
+            srcdir=path('pathdiscov/Local_Module'),
+            dstdir=path('pathdiscov/lib')
+        ),
         snap=Bunch(
             sfile =path('pathdiscov/download/snap')
         ),
@@ -327,6 +331,10 @@ def refRay(options):
         sys.exit()
 
 @task
+def perl_modules(options):
+    sh('cp -R {0} {1}'.format(options.srcdir, options.dstdir))
+
+@task
 def getorf(options):
     """Install  EMBOSS getorf """
     getorf=join(sys.prefix,'bin','getorf')
@@ -413,7 +421,7 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap')
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap','perl_modules')
 def install_other_dependencies():
     pass
 

@@ -198,15 +198,15 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 			verbose_system($cmd);
 			
 			# get unmapped read IDs
-			my $cmd = "cat map_$j/out.sam | $path_scripts/get_map_unmap.pl --R1map map_$j/R1.map.id --R2map map_$j/R2.map.id --R1unmap map_$j/R1.unmap.id --R2unmap map_$j/R2.unmap.id --paired --printsid";
+			my $cmd = "cat map_$j/out.sam | get_map_unmap.pl --R1map map_$j/R1.map.id --R2map map_$j/R2.map.id --R1unmap map_$j/R1.unmap.id --R2unmap map_$j/R2.unmap.id --paired --printsid";
 			verbose_system($cmd);
 			
 			# get unmap reads
-			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/R1.unmap.id > map_$j/R1.unmap.fastq";
+			my $cmd="fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/R1.unmap.id > map_$j/R1.unmap.fastq";
 			print_system($cmd);
 
 			# get unmap reads
-			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/R2.unmap.id > map_$j/R2.unmap.fastq";
+			my $cmd="fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/R2.unmap.id > map_$j/R2.unmap.fastq";
 			print_system($cmd);	
     
             # The next time we map, likely that the input files are no longer wellpaired
@@ -217,7 +217,7 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 		{
             print "[echo] Doing non wellpaired mapping\n";
 			# get well paired reads and non-well paired reads
-			my $cmd="$path_scripts/perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} map_$j/R1.single.fastq map_$j/R1.paired.fastq map_$j/R2.single.fastq map_$j/R2.paired.fastq";
+			my $cmd="perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} map_$j/R1.single.fastq map_$j/R1.paired.fastq map_$j/R2.single.fastq map_$j/R2.paired.fastq";
 			verbose_system($cmd);
 
             if($aligner eq "bowtie2") {
@@ -246,23 +246,23 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 			verbose_system($cmd);
 			
 			# get unmapped read IDs
-			my $cmd = "cat map_$j/out.sam | $path_scripts/get_map_unmap.pl --R1map map_$j/R1.map.id --R2map map_$j/R2.map.id --R1unmap map_$j/R1.unmap.id --R2unmap map_$j/R2.unmap.id --singletonmap map_$j/singleton.map.id --singletonunmap map_$j/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat map_$j/out.sam | get_map_unmap.pl --R1map map_$j/R1.map.id --R2map map_$j/R2.map.id --R1unmap map_$j/R1.unmap.id --R2unmap map_$j/R2.unmap.id --singletonmap map_$j/singleton.map.id --singletonunmap map_$j/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);
 			
 			# get unmap reads (R1, paired)
-			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/R1.unmap.id > map_$j/R1.unmap.fastq";
+			my $cmd="fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/R1.unmap.id > map_$j/R1.unmap.fastq";
 			print_system($cmd);
 
 			# get unmap reads (R2, paired)
-			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/R2.unmap.id > map_$j/R2.unmap.fastq";
+			my $cmd="fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/R2.unmap.id > map_$j/R2.unmap.fastq";
 			print_system($cmd);
 
 			# get unmap reads (R1, singleton)
-			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/singleton.unmap.id >> map_$j/R1.unmap.fastq";
+			my $cmd="fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/singleton.unmap.id >> map_$j/R1.unmap.fastq";
 			print_system($cmd) if ( -s "map_$j/singleton.unmap.id" );
 
 			# get unmap reads (R2, singleton)
-			my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/singleton.unmap.id >> map_$j/R2.unmap.fastq";
+			my $cmd="fastq_extract_id.pl $hoh{$command}{\"R2\"} map_$j/singleton.unmap.id >> map_$j/R2.unmap.fastq";
 			print_system($cmd) if ( -s "map_$j/singleton.unmap.id" );	
 		}
 	}
@@ -280,11 +280,11 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 		verbose_system($cmd);
 		
 		# get unmapped read IDs
-		my $cmd = "cat map_$j/out.sam | $path_scripts/get_map_unmap.pl --singletonmap map_$j/singleton.map.id --singletonunmap map_$j/singleton.unmap.id --unpaired --printsid";
+		my $cmd = "cat map_$j/out.sam | get_map_unmap.pl --singletonmap map_$j/singleton.map.id --singletonunmap map_$j/singleton.unmap.id --unpaired --printsid";
 		verbose_system($cmd);
 		
 		# get unmap reads (R1, singleton)
-		my $cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/singleton.unmap.id > map_$j/R1.unmap.fastq";
+		my $cmd="fastq_extract_id.pl $hoh{$command}{\"R1\"} map_$j/singleton.unmap.id > map_$j/R1.unmap.fastq";
 		print_system($cmd);		
 	}
 	

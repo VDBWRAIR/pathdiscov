@@ -38,7 +38,7 @@ use File::Basename;
 use Cwd 'abs_path';
 
 use FindBin qw($RealBin);
-use lib "$RealBin/Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 
 # local modules:
 use Verbose_Sys;
@@ -134,7 +134,7 @@ if ($isfasta)
 # print various files, then exit
 if ($example)
 {
-    system("cat $path_scripts/lib/python*/site-packages/pathdiscov/files/sample.param");
+    system("cat $path_scripts/../lib/python*/site-packages/pathdiscov/files/sample.param");
 	exit;
 }
 
@@ -146,13 +146,13 @@ if ($filekey)
 
 if ($checkerror)
 {
-	if ($verbose) { system("$path_scripts/scripts/checkerror.sh $path_output 1"); } else { system("$path_scripts/scripts/checkerror.sh $path_output 0"); }
+	if ($verbose) { system("checkerror.sh $path_output 1"); } else { system("checkerror.sh $path_output 0"); }
 	exit;
 }
 
 if ($boolcleanup)
 {
-	system("$path_scripts/scripts/cleanup.sh $path_output");
+	system("cleanup.sh $path_output");
 	exit;
 }
 
@@ -221,7 +221,6 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 				
-				#my $cmd = "$path_scripts/step1/step1.pl --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				my $cmd = "step1 --sample $sample --paramfile $pfile --outputdir $path_output/step1 --logs $path_output/step1/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
 						
@@ -248,7 +247,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 					
-				my $cmd = "$path_scripts/quality_filter/quality_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/quality_filter --logs $path_output/quality_filter/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
+				my $cmd = "quality_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/quality_filter --logs $path_output/quality_filter/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2";
 				verbose_system($cmd);
 
 				$out_r1 = "$path_output/$command[$i]/$command[$i].R1" if ( -e "$path_output/$command[$i]/$command[$i].R1" );	
@@ -289,7 +288,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/host_map_$num/logs";
 				print_system($cmd);
 						
-				my $cmd = "$path_scripts/host_map/host_map.pl --sample $sample --paramfile $pfile --outputdir $path_output/host_map_$num --logs $path_output/host_map_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --wellpaired $wellpaired --run_iteration $num";
+				my $cmd = "host_map.pl --sample $sample --paramfile $pfile --outputdir $path_output/host_map_$num --logs $path_output/host_map_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --wellpaired $wellpaired --run_iteration $num";
 				verbose_system($cmd);
 				
 				$out_r1 = "$path_output/host_map_$num/host_map_$num.R1" if ( -e "$path_output/host_map_$num/host_map_$num.R1" );	
@@ -328,7 +327,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/$command[$i]/logs";
 				print_system($cmd);
 						
-				my $cmd = "$path_scripts/orf_filter/orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date $r1r2";
+				my $cmd = "orf_filter.pl --sample $sample --paramfile $pfile --outputdir $path_output/$command[$i] --logs $path_output/$command[$i]/logs --timestamp $start_date $r1r2";
 				verbose_system($cmd);
 
 			}
@@ -430,7 +429,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
                     $r1r2 .= $abs_r1 . " --R2 " . $abs_r2;
                     $is_fasta = "no";				
                 }
-                my $cmd = "$path_scripts/$command_prefix/$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date $r1r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
+                my $cmd = "$command_prefix.pl --sample $sample --paramfile $pfile --outputdir $path_output/iterative_blast_phylo_$num --logs $path_output/iterative_blast_phylo_$num/logs --timestamp $start_date $r1r2 --fastafile $is_fasta --run_iteration $num --contig $boolcontigname";
 				verbose_system($cmd);
 				
                 $out_contig = "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.contig" if ( -e "$path_output/iterative_blast_phylo_$num/iterative_blast_phylo_$num.contig" );	
@@ -475,7 +474,7 @@ for (my $i = 0; $i < scalar(@command); $i++)
 				my $cmd = "mkdir -p $path_output/ray2_assembly_$num/logs";
 				print_system($cmd);
 					
-				my $cmd = "$path_scripts/ray2_assembly/ray2_assembly.pl --sample $sample --paramfile $pfile --outputdir $path_output/ray2_assembly_$num --logs $path_output/ray2_assembly_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --run_iteration $num";
+				my $cmd = "ray2_assembly.pl --sample $sample --paramfile $pfile --outputdir $path_output/ray2_assembly_$num --logs $path_output/ray2_assembly_$num/logs --timestamp $start_date --R1 $abs_r1 --R2 $abs_r2 --fastafile $is_fasta --run_iteration $num";
 				verbose_system($cmd);
 				
 				# assembly produces a single output file:

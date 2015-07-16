@@ -156,7 +156,7 @@ if ($isfasta || $fastafile eq "yes")
 	if ($hoh{$command}{"R2"})
 	{
 		print "[echo] find mate pairs and singletons\n";
-		my $cmd = "$path_scripts/perlscripts_wrapper.pl get_common_uneven_fastas $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fasta R1.paired.fasta R2.single.fasta R2.paired.fasta";
+		my $cmd = "perlscripts_wrapper.pl get_common_uneven_fastas $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fasta R1.paired.fasta R2.single.fasta R2.paired.fasta";
 		verbose_system($cmd);		
 		
 		print "[echo] ray2 assembly - paired end fasta\n";
@@ -187,7 +187,7 @@ else
 	if ($hoh{$command}{"R2"})
 	{
 		print "[echo] find mate pairs and singletons\n";
-		my $cmd = "$path_scripts/perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fastq R1.paired.fastq R2.single.fastq R2.paired.fastq";
+		my $cmd = "perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fastq R1.paired.fastq R2.single.fastq R2.paired.fastq";
 		verbose_system($cmd);	
 
 		print "[echo] ray2 assembly - paired end fastq\n";
@@ -282,7 +282,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			my $cmd = "bowtie2 -q -x bowtie2_index/contigs -1 R1.paired.fastq -2 R2.paired.fastq -U R1.single.fastq,R2.single.fastq -S bowtie2_mapping/out.sam $hoh{$command}{\"bowtie2_options\"}";
 			verbose_system($cmd);		
 
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);	
 		}
 		elsif ( -s "R1.single.fastq" )
@@ -290,7 +290,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			my $cmd = "bowtie2 -q -x bowtie2_index/contigs -1 R1.paired.fastq -2 R2.paired.fastq -U R1.single.fastq -S bowtie2_mapping/out.sam $hoh{$command}{\"bowtie2_options\"}";
 			verbose_system($cmd);
 			
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);					
 		}
 		elsif ( -s "R2.single.fastq" )
@@ -298,7 +298,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			my $cmd = "bowtie2 -q -x bowtie2_index/contigs -1 R1.paired.fastq -2 R2.paired.fastq -U R2.single.fastq -S bowtie2_mapping/out.sam $hoh{$command}{\"bowtie2_options\"}";
 			verbose_system($cmd);
 			
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);				
 		}
 		else
@@ -307,7 +307,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			verbose_system($cmd);
 			
 			# here dont make singleton files
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --paired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --paired --printsid";
 			verbose_system($cmd);					
 		}
 	} # if R2
@@ -317,7 +317,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		verbose_system($cmd);
 		
 		# here don't make paired files
-		my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --unpaired --printsid";
+		my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --unpaired --printsid";
 		verbose_system($cmd);				
 	}
 
@@ -331,12 +331,12 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
 		{			
 			# get unmap reads
-			$cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/$mate.unmap.id > bowtie2_mapping/$mate.unmap.fastq";
+			$cmd="fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/$mate.unmap.id > bowtie2_mapping/$mate.unmap.fastq";
 			print_system($cmd);
 			# get unmap reads from singleton file if it exists	
 			if ( -s "bowtie2_mapping/singleton.unmap.id" )
 			{
-				$cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/singleton.unmap.id >> bowtie2_mapping/$mate.unmap.fastq";
+				$cmd="fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/singleton.unmap.id >> bowtie2_mapping/$mate.unmap.fastq";
 				print_system($cmd);
 			}
 				
