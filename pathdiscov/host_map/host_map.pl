@@ -150,7 +150,7 @@ foreach my $mate (@mates)
 	{
 		# count lines in file
 		# args: input file, filtering_program_name, output file, 1->fastq, concat
-		my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} input $mate.count 1 0";
+		my $cmd = "linecount $hoh{$command}{$mate} input $mate.count 1 0";
 		print_system($cmd);	
 	}
 }
@@ -309,13 +309,13 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 			$hoh{$command}{$mate} = "$outputdir/map_$j/$mate.unmap.fastq";										
 			system("ln -sf map_$j/$mate.unmap.fastq $outputdir/host_map_$run_iteration.$mate");
 		
-			my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} $mapper_name_list[$i] $mate.count 1 1";
+			my $cmd = "linecount $hoh{$command}{$mate} $mapper_name_list[$i] $mate.count 1 1";
 			print "[cmd] ",$cmd,"\n";
 			system($cmd);
 			
 			# (take this out of loop for efficiency - only needs to be done on the final iteration)
 			# get discard IDs - i.e., the reads filtered in this step
-			my $cmd = "$path_scripts/../scripts/fastaq_tools_diff.exe --fastq $hoh{$command}{$mate.\"input\"} --fastq $hoh{$command}{$mate} > $mate.discard";
+			my $cmd = "fastaq_tools_diff.exe --fastq $hoh{$command}{$mate.\"input\"} --fastq $hoh{$command}{$mate} > $mate.discard";
 			verbose_system($cmd);
 		}
 	}

@@ -185,7 +185,7 @@ foreach my $mate (@mates)
 		
 		# count lines in file
 		# args: input file, filtering_program_name, output file, 2->fasta, concat
-		my $cmd = "$path_scripts/linecount.sh 1.".$mate.".fasta input $mate.count 2 0";
+		my $cmd = "linecount 1.".$mate.".fasta input $mate.count 2 0";
 		print_system($cmd);
 		
 		# here's the larger picture: submit order: iteration n ... 3,2,1; submit order: second first; pass jid2 to first; first releases second when finished; when second itself finishes, it releases the next iteration of first

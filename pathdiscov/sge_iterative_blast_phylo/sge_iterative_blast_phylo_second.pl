@@ -100,7 +100,7 @@ print "[cmd] ",$cmd,"\n";
 system($cmd);
 
 # args: input file, filtering_program_name, output file, 2->fasta, concat
-my $cmd = "$path_scripts/linecount.sh $j.$r.noblast.fasta $blast_task_list[$i] $r.count 2 1";
+my $cmd = "linecount $j.$r.noblast.fasta $blast_task_list[$i] $r.count 2 1";
 print "[cmd] ",$cmd,"\n";
 system($cmd);			
 

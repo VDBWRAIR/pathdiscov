@@ -298,7 +298,8 @@ setup_dict = dict(
         'pathdiscov/download/snap/snap',
     ] + glob('pathdiscov/download/bowtie2/bowtie2-*') +
         glob('pathdiscov/download/blast-2.2.28/bin/*') +
-        glob('pathdiscov/download/prinseq-lite-0.20.3/*.pl'),
+        glob('pathdiscov/download/prinseq-lite-0.20.3/*.pl') +
+        glob('pathdiscov/scripts/*'),
     package_data = {
         'pathdiscov': ['files/*', 'output_files_templates/*'],
     }
@@ -321,7 +322,6 @@ def main():
             raise ValueError("No paver on the path")
         import paver.tasks
     paver.tasks.main()
-    runTask()
 
 if __name__ == '__main__':
     main()

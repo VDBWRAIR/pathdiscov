@@ -83,11 +83,17 @@ open STDERR, '>&', $elog;
 if ( $r1 ne "none" && defined($r1) )
 {
 	$hoh{$command}{"R1"}=abs_path($r1);
+    my $cmd = "linecount $hoh{$command}{$mate} input $mate.count 1 1";
+    print "[cmd] ",$cmd,"\n";
+    system($cmd);
 }
 
 if ( $r2 ne "none" && defined($r2) )
 {
 	$hoh{$command}{"R2"}=abs_path($r2);
+    my $cmd = "linecount $hoh{$command}{$mate} input $mate.count 1 1";
+    print "[cmd] ",$cmd,"\n";
+    system($cmd);
 } 	
 
 print "[START]\n";
@@ -147,7 +153,7 @@ foreach my $mate (@mates)
 			# 	system("ln -sf $mate.cut.fastq $command.$mate");		
 		
 			# 	# count lines
-			# 	my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} cut_adapt $mate.count 1 1";
+			# 	my $cmd = "linecount $hoh{$command}{$mate} cut_adapt $mate.count 1 1";
 			# 	print "[cmd] ",$cmd,"\n";
 			# 	system($cmd);		
 			# }
@@ -165,7 +171,7 @@ foreach my $mate (@mates)
 				system("ln -sf $mate.cut.fastq $command.$mate");		
 		
 				# count lines
-				my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} cut_adapt $mate.count 1 1";
+				my $cmd = "linecount $hoh{$command}{$mate} cut_adapt $mate.count 1 1";
 				print "[cmd] ",$cmd,"\n";
 				system($cmd);		
 			}
@@ -183,7 +189,7 @@ foreach my $mate (@mates)
 				system("ln -sf $mate.cut.fastq $command.$mate");		
 		
 				# count lines
-				my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} cut_adapt $mate.count 1 1";
+				my $cmd = "linecount $hoh{$command}{$mate} cut_adapt $mate.count 1 1";
 				print "[cmd] ",$cmd,"\n";
 				system($cmd);		
 			}
@@ -210,7 +216,7 @@ foreach my $mate (@mates)
 		# 		system("ln -sf $mate.cut2.fastq $command.$mate");		
 		
 		# 		# count lines
-		# 		my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} cut_adapt2 $mate.count 1 1";
+		# 		my $cmd = "linecount $hoh{$command}{$mate} cut_adapt2 $mate.count 1 1";
 		# 		print "[cmd] ",$cmd,"\n";
 		# 		system($cmd);		
 		# 	}
@@ -238,7 +244,7 @@ foreach my $mate (@mates)
 				$hoh{$command}{$mate} = "$mate.prinseq.fastq";
 				system("ln -sf $mate.prinseq.fastq $command.$mate");
 				
-				my $cmd = "$path_scripts/linecount.sh $hoh{$command}{$mate} prinseq $mate.count 1 1";
+				my $cmd = "linecount $hoh{$command}{$mate} prinseq $mate.count 1 1";
 				print "[cmd] ",$cmd,"\n";
 				system($cmd);
 			}
@@ -247,7 +253,7 @@ foreach my $mate (@mates)
 		# --------------------------------------
 		
 		# get discard IDs - i.e., the reads filtered in this step
-		my $cmd = "$path_scripts/../scripts/fastaq_tools_diff.exe --fastq $hoh{$command}{$mate.\"input\"} --fastq $hoh{$command}{$mate} > $mate.discard";
+		my $cmd = "fastaq_tools_diff.exe --fastq $hoh{$command}{$mate.\"input\"} --fastq $hoh{$command}{$mate} > $mate.discard";
 		verbose_system($cmd);		
 
 	} # defined

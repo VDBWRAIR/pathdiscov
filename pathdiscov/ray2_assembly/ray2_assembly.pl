@@ -229,9 +229,9 @@ else
 }
 
 # put contigs seqs on a single line and replace ID strings w numbers
-# my $cmd = "cat $outputdir/results/Contigs.fasta | $path_scripts/../scripts/fastajoinlines > $output";
+# my $cmd = "cat $outputdir/results/Contigs.fasta | fastajoinlines > $output";
 # args: scripts input output
-my $cmd = "$path_scripts/joinlines.sh $path_scripts/../scripts $outputdir/results/Contigs.fasta $output_ray";
+my $cmd = "$path_scripts/joinlines.sh $outputdir/results/Contigs.fasta $output_ray";
 print_system($cmd);
 
 system("ln -sf $output_ray $output");		
@@ -244,14 +244,14 @@ if ( $hoh{$command}{"cap"} )
 	my $cmd = "cat $output_ray.cap.contigs $output_ray.cap.singlets > $output_ray.cap.concat";
 	print_system($cmd);
 	
-	my $cmd = "$path_scripts/joinlines.sh $path_scripts/../scripts $output_ray.cap.concat $output_cap";
+	my $cmd = "$path_scripts/joinlines.sh $output_ray.cap.concat $output_cap";
 	print_system($cmd);
 
 	print_system("ln -sf $output_cap $output");		
 }
 
 # args: input file, filtering_program_name, output file, 2->fasta, concat
-my $cmd = "$path_scripts/linecount.sh $output ray_assembly_".$run_iteration." $filecount 2 0";
+my $cmd = "linecount $output ray_assembly_".$run_iteration." $filecount 2 0";
 print_system($cmd);
 
 # if map to contigs option:
@@ -347,7 +347,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		
 			# count lines
 			# args: input file, filtering_program_name, output file, 2->fasta, concat
-			my $cmd = "$path_scripts/linecount.sh $run_iteration.$mate.unmap.fastq ray_".$run_iteration." $mate.count 1 0";
+			my $cmd = "linecount $run_iteration.$mate.unmap.fastq ray_".$run_iteration." $mate.count 1 0";
 			print_system($cmd);				
 		}
 	}
