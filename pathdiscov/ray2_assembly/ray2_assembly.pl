@@ -109,12 +109,16 @@ if ( $r1 ne "none" && defined($r1) )
 {
 	$abs_r1 = abs_path($r1);
 	$hoh{$command}{"R1"}=$abs_r1;
+    my $cmd = "linecount $abs_r1 input ${outputdir}/R1.count 1 0";
+    print_system($cmd);
 }
 
 if ( $r2 ne "none" && defined($r2) )
 {
 	$abs_r2 = abs_path($r2);
 	$hoh{$command}{"R2"}=$abs_r2;
+    my $cmd = "linecount $abs_r1 input ${outputdir}/R2.count 1 0";
+    print_system($cmd);
 }
 
 if ( $hoh{$command}{"ninst"} )	
@@ -129,6 +133,14 @@ print "[hash] ";
 print Dumper \ %hoh;
 
 chdir($outputdir) or die "[error] cannot chdir to $outputdir";
+
+# RHEL/CentOS don't put openmpi in path for whatever reason by default
+local $ENV{PATH} = "$ENV{PATH}:/usr/lib64/openmpi/bin";
+if(system("which mpiexec") != 0) {
+    if(system("which mpiexec") != 0) {
+        die("[error] missing mpiexec. Please ensure openmpi is installed");
+    }
+}
 
 # make special logs dir for blast
 my $cmd = "mkdir -p logs_assembly";
@@ -234,6 +246,10 @@ else
 my $cmd = "$path_scripts/joinlines.sh $outputdir/results/Contigs.fasta $output_ray";
 print_system($cmd);
 
+# put count of ray contigs
+my $cmd = "linecount $output_ray ray_contigs $filecount 2 0";
+print_system($cmd);
+
 system("ln -sf $output_ray $output");		
 
 if ( $hoh{$command}{"cap"} )
@@ -248,11 +264,11 @@ if ( $hoh{$command}{"cap"} )
 	print_system($cmd);
 
 	print_system("ln -sf $output_cap $output");		
-}
 
-# args: input file, filtering_program_name, output file, 2->fasta, concat
-my $cmd = "linecount $output ray_assembly_".$run_iteration." $filecount 2 0";
-print_system($cmd);
+    # put count of cap contigs
+    my $cmd = "linecount $output_cap cap_contigs $filecount 2 1";
+    print_system($cmd);
+}
 
 # if map to contigs option:
 if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq "1" )
@@ -347,7 +363,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		
 			# count lines
 			# args: input file, filtering_program_name, output file, 2->fasta, concat
-			my $cmd = "linecount $run_iteration.$mate.unmap.fastq ray_".$run_iteration." $mate.count 1 0";
+			my $cmd = "linecount $run_iteration.$mate.unmap.fastq unassembled_reads $mate.count 1 1";
 			print_system($cmd);				
 		}
 	}

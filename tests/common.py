@@ -296,10 +296,12 @@ class StageTestBase(unittest.TestCase):
     def tearDownClass(self):
         os.chdir('/')
 
-    def _write_param(self, txt):
-        with open('param.txt','w') as fh:
+    def _write_param(self, txt, parampath=None):
+        if parampath is None:
+            parampath = 'param.txt'
+        with open(parampath,'w') as fh:
             fh.write(txt)
-        return abspath('param.txt')
+        return abspath(parampath)
 
     def _verify_countfile(self, expect, countpath):
         '''
