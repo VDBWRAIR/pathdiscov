@@ -6,7 +6,7 @@ use Data::Dumper;
 use Getopt::Long;
 
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 # local modules:
 use Verbose_Sys;
 use Parse_ParameterFile;
@@ -194,7 +194,7 @@ print "[echo] run a series of blasts R1\n";
 
 # count lines in file
 # args: input file, filtering_program_name, output file, 2->fasta, concat
-my $cmd = "$path_scripts/linecount.sh 1.R1.fasta input R1.count 2 0";
+my $cmd = "linecount 1.R1.fasta input R1.count 2 0";
 print "[cmd] ",$cmd,"\n";
 system($cmd);
 
@@ -263,7 +263,7 @@ if ($hoh{$command}{"input_R2"})
 
 	# count lines in file
 	# args: input file, filtering_program_name, output file, 2->fasta, concat
-	my $cmd = "$path_scripts/linecount.sh 1.R2.fasta input R2.count 2 0";
+	my $cmd = "linecount 1.R2.fasta input R2.count 2 0";
 	print "[cmd] ",$cmd,"\n";
 	system($cmd);	
 		

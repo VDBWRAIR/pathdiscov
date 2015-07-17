@@ -6,7 +6,7 @@ use Data::Dumper;
 use Getopt::Long;
 
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 # local modules:
 use Verbose_Sys;
 use Parse_ParameterFile;
@@ -99,7 +99,7 @@ print "[cmd] ",$cmd,"\n";
 system($cmd);
 
 # args: input file, filtering_program_name, output file, 2->fasta, concat
-my $cmd = "$path_scripts/linecount.sh $j.R$r.noblast.fasta $blast_task_list[$i] R$r.count 2 1";
+my $cmd = "linecount $j.R$r.noblast.fasta $blast_task_list[$i] R$r.count 2 1";
 print "[cmd] ",$cmd,"\n";
 system($cmd);			
 

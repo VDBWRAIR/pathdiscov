@@ -52,18 +52,18 @@ else
 			rm paired.sam
 			
 			# extract the 4 line chunks from a fastq file, given in argument 1 file, for IDs give in argument 2 file
-			cmd="${d}/fastq_extract_id.pl ${r1} paired.unmap.id > R1.unmap.fastq"
+			cmd="fastq_extract_id.pl ${r1} paired.unmap.id > R1.unmap.fastq"
 			echo "[cmd] "$cmd
 			eval ${cmd}	
 
-			cmd="${d}/fastq_extract_id.pl ${r2} paired.unmap.id > R2.unmap.fastq"
+			cmd="fastq_extract_id.pl ${r2} paired.unmap.id > R2.unmap.fastq"
 			echo "[cmd] "$cmd
 			eval ${cmd}		 		
 		
 		else # paired but not well-paired
 		
 			# find pairs and singletons		
-			cmd="${d}/perlscripts_wrapper.pl get_common_uneven_files ${r1} ${r2} R1.single.fastq R1.paired.fastq R2.single.fastq R2.paired.fastq"
+			cmd="perlscripts_wrapper.pl get_common_uneven_files ${r1} ${r2} R1.single.fastq R1.paired.fastq R2.single.fastq R2.paired.fastq"
 			echo "[cmd] "$cmd
 			eval ${cmd}	
 			
@@ -97,11 +97,11 @@ else
 			rm paired.sam
 			
 			# extract the 4 line chunks from a fastq file, given in argument 1 file, for IDs give in argument 2 file
-			cmd="${d}/fastq_extract_id.pl R1.paired.fastq paired.unmap.id > R1.unmap.fastq"
+			cmd="fastq_extract_id.pl R1.paired.fastq paired.unmap.id > R1.unmap.fastq"
 			echo "[cmd] "$cmd
 			eval ${cmd}	
 
-			cmd="${d}/fastq_extract_id.pl R2.paired.fastq paired.unmap.id > R2.unmap.fastq"
+			cmd="fastq_extract_id.pl R2.paired.fastq paired.unmap.id > R2.unmap.fastq"
 			echo "[cmd] "$cmd
 			eval ${cmd}	
 
@@ -130,7 +130,7 @@ else
 				cat R1.single.sam | awk '$3=="*"' | cut -f1 | sort -u | awk '{print "@"$0}' > R1.single.unmap.id
 				rm R1.single.sam
 				
-				cmd="${d}/fastq_extract_id.pl R1.single.fastq R1.single.unmap.id >> R1.unmap.fastq"
+				cmd="fastq_extract_id.pl R1.single.fastq R1.single.unmap.id >> R1.unmap.fastq"
 				echo "[cmd] "$cmd
 				eval ${cmd}					
 				
@@ -160,7 +160,7 @@ else
 				cat R2.single.sam | awk '$3=="*"' | cut -f1 | sort -u | awk '{print "@"$0}' > R2.single.unmap.id
 				rm R2.single.sam
 				
-				cmd="${d}/fastq_extract_id.pl R2.single.fastq R2.single.unmap.id >> R2.unmap.fastq"
+				cmd="fastq_extract_id.pl R2.single.fastq R2.single.unmap.id >> R2.unmap.fastq"
 				echo "[cmd] "$cmd
 				eval ${cmd}	
 							
@@ -192,7 +192,7 @@ else
 		cat R1.single.sam | awk '$3=="*"' | cut -f1 | sort -u | awk '{print "@"$0}' > R1.single.unmap.id
 		rm R1.single.sam
 		
-		cmd="${d}/fastq_extract_id.pl ${r1} R1.single.unmap.id > R1.unmap.fastq"
+		cmd="fastq_extract_id.pl ${r1} R1.single.unmap.id > R1.unmap.fastq"
 		echo "[cmd] "$cmd
 		eval ${cmd}	
 								

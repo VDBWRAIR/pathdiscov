@@ -19,6 +19,12 @@ SCRATCH = join(TESTDIR, 'test_runs')
 # testData directory
 TESTDATA = join(dirname(TESTDIR), 'testData')
 
+# pathdiscov directory
+PATHDISCOV = join(dirname(TESTDIR), 'pathdiscov')
+
+# Rikkcdna test db path
+RIKKDB = join(TESTDIR, 'rikkcdna')
+
 # All projects need these files regardless of -R1 -R2
 # Paths are relative to --outdir
 PROJECT_FILES = [
@@ -271,3 +277,44 @@ class TempDir(unittest.TestCase):
             print "Not removing {0} because keep_temp_dir set".format(self.testdir)
         else:
             shutil.rmtree(self.testdir)
+
+class StageTestBase(unittest.TestCase):
+    @classmethod
+    def setUpClass(klass):
+        klass.tdir = join(SCRATCH, klass.__name__)
+        if exists(klass.tdir):
+            shutil.rmtree(klass.tdir)
+        os.makedirs(klass.tdir)
+        os.chdir(klass.tdir)
+
+    def setUp(self):
+        self.tdir = self.__class__.tdir
+        self.r1_fq = join(TESTDATA, 'F.fastq')
+        self.r2_fq = join(TESTDATA, 'R.fastq')
+
+    @classmethod
+    def tearDownClass(self):
+        os.chdir('/')
+
+    def _write_param(self, txt, parampath=None):
+        if parampath is None:
+            parampath = 'param.txt'
+        with open(parampath,'w') as fh:
+            fh.write(txt)
+        return abspath(parampath)
+
+    def _verify_countfile(self, expect, countpath):
+        '''
+        expect is list((name,count),(name2,count)...)
+        where each tuple should match a line in countpath file
+        '''
+        fh = open(countpath)
+        for line, ex in zip(fh, expect):
+            name, count = line.strip().split()
+            self.assertEqual(ex[0], name)
+            self.assertEqual(ex[1], count)
+
+def aexists(path, msg=None):
+    if msg is None:
+        msg = '{0} does not exist'.format(path)
+    assert exists(path), msg
