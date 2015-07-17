@@ -313,3 +313,8 @@ class StageTestBase(unittest.TestCase):
             name, count = line.strip().split()
             self.assertEqual(ex[0], name)
             self.assertEqual(ex[1], count)
+
+def aexists(path, msg=None):
+    if msg is None:
+        msg = '{0} does not exist'.format(path)
+    assert exists(path), msg
