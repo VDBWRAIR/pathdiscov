@@ -122,8 +122,8 @@ $path_output=abs_path($outputdir);
 $path_logs = $path_output."/logs";
 
 # get abs path to r1 r2:
-$abs_r1=abs_path($r1) if (defined($r1));
-$abs_r2=abs_path($r2) if (defined($r2));
+$abs_r1=abs_path($r1) if ($r1);
+$abs_r2=abs_path($r2) if ($r2);
 
 # set redundant fasta bool (bad style!)
 if ($isfasta)
@@ -531,7 +531,7 @@ sub echo_title
 # check for various errors
 sub check_error 
 {
-	if (!(defined($outputdir)))
+	if (!($outputdir))
 	{
 		print "\n[error] no output directory specified\n\n"; 
 		pod2usage(1);		
@@ -541,12 +541,12 @@ sub check_error
 		print "\n[error] output directory does not exist\n\n"; 
 		pod2usage(1);		
 	}	
-	if (!(defined(@command)))
+	if (!(@command))
 	{
 		print "\n[error] no command option specified\n\n"; 
 		pod2usage(1);		
 	}
-	if (!(defined(@paramfile)))
+	if (!(@paramfile))
 	{
 		print "\n[error] no param file specified\n\n"; 
 		pod2usage(1);			 		
