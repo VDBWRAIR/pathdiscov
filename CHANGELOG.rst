@@ -21,6 +21,11 @@ Version 4.3.0
   terminal and it should run.
 * Count files for every stage now contain input line to verify that each stage
   is receiving the same amount of reads from the prior stage.
+* Fixed bug related to orf_filter incorrectly being run inside of 
+  iterative_blast_phylo_1
+* iterative_blast_phylo_1/contig.count now contains orf_filer count
+* linecount now automatically detects file format for fasta/fastq and will fallback
+  to counting all lines in file
 
 Version 4.2.3
 -------------

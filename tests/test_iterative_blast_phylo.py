@@ -108,3 +108,38 @@ class TestIterativeBlastPhylo(common.StageTestBase):
         aexists(join(outdir,r2_smallreport.format('testsample')))
         self._verify_countfile(expect_count_r1, join(outdir, 'R1.count'))
         self._verify_countfile(expect_count_r2, join(outdir, 'R2.count'))
+
+    def test_iterative_blast_getorf_diamond(self):
+        paramtxt = '''
+        command iterative_blast_phylo
+        blast_db_list				{0},{0},{1}
+        blast_task_list				megablast,dc-megablast,diamond
+        blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,--compress 0 -p 1 -v -k 10 -w 28 --id 0.7 -c 4
+        ninst_list				    1,1,1
+        taxonomy_names				{2}
+        taxonomy_nodes				{3}
+        blast_pro_db                {4}
+        command orf_filter
+        getorf_options				-minsize 60 -find 0
+        '''.format(blastnt,diamond,taxnames,taxnodes,blastnr)
+        
+        param = self._write_param(paramtxt)
+        outdir = inspect.stack()[0][3]
+        logs = join(outdir,'logs')
+        os.makedirs(logs)
+        sh.iterative_blast_phylo(
+            sample='testsample', paramfile=param,
+            outputdir=outdir, logs=logs, timestamp='0',
+            R1=fasta_input, fastafile='yes', contig='1'
+        )
+        aexists(join(outdir,output_contig))
+        aexists(join(outdir,contig_noblast))
+        aexists(join(outdir,contig_smallreport.format('testsample')))
+        orf_filter_dir = join(outdir,'tmp_contig_3','orf_filter')
+        aexists(join(orf_filter_dir, 'orf_filter.contig'))
+        aexists(join(orf_filter_dir, 'contig.orfout.fa'))
+        # copy so we can modify
+        econtig = [x for x in expect_count_contig]
+        econtig.append(('orf_filter','73'))
+        econtig.append(('diamond','72'))
+        self._verify_countfile(econtig, join(outdir, 'contig.count'))

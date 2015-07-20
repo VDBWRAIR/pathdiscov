@@ -1,7 +1,6 @@
 from common import *
 from mock import mock_open as _mock_open
 
-
 class Base(BaseTester):
     modulepath = 'pathdiscov.linecount'
 
@@ -39,10 +38,6 @@ class TestCountLines(Base):
         mock_fh = mock_open(read_data='')
         r = self._C(mock_fh,None)
         eq_(0,r)
-
-    @raises(ValueError)
-    def test_unknown_fileformat_raises_exception(self):
-        r = self._C(self.fasta_fh,'Unknown')
 
 class TestLineCount(Base):
     functionname = 'linecount'

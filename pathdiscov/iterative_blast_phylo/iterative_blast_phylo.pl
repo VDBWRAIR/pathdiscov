@@ -218,10 +218,15 @@ foreach my $mate (@mates)
                     my $logs = "$odir/logs";
                     print_system("mkdir -p $logs");
                     my $cmd = "orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
+                    if($contig) {
+                    $cmd .= " --contig 1";
+                    }
                     verbose_system($cmd);
                     # New input for diamond/blastx will be orf filtered fasta
-                    $inputfasta = "$outputdir/$odir/orf_filter.R1";
+                    $inputfasta = "$outputdir/$odir/orf_filter.$mate";
                     print "[debug] orf_filtered input $inputfasta\n";
+                    my $cmd = "linecount $inputfasta orf_filter $mate.count 2 1";
+                    print_system($cmd);
                 }
 
                 my $blast_db_nr;
