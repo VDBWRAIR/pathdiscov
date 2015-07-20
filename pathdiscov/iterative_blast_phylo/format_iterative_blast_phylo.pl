@@ -4,6 +4,7 @@ use strict;
 use Pod::Usage;
 use Data::Dumper;
 use Getopt::Long;
+use Verbose_Sys;
 
 # stitch the report files in the iterative_blast dir into one unified piece
 
@@ -286,8 +287,8 @@ foreach my $mate (@mates)
 		close($outphylo_top);
 
 		# this is hack-ish: cut off space-consuming seq cols to make smaller report
-		system("cat $outputdir/$mate.$prefix.report.txt | cut -f2-16,18- > $outputdir/$mate.$prefix.smallreport.txt") if ($bigreport);		# report
-		system("cat $outputdir/$mate.$prefix.top.report.txt | cut -f2-16,18- > $outputdir/$mate.$prefix.top.smallreport.txt");			# top hit report		
+		print_system("cat $outputdir/$mate.$prefix.report.txt | cut -f2-- > $outputdir/$mate.$prefix.smallreport.txt") if ($bigreport);		# report
+		print_system("cat $outputdir/$mate.$prefix.top.report.txt | cut -f2-- > $outputdir/$mate.$prefix.top.smallreport.txt");			# top hit report		
 				
 	} # mate exists
 } # mate

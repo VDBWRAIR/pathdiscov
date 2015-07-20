@@ -47,8 +47,34 @@ command host_map
 
     Example: ``--local -p NUMINST,-t NUMINST``
 
-Output
-======
+.. _host-map-output-interpretation:
+
+Output Interpretation
+=====================
+
+The host_map stage is fairly simple. For each database and mapping program you list
+in the param.txt, a ``map_X`` directory will exist in the ``host_map`` directory for
+it.
+
+By default there will be 2 mapping directories, ``map_1`` and ``map_2``. This is
+because param.txt has by default ``mapper_program_list bowtie2,bowtie2`` and 
+``mapper_db_list /path/to/hg38,/path/to/hg38_mrna``
+
+Mapping Directories
+-------------------
+
+``map_1`` relates to the first entry listed in the comma separated list in the 
+``mapper_program_list`` inside of param.txt, and ``map_2`` relates to the second
+entry and so forth.
+
+Inside of each of the ``map_X`` directories you will find a few files. The only
+files of main concern are the ``R1.unmap.fastq`` and ``R2.unmap.fastq`` files which
+represent the reads that did not map to the database for that step. The other files
+are just supplemental files that were used to extract the unmapped reads from the
+outputted bam file from bowtie(``out.bam``)
+
+All output files
+================
 
 * host_map_1.R1, host_map_1.R2
     Reads remaining that did not map in any of the host genome mappings that can 

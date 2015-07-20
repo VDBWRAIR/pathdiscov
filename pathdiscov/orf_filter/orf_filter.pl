@@ -107,7 +107,7 @@ foreach my $mate (@mates)
 			my $cmd = "getorf -sequence $hoh{$command}{$mate} -outseq $mate.orfout.fa $hoh{$command}{\"getorf_options\"}";	
 			verbose_system($cmd);
 
-			# my $cmd = "cat $mate.orfout.fa | $RealBin/../scripts/fastajoinlines > $mate.orfout.join.fa";
+			# my $cmd = "cat $mate.orfout.fa | fastajoinlines > $mate.orfout.join.fa";
 			# verbose_system($cmd);
 			
 			# my $href = fastaid_firstword_hash("$mate.orfout.fa");
@@ -121,7 +121,7 @@ foreach my $mate (@mates)
 			my %h_fasta = map {/>(.*?)_(\d+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
 			#print Dumper \ %h_fasta;
 
-			print "[echo] filter $hoh{$command}{$mate} by orfs in $command.$mate\n";
+			print "[echo] filter $hoh{$command}{$mate} by orfs into $command.$mate\n";
 			get_subset_by_fastaid($hoh{$command}{$mate}, "$command.$mate", \%h_fasta);
             verbose_system("linecount $command.$mate orf_filter $mate.count fastq 1");
 		}

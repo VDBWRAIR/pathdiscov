@@ -217,7 +217,7 @@ foreach my $mate (@mates)
                     my $odir = "tmp_${mate}_${j}/orf_filter";
                     my $logs = "$odir/logs";
                     print_system("mkdir -p $logs");
-                    my $cmd = "$path_scripts/../orf_filter/orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
+                    my $cmd = "orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
                     verbose_system($cmd);
                     # New input for diamond/blastx will be orf filtered fasta
                     $inputfasta = "$outputdir/$odir/orf_filter.R1";

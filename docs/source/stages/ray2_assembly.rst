@@ -3,8 +3,9 @@ ray_assembly
 ============
 
 #. Break R1 and R2 (if exists) into paired and unpaired fastq files
-#. Assemble paired and unpaired files using Ray2
-#. Runs the outputted fasta file from Ray2 through Cap3 to try and assemble the contigs better
+#. Assemble paired and unpaired files together using Ray2
+#. Runs the outputted fasta file from Ray2(``out.ray.cap``) through Cap3 to try 
+   and assemble the contigs better
 #. Build bowtie index on outputted cap3 concatenated singlet + contig
 #. Map original paired and unpaired reads to contig index 
 #. Use mapping to find unmapped reads
@@ -43,8 +44,72 @@ command ray2_assembly
 
     Choices: ``yes`` or ``1``, ``no`` or ``0``
 
-Output
-======
+.. _ray2-assembly-output-interpretation:
+
+Output Interpretation
+=====================
+
+This stage pulls in the reads that were unmapped during the host_map stage and
+splits them into Paired and unpaired read files. Ray2 requires that you supply
+paired and unpaired read files seapartely, which is why you will notice in the
+ray2_assembly directory you will likely have 4 fastq files:
+
+* R1.paired.fastq
+* R1.single.fastq
+* R2.paired.fastq
+* R2.single.fastq
+
+out.ray.fa
+----------
+
+Once the files are split, Ray2 is run and directed to place all output inside of the
+``ray2_assembly/results`` directory and all Ray output is placed inside of the
+``ray2_assembly/logs_assembly`` directory. Ray produces quite a few metric files
+that really are not that much of use in the results directory. We are only concered
+with the Contigs.fasta file which contains the fasta contigs built by Ray.
+This file is formatted such that each sequence may span multiple lines, so the
+pipeline reformats it and places each contig sequence onto its own line which is
+where the ``ray2_assembly/out.ray.fa`` file comes from.
+
+out.cap.fa
+----------
+
+If your param.txt has ``cap 1`` (Which it is by default) then the pipeline will
+run ``out.ray.fa`` through the cap3 program to try and join the Ray contigs together
+to form larger contigs. cap3 produces quite a few files all prefixed with
+``out.ray.fa.cap``. The important files from cap3 are ``.singlets`` and ``.contigs``
+``out.ray.fa.cap.singlets`` contains all the ``out.ray.fa`` contigs that cap3 could
+not form into larger contigs, where ``out.ray.fa.cap.contigs`` contains all the
+larger contigs cap3 was able to form. Thus, ``out.cap.fa`` is simply the ``.singlets``
+file concattenated with the ``.contigs`` file.
+
+ray2_assembly_1.fasta
+---------------------
+
+This is simply a symbolic link that points to either ``out.ray.fa`` or ``out.cap.fa``
+
+1.R1.unmap.fastq and 1.R2.unmap.fastq
+-------------------------------------
+
+If your param.txt has ``map2contigs 1`` (Which it is by default) then the pipeline
+will use bowtie2 to build an index from ``ray2_assembly_1.fasta``. This is where the 
+``bowtie_index`` directory comes from. Once the index is build it maps all input 
+reads(unmapped reads from host_map same input as Ray2) onto this index. This produces
+the ``bowtie_mapping`` directory. The end result is a bam file containing the 
+assembly. This file is then used to extract all reads that mapped to the index 
+which produces ``1.R1.unmap.fastq`` and ``1.R2.unmap.fastq``.
+
+reads_by_contig
+---------------
+
+If your paramt.xt has both ``map2contigs 1`` and ``parse_contigs yes`` then the
+pipeline will utilize the ``bowtie_mapping/out.bam`` assembly to parse out each
+contig's reads and place them into ``reads_by_contig``. Each file in this directory
+is named after the contig inside of the ``ray2_assembly_1.fasta``
+
+All output files
+================
+
 * 1.R1.unmap.fastq, 1.R2.unmap.fastq
     Unmapped reads found from bowtie mapping
 * cap3.out

@@ -17,12 +17,18 @@ command orf_filter
 
     Example: ``-minsize 60 -find 0``
 
-Output
-======
+Interpreting Output
+===================
 
-* out.cap.fa, 1.R1.unmap.fastq, 1.R2.unmap.fastq 
-    Symlink to original input reads
-* R1.orfout.fa, R2.orfout.fa
-    Output from getorf
-* orf_filter.R1, orf_filter.R2
-    Resulting reads that have passed filter
+orf_filter is intended to extract only the reads/contigs in the supplied input
+file that contain orfs.
+
+orf_filter.R1, orf_filter.R2, orf_filter.contig
+-----------------------------------------------
+
+Resulting reads that only contain orfs
+
+R1.orfout.fa, R2.orfout.fa and contig.orfout.fa
+-----------------------------------------------
+
+This is the outputted fasta sequence from the getorf program

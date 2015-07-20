@@ -11,6 +11,7 @@ Table of Contents:
     databases
     configuration
     analysis
+    interpretation
     help
     stages/index
     scripts/index

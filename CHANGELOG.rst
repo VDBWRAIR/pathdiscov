@@ -19,6 +19,8 @@ Version 4.3.0
   This makes debugging the pipeline much easier as you can simply ensure the 
   virtualenv is activated and copy/paste any command from the log files into your
   terminal and it should run.
+* Count files for every stage now contain input line to verify that each stage
+  is receiving the same amount of reads from the prior stage.
 
 Version 4.2.3
 -------------

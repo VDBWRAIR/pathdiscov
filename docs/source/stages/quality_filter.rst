@@ -33,8 +33,31 @@ command quality_filter
 
     Example: ``-min_len 50 -derep 14 -lc_method dust -lc_threshold 3 -trim_ns_left 1 -trim_ns_right 1 -trim_qual_right 15``
 
-Output
-======
+.. _quality-filter-output-interpretation:
+
+Output Interpretation
+=====================
+
+This stage runs input files from step1 through cutadapt and/or prinseq depending on
+what is set in your param.txt
+
+By default, quality_filter will run your original input read files first through
+cutadapt which produces the ``R1.cut.fastq`` and ``R2.cut.fastq`` files. These two
+files contain all reads that have been trimmed due to low quality or found primers..
+
+After cutadapt runs, prinseq is run(if ``prinseq_options`` exists in param.txt) on 
+``R1.cut.fastq`` and ``R2.cut.fastq`` files. This produces ``R1.prinseq.fastq`` and
+``R2.prinseq.fastq`` which contain the finalized trimmed and filtered read files
+that will go on to the next stages.
+
+quality_filter.R1 and quality_filter.R2
+---------------------------------------
+
+symlink to either the cutadapt or prinseq output files dending on how param.txt is
+configured.
+
+All output files
+================
 
 * quality_filter.R1, quality_filter.R2
     Symlink to resulting trimmed reads file
