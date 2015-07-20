@@ -4,6 +4,9 @@ use strict;
 use Pod::Usage;
 use Data::Dumper;
 use Getopt::Long;
+
+use FindBin qw($RealBin);
+use lib "$RealBin/../lib/Local_Module";
 use Verbose_Sys;
 
 # stitch the report files in the iterative_blast dir into one unified piece
