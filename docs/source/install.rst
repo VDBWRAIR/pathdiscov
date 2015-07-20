@@ -45,8 +45,7 @@ Installation
 
         .. code-block:: bash
 
-            wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-            python virtualenv-1.11.6/virtualenv.py pathdiscov
+            wget https://raw.githubusercontent.com/necrolyte2/bootstrap_vi/master/bootstrap_vi.py -O- | python - pathdiscov --prompt="(pathdiscov)"
 
     #. Activate the virtualenv to install everything into
 

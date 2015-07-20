@@ -45,7 +45,7 @@ def get_fastq_records_for_unassembled(projpath, blastcol, blastval, writefqidsli
     '''
     Return a list of SeqRecord generators for all records that match from each
     input fastq file for unassembled reads
-    Iterates over projpath/results/iterative_blast_phylo_2/reports/*.*smallreport.txt
+    Iterates over projpath/results/iterative_blast_phylo_2/reports/\*.\*smallreport.txt
     (which should be 1 or 2 files) and then uses resulting matching read names.
     These read names are then used to produce generators that only return the
     records from projpath/step1/R1.fastq and/or projpath/step1/R2.fastq that match
