@@ -26,6 +26,7 @@ Version 4.3.0
 * iterative_blast_phylo_1/contig.count now contains orf_filer count
 * linecount now automatically detects file format for fasta/fastq and will fallback
   to counting all lines in file
+* Fixed a bug with make_summary where ``--group-by`` was not being utilized
 
 Version 4.2.3
 -------------
