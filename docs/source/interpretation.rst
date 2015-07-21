@@ -12,8 +12,8 @@ files and what they mean.
 Pipeline Stages
 ===============
 
-First we must get aquainted with the stages the pipeline runs.
-There are 5 stages available for the pipeline to run:
+First you should get aquainted with the stages the pipeline runs.
+There are 5 stages available for the pipeline to run in the order they are run:
 
 * :ref:`quality_analysis <quality-analysis-output-interpretation>`
 * :ref:`step1 <step1-output-interpretation>`
@@ -28,6 +28,43 @@ directory.
 
 General Interpretation
 ======================
+
+Here we will briefly list each stage and files that are most important. For a more
+detailed explenation of the stage and any relevant files generated, see the links
+above for each pipeline.
+
+* ray2_assembly_1
+
+    This stage is where all reads that did not get filtered due to host_map or
+    quality_filter will be denovo assembled into contigs.
+
+    Relevant files:
+
+        * 1.R1.unmap.fastq
+        * 1.R2.unmap.fastq
+        * out.cap.fa
+        * out.ray.fa
+
+    Relevant directories:
+
+        * reads_by_contig/
+
+* iterative_blast_phylo_1
+
+    This stage is where your ray assembled contigs will get blasted
+
+    Relevant files:
+
+        * reports/contig.*smallreport*.txt
+
+* iterative_blast_phylo_2
+
+    This is where the unassembled reads that passed host-map and quality filtering,
+    but did not map to any contigs in the ray assembly
+
+    Relevant files:
+
+        * reports/{R1,R2}.*smallreport*.txt
 
 Stage Output Read File
 ----------------------

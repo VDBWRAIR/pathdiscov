@@ -59,7 +59,7 @@ The contig report contains the following columns
 * numReads
     Number of reads supporting contig
     Gathered from ray2_assembly_1/contig_numreads.txt which comes
-   from the ray2_assembly_1/bowtie_mapping/out.bam by counting all mapped reads
+    from the ray2_assembly_1/bowtie_mapping/out.bam by counting all mapped reads
 * Accession, Family, Genus, description
     Blast information for contig
 
