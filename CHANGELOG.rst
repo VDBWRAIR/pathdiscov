@@ -27,6 +27,8 @@ Version 4.3.0
 * linecount now automatically detects file format for fasta/fastq and will fallback
   to counting all lines in file
 * Fixed a bug with make_summary where ``--group-by`` was not being utilized
+* pathdiscov_cli now logs any [cmd] or [module] line from analysis.log as the
+  pipeline runs to give more feedback of what stage the pipeline is on as it runs.
 
 Version 4.2.3
 -------------

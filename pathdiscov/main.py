@@ -15,6 +15,7 @@ from os.path import (
     join, expanduser, expandvars,
     splitext, basename, dirname, exists
 )
+import sh
 is_64bits = sys.maxsize > 2**32
 if not is_64bits:
     print "Please upgrade your operating system to 64 bit, application such as diamond don't run on 32 bit"
@@ -91,10 +92,29 @@ def priStage(input, output):
     '''
     Run run_standard.pl with all supplied options
     '''
+    def statuslogger(line, stdin):
+        '''
+        Only emit certain log messages
+        '''
+        line = line.rstrip()
+        if 'mkdir' in line:
+            return
+        if line.startswith('[module]'):
+            print line
+        elif line.startswith('[cmd]'):
+            print line
+    # Ensure log file exists
+    analysislog = join(project_dir,'results','analysis.log')
+    sh.touch(analysislog)
+    # Tail log file in background
+    tail = sh.tail(analysislog, '-f', _out=statuslogger, _bg=True)
+    # Run pipeline
     result = tasks.priStage(
         input, project_dir, paramFile,
         blast_unassembled, sge, results_dir
     )
+    # Terminate tail process
+    tail.terminate()
     return result
 
 def verify_standard_stages_files(projectpath):
