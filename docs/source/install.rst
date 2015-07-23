@@ -135,45 +135,8 @@ Installation
 
         pathdiscov_cli --R1 testData/F.fastq --R2 testData/R.fastq --outdir testoutDir
 
-    Easy way to check if the pipeline ran the test dataset correctly is to verify
-    all of the counts for each stage. 
-
-    Here are the results from when the pipeline was run during development for
-    comparison. Your results should be very similar if not identical(mostly depending
-    on your database setup)
-    
-    .. code-block:: bash
-
-        $ for stage in step1 host_map_1 quality_filter ray2_assembly_1 iterative_blast_phylo_1 iterative_blast_phylo_2; do grep -H '.' testoutDir/results/$stage/\*.count; done
-        testoutDir/results/step1/R1.count:rawfile   250
-        testoutDir/results/step1/R2.count:rawfile   250
-        testoutDir/results/host_map_1/R1.count:input    250
-        testoutDir/results/host_map_1/R1.count:bowtie2_genome_local 193
-        testoutDir/results/host_map_1/R1.count:bowtie2_transcript_local 193
-        testoutDir/results/host_map_1/R2.count:input    250
-        testoutDir/results/host_map_1/R2.count:bowtie2_genome_local 197
-        testoutDir/results/host_map_1/R2.count:bowtie2_transcript_local 197
-        testoutDir/results/quality_filter/R1.count:input    193
-        testoutDir/results/quality_filter/R1.count:cut_adapt    183
-        testoutDir/results/quality_filter/R1.count:prinseq  158
-        testoutDir/results/quality_filter/R2.count:input    197
-        testoutDir/results/quality_filter/R2.count:cut_adapt    184
-        testoutDir/results/quality_filter/R2.count:prinseq  158
-        testoutDir/results/ray2_assembly_1/assembly.count:ray_contigs   87
-        testoutDir/results/ray2_assembly_1/assembly.count:cap_contigs   87
-        testoutDir/results/ray2_assembly_1/R1.count:input   158
-        testoutDir/results/ray2_assembly_1/R1.count:unassembled_reads   66
-        testoutDir/results/ray2_assembly_1/R2.count:input   158
-        testoutDir/results/ray2_assembly_1/R2.count:unassembled_reads   69
-        testoutDir/results/iterative_blast_phylo_1/contig.count:input   87
-        testoutDir/results/iterative_blast_phylo_1/contig.count:megablast   5
-        testoutDir/results/iterative_blast_phylo_1/contig.count:dc-megablast    4
-        testoutDir/results/iterative_blast_phylo_2/R1.count:input   66
-        testoutDir/results/iterative_blast_phylo_2/R1.count:megablast   4
-        testoutDir/results/iterative_blast_phylo_2/R1.count:dc-megablast    3
-        testoutDir/results/iterative_blast_phylo_2/R2.count:input   69
-        testoutDir/results/iterative_blast_phylo_2/R2.count:megablast   7
-        testoutDir/results/iterative_blast_phylo_2/R2.count:dc-megablast    4
+    You can check this project against when it was run during development by heading
+    over to :ref:`Inspect Stage Counts<count-files-interpretation>`
 
 Offline Installation
 ====================

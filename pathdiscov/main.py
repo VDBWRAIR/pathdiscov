@@ -193,14 +193,12 @@ def commands(commandlist, index):
 def main():
     from helpers import which
     t0 = time.time()
-    print (" Starting time ..... :") + str(t0)
+    print ("Starting project: {0}".format(project_dir))
 
     # Will be all the commands to run
     pipeline_commands = [
         (__name__ + '.createPram', createPram),
     ]
-
-    print "....................." + project_dir
 
     if options.param:
         helpers.create_new_project(project_dir)
@@ -218,9 +216,7 @@ def main():
             (__name__ + '.symlink', symlink),
         ]
 
-    pipeline_printout(sys.stdout, commands(pipeline_commands, 1), verbose=6)
     pipeline_run(commands(pipeline_commands, 0), multiprocess=6)
-    pipeline_get_task_names()
 
     import datetime
     from termcolor import colored

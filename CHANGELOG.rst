@@ -29,6 +29,10 @@ Version 4.3.0
 * Fixed a bug with make_summary where ``--group-by`` was not being utilized
 * pathdiscov_cli now logs any [cmd] or [module] line from analysis.log as the
   pipeline runs to give more feedback of what stage the pipeline is on as it runs.
+* pathdiscov_cli's output is now more concise and does not print extra statements
+  that are not useful.
+* Running the Pipeline docs now contain an actual full example to help show
+  how to use the pipeline
 
 Version 4.2.3
 -------------
