@@ -290,8 +290,8 @@ foreach my $mate (@mates)
 		close($outphylo_top);
 
 		# this is hack-ish: cut off space-consuming seq cols to make smaller report
-		print_system("cat $outputdir/$mate.$prefix.report.txt | cut -f2-- > $outputdir/$mate.$prefix.smallreport.txt") if ($bigreport);		# report
-		print_system("cat $outputdir/$mate.$prefix.top.report.txt | cut -f2-- > $outputdir/$mate.$prefix.top.smallreport.txt");			# top hit report		
+		print_system("cat $outputdir/$mate.$prefix.report.txt | cut -f2- > $outputdir/$mate.$prefix.smallreport.txt") if ($bigreport);		# report
+		print_system("cat $outputdir/$mate.$prefix.top.report.txt | cut -f2- > $outputdir/$mate.$prefix.top.smallreport.txt");			# top hit report		
 				
 	} # mate exists
 } # mate
