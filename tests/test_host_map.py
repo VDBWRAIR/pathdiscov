@@ -12,9 +12,7 @@ import common
 
 # Allows us to reference sh.quality_filter since quality_filter.pl
 # cannot just work with sh import because of .pl
-sh.host_map = sh.Command(join(
-    PATHDISCOV, 'host_map', 'host_map.pl'
-))
+sh.host_map = sh.Command('host_map.pl')
 
 dna_path = join(RIKKDB, 'rikkdna')
 dna_path = join(RIKKDB, 'host_map')
