@@ -16,9 +16,7 @@ import common
 
 # Allows us to reference sh.quality_filter since quality_filter.pl
 # cannot just work with sh import because of .pl
-sh.iterative_blast_phylo = sh.Command(join(
-    PATHDISCOV, 'iterative_blast_phylo', 'iterative_blast_phylo.pl'
-))
+sh.iterative_blast_phylo = sh.Command('iterative_blast_phylo.pl')
 
 blastnt = join(RIKKDB, 'rikkcdna')
 blastnr = join(RIKKDB, 'rikkrna')

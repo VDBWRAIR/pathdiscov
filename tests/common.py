@@ -311,8 +311,10 @@ class StageTestBase(unittest.TestCase):
         fh = open(countpath)
         for line, ex in zip(fh, expect):
             name, count = line.strip().split()
+            count = float(count)
+            exc = float(ex[1])
             self.assertEqual(ex[0], name)
-            self.assertEqual(ex[1], count)
+            self.assertAlmostEqual(exc, count, delta=2)
 
 def aexists(path, msg=None):
     if msg is None:
