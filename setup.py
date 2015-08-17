@@ -282,6 +282,7 @@ setup_dict = dict(
             'sff2fastq = pathdiscov.sff2fastq:main',
             'step1 = pathdiscov.stages.step1:main',
             'get_blast_reads = pathdiscov.get_blast_reads:main',
+            'parallel_blast = pathdiscov.parallel_blast:main',
         ],
     },
     # These all get copied to our installation's bin folder for us
@@ -303,8 +304,8 @@ setup_dict = dict(
         'pathdiscov/ray2_assembly/joinlines.sh',
         'pathdiscov/ray2_assembly/ray2_assembly.pl',
 		'pathdiscov/iterative_blast_phylo/annotate_blast.sh',
-		'pathdiscov/iterative_blast_phylo/blast_wrapper.pl',
-		'pathdiscov/iterative_blast_phylo/block_blast.sh',
+		#'pathdiscov/iterative_blast_phylo/blast_wrapper.pl',
+		#'pathdiscov/iterative_blast_phylo/block_blast.sh',
 		'pathdiscov/iterative_blast_phylo/fastq2fasta.awk',
 		'pathdiscov/iterative_blast_phylo/format_iterative_blast_phylo.pl',
 		'pathdiscov/iterative_blast_phylo/get_unblast_reads.pl',

@@ -3,6 +3,7 @@ import os
 from functools import partial
 import argparse
 import shlex
+import subprocess
 
 try:
     from collections import OrderedDict
@@ -13,7 +14,7 @@ import sh
 
 # Staticly set options for blast
 MAX_TARGET_SEQS = 10
-BLAST_FORMAT = "\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\""
+BLAST_FORMAT = "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore"
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -74,25 +75,20 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
     :param str task: Blast task to run with -task option for blasttype
     :param str blastoptions: other options to pass to blast
     '''
-    parallel = partial(
-        sh.Command('parallel'), u=True, pipe=True, block='100k', recstart='>',
-    )
-    sshlogins = ' '.join(generate_sshlogins(ninst))
-    parallelcmd = sshlogins
-    parallelcmd += " \"{blastcmd}\""
-    
-    #my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
-    blastcmd = "$(which {blasttype}) -task {task} -db {db} " \
-        "-max_target_seqs {max_target_seqs} -outfmt {blastfmt} {blastoptions} " \
+    blast_path = sh.which(blasttype)
+    args = ['-u', '--pipe', '--block', '1k', '--recstart', '">"']
+    args += generate_sshlogins(ninst)
+    blastcmd = "{blast_path} -task {task} -db {db} " \
+        "-max_target_seqs {max_target_seqs} -outfmt \"{blastfmt}\" {blastoptions} " \
         "-query - "
     blastcmd = blastcmd.format(
-        blasttype=blasttype, task=task, db=db, max_target_seqs=MAX_TARGET_SEQS,
+        blast_path=blast_path, task=task, db=db, max_target_seqs=MAX_TARGET_SEQS,
         blastfmt=BLAST_FORMAT, blastoptions=blastoptions
     )
-    cmd = parallelcmd.format(
-        blastcmd=blastcmd,
-    )
-    parallel(cmd, _in=inputfile, _out=outfile)
+    args += [blastcmd]
+    p_sh = sh.Command('parallel')
+    print "[cmd] {0}".format('parallel ' + ' '.join(args))
+    p_sh(*args, _in=inputfile, _out=outfile)
 
     '''
     cat input.fa | /usr/bin/time parallel -u --sshloginfile ${PBS_NODEFILE} --pipe --block 100k --recstart '>' -P ${PBS_NUM_PPN} "$(which blastn) -max_target_seqs 10 -db /media/VD_Research/databases/ncbi/blast/nt/nt -evalue 0.01 -outfmt  \"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\" -query -" > results.blast
@@ -142,21 +138,23 @@ def generate_sshlogins(ninst=None):
     :returns: ['--sshlogin cpu/host1', ..., '--sshlogin cpu/hostN']
     '''
     path = get_hostfile()
+    sshlogins = []
     if not path:
         if ninst is None:
             ninst = ''
         else:
             ninst = '{0}/'.format(ninst)
-        return ['--sshlogin {0}:'.format(ninst)]
+        sshlogins = ['--sshlogin', '{0}:'.format(ninst)]
     else:
         with open(path) as fh:
             hosts = parse_hostfile(fh)
-            return ['--sshlogin {1}/{0}'.format(*x) for x in hosts]
+            for x in hosts:
+                sshlogins.append('--sshlogin')
+                sshlogins.append('{1}/{0}'.format(*x))
+    return sshlogins
 
 def main():
     args = parse_args()
-    args.outputdir = abspath(args.outputdir)
-    assert exists(args.outputdir), '[error] {0} does not exist'.format(args.outputdir)
     assert exists(args.inputfasta), '[error] {0} does not exist'.format(args.inputfasta)
     with open(args.inputfasta) as infile:
         with open(args.outfile, 'w') as outfile:
