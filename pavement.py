@@ -59,7 +59,10 @@ options(setup=setup_dict,
             downloads=path('pathdiscov/download'),
             installdir=join(sys.prefix,'lib')
         ),
-
+        parallel=Bunch(
+            downloads=path('pathdiscov/download'),
+            url='http://ftp.gnu.org/gnu/parallel/parallel-20150722.tar.bz2'
+        ),
         wkhtmltopdf=Bunch(
             sfile = path('pathdiscov/download/wkhtmltopdf'),
             olink =path('pathdiscov/bin')
@@ -304,6 +307,19 @@ def download_compile_bwa(options):
         sh('(cd %s; wget https://github.com/lh3/bwa/archive/0.7.10.tar.gz -O- | tar xzf -; mv bwa-* bwa; cd bwa; make; cd %s)' % (sdir, sdir))
 
 @task
+def download_compile_gnuparallel(options):
+    ''' Installs GNU Parallel '''
+    prefix = sys.prefix
+    p_bin = join(sys.prefix,'bin','parallel')
+    options.url
+    if not exists(p_bin):
+        info("Installing GNU Parallel")
+        sh('cd {0}; wget {1} -O- | tar xjf -; cd parallel-*; ' \
+            './configure --prefix={2}; make && make install;'.format(
+               options.downloads, options.url, prefix)
+        )
+
+@task
 def download_compile_samtools(options):
     """installs the current package"""
     samtoolsbin=join(sys.prefix,'bin','samtools')
@@ -421,7 +437,7 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap','perl_modules')
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap','perl_modules','download_compile_gnuparallel')
 def install_other_dependencies():
     pass
 
