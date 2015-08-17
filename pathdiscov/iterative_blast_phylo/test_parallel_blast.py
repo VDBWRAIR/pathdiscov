@@ -99,9 +99,57 @@ class TestGenerateSSHLogins(unittest.TestCase):
         self.assertListEqual(['--sshlogin :'], r)
 
 class TestParallelBlast(unittest.TestCase):
-    def test_test(self):
+    def setUp(self):
+        _, self.hostfile = tempfile.mkstemp()
+        self.patch_sh = mock.patch('parallel_blast.sh')
+        self.mock_sh = self.patch_sh.start()
+        self.addCleanup(self.patch_sh.stop)
+        self.infile = StringIO('>test\nACGT\n')
+        self.outfile = StringIO()
+
+    def test_command_string_is_correct(self):
         parallel_blast.parallel_blast(
-            'test.fasta', 'out.blast', 5, '/path/db/nt', 'blastn', 'blastn',
-            '-evalue 0.01'
+            self.infile, self.outfile, 5, '/path/db/nt', 'foon', 'barn',
+            '-evalue 0.01 -otherblast arg'
         )
-        self.assertFalse(True)
+        p_cmd = self.mock_sh.Command
+        self.assertEqual('parallel', p_cmd.call_args[0][0])
+        p_cmd_args, p_cmd_kargs = p_cmd.return_value.call_args
+        p_cmd_args = p_cmd_args[0]
+        self.assertEqual(self.infile, p_cmd_kargs['_in'])
+        self.assertEqual(self.outfile, p_cmd_kargs['_out'])
+        self.assertIn('$(which foon)', p_cmd_args)
+        self.assertIn('-task barn', p_cmd_args)
+        self.assertIn('-db /path/db/nt', p_cmd_args)
+        self.assertIn('-otherblast arg', p_cmd_args)
+        self.assertIn(
+            '-max_target_seqs {0}'.format(parallel_blast.MAX_TARGET_SEQS),
+            p_cmd_args
+        )
+        self.assertIn('-outfmt {0}'.format(parallel_blast.BLAST_FORMAT), p_cmd_args)
+        self.assertIn('-outfmt \"', p_cmd_args)
+
+    def test_parallel_local(self):
+        parallel_blast.parallel_blast(
+            self.infile, self.outfile, 5, '/path/db/nt', 'blastn', 'blastn',
+            '-evalue 0.01 -otherblast arg'
+        )
+        p_cmd = self.mock_sh.Command
+        self.assertEqual('parallel', p_cmd.call_args[0][0])
+        p_cmd_args, p_cmd_kargs = p_cmd.return_value.call_args
+        p_cmd_args = p_cmd_args[0]
+        self.assertIn('--sshlogin 5/:', p_cmd_args)
+
+    def test_parallel_remote(self):
+        with open(self.hostfile, 'w') as fh:
+            fh.write(PBS_MACHINEFILE)
+        with mock.patch.dict('parallel_blast.os.environ', {'PE_HOSTFILE': self.hostfile}):
+            parallel_blast.parallel_blast(
+                self.infile, self.outfile, 5, '/path/db/nt', 'blastn', 'blastn',
+                '-evalue 0.01 -otherblast arg'
+            )
+            p_cmd = self.mock_sh.Command
+            self.assertEqual('parallel', p_cmd.call_args[0][0])
+            p_cmd_args, p_cmd_kargs = p_cmd.return_value.call_args
+            p_cmd_args = p_cmd_args[0]
+            self.assertIn(' '.join(sshlogins), p_cmd_args)

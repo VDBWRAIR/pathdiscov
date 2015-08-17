@@ -2,6 +2,7 @@ from os.path import dirname,basename,abspath,exists
 import os
 from functools import partial
 import argparse
+import shlex
 
 try:
     from collections import OrderedDict
@@ -10,12 +11,9 @@ except ImportError:
 
 import sh
 
+# Staticly set options for blast
 MAX_TARGET_SEQS = 10
 BLAST_FORMAT = "\"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\""
-
-parallel = partial(
-    sh.Command('parallel'), u=True, pipe=True, block='100k', recstart='>',
-)
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -41,6 +39,7 @@ def parse_args():
     )
     parser.add_argument(
         '--ninst',
+        type=int,
         help='Number of total cpus to use'
     )
     parser.add_argument(
@@ -64,10 +63,23 @@ def parse_args():
     return parser.parse_args()
 
 def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions):
+    '''
+    Runs blast commands in parallel on a given fasta file
+
+    :param file inputfile: Input fasta file handle
+    :param file outfile: Output file handle
+    :param int ninst: number of cpus to use if not in PBS or SGE job
+    :param str db: Database path to blast against
+    :param str blasttype: Blast exe to use
+    :param str task: Blast task to run with -task option for blasttype
+    :param str blastoptions: other options to pass to blast
+    '''
+    parallel = partial(
+        sh.Command('parallel'), u=True, pipe=True, block='100k', recstart='>',
+    )
     sshlogins = ' '.join(generate_sshlogins(ninst))
-    parallelcmd = "cat {inputfile} | parallel -u --pipe --block 100k --recstart = '>' "
-    parallelcmd += sshlogins
-    parallelcmd += " \"{blastcmd}\" > {outfile}"
+    parallelcmd = sshlogins
+    parallelcmd += " \"{blastcmd}\""
     
     #my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
     blastcmd = "$(which {blasttype}) -task {task} -db {db} " \
@@ -78,11 +90,9 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
         blastfmt=BLAST_FORMAT, blastoptions=blastoptions
     )
     cmd = parallelcmd.format(
-        inputfile=inputfile,
         blastcmd=blastcmd,
-        outfile=outfile
     )
-    print cmd
+    parallel(cmd, _in=inputfile, _out=outfile)
 
     '''
     cat input.fa | /usr/bin/time parallel -u --sshloginfile ${PBS_NODEFILE} --pipe --block 100k --recstart '>' -P ${PBS_NUM_PPN} "$(which blastn) -max_target_seqs 10 -db /media/VD_Research/databases/ncbi/blast/nt/nt -evalue 0.01 -outfmt  \"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\" -query -" > results.blast
@@ -148,6 +158,12 @@ def main():
     args.outputdir = abspath(args.outputdir)
     assert exists(args.outputdir), '[error] {0} does not exist'.format(args.outputdir)
     assert exists(args.inputfasta), '[error] {0} does not exist'.format(args.inputfasta)
+    with open(args.inputfasta) as infile:
+        with open(args.outfile, 'w') as outfile:
+            parallel_blast(
+                infile, outfile, args.ninst, args.db, args.blast_type, args.task,
+                args.blast_options 
+            )
 
 if __name__ == '__main__':
     main()
