@@ -19,24 +19,12 @@ BLAST_FORMAT = "6 qseqid sseqid pident length mismatch gapopen qstart qend sstar
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--outputdir',
-        help='path to put blast results'
-    )
-    parser.add_argument(
-        '--logs',
-        help='path to place log files'
-    )
-    parser.add_argument(
-        '--inputfasta',
+        'inputfasta',
         help='fasta sequence file to blast as -query'
     )
     parser.add_argument(
-        '--outfile',
+        'outfile',
         help='blast output file to write that will contain all results'
-    )
-    parser.add_argument(
-        '--outheader',
-        help='Deprecated'
     )
     parser.add_argument(
         '--ninst',
@@ -60,6 +48,19 @@ def parse_args():
     parser.add_argument(
         '--blast_options',
         help='Options to pass on to blast'
+    )
+    parser.add_argument(
+        '--outputdir',
+        default=None,
+        help='deprecated'
+    )
+    parser.add_argument(
+        '--logs',
+        help='deprecated'
+    )
+    parser.add_argument(
+        '--outheader',
+        help='Deprecated'
     )
     return parser.parse_args()
 
@@ -148,6 +149,9 @@ def generate_sshlogins(ninst=None):
     else:
         with open(path) as fh:
             hosts = parse_hostfile(fh)
+        if len(hosts) == 1: # Single Node
+            sshlogins = ['--sshlogin', '{0}/:'.format(hosts[0][1])]
+        else: # Multiple nodes
             for x in hosts:
                 sshlogins.append('--sshlogin')
                 sshlogins.append('{1}/{0}'.format(*x))

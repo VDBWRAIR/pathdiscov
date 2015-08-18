@@ -75,6 +75,14 @@ class TestGenerateSSHLogins(unittest.TestCase):
     def setUp(self):
         _, self.hostfile = tempfile.mkstemp()
         self.addCleanup(os.unlink, self.hostfile)
+
+    def test_single_compute_node_multiple_cpu(self):
+        with open(self.hostfile, 'w') as fh:
+            fh.write('node1.localhost\n')
+            fh.write('node1.localhost\n')
+        with mock.patch.dict('pathdiscov.parallel_blast.os.environ', {'PBS_NODEFILE': self.hostfile}):
+            r = parallel_blast.generate_sshlogins()
+            self.assertListEqual(['--sshlogin', '2/:'], r)
         
     def test_pbs_sshlogins(self):
         with open(self.hostfile, 'w') as fh:
