@@ -114,6 +114,26 @@ def parallel_diamond(inputfile, outfile, ninst, db, task, diamondoptions):
     diamond -task blastx -compress 0 -db /path/nt -o outfile -query inputfile -o outfile
     my $cmd = "$type $task_option  $options -q  $query -d $db  -o $out"; 
     '''
+    # This seems kinda stupid that we are just replacing cpu count for each
+    # node with 1, but it is easier than refactoring other code to be better
+    sshlogins = generate_sshlogins(ninst)
+    for i in range(0,len(sshlogins),2):
+        cpu,host = sshlogins[i+1].split('/')
+        sshlogins[i+1] = '1/{0}'.format(host)
+    dmnd_path = sh.which('diamond')
+    args = ['-u', '--pipe', '--block', '10', '--recstart', '>', '--cat']
+    args += sshlogins
+    args += [
+        dmnd_path, task, '--threads', str(ninst), '--db', db, '--query', '{}',
+        '--compress', '0'
+    ] + shlex.split(diamondoptions)
+    d_cmd = sh.Command('parallel')
+    print "[cmd] {0}".format('parallel ' + ' '.join(args))
+    try:
+        p = d_cmd(*args, _out=open(outfile,'w'), _in=open(inputfile))
+    except sh.ErrorReturnCode as e:
+        print e.stderr
+        sys.exit(e.exit_code)
 
 def get_hostfile():
     '''
@@ -180,10 +200,16 @@ def generate_sshlogins(ninst=None):
 def main():
     args = parse_args()
     assert exists(args.inputfasta), '[error] {0} does not exist'.format(args.inputfasta)
-    parallel_blast(
-        args.inputfasta, args.outfile, args.ninst, args.db, args.blast_type, args.task,
-        args.blast_options 
-    )
+    if args.blast_type == 'diamond':
+        parallel_diamond(
+            args.inputfasta, args.outfile, args.ninst, args.db, args.task,
+            args.blast_options 
+        )
+    else:
+        parallel_blast(
+            args.inputfasta, args.outfile, args.ninst, args.db, args.blast_type, args.task,
+            args.blast_options 
+        )
 
 if __name__ == '__main__':
     main()

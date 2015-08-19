@@ -106,21 +106,22 @@ class TestGenerateSSHLogins(unittest.TestCase):
         r = parallel_blast.generate_sshlogins()
         self.assertListEqual(['--sshlogin', ':'], r)
 
-class TestParallelBlast(unittest.TestCase):
+class MockSH(unittest.TestCase):
     def setUp(self):
         _, self.hostfile = tempfile.mkstemp()
         self.patch_sh_cmd = mock.patch('pathdiscov.parallel_blast.sh.Command')
         self.patch_sh_which = mock.patch('pathdiscov.parallel_blast.sh.which')
-        self.patch_open = mock.patch('__builtin__.open')
-        self.mock_open = self.patch_open.start()
         self.mock_sh_which = self.patch_sh_which.start()
         self.mock_sh_cmd = self.patch_sh_cmd.start()
         self.addCleanup(self.patch_sh_cmd.stop)
         self.addCleanup(self.patch_sh_which.stop)
+        self.patch_open = mock.patch('__builtin__.open')
+        self.mock_open = self.patch_open.start()
         self.addCleanup(self.patch_open.stop)
         self.infile = '/path/infile'
         self.outfile = '/path/outfile'
 
+class TestParallelBlast(MockSH):
     def test_correct_input_file_handling(self):
         self.mock_sh_which.return_value = '/path/to/foon'
         parallel_blast.parallel_blast(
@@ -179,3 +180,45 @@ class TestParallelBlast(unittest.TestCase):
             self.assertIn('1/node1.localhost', r)
             self.assertIn('2/node2.localhost', r)
             self.assertIn('3/node3.localhost', r)
+
+class TestParallelDiamond(MockSH):
+    def test_correct_inputoutput_handling(self):
+        self.mock_sh_which.return_value = '/path/to/diamond'
+        parallel_blast.parallel_blast(
+            self.infile, self.outfile, 5, '/path/db/nt', 'foon', 'barn',
+            '-evalue 0.01 -otherblast arg'
+        )
+        r = self.mock_sh_cmd.return_value.call_args
+        # It seems that parallel needs 
+        self.assertEqual(r[1]['_in'], self.mock_open.return_value)
+        self.assertEqual(r[1]['_out'], self.mock_open.return_value)
+        self.assertIn('--pipe', r[0])
+
+    def test_correct_command_string(self):
+        self.mock_sh_which.return_value = '/path/to/diamond'
+        parallel_blast.parallel_diamond(
+            self.infile, self.outfile, 5, '/path/to/dmd', 'foox', '-bar foo'
+        )
+        r = self.mock_sh_cmd.return_value.call_args[0]
+        self.assertIn('--threads', r)
+        self.assertIn('5', r)
+        self.assertIn('--db', r)
+        self.assertIn('/path/to/dmd', r)
+        self.assertIn('--query', r)
+        self.assertIn('{}', r)
+        self.assertIn('--cat', r)
+        self.assertIn('--sshlogin', r)
+        self.assertIn('1/:', r)
+
+    def test_each_remote_host_has_one_instance(self):
+        self.mock_sh_which.return_value = '/path/to/diamond'
+        self.mock_open.return_value.__enter__.return_value = PBS_MACHINEFILE.splitlines()
+        with mock.patch.dict('pathdiscov.parallel_blast.os.environ', {'PBS_NODEFILE': self.hostfile}):
+            parallel_blast.parallel_diamond(
+                self.infile, self.outfile, 5, '/path/to/dmd', 'foox', '-bar foo'
+            )
+            r = self.mock_sh_cmd.return_value.call_args[0]
+            self.assertIn('--sshlogin', r)
+            self.assertIn('1/node1.localhost', r)
+            self.assertIn('1/node2.localhost', r)
+            self.assertIn('1/node3.localhost', r)
