@@ -115,8 +115,19 @@ class TestParallelBlast(unittest.TestCase):
         self.mock_sh_cmd = self.patch_sh_cmd.start()
         self.addCleanup(self.patch_sh_cmd.stop)
         self.addCleanup(self.patch_sh_which.stop)
-        self.infile = StringIO('>test\nACGT\n')
+        self.infile = StringIO()
         self.outfile = StringIO()
+
+    def test_correct_input_file_handling(self):
+        self.mock_sh_which.return_value = '/path/to/foon'
+        parallel_blast.parallel_blast(
+            self.infile, self.outfile, 5, '/path/db/nt', 'foon', 'barn',
+            '-evalue 0.01 -otherblast arg'
+        )
+        r = self.mock_sh_cmd.return_value.call_args
+        # It seems that parallel needs 
+        self.assertIn('_in', r[1])
+        self.assertIn('--pipe', r[0])
 
     def test_command_string_is_correct(self):
         self.mock_sh_which.return_value = '/path/to/foon'
@@ -126,15 +137,18 @@ class TestParallelBlast(unittest.TestCase):
         )
         self.mock_sh_cmd.assert_called_once_with('parallel')
         r = self.mock_sh_cmd.return_value.call_args
-        blastcmd = r[0][8]
-        self.assertIn('-task barn', blastcmd)
-        self.assertIn('-db /path/db/nt', blastcmd)
-        self.assertIn('-otherblast arg', blastcmd)
-        self.assertIn(
-            '-max_target_seqs {0}'.format(parallel_blast.MAX_TARGET_SEQS),
-            blastcmd
-        )
-        self.assertIn('-outfmt "{0}"'.format(parallel_blast.BLAST_FORMAT), blastcmd)
+        blastcmd = r[0]
+        print r[0]
+        self.assertIn('-task', blastcmd)
+        self.assertIn('barn', blastcmd)
+        self.assertIn('-db', blastcmd)
+        self.assertIn('/path/db/nt', blastcmd)
+        self.assertIn('-otherblast', blastcmd)
+        self.assertIn('arg', blastcmd)
+        self.assertIn('-max_target_seqs', blastcmd)
+        self.assertIn(str(parallel_blast.MAX_TARGET_SEQS), blastcmd)
+        self.assertIn('-outfmt', blastcmd)
+        self.assertIn('"{0}"'.format(parallel_blast.BLAST_FORMAT), blastcmd)
 
     def test_localhost(self):
         self.mock_sh_which.return_value = '/path/to/foon'

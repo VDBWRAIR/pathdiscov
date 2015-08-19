@@ -47,6 +47,7 @@ def parse_args():
     )
     parser.add_argument(
         '--blast_options',
+        default='',
         help='Options to pass on to blast'
     )
     parser.add_argument(
@@ -68,7 +69,7 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
     '''
     Runs blast commands in parallel on a given fasta file
 
-    :param file inputfile: Input fasta file handle
+    :param file inputfile: Input fasta file path
     :param file outfile: Output file handle
     :param int ninst: number of cpus to use if not in PBS or SGE job
     :param str db: Database path to blast against
@@ -77,23 +78,18 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
     :param str blastoptions: other options to pass to blast
     '''
     blast_path = sh.which(blasttype)
-    args = ['-u', '--pipe', '--block', '1k', '--recstart', '">"']
+    args = ['-u', '--pipe', '--block', '10', '--recstart', '>']
     args += generate_sshlogins(ninst)
-    blastcmd = "{blast_path} -task {task} -db {db} " \
-        "-max_target_seqs {max_target_seqs} -outfmt \"{blastfmt}\" {blastoptions} " \
-        "-query - "
-    blastcmd = blastcmd.format(
-        blast_path=blast_path, task=task, db=db, max_target_seqs=MAX_TARGET_SEQS,
-        blastfmt=BLAST_FORMAT, blastoptions=blastoptions
-    )
-    args += [blastcmd]
+    args += [
+        blast_path, '-task', task, '-db', db, '-max_target_seqs', str(MAX_TARGET_SEQS),
+        '-outfmt', '"'+BLAST_FORMAT+'"'
+    ]
+    args += shlex.split(blastoptions)
+    args += ['-query', '-']
+    #args += ['./t.py']
     p_sh = sh.Command('parallel')
     print "[cmd] {0}".format('parallel ' + ' '.join(args))
-    p_sh(*args, _in=inputfile, _out=outfile)
-
-    '''
-    cat input.fa | /usr/bin/time parallel -u --sshloginfile ${PBS_NODEFILE} --pipe --block 100k --recstart '>' -P ${PBS_NUM_PPN} "$(which blastn) -max_target_seqs 10 -db /media/VD_Research/databases/ncbi/blast/nt/nt -evalue 0.01 -outfmt  \"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore\" -query -" > results.blast
-    '''
+    p_sh(*args, _out=outfile, _in=inputfile)
 
 def get_hostfile():
     '''
@@ -165,7 +161,7 @@ def main():
             parallel_blast(
                 infile, outfile, args.ninst, args.db, args.blast_type, args.task,
                 args.blast_options 
-            )
+        )
 
 if __name__ == '__main__':
     main()
