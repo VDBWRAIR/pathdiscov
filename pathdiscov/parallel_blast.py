@@ -4,6 +4,7 @@ from functools import partial
 import argparse
 import shlex
 import subprocess
+import sys
 
 try:
     from collections import OrderedDict
@@ -69,11 +70,11 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
     '''
     Runs blast commands in parallel on a given fasta file
 
-    :param file inputfile: Input fasta file path
-    :param file outfile: Output file handle
+    :param str inputfile: Input fasta path
+    :param str outfile: Output file path
     :param int ninst: number of cpus to use if not in PBS or SGE job
     :param str db: Database path to blast against
-    :param str blasttype: Blast exe to use
+    :param str blasttype: Blast exe to use(blastn, blastx, diamond...)
     :param str task: Blast task to run with -task option for blasttype
     :param str blastoptions: other options to pass to blast
     '''
@@ -89,7 +90,30 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
     #args += ['./t.py']
     p_sh = sh.Command('parallel')
     print "[cmd] {0}".format('parallel ' + ' '.join(args))
-    p_sh(*args, _out=outfile, _in=inputfile)
+    try:
+        p = p_sh(*args, _out=open(outfile,'w'), _in=open(inputfile))
+    except sh.ErrorReturnCode as e:
+        print e.stderr
+        sys.exit(e.exit_code)
+
+def parallel_diamond(inputfile, outfile, ninst, db, task, diamondoptions):
+    '''
+    Runs diamond commands in parallel on a given fasta file
+
+    Will not run more than 1 diamond process per host as diamond utilizes
+    threads better than blast
+
+    :param str inputfile: Input fasta path
+    :param str outfile: Output file path
+    :param int ninst: number of threads to use if not in PBS or SGE job
+    :param str db: Database path to blast against
+    :param str task: blastx or blastp
+    :param str diamondoptions: other options to pass to blast
+    '''
+    '''
+    diamond -task blastx -compress 0 -db /path/nt -o outfile -query inputfile -o outfile
+    my $cmd = "$type $task_option  $options -q  $query -d $db  -o $out"; 
+    '''
 
 def get_hostfile():
     '''
@@ -156,12 +180,10 @@ def generate_sshlogins(ninst=None):
 def main():
     args = parse_args()
     assert exists(args.inputfasta), '[error] {0} does not exist'.format(args.inputfasta)
-    with open(args.inputfasta) as infile:
-        with open(args.outfile, 'w') as outfile:
-            parallel_blast(
-                infile, outfile, args.ninst, args.db, args.blast_type, args.task,
-                args.blast_options 
-        )
+    parallel_blast(
+        args.inputfasta, args.outfile, args.ninst, args.db, args.blast_type, args.task,
+        args.blast_options 
+    )
 
 if __name__ == '__main__':
     main()

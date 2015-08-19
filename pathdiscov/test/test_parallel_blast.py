@@ -111,12 +111,15 @@ class TestParallelBlast(unittest.TestCase):
         _, self.hostfile = tempfile.mkstemp()
         self.patch_sh_cmd = mock.patch('pathdiscov.parallel_blast.sh.Command')
         self.patch_sh_which = mock.patch('pathdiscov.parallel_blast.sh.which')
+        self.patch_open = mock.patch('__builtin__.open')
+        self.mock_open = self.patch_open.start()
         self.mock_sh_which = self.patch_sh_which.start()
         self.mock_sh_cmd = self.patch_sh_cmd.start()
         self.addCleanup(self.patch_sh_cmd.stop)
         self.addCleanup(self.patch_sh_which.stop)
-        self.infile = StringIO()
-        self.outfile = StringIO()
+        self.addCleanup(self.patch_open.stop)
+        self.infile = '/path/infile'
+        self.outfile = '/path/outfile'
 
     def test_correct_input_file_handling(self):
         self.mock_sh_which.return_value = '/path/to/foon'
@@ -126,7 +129,8 @@ class TestParallelBlast(unittest.TestCase):
         )
         r = self.mock_sh_cmd.return_value.call_args
         # It seems that parallel needs 
-        self.assertIn('_in', r[1])
+        self.assertEqual(r[1]['_in'], self.mock_open.return_value)
+        self.assertEqual(r[1]['_out'], self.mock_open.return_value)
         self.assertIn('--pipe', r[0])
 
     def test_command_string_is_correct(self):
@@ -162,8 +166,7 @@ class TestParallelBlast(unittest.TestCase):
         self.assertIn('5/:', r)
 
     def test_remote_hosts(self):
-        with open(self.hostfile, 'w') as fh:
-            fh.write(PBS_MACHINEFILE)
+        self.mock_open.return_value.__enter__.return_value = PBS_MACHINEFILE.splitlines()
         with mock.patch.dict('pathdiscov.parallel_blast.os.environ', {'PBS_NODEFILE': self.hostfile}):
             self.mock_sh_which.return_value = '/path/to/foon'
             parallel_blast.parallel_blast(
