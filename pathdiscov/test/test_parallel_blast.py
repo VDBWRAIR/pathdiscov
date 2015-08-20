@@ -134,6 +134,37 @@ class TestParallelBlast(MockSH):
         self.assertEqual(r[1]['_out'], self.mock_open.return_value)
         self.assertIn('--pipe', r[0])
 
+    def test_handles_blastn_task(self):
+        self.mock_sh_which.return_value = '/path/to/blastn'
+        parallel_blast.parallel_blast(
+            self.infile, self.outfile, 5, '/path/db/nt', 'blastn', 'megablast',
+            '-evalue 0.01 -otherblast arg'
+        )
+        r = self.mock_sh_cmd.return_value.call_args[0]
+        self.assertIn('/path/to/blastn', r)
+        self.assertIn('-task', r)
+        self.assertIn('megablast', r)
+
+    def test_handles_diamond(self):
+        self.mock_sh_which.return_value = '/path/to/diamond'
+        parallel_blast.parallel_blast(
+            self.infile, self.outfile, 5, '/path/db/nt', 'diamond', None,
+            '-evalue 0.01 -otherblast arg'
+        )
+        r = self.mock_sh_cmd.return_value.call_args[0]
+        self.assertIn('/path/to/diamond', r)
+        self.assertNotIn('-task', r)
+
+    def test_handles_blastx(self):
+        self.mock_sh_which.return_value = '/path/to/blastx'
+        parallel_blast.parallel_blast(
+            self.infile, self.outfile, 5, '/path/db/nt', 'blastx', None,
+            '-evalue 0.01 -otherblast arg'
+        )
+        r = self.mock_sh_cmd.return_value.call_args[0]
+        self.assertIn('/path/to/blastx', r)
+        self.assertNotIn('-task', r)
+
     def test_command_string_is_correct(self):
         self.mock_sh_which.return_value = '/path/to/foon'
         parallel_blast.parallel_blast(
@@ -144,8 +175,6 @@ class TestParallelBlast(MockSH):
         r = self.mock_sh_cmd.return_value.call_args
         blastcmd = r[0]
         print r[0]
-        self.assertIn('-task', blastcmd)
-        self.assertIn('barn', blastcmd)
         self.assertIn('-db', blastcmd)
         self.assertIn('/path/db/nt', blastcmd)
         self.assertIn('-otherblast', blastcmd)

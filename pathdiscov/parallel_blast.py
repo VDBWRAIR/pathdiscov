@@ -43,7 +43,8 @@ def parse_args():
     )
     parser.add_argument(
         '--task',
-        choices=('megablast','dc-megablast','blastn','blastx'),
+        choices=('megablast','dc-megablast','blastn',None),
+        default=None,
         help='-task to use for blast/diamond'
     )
     parser.add_argument(
@@ -75,14 +76,17 @@ def parallel_blast(inputfile, outfile, ninst, db, blasttype, task, blastoptions)
     :param int ninst: number of cpus to use if not in PBS or SGE job
     :param str db: Database path to blast against
     :param str blasttype: Blast exe to use(blastn, blastx, diamond...)
-    :param str task: Blast task to run with -task option for blasttype
+    :param str task: Blast task to run with -task option for blasttype or 
+        None if blastx/blastp
     :param str blastoptions: other options to pass to blast
     '''
     blast_path = sh.which(blasttype)
     args = ['-u', '--pipe', '--block', '10', '--recstart', '>']
     args += generate_sshlogins(ninst)
-    args += [
-        blast_path, '-task', task, '-db', db, '-max_target_seqs', str(MAX_TARGET_SEQS),
+    args += [blast_path]
+    if task is not None:
+        args += ['-task', task]
+    args += ['-db', db, '-max_target_seqs', str(MAX_TARGET_SEQS),
         '-outfmt', '"'+BLAST_FORMAT+'"'
     ]
     args += shlex.split(blastoptions)
