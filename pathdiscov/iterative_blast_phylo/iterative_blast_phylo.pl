@@ -209,10 +209,14 @@ foreach my $mate (@mates)
                 print_system($cmd);
 
                 my $inputfasta = "$outputdir/$j.$mate.fasta";
+                my $blastexe = "blastn";
+                my $blasttask = "--task $blast_task_list[$i]";
 
                 # Filter using get_orf
                 if( $blast_task_list[$i] eq "diamond" || $blast_task_list[$i] eq "blastx" )
                 {
+                    $blastexe = $blast_task_list[$i];
+                    $blasttask = "";
                     print "[echo] orf filtering $mate prior to $blast_task_list[$i]\n";
                     my $odir = "tmp_${mate}_${j}/orf_filter";
                     my $logs = "$odir/logs";
@@ -230,7 +234,9 @@ foreach my $mate (@mates)
                 }
 
                 my $blast_db_nr;
-                my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $inputfasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                my $cmd = "parallel_blast $inputfasta $outputdir/$j.$mate.blast --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_type $blastexe $blasttask";
+
+                #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $inputfasta --db $blast_db_list[$i] --blast_type $blastexe --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
                 verbose_system($cmd);
 
                 print "[echo] get phylogeny counts\n";

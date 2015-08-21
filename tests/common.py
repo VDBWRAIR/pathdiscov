@@ -309,11 +309,15 @@ class StageTestBase(unittest.TestCase):
         where each tuple should match a line in countpath file
         '''
         fh = open(countpath)
-        for line, ex in zip(fh, expect):
+        lines = [line.strip() for line in fh]
+        self.assertEqual(len(expect), len(lines), "More count entries than expected")
+        for line, ex in zip(lines, expect):
             name, count = line.strip().split()
             count = float(count)
             exc = float(ex[1])
             self.assertEqual(ex[0], name)
+            print line
+            print ex
             self.assertAlmostEqual(exc, count, delta=2)
 
 def aexists(path, msg=None):

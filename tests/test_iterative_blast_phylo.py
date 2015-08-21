@@ -30,31 +30,34 @@ fasta_input = join(TESTDIR, 'out.cap.fa')
 # Param
 paramtxt = '''
 command iterative_blast_phylo
-blast_db_list				{0},{0}
-blast_task_list				megablast,dc-megablast
-blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12
-ninst_list				    1,1
-taxonomy_names				{1}
-taxonomy_nodes				{2}
-blast_pro_db                {3}
-'''.format(blastnt,taxnames,taxnodes,blastnr)
+blast_db_list				{0},{0},{1}
+blast_task_list				megablast,dc-megablast,blastx
+blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 12
+ninst_list				    1,1,1
+taxonomy_names				{2}
+taxonomy_nodes				{3}
+blast_pro_db                {4}
+'''.format(blastnt,blastnr,taxnames,taxnodes,blastnr)
 
 expect_count_contig = [
     ('input', '86'),
     ('megablast', '76'),
-    ('dc-megablast', '73')
+    ('dc-megablast', '73'),
+    ('blastx', 73)
 ]
 
 expect_count_r1 = [
     ('input', '250'),
     ('megablast', '216'),
-    ('dc-megablast', '215')
+    ('dc-megablast', '215'),
+    ('blastx', 214)
 ]
 
 expect_count_r2 = [
     ('input', '250'),
     ('megablast', '222'),
-    ('dc-megablast', '218')
+    ('dc-megablast', '218'),
+    ('blastx', 217)
 ]
 
 output_contig = 'iterative_blast_phylo_1.contig'
@@ -137,7 +140,7 @@ class TestIterativeBlastPhylo(common.StageTestBase):
         aexists(join(orf_filter_dir, 'orf_filter.contig'))
         aexists(join(orf_filter_dir, 'contig.orfout.fa'))
         # copy so we can modify
-        econtig = [x for x in expect_count_contig]
+        econtig = [x for x in expect_count_contig if x[0] != 'blastx']
         econtig.append(('orf_filter','73'))
         econtig.append(('diamond','72'))
         self._verify_countfile(econtig, join(outdir, 'contig.count'))
