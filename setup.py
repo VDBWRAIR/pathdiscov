@@ -295,7 +295,7 @@ setup_dict = dict(
         'pathdiscov/download/ray/Ray',
         'pathdiscov/download/Ray2',
         'pathdiscov/download/bowtie2/bowtie2',
-        'pathdiscov/download/diamond64/diamond',
+        'pathdiscov/download/diamond',
         'pathdiscov/download/snap/snap',
         'pathdiscov/quality_filter/quality_filter.pl',
         'pathdiscov/host_map/host_map.pl',

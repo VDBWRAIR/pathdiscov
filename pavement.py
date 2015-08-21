@@ -28,6 +28,10 @@ from paver.setuputils import install_distutils_tasks
 
 
 options(setup=setup_dict,
+        diamond=Bunch(
+            url='https://github.com/bbuchfink/diamond/releases/download/v0.7.9/diamond-linux64.tar.gz',
+            sdir=path('pathdiscov/download'),
+        ),
         bwa=Bunch(
             sdir=path('pathdiscov/download'),
             bindir=path('pathdiscov/bin')
@@ -297,6 +301,19 @@ def download_install_fastqc(options):
         info("fastqc symlink already exists")
 
 @task
+def download_unpack_diamond(options):
+    diamondbin=join(sys.prefix,'bin','diamond')
+    if not exists(diamondbin):
+        info('Downloading diamond')
+        cmd = 'cd {0} && wget {1} -O- | tar xzvf -' 
+        sh(
+            cmd.format(
+                options.diamond.sdir,
+                options.diamond.url
+            )
+        )
+
+@task
 def download_compile_bwa(options):
     """installs the current package"""
     bwabin=join(sys.prefix,'bin','bwa')
@@ -437,7 +454,7 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap','perl_modules','download_compile_gnuparallel')
+@needs('download_compile_bwa','download_compile_samtools','refRay','getorf','download_install_fastqc','installSnap','perl_modules','download_compile_gnuparallel','download_unpack_diamond')
 def install_other_dependencies():
     pass
 
