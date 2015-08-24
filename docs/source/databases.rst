@@ -50,7 +50,7 @@ Create databases directory structure
 
 .. code-block:: bash
     
-    mkdir -p ~/databases/{humandna,humanrna,ncbi}
+    mkdir -p ~/databases/{humandna,humanrna,ncbi,diamond}
     mkdir -p ~/databases/ncbi/blast/{nt,nr}
     mkdir -p ~/databases/ncbi/taxonomy
 
@@ -91,15 +91,24 @@ Diamond
 Diamond corresponds to :doc:`stages/iterative_blast_phylo`'s 
 ``blast_db_list``
 
-Download and index protein database for diamond blastx
+Download and index protein database for diamond blastx.
+
+You should make sure to view the `makedb`_ command, specifically the part about
+how the ``-b`` option controls how much memory diamond will take when it runs
+using the database you build. In the example below we use ``-b 2`` which should
+consume about 12GB of RAM so if you don't have that much RAM on your computer where
+you will run diamond, or if you have way more RAM you may want to change that
+number as the higher it is, the faster diamond will run but consume more memory.
+
+You can use the ``free -hg`` command which will show you how many GB you have(listed
+under the Total column)
 
 .. code-block:: bash
       
-    mkdir -p ~/databases/diamond
     pushd ~/databases/diamond
     wget ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz
     gunzip nr.gz
-    diamond makedb -p 12 -d diamondnr -v --log --in nr -b 0.5
+    diamond makedb -d diamondnr -v --log --in nr -b 2
     popd
 
 Alternatively you can generate the diamond database from an already downloaded
@@ -107,10 +116,9 @@ blast nr database
 
 .. code-block:: bash
 
-    mkdir -p ~/databases/diamond
     pushd ~/databases/diamond
     blastdbcmd -db ~/databases/ncbi/blast/nr/nr -entry all > blastnr.fasta
-    diamond makedb -d diamondnr --log --in blastnr.fasta -b 0.5
+    diamond makedb -d diamondnr --log --in blastnr.fasta -b 2
     rm blastnr.fasta
 
 Host Genome Setup
@@ -249,3 +257,5 @@ Note: This command is only available after you install. Unfortunately at this po
 You will probably want to ensure that the pipeline can find all of your databases. There is now a handy script that you can use to do this prior to installing.
 
 :doc:`scripts/verifydatabases`
+
+.. _makedb: https://github.com/bbuchfink/diamond#makedb-options
