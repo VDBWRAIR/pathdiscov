@@ -217,11 +217,18 @@ foreach my $mate (@mates)
                 {
                     $blastexe = $blast_task_list[$i];
                     $blasttask = "";
+                    if( $blast_task_list[$i] eq "diamond" ) {
+                        $blasttask = "--task blastx";
+                    }
                     print "[echo] orf filtering $mate prior to $blast_task_list[$i]\n";
                     my $odir = "tmp_${mate}_${j}/orf_filter";
                     my $logs = "$odir/logs";
+                    my $matename = $mate;
                     print_system("mkdir -p $logs");
-                    my $cmd = "orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
+                    if($contig) {
+                        $matename = 'R1';
+                    }
+                    my $cmd = "orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --$matename $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
                     if($contig) {
                     $cmd .= " --contig 1";
                     }
@@ -234,7 +241,7 @@ foreach my $mate (@mates)
                 }
 
                 my $blast_db_nr;
-                my $cmd = "parallel_blast $inputfasta $outputdir/$j.$mate.blast --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_type $blastexe $blasttask";
+                my $cmd = "parallel_blast $inputfasta $outputdir/$j.$mate.blast --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_exe $blastexe $blasttask";
 
                 #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $inputfasta --db $blast_db_list[$i] --blast_type $blastexe --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
                 verbose_system($cmd);
