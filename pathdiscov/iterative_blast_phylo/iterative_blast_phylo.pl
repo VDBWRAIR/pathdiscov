@@ -235,7 +235,7 @@ foreach my $mate (@mates)
                     verbose_system($cmd);
                     # New input for diamond/blastx will be orf filtered fasta
                     $inputfasta = "$outputdir/$odir/orf_filter.$mate";
-                    print "[debug] orf_filtered input $inputfasta\n";
+                    print "[debug] orf_filtered input for $blast_task_list[$i] will now be $inputfasta\n";
                     my $cmd = "linecount $inputfasta orf_filter $mate.count 2 1";
                     print_system($cmd);
                 }
@@ -300,7 +300,7 @@ foreach my $mate (@mates)
 
                 # get reads that didnt blast
                 # args: blast output, fasta input
-                my $cmd = "$path_scripts/get_unblast_reads.pl $j.$mate.blast $j.$mate.fasta > $j.$mate.noblast.fasta";
+                my $cmd = "$path_scripts/get_unblast_reads.pl $j.$mate.blast $inputfasta > $j.$mate.noblast.fasta";
                 verbose_system($cmd);
 
                 # args: input file, filtering_program_name, output file, 2->fasta, concat
