@@ -32,7 +32,7 @@ paramtxt = '''
 command iterative_blast_phylo
 blast_db_list				{0},{0},{1}
 blast_task_list				megablast,dc-megablast,blastx
-blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 12
+blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-evalue 1e-4 -word_size 7
 ninst_list				    1,1,1
 taxonomy_names				{2}
 taxonomy_nodes				{3}
@@ -45,16 +45,16 @@ expect_count_contig = [
     ('input', '86'),
     ('megablast', '76'),
     ('dc-megablast', '73'),
-    ('orf_filter',73),
-    ('blastx', 50)
+    ('orf_filter', '73'),
+    ('blastx', '72')
 ]
 
 expect_count_r1 = [
     ('input', '250'),
     ('megablast', '216'),
-    ('dc-megablast', '214'),
-    ('orf_filter','196'),
-    ('blastx', '185')
+    ('dc-megablast', '215'),
+    ('orf_filter','199'),
+    ('blastx', '199')
 ]
 
 expect_count_r2 = [
@@ -62,7 +62,7 @@ expect_count_r2 = [
     ('megablast', '222'),
     ('dc-megablast', '218'),
     ('orf_filter', '201'),
-    ('blastx', '183')
+    ('blastx', '197')
 ]
 
 output_contig = 'iterative_blast_phylo_1.contig'
@@ -128,7 +128,7 @@ class TestIterativeBlastPhylo(common.StageTestBase):
         command iterative_blast_phylo
         blast_db_list				{0},{0},{1}
         blast_task_list				megablast,dc-megablast,diamond
-        blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,--compress 0 -p 1 -v -k 10 -w 28 --id 0.7 -c 4
+        blast_options_list			-evalue 1e-4 -word_size 28,-evalue 1e-4 -word_size 12,-v -k 10 -w 28 --id 0.7 -c 4
         ninst_list				    1,1,1
         taxonomy_names				{2}
         taxonomy_nodes				{3}

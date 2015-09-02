@@ -211,7 +211,17 @@ foreach my $mate (@mates)
                 my $inputfasta = "$outputdir/$j.$mate.fasta";
                 my $blastexe = "blastn";
                 my $blasttask = "--task $blast_task_list[$i]";
-
+                my $outfmt="6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore";
+                # Start building the --blast_options string
+                my $blastoptions = $blast_options_list[$i];
+                # If blast type then we will force the format
+                if( $blast_task_list[$i] ne "diamond" ) {
+                    # Must specify same format as diamond to keep things consistent
+                    $blastoptions = $blastoptions . " -outfmt \\\"$outfmt\\\"";
+                }
+                # Ensure string is wrapped in quotes
+                $blastoptions = "$blastoptions";
+            
                 # Filter using get_orf
                 if( $blast_task_list[$i] eq "diamond" || $blast_task_list[$i] eq "blastx" )
                 {
@@ -241,9 +251,8 @@ foreach my $mate (@mates)
                 }
 
                 my $blast_db_nr;
-                my $cmd = "parallel_blast $inputfasta $outputdir/$j.$mate.blast --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_exe $blastexe $blasttask";
+                my $cmd = "parallel_blast $inputfasta $outputdir/$j.$mate.blast --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_exe $blastexe $blasttask --blast_options \"$blastoptions\"";
 
-                #my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $inputfasta --db $blast_db_list[$i] --blast_type $blastexe --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
                 verbose_system($cmd);
 
                 print "[echo] get phylogeny counts\n";

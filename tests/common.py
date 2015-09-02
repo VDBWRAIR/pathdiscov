@@ -316,8 +316,8 @@ class StageTestBase(unittest.TestCase):
         '''
         fh = open(countpath)
         lines = [line.strip() for line in fh]
-        print expect
-        print lines
+        print "Expected: {0}".format(expect)
+        print "Found: {0}".format(lines)
         self.assertEqual(len(expect), len(lines), "More count entries than expected")
         for line, ex in zip(lines, expect):
             name, count = line.strip().split()
