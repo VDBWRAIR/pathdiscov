@@ -48,23 +48,25 @@ if ($task eq "diamond")
 if ($type eq "diamond" || !(defined($task)))
 {
     $task_option="blastx";
-
+}
+elsif($type eq "blastx")
+{
+    $task_option = "";
 }
 else
 {
-        $task_option="-task $task";
+    $task_option="-task $task";
 }
 
 
-if ($type eq "blastn")
+if ($type ne "diamond")
 {
     print "[start]\n";
     my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
     verbose_system($cmd);
     print "[end]\n";
 }
-
-if ($type eq "diamond")
+else
 {
     print "[start]\n";
     my $cmd = "$type $task_option  $options -q  $query -d $db  -o $out"; 
