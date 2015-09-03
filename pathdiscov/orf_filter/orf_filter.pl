@@ -40,7 +40,8 @@ GetOptions (	'outputdir=s' => \$outputdir,	# outputdir
         'contig=i' => \$contig, 			# contig bool
 		'timestamp=s' => \$timestamp);	# time stamp
             
-die "[error] required input parameters not found" if (!( defined($outputdir) && defined($logs) && defined($pfile) && defined($r1) ));
+die "[error] required input parameters not found" if (!( defined($outputdir) && defined($logs) && defined($pfile) ));
+die "[error] required input parameters not found" if ( !defined($r1) && !defined($r2) );
 
 @mates=("contig") if ($contig);  # Reset mates to the name contig
             
@@ -119,17 +120,18 @@ foreach my $mate (@mates)
 			#my %h_fasta = map {/>(\w+)_(\w+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
             # Should be >(anything)_\d\s(.*
 			my %h_fasta = map {/>(.*?)_(\d+)\s(.*)/; $1 => 1} split(/\n/, `cat $mate.orfout.fa`);
-			#print Dumper \ %h_fasta;
+			# print Dumper \ %h_fasta;
 
 			print "[echo] filter $hoh{$command}{$mate} by orfs into $command.$mate\n";
 			get_subset_by_fastaid($hoh{$command}{$mate}, "$command.$mate", \%h_fasta);
             verbose_system("linecount $command.$mate orf_filter $mate.count fastq 1");
 		}
         else {
-            print "Doing nothing because there are no getorf_options set\n";
+            print "[info] Value of \$hoh{".$command."}{\"getorf_options\"}:'". $hoh{$command}{"getorf_options"} ."'\n";
+            print "[error] there are no getorf_options set\n";
         }
 	} # defined
-	elsif ($mate eq "R1")
+	elsif (($mate eq "R1" || $mate eq "contig") && !defined($r2))
 	{
         if(! -s $hoh{$command}{$mate} ) {
             print("$hoh{$command}{$mate} is empty\n");
@@ -211,9 +213,9 @@ sub get_subset_by_fastaid
         $_ = <$fh>;
         if($_ =~ /^@/) {
             $format = "fastq";
-            print("Detected $infile as fastq\n");
+            print("[info] Detected $infile as fastq\n");
         } else {
-            print("Detected $infile as fasta\n");
+            print("[info] Detected $infile as fasta\n");
         }
         close($fh);
 

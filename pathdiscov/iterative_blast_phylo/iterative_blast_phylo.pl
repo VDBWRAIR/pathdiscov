@@ -209,28 +209,50 @@ foreach my $mate (@mates)
                 print_system($cmd);
 
                 my $inputfasta = "$outputdir/$j.$mate.fasta";
-
+                my $blastexe = "blastn";
+                my $blasttask = "--task $blast_task_list[$i]";
+                my $outfmt="6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore";
+                # Start building the --blast_options string
+                my $blastoptions = $blast_options_list[$i];
+                # If blast type then we will force the format
+                if( $blast_task_list[$i] ne "diamond" ) {
+                    # Must specify same format as diamond to keep things consistent
+                    $blastoptions = $blastoptions . " -outfmt \\\"$outfmt\\\"";
+                }
+                # Ensure string is wrapped in quotes
+                $blastoptions = "$blastoptions";
+            
                 # Filter using get_orf
                 if( $blast_task_list[$i] eq "diamond" || $blast_task_list[$i] eq "blastx" )
                 {
+                    $blastexe = $blast_task_list[$i];
+                    $blasttask = "";
+                    if( $blast_task_list[$i] eq "diamond" ) {
+                        $blasttask = "--task blastx";
+                    }
                     print "[echo] orf filtering $mate prior to $blast_task_list[$i]\n";
                     my $odir = "tmp_${mate}_${j}/orf_filter";
                     my $logs = "$odir/logs";
+                    my $matename = $mate;
                     print_system("mkdir -p $logs");
-                    my $cmd = "orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --R1 $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
+                    if($contig) {
+                        $matename = 'R1';
+                    }
+                    my $cmd = "orf_filter.pl --outputdir $odir --logs $logs --paramfile $abs_pfile --$matename $outputdir/$j.$mate.fasta --sample $sample --timestamp $timestamp";
                     if($contig) {
                     $cmd .= " --contig 1";
                     }
                     verbose_system($cmd);
                     # New input for diamond/blastx will be orf filtered fasta
                     $inputfasta = "$outputdir/$odir/orf_filter.$mate";
-                    print "[debug] orf_filtered input $inputfasta\n";
+                    print "[debug] orf_filtered input for $blast_task_list[$i] will now be $inputfasta\n";
                     my $cmd = "linecount $inputfasta orf_filter $mate.count 2 1";
                     print_system($cmd);
                 }
 
                 my $blast_db_nr;
-                my $cmd = "$path_scripts/par_block_blast.pl --outputdir tmp_".$mate."_$j --inputfasta $inputfasta --db $blast_db_list[$i] --blast_type $blast_task_list[$i] --task $blast_task_list[$i] --ninst $ninst_list[$i] --outfile $outputdir/$j.$mate.blast --outheader $outputdir/blast.header --blast_options \"$blast_options_list[$i]\"";
+                my $cmd = "parallel_blast $inputfasta $outputdir/$j.$mate.blast --ninst $ninst_list[$i] --db $blast_db_list[$i] --blast_exe $blastexe $blasttask --blast_options \"$blastoptions\"";
+
                 verbose_system($cmd);
 
                 print "[echo] get phylogeny counts\n";
@@ -287,7 +309,7 @@ foreach my $mate (@mates)
 
                 # get reads that didnt blast
                 # args: blast output, fasta input
-                my $cmd = "$path_scripts/get_unblast_reads.pl $j.$mate.blast $j.$mate.fasta > $j.$mate.noblast.fasta";
+                my $cmd = "$path_scripts/get_unblast_reads.pl $j.$mate.blast $inputfasta > $j.$mate.noblast.fasta";
                 verbose_system($cmd);
 
                 # args: input file, filtering_program_name, output file, 2->fasta, concat

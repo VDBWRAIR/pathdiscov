@@ -1,4 +1,5 @@
 use strict;
+use File::Basename;
 
 # run a system commmand "verbosely", echo-ing the command as well as giving the time
 sub verbose_system  
@@ -7,12 +8,13 @@ sub verbose_system
 	# @_ exists magically - anything passed in
 
 	my $cmd = shift;  
+    my @parts = split(' ', $cmd);
+    my $exe = basename($parts[0]);
 
-	print "[cmd] ",$cmd,"\n";
 	my $start_time = time();		
-	system($cmd);
+    print_system($cmd);
  	my $end_time = time();
- 	print "[deltat] ",$end_time-$start_time,"\n";
+ 	print "[$exe deltat] ",$end_time-$start_time,"\n";
 }
 
 # run a system commmand but print the command first

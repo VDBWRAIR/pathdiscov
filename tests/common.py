@@ -6,6 +6,8 @@ import os
 import sys
 import glob
 
+from nose.plugins.attrib import attr
+
 import mock
 
 import unittest2 as unittest
@@ -303,17 +305,27 @@ class StageTestBase(unittest.TestCase):
             fh.write(txt)
         return abspath(parampath)
 
+    def assertNotEmpty(self, path):
+        self.assertTrue(exists(path), '{0} does not exist'.format(path))
+        self.assertNotEqual(0, os.stat(path).st_size, "{0} is empty".format(path))
+
     def _verify_countfile(self, expect, countpath):
         '''
         expect is list((name,count),(name2,count)...)
         where each tuple should match a line in countpath file
         '''
         fh = open(countpath)
-        for line, ex in zip(fh, expect):
+        lines = [line.strip() for line in fh]
+        print "Expected: {0}".format(expect)
+        print "Found: {0}".format(lines)
+        self.assertEqual(len(expect), len(lines), "More count entries than expected")
+        for line, ex in zip(lines, expect):
             name, count = line.strip().split()
             count = float(count)
             exc = float(ex[1])
             self.assertEqual(ex[0], name)
+            print line
+            print ex
             self.assertAlmostEqual(exc, count, delta=2)
 
 def aexists(path, msg=None):
