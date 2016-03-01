@@ -11,9 +11,7 @@ import common
 
 # Allows us to reference sh.quality_filter since quality_filter.pl
 # cannot just work with sh import because of .pl
-sh.quality_filter = sh.Command(join(
-    PATHDISCOV, 'quality_filter', 'quality_filter.pl'
-))
+sh.quality_filter = sh.Command('quality_filter.pl')
 
 # Param for quality_filter
 paramtxt = '''

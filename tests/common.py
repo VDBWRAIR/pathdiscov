@@ -312,7 +312,7 @@ class StageTestBase(unittest.TestCase):
         for line, ex in zip(fh, expect):
             name, count = line.strip().split()
             self.assertEqual(ex[0], name)
-            self.assertEqual(ex[1], count)
+            self.assertAlmostEqual(int(ex[1]), int(count), delta=2)
 
 def aexists(path, msg=None):
     if msg is None:

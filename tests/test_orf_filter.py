@@ -10,9 +10,7 @@ import sh
 from common import TESTDATA, SCRATCH, PATHDISCOV, RIKKDB, TESTDIR
 import common
 
-sh.orf_filter = sh.Command(join(
-    PATHDISCOV, 'orf_filter', 'orf_filter.pl'
-))
+sh.orf_filter = sh.Command('orf_filter.pl')
 
 # Example contig fasta input file
 fasta_input = join(TESTDIR, 'out.cap.fa')

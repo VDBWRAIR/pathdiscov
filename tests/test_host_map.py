@@ -12,9 +12,11 @@ import common
 
 # Allows us to reference sh.quality_filter since quality_filter.pl
 # cannot just work with sh import because of .pl
-sh.host_map = sh.Command(join(
-    PATHDISCOV, 'host_map', 'host_map.pl'
-))
+#sh.host_map = sh.Command(join(
+#    PATHDISCOV, 'host_map', 'host_map.pl'
+#))
+#NOTE: perl modules are now installed in bin/
+sh.host_map = sh.Command('host_map.pl')
 
 dna_path = join(RIKKDB, 'rikkdna')
 dna_path = join(RIKKDB, 'host_map')
@@ -47,8 +49,7 @@ class TestHostMap(common.StageTestBase):
         outdir = inspect.stack()[0][3]
         logs = join(outdir,'logs')
         os.makedirs(logs)
-        sh.host_map(
-            sample='testsample', paramfile=param,
+        sh.host_map(sample='testsample', paramfile=param,
             outputdir=outdir, logs=logs, timestamp='0',
             R1=self.r1_fq, R2=self.r2_fq
         )

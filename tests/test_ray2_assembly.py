@@ -13,9 +13,7 @@ import common
 
 # Allows us to reference sh.quality_filter since quality_filter.pl
 # cannot just work with sh import because of .pl
-sh.ray2_assembly = sh.Command(join(
-    PATHDISCOV, 'ray2_assembly', 'ray2_assembly.pl'
-))
+sh.ray2_assembly = sh.Command('ray2_assembly.pl')
 
 # Param
 paramtxt = '''
