@@ -8,7 +8,7 @@ use Cwd 'abs_path';
 use File::Spec;
 
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 # local modules:
 use Verbose_Sys;
 use Parse_ParameterFile;
@@ -109,12 +109,16 @@ if ( $r1 ne "none" && defined($r1) )
 {
 	$abs_r1 = abs_path($r1);
 	$hoh{$command}{"R1"}=$abs_r1;
+    my $cmd = "linecount $abs_r1 input ${outputdir}/R1.count 1 0";
+    print_system($cmd);
 }
 
 if ( $r2 ne "none" && defined($r2) )
 {
 	$abs_r2 = abs_path($r2);
 	$hoh{$command}{"R2"}=$abs_r2;
+    my $cmd = "linecount $abs_r1 input ${outputdir}/R2.count 1 0";
+    print_system($cmd);
 }
 
 if ( $hoh{$command}{"ninst"} )	
@@ -129,6 +133,14 @@ print "[hash] ";
 print Dumper \ %hoh;
 
 chdir($outputdir) or die "[error] cannot chdir to $outputdir";
+
+# RHEL/CentOS don't put openmpi in path for whatever reason by default
+local $ENV{PATH} = "$ENV{PATH}:/usr/lib64/openmpi/bin";
+if(system("which mpiexec") != 0) {
+    if(system("which mpiexec") != 0) {
+        die("[error] missing mpiexec. Please ensure openmpi is installed");
+    }
+}
 
 # make special logs dir for blast
 my $cmd = "mkdir -p logs_assembly";
@@ -156,7 +168,7 @@ if ($isfasta || $fastafile eq "yes")
 	if ($hoh{$command}{"R2"})
 	{
 		print "[echo] find mate pairs and singletons\n";
-		my $cmd = "$path_scripts/perlscripts_wrapper.pl get_common_uneven_fastas $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fasta R1.paired.fasta R2.single.fasta R2.paired.fasta";
+		my $cmd = "perlscripts_wrapper.pl get_common_uneven_fastas $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fasta R1.paired.fasta R2.single.fasta R2.paired.fasta";
 		verbose_system($cmd);		
 		
 		print "[echo] ray2 assembly - paired end fasta\n";
@@ -187,7 +199,7 @@ else
 	if ($hoh{$command}{"R2"})
 	{
 		print "[echo] find mate pairs and singletons\n";
-		my $cmd = "$path_scripts/perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fastq R1.paired.fastq R2.single.fastq R2.paired.fastq";
+		my $cmd = "perlscripts_wrapper.pl get_common_uneven_files $hoh{$command}{\"R1\"} $hoh{$command}{\"R2\"} R1.single.fastq R1.paired.fastq R2.single.fastq R2.paired.fastq";
 		verbose_system($cmd);	
 
 		print "[echo] ray2 assembly - paired end fastq\n";
@@ -229,9 +241,13 @@ else
 }
 
 # put contigs seqs on a single line and replace ID strings w numbers
-# my $cmd = "cat $outputdir/results/Contigs.fasta | $path_scripts/../scripts/fastajoinlines > $output";
+# my $cmd = "cat $outputdir/results/Contigs.fasta | fastajoinlines > $output";
 # args: scripts input output
-my $cmd = "$path_scripts/joinlines.sh $path_scripts/../scripts $outputdir/results/Contigs.fasta $output_ray";
+my $cmd = "$path_scripts/joinlines.sh $outputdir/results/Contigs.fasta $output_ray";
+print_system($cmd);
+
+# put count of ray contigs
+my $cmd = "linecount $output_ray ray_contigs $filecount 2 0";
 print_system($cmd);
 
 system("ln -sf $output_ray $output");		
@@ -244,15 +260,15 @@ if ( $hoh{$command}{"cap"} )
 	my $cmd = "cat $output_ray.cap.contigs $output_ray.cap.singlets > $output_ray.cap.concat";
 	print_system($cmd);
 	
-	my $cmd = "$path_scripts/joinlines.sh $path_scripts/../scripts $output_ray.cap.concat $output_cap";
+	my $cmd = "$path_scripts/joinlines.sh $output_ray.cap.concat $output_cap";
 	print_system($cmd);
 
 	print_system("ln -sf $output_cap $output");		
-}
 
-# args: input file, filtering_program_name, output file, 2->fasta, concat
-my $cmd = "$path_scripts/linecount.sh $output ray_assembly_".$run_iteration." $filecount 2 0";
-print_system($cmd);
+    # put count of cap contigs
+    my $cmd = "linecount $output_cap cap_contigs $filecount 2 1";
+    print_system($cmd);
+}
 
 # if map to contigs option:
 if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq "1" )
@@ -282,7 +298,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			my $cmd = "bowtie2 -q -x bowtie2_index/contigs -1 R1.paired.fastq -2 R2.paired.fastq -U R1.single.fastq,R2.single.fastq -S bowtie2_mapping/out.sam $hoh{$command}{\"bowtie2_options\"}";
 			verbose_system($cmd);		
 
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);	
 		}
 		elsif ( -s "R1.single.fastq" )
@@ -290,7 +306,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			my $cmd = "bowtie2 -q -x bowtie2_index/contigs -1 R1.paired.fastq -2 R2.paired.fastq -U R1.single.fastq -S bowtie2_mapping/out.sam $hoh{$command}{\"bowtie2_options\"}";
 			verbose_system($cmd);
 			
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);					
 		}
 		elsif ( -s "R2.single.fastq" )
@@ -298,7 +314,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			my $cmd = "bowtie2 -q -x bowtie2_index/contigs -1 R1.paired.fastq -2 R2.paired.fastq -U R2.single.fastq -S bowtie2_mapping/out.sam $hoh{$command}{\"bowtie2_options\"}";
 			verbose_system($cmd);
 			
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --paired --unpaired --printsid";
 			verbose_system($cmd);				
 		}
 		else
@@ -307,7 +323,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 			verbose_system($cmd);
 			
 			# here dont make singleton files
-			my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --paired --printsid";
+			my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --R1map bowtie2_mapping/R1.map.id --R2map bowtie2_mapping/R2.map.id --R1unmap bowtie2_mapping/R1.unmap.id --R2unmap bowtie2_mapping/R2.unmap.id --paired --printsid";
 			verbose_system($cmd);					
 		}
 	} # if R2
@@ -317,7 +333,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		verbose_system($cmd);
 		
 		# here don't make paired files
-		my $cmd = "cat bowtie2_mapping/out.sam | $path_scripts/get_map_unmap.pl --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --unpaired --printsid";
+		my $cmd = "cat bowtie2_mapping/out.sam | get_map_unmap.pl --singletonmap bowtie2_mapping/singleton.map.id --singletonunmap bowtie2_mapping/singleton.unmap.id --unpaired --printsid";
 		verbose_system($cmd);				
 	}
 
@@ -331,12 +347,12 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
 		{			
 			# get unmap reads
-			$cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/$mate.unmap.id > bowtie2_mapping/$mate.unmap.fastq";
+			$cmd="fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/$mate.unmap.id > bowtie2_mapping/$mate.unmap.fastq";
 			print_system($cmd);
 			# get unmap reads from singleton file if it exists	
 			if ( -s "bowtie2_mapping/singleton.unmap.id" )
 			{
-				$cmd="$path_scripts/fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/singleton.unmap.id >> bowtie2_mapping/$mate.unmap.fastq";
+				$cmd="fastq_extract_id.pl $hoh{$command}{$mate} bowtie2_mapping/singleton.unmap.id >> bowtie2_mapping/$mate.unmap.fastq";
 				print_system($cmd);
 			}
 				
@@ -347,7 +363,7 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 		
 			# count lines
 			# args: input file, filtering_program_name, output file, 2->fasta, concat
-			my $cmd = "$path_scripts/linecount.sh $run_iteration.$mate.unmap.fastq ray_".$run_iteration." $mate.count 1 0";
+			my $cmd = "linecount $run_iteration.$mate.unmap.fastq unassembled_reads $mate.count 1 1";
 			print_system($cmd);				
 		}
 	}
@@ -357,11 +373,11 @@ if ( $hoh{$command}{"map2contigs"} eq "yes" || $hoh{$command}{"map2contigs"} eq 
 
     # Pull the fastq records out by contigs
     if ( $hoh{$command}{"parse_contigs"} eq "yes" || $hoh{$command}{"parse_contigs"} eq "1" ) {
-	   print "[echo] parse_contigs executing\n";
-           $cmd="parse_contigs bowtie2_mapping/out.sam --outdir reads_by_contig";
+	   print "[echo] parse_contigs set; group_references executing\n";
+           $cmd="group_references bowtie2_mapping/out.sam --outdir reads_by_contig";
            print_system($cmd);
          }
-    else { print "[echo] parse_contigs skipped, not selected in param.txt\n"; }
+    else { print "[echo] group_references skipped, not selected in param.txt\n"; }
 
 	$cmd="rm bowtie2_mapping/out.sam";
 	print_system($cmd);

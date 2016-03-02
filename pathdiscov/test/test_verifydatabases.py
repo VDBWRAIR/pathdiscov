@@ -15,8 +15,8 @@ from pathdiscov import verifydatabases
 def configyaml():
     return {
         'databases': '/tmp/databases',
-        'human_dna': 'humandna/hg38',
-        'human_rna': 'humanrna/hg38_mrna',
+        'host_dna': 'humandna/hg38',
+        'host_rna': 'humanrna/hg38_mrna',
         'nt_db': 'ncbi/blast/nt/nt',
         'tax_nodes': 'ncbi/taxonomy/nodes.dmp',
         'tax_names': 'ncbi/taxonomy/names.dmp',

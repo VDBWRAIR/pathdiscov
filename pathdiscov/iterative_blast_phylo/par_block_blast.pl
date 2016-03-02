@@ -36,7 +36,7 @@ chomp $mytmp;
 $outputdir = $mytmp;
 
 
-die "[error] input file not found" if (!( -e $inputfasta ));
+die "[error] input file not found: ".$inputfasta if (!( -e $inputfasta ));
 
 chdir($outputdir) or die "[error] cannot chdir to ".$outputdir;
 
@@ -96,7 +96,7 @@ if ( $chunk % 2 == 1 )
 {
 	print "\nchuck odd, increment\n\n";
 	$chunk++; 
-	$ninst = floor($len/$chunk);
+	#$ninst = floor($len/$chunk);
 	$remainder = $len % $chunk;	
 	
 	print "wc_input_length = $len\n";
@@ -110,13 +110,27 @@ if ( $chunk % 2 == 1 )
 die "[error] chunk must be even" if ( $chunk % 2 == 1 );
 die "[error] chunk remainder must be even" if ( $remainder % 2 == 1 );
 
-`split -a 3 -d -l $chunk $inputfasta $prefix`;
+my $cmd = "split -a 3 -d -l $chunk $inputfasta $prefix";
+print "[cmd] ".$cmd."\n";
+system($cmd);
+my $numsplitfilescreated = `ls -1 $prefix* | wc -l`;
+chomp($numsplitfilescreated);
 
-# if remainder is greater than 0, add another instance for the subfile that contains the remainder 
-if ( $remainder != 0 )
+# if remainder is greater than 0
+#if ( $remainder != 0 )
+if( $numsplitfilescreated > $ninst )
 {
-	print "\nremainder nonzero, increment ninst\n\n";
-	$ninst++;
+    print "\nExtra split file found\nAppending last extra sequences to last split file\n";
+    my $lastsplitfile = `ls $prefix* | tail -1`;
+    my $secondlastsplitfile = `ls $prefix* | tail -2 | head -1`;
+    chomp($lastsplitfile);
+    chomp($secondlastsplitfile);
+    my $cmd = "cat $lastsplitfile >> $secondlastsplitfile";
+    print "[cmd] ".$cmd."\n";
+    system($cmd);
+    $cmd = "rm $lastsplitfile";
+    print "[cmd] ".$cmd."\n";
+    system($cmd);
 
 	print "wc_input_length = $len\n";
 	print "instances = $ninst\n";
@@ -124,6 +138,7 @@ if ( $remainder != 0 )
 	print "wc_remainder = $remainder\n";
 	
 }
+system("wc -l $prefix*");
 
 my $i = 0;
 

@@ -8,7 +8,7 @@ def countlines(input,fileformat):
     counts as a single line
 
     :param file input: Open file handle to count or str of filepath to file
-    :param str fileformat: same as Biopython's parse except you can specify None to signify to count all lines
+    :param str fileformat: Ignored. Autodetected now
 
     :rtype: int
     :return: Number of lines in file
@@ -20,6 +20,15 @@ def countlines(input,fileformat):
 
     # Start count at 0
     count = 0
+
+    line = fh.readline().strip()
+    if line.startswith('@'):
+        fileformat = 'fastq'
+    elif line.startswith('>'):
+        fileformat = 'fasta'
+    else:
+        fileformat = None
+    fh.seek(0)
     
     # How to count the file
     if fileformat is None:
@@ -41,7 +50,7 @@ def linecount(inputfile, name, outfile, format, concat):
     :param file inputfile: input path or file handle to count
     :param str name: name to use for first column of count file
     :param file outfile: path or filehandle to file to write results to
-    :param str format: format of file being read. 1 - fastq, 2 - fasta, 0 - other(count all lines)
+    :param str format: now ignored. Automatically detected
     :pram bool concat: 1|True - concat to outfile, 0|False - overwrite outfile
     '''
     # Determine input and output file handles and modes

@@ -15,6 +15,7 @@ from os.path import (
     join, expanduser, expandvars,
     splitext, basename, dirname, exists
 )
+import sh
 is_64bits = sys.maxsize > 2**32
 if not is_64bits:
     print "Please upgrade your operating system to 64 bit, application such as diamond don't run on 32 bit"
@@ -22,7 +23,6 @@ if not is_64bits:
 options = helpers.get_options()
 #logger_proxy, logging_mutex = helpers.make_logger(options, __file__)
 
-basedir = os.path.relpath('./')
 project_dir = options.outdir  # set output dir
 pro_dir= os.path.basename(project_dir)
 sge = options.sge
@@ -92,10 +92,29 @@ def priStage(input, output):
     '''
     Run run_standard.pl with all supplied options
     '''
+    def statuslogger(line, stdin):
+        '''
+        Only emit certain log messages
+        '''
+        line = line.rstrip()
+        if 'mkdir' in line:
+            return
+        if line.startswith('[module]'):
+            print line
+        elif line.startswith('[cmd]'):
+            print line
+    # Ensure log file exists
+    analysislog = join(project_dir,'results','analysis.log')
+    sh.touch(analysislog)
+    # Tail log file in background
+    tail = sh.tail(analysislog, '-f', _out=statuslogger, _bg=True)
+    # Run pipeline
     result = tasks.priStage(
         input, project_dir, paramFile,
         blast_unassembled, sge, results_dir
     )
+    # Terminate tail process
+    tail.terminate()
     return result
 
 def verify_standard_stages_files(projectpath):
@@ -174,14 +193,12 @@ def commands(commandlist, index):
 def main():
     from helpers import which
     t0 = time.time()
-    print (" Starting time ..... :") + str(t0)
+    print ("Starting project: {0}".format(project_dir))
 
     # Will be all the commands to run
     pipeline_commands = [
         (__name__ + '.createPram', createPram),
     ]
-
-    print "....................." + basedir + "/" + project_dir
 
     if options.param:
         helpers.create_new_project(project_dir)
@@ -199,9 +216,7 @@ def main():
             (__name__ + '.symlink', symlink),
         ]
 
-    pipeline_printout(sys.stdout, commands(pipeline_commands, 1), verbose=6)
     pipeline_run(commands(pipeline_commands, 0), multiprocess=6)
-    pipeline_get_task_names()
 
     import datetime
     from termcolor import colored

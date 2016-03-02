@@ -1,6 +1,10 @@
 from common import *
 from mock import mock_open as _mock_open
 
+from pathdiscov import linecount
+
+fasta = join(FIXTURES,'reads.fasta')
+fastq = join(FIXTURES,'reads.fastq')
 
 class Base(BaseTester):
     modulepath = 'pathdiscov.linecount'
@@ -19,19 +23,18 @@ class TestCountLines(Base):
     functionname = 'countlines'
 
     def test_input_is_string(self):
-        with patch('__builtin__.open',self.mock_other_handle):
-            r = self._C('/count/this/file',None)
-            eq_(3,r)
+        r = self._C(fasta, None)
+        eq_(10,r)
 
-    def test_counts_fasta(self):
+    def test_counts_fasta_fh(self):
         r = self._C(self.fasta_fh,'fasta') 
         eq_(3,r)
 
-    def test_counts_fastq(self):
+    def test_counts_fastq_fh(self):
         r = self._C(self.fastq_fh,'fastq')
         eq_(3,r)
 
-    def test_counts_other(self):
+    def test_counts_other_fh(self):
         r = self._C(self.other_fh,None)
         eq_(3,r)
 
@@ -39,10 +42,6 @@ class TestCountLines(Base):
         mock_fh = mock_open(read_data='')
         r = self._C(mock_fh,None)
         eq_(0,r)
-
-    @raises(ValueError)
-    def test_unknown_fileformat_raises_exception(self):
-        r = self._C(self.fasta_fh,'Unknown')
 
 class TestLineCount(Base):
     functionname = 'linecount'
@@ -69,9 +68,7 @@ class TestLineCount(Base):
 
     def test_input_is_string(self):
         outfh = MagicMock(file)()
-        with patch('__builtin__.open', _mock_open()) as mck_open:
-            self._C('/path/to/file.txt', 'test', outfh, None, True)
-            mck_open.assert_called_once_with('/path/to/file.txt')
+        self._C(fasta, 'test', outfh, None, True)
 
     def test_output_is_string_no_concat(self):
         m = _mock_open()

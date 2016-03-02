@@ -7,7 +7,7 @@ use Getopt::Long;
 use Cwd 'abs_path';
 
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 # local modules:
 use Verbose_Sys;
 use Parse_ParameterFile;
@@ -136,7 +136,7 @@ foreach my $mate (@mates)
 	
 	print "[echo] count\n";
 	# args: input file, filtering_program_name, output file, 2->fasta, concat
-	my $cmd = "$path_scripts/linecount.sh $mate.fasta input $mate.count 2 0";
+	my $cmd = "linecount $mate.fasta input $mate.count 2 0";
 	print_system($cmd);
 		
 	print "[echo] blast input against subset db $mate \n";
@@ -156,7 +156,7 @@ foreach my $mate (@mates)
 	
 	print "[echo] count\n";
 	# args: input file, filtering_program_name, output file, 2->fasta, concat
-	my $cmd = "$path_scripts/linecount.sh $mate.noblast.fasta ".$hoh{$command}{"blast_task"}."_subset $mate.count 2 1";
+	my $cmd = "linecount $mate.noblast.fasta ".$hoh{$command}{"blast_task"}."_subset $mate.count 2 1";
 	print_system($cmd);	
 }
 			

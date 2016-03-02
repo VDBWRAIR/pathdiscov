@@ -281,7 +281,7 @@ setup_dict = dict(
             'linecount = pathdiscov.linecount:main',
             'sff2fastq = pathdiscov.sff2fastq:main',
             'step1 = pathdiscov.stages.step1:main',
-            'parse_contigs = pathdiscov.parse_contigs:main'
+            'get_blast_reads = pathdiscov.get_blast_reads:main',
         ],
     },
     # These all get copied to our installation's bin folder for us
@@ -296,9 +296,34 @@ setup_dict = dict(
         'pathdiscov/download/bowtie2/bowtie2',
         'pathdiscov/download/diamond64/diamond',
         'pathdiscov/download/snap/snap',
+        'pathdiscov/quality_filter/quality_filter.pl',
+        'pathdiscov/host_map/host_map.pl',
+        'pathdiscov/host_map/bwa_filter_host.sh',
+        'pathdiscov/ray2_assembly/count_mapped.pl',
+        'pathdiscov/ray2_assembly/joinlines.sh',
+        'pathdiscov/ray2_assembly/ray2_assembly.pl',
+		'pathdiscov/iterative_blast_phylo/annotate_blast.sh',
+		'pathdiscov/iterative_blast_phylo/blast_wrapper.pl',
+		'pathdiscov/iterative_blast_phylo/block_blast.sh',
+		'pathdiscov/iterative_blast_phylo/fastq2fasta.awk',
+		'pathdiscov/iterative_blast_phylo/format_iterative_blast_phylo.pl',
+		'pathdiscov/iterative_blast_phylo/get_unblast_reads.pl',
+		'pathdiscov/iterative_blast_phylo/iterative_blast_phylo.pl',
+		'pathdiscov/iterative_blast_phylo/make_phylogeny_pipe.pl',
+		'pathdiscov/iterative_blast_phylo/make_phylogeny.pl',
+		'pathdiscov/iterative_blast_phylo/par_block_blast.pl',
+		'pathdiscov/iterative_blast_phylo/phylogeny_wrapper.sh',
+		'pathdiscov/iterative_blast_phylo/plot_phylo_percents.r',
+		'pathdiscov/iterative_blast_phylo/plot_pie.r',
+		'pathdiscov/iterative_blast_phylo/prepare_plot_phylo_percents.sh',
+		'pathdiscov/iterative_blast_phylo/tableconcatlines',
+		'pathdiscov/iterative_blast_phylo/taxid2queryid.pl',
+		'pathdiscov/iterative_blast_phylo/weighted_count.pl',
+        'pathdiscov/orf_filter/orf_filter.pl',
     ] + glob('pathdiscov/download/bowtie2/bowtie2-*') +
         glob('pathdiscov/download/blast-2.2.28/bin/*') +
-        glob('pathdiscov/download/prinseq-lite-0.20.3/*.pl'),
+        glob('pathdiscov/download/prinseq-lite-0.20.3/*.pl') +
+        glob('pathdiscov/scripts/*'),
     package_data = {
         'pathdiscov': ['files/*', 'output_files_templates/*'],
     }
@@ -321,7 +346,6 @@ def main():
             raise ValueError("No paver on the path")
         import paver.tasks
     paver.tasks.main()
-    runTask()
 
 if __name__ == '__main__':
     main()

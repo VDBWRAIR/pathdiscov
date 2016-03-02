@@ -18,30 +18,30 @@ class TestEnvironSetup(common.TempDir):
         self.mock_args.outdir = 'outdir'
         self.upd = join(dirname(common.TESTDIR), 'pathdiscov')
 
-    def test_sets_up_environment(self):
-        # Get globals
-        g = common.exec_main(self.mock_args)
-        # Ensure PATH contains correct locations
-        paths = [
-            self.upd,
-            join(self.upd, 'bin'),
-            join(self.upd, 'scripts'),
-            join(self.upd, 'step1'),
-            '/usr/lib64/openmpi/bin'
-        ]
-        result_paths = os.environ['PATH'].split(os.pathsep)
-        for p in paths:
-            self.assertIn(p, result_paths)
-
-        # Make sure openmpi lib is set in LDD_LIBRARY_PATH
-        result_paths = os.environ['LD_LIBRARY_PATH'].split(os.pathsep)
-        self.assertIn('/usr/lib64/openmpi/lib', result_paths)
-
-        # Make sure PERL5LIB is set
-        self.assertEqual(join(self.upd,'Local_Module'), os.environ['PERL5LIB'])
-
-        # Make sure R_LIBS are set
-        self.assertEqual(join(self.upd,'scripts'), os.environ['R_LIBS'])
-
-        # Make sure there are 9 INNO_ keys
-        self.assertEqual(9, sum([1 for k in os.environ if 'INNO' in k]))
+#    def test_sets_up_environment(self):
+#        # Get globals
+#        g = common.exec_main(self.mock_args)
+#        # Ensure PATH contains correct locations
+#        paths = [
+#            self.upd,
+#            join(self.upd, 'bin'),
+#            join(self.upd, 'scripts'),
+#            join(self.upd, 'step1'),
+#            '/usr/lib64/openmpi/bin'
+#        ]
+#        result_paths = os.environ['PATH'].split(os.pathsep)
+#        for p in paths:
+#            self.assertIn(p, result_paths)
+#
+#        # Make sure openmpi lib is set in LDD_LIBRARY_PATH
+#        result_paths = os.environ['LD_LIBRARY_PATH'].split(os.pathsep)
+#        self.assertIn('/usr/lib64/openmpi/lib', result_paths)
+#
+#        # Make sure PERL5LIB is set
+#        self.assertEqual(join(self.upd,'Local_Module'), os.environ['PERL5LIB'])
+#
+#        # Make sure R_LIBS are set
+#        self.assertEqual(join(self.upd,'scripts'), os.environ['R_LIBS'])
+#
+#        # Make sure there are 9 INNO_ keys
+#        self.assertEqual(9, sum([1 for k in os.environ if 'INNO' in k]))

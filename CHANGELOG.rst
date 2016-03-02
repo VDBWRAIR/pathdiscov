@@ -1,6 +1,39 @@
 Changelog
 =========
 
+Version 4.3.0
+-------------
+
+* Added get_blast_reads script which allows user to retrieve all reads for a specific
+  blast col=>val pair
+* Fixed a minor bug where par_block_blast.pl in iterative_blast_phylo would spawn
+  an extra blast process in some cases
+* Fixed issue with make_pie where debug lines were printed
+* Removed/Consolidated redundant scripts
+* pathdiscov/scripts/* now copied into virtualenv's bin and are referenced
+  without need for path_scripts
+* All stages can now be run independently with minimal effort. That is, you can run
+  host_map.pl, iterative_blast_phylo.pl, ray2_assembly.pl, quality_filter.pl
+  orf_filter.pl, or any script that came with the pipeline inside of the
+  pathdiscov/scripts directory directly.
+  This makes debugging the pipeline much easier as you can simply ensure the 
+  virtualenv is activated and copy/paste any command from the log files into your
+  terminal and it should run.
+* Count files for every stage now contain input line to verify that each stage
+  is receiving the same amount of reads from the prior stage.
+* Fixed bug related to orf_filter incorrectly being run inside of 
+  iterative_blast_phylo_1
+* iterative_blast_phylo_1/contig.count now contains orf_filer count
+* linecount now automatically detects file format for fasta/fastq and will fallback
+  to counting all lines in file
+* Fixed a bug with make_summary where ``--group-by`` was not being utilized
+* pathdiscov_cli now logs any [cmd] or [module] line from analysis.log as the
+  pipeline runs to give more feedback of what stage the pipeline is on as it runs.
+* pathdiscov_cli's output is now more concise and does not print extra statements
+  that are not useful.
+* Running the Pipeline docs now contain an actual full example to help show
+  how to use the pipeline
+
 Version 4.2.3
 -------------
 

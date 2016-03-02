@@ -393,42 +393,10 @@ def parse_config():
 
 def setup_shell_environment(config):
     '''
-    Set all the shell variables using config values
-
-    Replaces need for user or script to source settings.sh
+    No longer needed as virtualenv/bin contains all scripts and
+    virtualenv/lib/Local_Module contains all perl modules
     '''
-    # This will be wherever python setup.py install installs to which
-    # is probably pathdiscov/
-    installdir = sys.prefix
-
-    # TODO: Investigate if this is actually needed
-    os.environ['INNO_PHRED_OFFSET'] = config['PHRED_OFFSET']
-    os.environ['INNO_SEQUENCE_PLATFORM'] = config['SEQUENCE_PLATFORM']
-    os.environ['INNO_NODE_NUM'] = config['NODE_NUM']
-    os.environ['INNO_BOWTIE_HUMAN_GENOME_DB'] = config['host_dna']
-    os.environ['INNO_BOWTIE_HUMAN_TRAN_DB'] = config['host_rna']
-    os.environ['INNO_BLAST_NT_DB'] = config['nt_db']
-    os.environ['INNO_TAX_NODES'] = config['tax_nodes']
-    os.environ['INNO_TAX_NAMES'] = config['tax_names']
-
-    os.environ['INNO_SCRIPTS_PATH'] = installdir
-    os.environ['PERL5LIB'] = os.path.join(installdir, 'Local_Module')
-    os.environ['R_LIBS'] = os.path.join(installdir, 'scripts')
-    # Set LD_LIBRARY_PATH
-    # TODO: This needs to be better written as it may be 32 bit arch
-    if 'LD_LIBRARY_PATH' not in os.environ:
-        os.environ['LD_LIBRARY_PATH'] = '/usr/lib64/openmpi/lib'
-    else:
-        os.environ['LD_LIBRARY_PATH'] += os.pathsep +  '/usr/lib64/openmpi/lib'
-    # Set PATH
-    # TODO: This needs to be better written as these paths are assumed and
-    # really scripts path should not be necessary
-    os.environ['PATH'] = installdir + os.pathsep + \
-        os.path.join('/usr','lib64','openmpi','bin') + os.pathsep + \
-        os.path.join(installdir,'bin') + os.pathsep + \
-        os.path.join(installdir,'scripts') + \
-        os.pathsep + os.path.join(installdir,'step1') + \
-        os.pathsep + os.environ['PATH']
+    return
 
 def setup_param(config, paramoutputfile):
     '''

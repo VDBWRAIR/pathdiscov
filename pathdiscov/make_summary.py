@@ -205,7 +205,7 @@ def group_blast_by_( blastfile, filtercol, filterval, groupbycol ):
 
     return grouped
 
-def unassembled_report( projdir, kingdom, groupby='family' ):
+def unassembled_report( projdir, filtercol, filterval, groupby='family' ):
     '''
     Returns the grouped blast results filtered first by kingdom and then
     grouped by groupby field
@@ -222,7 +222,7 @@ def unassembled_report( projdir, kingdom, groupby='family' ):
         # Begin with first small report
         #merged = group_blast_by_( f, 'superkingdom', kingdom, groupby )
         # Now update by adding any new keys and incrementing count for the ones that already exist
-        for k, v in group_blast_by_( f, 'superkingdom', kingdom, groupby ).iteritems():
+        for k, v in group_blast_by_( f, filtercol, filterval, groupby ).iteritems():
             # Already in merged so just increment count
             if k in merged:
                 merged[k]['count'] += v['count']
@@ -238,11 +238,11 @@ def summary( projdir, filtercol, filterval, groupby='family' ):
     summary = {}
 
     summary['numreads'] = total_reads( projdir )
-    summary['nonhostreads'] = non_host_num_reads( projdir )
+    summary['numqualreads'] = non_host_num_reads( projdir )
     summary['numcontig'], summary['numblastcontig'] = num_contig( projdir )
     summary['numreadsunassembled'], summary['numblastunassembled'] = unassembled_reads( projdir )
     summary['contigs'] = list( contigs_for( projdir, filtercol, filterval ) )
-    summary['unassembled'] = dict( unassembled_report( projdir, filterval ) )
+    summary['unassembled'] = dict( unassembled_report( projdir, filtercol, filterval, groupby ) )
     contiglengths = [contiginfo['length'] for contiginfo in summary['contigs']]
     summary['n50'] = get_n50(contiglengths)
     summary['assemblylength'] = sum(contiglengths)
@@ -259,7 +259,7 @@ def format_summary( summary ):
     # Iterate over longsest of the two and fill the other in with ''
     contigkeys = ('contigname','length','numreads','accession','superkingdom', 'family','genus','description')
     unasskeys = ('count','accession','superkingdom', 'family','genus','descrip')
-    prefix = format_dict( summary, ('numreads','nonhostreads','numcontig','numblastcontig','n50','assemblylength') )
+    prefix = format_dict( summary, ('numreads','numqualreads','numcontig','numblastcontig','n50','assemblylength') )
     unassembled = sorted( summary['unassembled'].items(), key=lambda x: x[1]['count'], reverse=True )
     for contig, unassembled in itertools.izip_longest( summary['contigs'], unassembled, fillvalue=None ):
         # Start a new row
@@ -297,11 +297,11 @@ def main( ):
     args = parse_args()
     hdr = ['Sample Name']
     # These come from summary
-    hdr += ['Num Reads', 'Non-Host Num reads', 'Num Ctg', 'Num blast0 Ctg', 'N50', 'Assembly Length']
+    hdr += ['Num Input Reads', 'Num Non-Host Quality reads', 'Num Ctg', 'Num Unblasted Ctg', 'N50', 'Assembly Length']
     # These come from summary['contig']
     hdr += ['Ctg#', 'Ctg bp', 'numReads', 'Accession', 'Superkingdom', 'Family', 'Genus', 'description']
     # These come from summary
-    hdr += ['Num unassem', 'Num blast0 Unassem']
+    hdr += ['Num input unassem', 'Num Unblasted Unassem']
     # These come from summary['unassembled']
     hdr += ['num reads', 'Accession', 'Superkingdom', 'Family', 'Genus', 'descrip']
     print '\t'.join( hdr )

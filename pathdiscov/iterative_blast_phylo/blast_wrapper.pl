@@ -9,10 +9,8 @@
 # e.g., blast_wrapper.pl --type blastn --query input.fasta --db /my/db --task megablast --out output.blast --options '-evalue 1e-4 -word_size 28'
 
 use Getopt::Long;
-# use FindBin;
-# use lib "$FindBin::Bin/../Local_Module";
 use FindBin qw($RealBin);
-use lib "$RealBin/../Local_Module";
+use lib "$RealBin/../lib/Local_Module";
 use Verbose_Sys;
 
 # default
@@ -50,23 +48,25 @@ if ($task eq "diamond")
 if ($type eq "diamond" || !(defined($task)))
 {
     $task_option="blastx";
-
+}
+elsif($type eq "blastx")
+{
+    $task_option = "";
 }
 else
 {
-        $task_option="-task $task";
+    $task_option="-task $task";
 }
 
 
-if ($type eq "blastn")
+if ($type ne "diamond")
 {
     print "[start]\n";
     my $cmd = "$type -query $query -db $db $task_option -out $out -outfmt $outfmt -max_target_seqs 10 $options";
     verbose_system($cmd);
     print "[end]\n";
 }
-
-if ($type eq "diamond")
+else
 {
     print "[start]\n";
     my $cmd = "$type $task_option  $options -q  $query -d $db  -o $out"; 

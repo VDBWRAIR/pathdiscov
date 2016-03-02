@@ -18,7 +18,7 @@ def main():
         os.makedirs( outdir )
     for proj in args.project_path:
         phylo_files = glob( join(proj, 'results/iterative*/*.top.blast.phylo') )
-        print phylo_files
+        #print phylo_files
         hvp = host_vector_pathogen(phylo_files, args.hostclasses, args.vectorclasses, args.pathogenclasses)
         outpath = join( outdir, basename(normpath(proj)) + '.png' )
         create_image( proj, hvp=hvp, output_path=outpath )
@@ -63,15 +63,15 @@ def host_vector_pathogen(phylo_files, hostclass, vectorclass, pathogenclass):
     for f in phylo_files:
         with open(f) as fh:
             for row in csv.DictReader(fh, delimiter='\t'):
-                print row
+                #print row
                 count = float(row['count'])
-                print "CNT: {0}".format(count)
+                #print "CNT: {0}".format(count)
                 sk = row['superkingdom']
-                print "SK: {0}".format(sk)
+                #print "SK: {0}".format(sk)
                 clss = row['class']
-                print "CLS: {0}".format(clss)
+                #print "CLS: {0}".format(clss)
                 species = find_best_name(row, header_order)
-                print "SPC: {0}".format(species)
+                #print "SPC: {0}".format(species)
                 #if count < 1.0:
                     #continue
                 if clss in hostclass:

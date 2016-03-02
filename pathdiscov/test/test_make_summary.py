@@ -44,7 +44,7 @@ class BaseTest(Base):
     def mock_summary( self, nr=1, nhr=2, nc=3, nbc=4, nru=5, nbu=6, n50=7, alen=8, contigs=[], unassembled={} ):
         return {
             'numreads': nr,
-            'nonhostreads': nhr,
+            'numqualreads': nhr,
             'numcontig': nc,
             'numblastcontig': nbc,
             'numreadsunassembled': nru,
@@ -432,17 +432,17 @@ class TestUnassembledReport( BaseTest ):
         return unassembled_report( *args, **kwargs )
 
     def test_correctly_parsed_accession( self ):
-        r = self._C( self.mockproj, 'Eukaryota' )
+        r = self._C( self.mockproj, 'superkingdom', 'Eukaryota' )
         eq_( 'LM975171.1', r['Polystomatidae']['accession'] )
 
     def test_correct_report( self ):
-        r = self._C( self.mockproj, 'Bacteria' )
+        r = self._C( self.mockproj, 'superkingdom', 'Bacteria' )
         print r
         eq_( 1, len(r) )
         eq_( 2, r['Rickettsiaceae']['count'] )
 
     def test_parses_accession( self ):
-        r = self._C( self.mockproj, 'Bacteria' )
+        r = self._C( self.mockproj, 'superkingdom', 'Bacteria' )
         print r
         for sk, values in r.items():
             ok_( 'accession' in values, 'Accession was not parsed and put int report' )
@@ -452,7 +452,7 @@ class TestUnassembledReport( BaseTest ):
         smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.smallreport.txt' ) )
         for f in smreport:
             os.unlink( f )
-        assert_raises( MissingProjectFile, self._C, self.mockproj, 'Bacteria' )
+        assert_raises( MissingProjectFile, self._C, self.mockproj, 'superkingdom', 'Bacteria' )
 
 class TestSummary( BaseTest ):
     def setUp( self ):
@@ -472,7 +472,7 @@ class TestSummary( BaseTest ):
     def test_correct_summary( self ):
         r = self._C( self.mockproj, 'superkingdom', 'Eukaryota' )
         eq_( 1316672, r['numreads'] )
-        eq_( 479967, r['nonhostreads'] )
+        eq_( 479967, r['numqualreads'] )
         eq_( 430, r['numcontig'] )
         eq_( 310, r['numblastcontig'] )
         eq_( 101898, r['numreadsunassembled'] )
@@ -600,7 +600,7 @@ class TestFormatDic( BaseTest ):
 
     def test_formats_unassem( self ):
         from pathdiscov.make_summary import unassembled_report
-        ur = unassembled_report( self.mockproj, 'Eukaryota' )
+        ur = unassembled_report( self.mockproj, 'superkingdom', 'Eukaryota' )
         f = 'Polystomatidae'
         r = self._C( ur[f], ('count','accession','family') )
         eq_( '1\tLM975171.1\tPolystomatidae', r )

@@ -45,8 +45,7 @@ Installation
 
         .. code-block:: bash
 
-            wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-            python virtualenv-1.11.6/virtualenv.py pathdiscov
+            wget https://raw.githubusercontent.com/necrolyte2/bootstrap_vi/master/bootstrap_vi.py -O- | python - pathdiscov --prompt="(pathdiscov)"
 
     #. Activate the virtualenv to install everything into
 
@@ -112,7 +111,7 @@ Installation
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf pathdiscov/run_standard.pl fastqc prinseq-lite.pl diamond snap pathdiscov_cli)
+            apps=( bwa samtools bowtie2 blastx blastn Ray Ray2 cutadapt getorf run_standard.pl fastqc prinseq-lite.pl diamond snap pathdiscov_cli)
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '\[main\]|usage|useage|qualifiers|DESCRIPTION|Syntax' && echo "$p ok" || echo "$p broken?"; done
 
     * See if your databases are available as specified in config
@@ -135,6 +134,9 @@ Installation
     .. code-block:: bash
 
         pathdiscov_cli --R1 testData/F.fastq --R2 testData/R.fastq --outdir testoutDir
+
+    You can check this project against when it was run during development by heading
+    over to :ref:`Inspect Stage Counts<count-files-interpretation>`
 
 Offline Installation
 ====================
