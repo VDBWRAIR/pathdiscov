@@ -33,6 +33,7 @@ Version 4.3.0
   that are not useful.
 * Running the Pipeline docs now contain an actual full example to help show
   how to use the pipeline
+* Fixes a bug where blastx was never being run
 
 Version 4.2.3
 -------------
