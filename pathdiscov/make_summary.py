@@ -17,7 +17,7 @@ def get_n50(numlist):
     """
     :param list numlist: List of numbers
 
-    Returns the N50 value of the passed list of numbers. 
+    Returns the N50 value of the passed list of numbers.
     Code from http://seqanswers.com/forums/showpost.php?p=9414&postcount=7
 
     Based on the Broad Institute definition:
@@ -30,7 +30,7 @@ def get_n50(numlist):
     # take the mean of the two middle elements if there are an even number
     # of elements.  otherwise, take the middle element
     if len(newlist) % 2 == 0:
-        medianpos = len(newlist)/2  
+        medianpos = len(newlist)/2
         return float(newlist[medianpos] + newlist[medianpos-1]) /2
     else:
         medianpos = len(newlist)/2
@@ -160,7 +160,7 @@ def contigs_for( projdir, blastcol, blastval ):
     # Contains contigname, length, numreads for every contig
     ci = contig_info( projdir )
     # Contains blast information(accession, family, genus, description)
-    smallreport = glob( join( projdir, 'results', 'iterative_blast_phylo_1', 'reports', '*smallreport*.txt' ) )
+    smallreport = glob( join( projdir, 'results', 'iterative_blast_phylo_1', 'reports', '*top.report.txt' ) )
     if len( smallreport ) != 1:
         bns = ' '.join( [basename(f) for f in smallreport] )
         raise MissingProjectFile( '{0} only has the following phylo_1 smallreport files: {1}'.format(projdir, bns) )
@@ -213,7 +213,7 @@ def unassembled_report( projdir, filtercol, filterval, groupby='family' ):
     Combines R1 & R2 results
     Adds a new key called accession with the parsed out accession
     '''
-    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R[12].*.top.smallreport.txt' ) )
+    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R[12].*.top.report.txt' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
         raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )
