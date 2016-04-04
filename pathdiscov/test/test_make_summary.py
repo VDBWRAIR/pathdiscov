@@ -27,7 +27,7 @@ class BaseTest(Base):
         super( BaseTest, self ).setUp()
         self.mockproj = join( dirname(__file__), 'fixtures', 'mock_project' )
         self.setup_dirs()
-    
+
     def setup_dirs( self ):
         self.results = join( self.mockproj, 'results' )
         self.step1 = join( self.results, 'step1' )
@@ -257,7 +257,7 @@ class TestR1R2Count( BaseTest ):
 class TestParseBlastReport( BaseTest ):
     def setUp( self ):
         super( TestParseBlastReport, self ).setUp()
-        self.blastfile = join( self.phylo1, 'reports', 'contig.mock_project.top.smallreport.txt' )
+        self.blastfile = join( self.phylo1, 'reports', 'contig.mock_project.top.report.txt' )
 
     def _C( self, *args, **kwargs ):
         from pathdiscov.make_summary import parse_blast_report
@@ -286,7 +286,7 @@ class TestParseBlastReport( BaseTest ):
 class TestBlastResultsFor( BaseTest ):
     def setUp( self ):
         super( TestBlastResultsFor, self ).setUp()
-        self.blastfile = join( self.phylo1, 'reports', 'contig.mock_project.top.smallreport.txt' )
+        self.blastfile = join( self.phylo1, 'reports', 'contig.mock_project.top.report.txt' )
 
     def _C( self, *args, **kwargs ):
         from pathdiscov.make_summary import blast_results_for_
@@ -372,6 +372,7 @@ class TestContigsFor( BaseTest ):
         eq_( 'NR_076881.1', v['accession'] )
         eq_( 'Comamonadaceae', v['family'] )
         eq_( 'Delftia', v['genus'] )
+        eq_( 'AAA', v['qseq'] )
         # Check the last item too
         v = r[-1]
         eq_( 'c5', v['contigname'] )
@@ -379,7 +380,7 @@ class TestContigsFor( BaseTest ):
     @raises(MissingProjectFile)
     def test_missing_files( self ):
         self.make_tmp_proj()
-        files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', '*smallreport*.txt' ) )
+        files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', '*.top.report*.txt' ) )
         files += [
             join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_numreads.txt'),
             join(self.mockproj, 'results', 'ray2_assembly_1', 'contig_len.txt'),
@@ -413,7 +414,7 @@ class TestUnassembledReads( BaseTest ):
 class TestGroupBlastBy( BaseTest ):
     def setUp( self ):
         super( TestGroupBlastBy, self ).setUp()
-        self.contigblast = join(self.phylo2,'reports','R1.mock_project.top.smallreport.txt')
+        self.contigblast = join(self.phylo2,'reports','R1.mock_project.top.report.txt')
 
     def _C( self, *args, **kwargs ):
         from pathdiscov.make_summary import group_blast_by_
@@ -449,7 +450,7 @@ class TestUnassembledReport( BaseTest ):
 
     def test_missing_smallreports( self ):
         self.make_tmp_proj()
-        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.smallreport.txt' ) )
+        smreport = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.report.txt' ) )
         for f in smreport:
             os.unlink( f )
         assert_raises( MissingProjectFile, self._C, self.mockproj, 'superkingdom', 'Bacteria' )
@@ -459,8 +460,8 @@ class TestSummary( BaseTest ):
         super( TestSummary, self ).setUp()
 
         self.make_tmp_proj()
-        self.phylo1files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', 'contig.*smallreport*.txt' ) )
-        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.smallreport.txt' ) )
+        self.phylo1files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_1', 'reports', 'contig.*top.report*.txt' ) )
+        self.phylo2files = glob( join( self.mockproj, 'results', 'iterative_blast_phylo_2', 'reports', 'R1.*.top.report.txt' ) )
         self.step1files = glob( join(self.mockproj, 'results', 'step1', '*.count') )
         self.qualfiles = glob( join(self.mockproj, 'results', 'quality_filter', '*.count') )
         self.contigcountfiles = glob( join(self.mockproj, 'results', 'iterative_blast_phylo_1', '*.count' ) )
@@ -489,7 +490,8 @@ class TestSummary( BaseTest ):
         eq_(1, unreads['Polystomatidae']['count'])
 
     def test_missing_files( self ):
-        for files in (self.phylo1files,self.phylo2files,self.step1files,self.qualfiles,self.contigcountfiles):
+        for files in (self.phylo1files,self.phylo2files,self.step1files,
+                      self.qualfiles,self.contigcountfiles):
             # Temp move the files for this step
             for i,f in enumerate(files):
                 shutil.copy( f, 'tmp.'+str(i) )
@@ -533,7 +535,7 @@ class TestFormatSummary( BaseTest ):
         una = {}
         for i in range(1,3):
             una['Virus'+str(i)] = self.mock_unassembled(count=i)
-        contig = [self.mock_contig(length=i,numreads=i,contigname='c'+str(i)) for i in range(1,4)]
+        contig = [self.mock_contig(length=i,numreads=i,qseq='AAA',contigname='c'+str(i)) for i in range(1,4)]
         summary = self.mock_summary( contigs=contig, unassembled=una )
         r = self._C( summary )
         eq_( 3, len(r) )
@@ -548,13 +550,13 @@ class TestFormatSummary( BaseTest ):
                 self.mock_unassembled(count=3,accession='acc3',family='family3',genus='genus3',descrip='descrip3')
         }
         contig = [
-            self.mock_contig(length=1,numreads=2,contigname='c1',accession='ca',family='cfam',genus='cgen',description='cdesc'),
-            self.mock_contig(length=10,numreads=20,contigname='c2',accession='cb',family='cfam',genus='cgen',description='cdesc')
+            self.mock_contig(length=1,numreads=2,contigname='c1',accession='ca',family='cfam',genus='cgen',description='cdesc',qseq='AAA'),
+            self.mock_contig(length=10,numreads=20,contigname='c2',accession='cb',family='cfam',genus='cgen',description='cdesc',qseq='CCC')
         ]
         summary = self.mock_summary(contigs=contig, unassembled=una)
         # Check summary line with contig and unassembled read
         r = self._C( summary )
-        e = ['','1','2','3','4','7','8','c1','1','2','ca', 'sk', 'cfam','cgen','cdesc','5','6','3','acc3', 'Bacteria', 'family3','genus3','descrip3']
+        e = ['','1','2','3','4','7','8','c1','1','2','ca', 'sk', 'cfam','cgen','cdesc','5','6','3','acc3', 'Bacteria', 'family3','genus3','descrip3', ]
         print e
         print r[0].split('\t')
         print '---------'
