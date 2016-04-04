@@ -306,8 +306,7 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 		if ( defined($hoh{$command}{$mate}) && -s $hoh{$command}{$mate} )
 		{
 			# update mate to new output
-			$hoh{$command}{$mate} = "$outputdir/map_$j/$mate.unmap.fastq";										
-			system("ln -sf map_$j/$mate.unmap.fastq $outputdir/host_map_$run_iteration.$mate");
+			$hoh{$command}{$mate} = "$outputdir/map_$j/$mate.unmap.fastq.tmp";										
 		
 			my $cmd = "linecount $hoh{$command}{$mate} $mapper_name_list[$i] $mate.count 1 1";
 			print "[cmd] ",$cmd,"\n";
@@ -315,10 +314,23 @@ for (my $i = 0; $i < scalar(@mapper_db_list); $i++)
 			
 			# (take this out of loop for efficiency - only needs to be done on the final iteration)
 			# get discard IDs - i.e., the reads filtered in this step
-			my $cmd = "fastaq_tools_diff.exe --fastq $hoh{$command}{$mate.\"input\"} --fastq $hoh{$command}{$mate} > $mate.discard";
+			my $cmd = "fastaq_tools_diff.exe --fastq $hoh{$command}{$mate.\"input\"} --fastq $hoh{$command}{$mate} | sort > $mate.discard";
 			verbose_system($cmd);
 		}
 	}
+
+    my $cmd = "drop_mapped --saved $hoh{$command}{"R1"} --dropped "R2".discard --out $mapout" 
+
+    verbose_system($cmd);
+
+    my $cmd = "drop_mapped --saved $hoh{$command}{"R2"} --dropped "R1".discard --out $mapout" 
+
+    verbose_system($cmd);
+
+  foreach my $mate (@mates) 
+  {
+	system("ln -sf map_$j/$mate.unmap.fastq $outputdir/host_map_$run_iteration.$mate");
+        }
 }
 			
 # --------------------------------------

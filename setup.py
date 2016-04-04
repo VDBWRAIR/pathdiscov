@@ -282,6 +282,7 @@ setup_dict = dict(
             'sff2fastq = pathdiscov.sff2fastq:main',
             'step1 = pathdiscov.stages.step1:main',
             'get_blast_reads = pathdiscov.get_blast_reads:main',
+            'drop_mapped = pathdiscov.drop_mapped:main'
         ],
     },
     # These all get copied to our installation's bin folder for us
