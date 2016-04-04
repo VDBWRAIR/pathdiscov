@@ -180,7 +180,7 @@ def contigs_for( projdir, blastcol, blastval ):
         info['genus'] = contig['genus']
         info['superkingdom'] = contig['superkingdom']
         info['description'] = contig['descrip']
-        #info['qseq'] = contig['qseq']
+        info['qseq'] = contig['qseq']
         yield info
 
 def unassembled_reads( projdir ):
@@ -214,7 +214,7 @@ def unassembled_report( projdir, filtercol, filterval, groupby='family' ):
     Combines R1 & R2 results
     Adds a new key called accession with the parsed out accession
     '''
-    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R[12].*.top.lreport.txt' ) )
+    smallreports = glob( join( projdir, 'results', 'iterative_blast_phylo_2', 'reports', 'R[12].*.top.report.txt' ) )
     if len(smallreports) < 1:
         bns = ' '.join( [basename(f) for f in smallreports] )
         raise MissingProjectFile( '{0} only has the following phylo_2 smallreport files: {1}'.format(projdir, bns) )

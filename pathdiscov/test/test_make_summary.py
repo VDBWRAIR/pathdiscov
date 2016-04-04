@@ -372,6 +372,7 @@ class TestContigsFor( BaseTest ):
         eq_( 'NR_076881.1', v['accession'] )
         eq_( 'Comamonadaceae', v['family'] )
         eq_( 'Delftia', v['genus'] )
+        eq_( 'AAA', v['qseq'] )
         # Check the last item too
         v = r[-1]
         eq_( 'c5', v['contigname'] )
@@ -534,7 +535,7 @@ class TestFormatSummary( BaseTest ):
         una = {}
         for i in range(1,3):
             una['Virus'+str(i)] = self.mock_unassembled(count=i)
-        contig = [self.mock_contig(length=i,numreads=i,contigname='c'+str(i)) for i in range(1,4)]
+        contig = [self.mock_contig(length=i,numreads=i,qseq='AAA',contigname='c'+str(i)) for i in range(1,4)]
         summary = self.mock_summary( contigs=contig, unassembled=una )
         r = self._C( summary )
         eq_( 3, len(r) )
