@@ -11,7 +11,7 @@ db=$5					# database
 paired=$6				# paired - 1 if paired data, 0 if not 
 wellpaired=$7			# wellpaired - 1 if paired data "well-paired" (i.e., mate files have exact same IDs), 0 if not
 opts=$8					# options
-
+droppair=1
 if ! cd ${outputdir}; then
  
 	echo "[error] changing directories"; 
@@ -46,10 +46,17 @@ else
 			
 			echo "[stats] paired stats"
 			samtools flagstat paired.bam
+
+                        if [ "$droppair" == 1 ]; then
+                            samtools view paired.bam -f 12 | cut -f1 | sort -u | awk '{print "@"$0}' > paired.unmap.id
+                        else
+                            #could maybe use samtools view paired.bam  -f 4 . . . instead
+			    cat paired.sam | awk '$3=="*"' | cut -f1 | sort -u | awk '{print "@"$0}' > paired.unmap.id
+                        fi
+
 			
-			# get unmapped read IDs
-			cat paired.sam | awk '$3=="*"' | cut -f1 | sort -u | awk '{print "@"$0}' > paired.unmap.id
 			rm paired.sam
+			# get unmapped read IDs
 			
 			# extract the 4 line chunks from a fastq file, given in argument 1 file, for IDs give in argument 2 file
 			cmd="fastq_extract_id.pl ${r1} paired.unmap.id > R1.unmap.fastq"
