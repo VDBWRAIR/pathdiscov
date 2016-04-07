@@ -48,8 +48,11 @@ else
 			samtools flagstat paired.bam
 
                         if [ "$droppair" == 1 ]; then
+                        
+                            # Extracts reads where both themselves are unmapped and their mate is unmapped
                             samtools view paired.bam -f 12 | cut -f1 | sort -u | awk '{print "@"$0}' > paired.unmap.id
                         else
+                            # Extracts reads which are themselves unmapped (mate may or may not be mapped)
                             #could maybe use samtools view paired.bam  -f 4 . . . instead
 			    cat paired.sam | awk '$3=="*"' | cut -f1 | sort -u | awk '{print "@"$0}' > paired.unmap.id
                         fi
