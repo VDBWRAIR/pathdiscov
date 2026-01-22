@@ -119,8 +119,8 @@ while (<STDIN>)
 	
 			if ( $rank[$taxid] ne "no rank" )
 			{
-				# print "in loop \n";
-				$hoh{$a}{$rank[$taxid]} = $sciname[$taxid];			
+				$hoh{$a}{$rank[$taxid]} = $sciname[$taxid];			     
+                                # print "$rank[$taxid] || $sciname[$taxid]";
 			}
 			
 			$taxid=$parent[$taxid];		# set taxid to tax id of parent
@@ -146,18 +146,45 @@ while (<STDIN>)
 	}
 	else
 	{
-		foreach (@short_header) 
-		{
-			if (defined $hoh{$a}{$_})
-			{
-				print $hoh{$a}{$_},"\t";
-			}
-			else
-			{
-				print "-","\t";
-			}
-		}
-		print "\n";
+
+    foreach (@short_header)
+    {
+        if ($_ eq "superkingdom" && !defined $hoh{$a}{$_}) # Check if "superkingdom" is empty
+        {
+            
+
+	if (defined $hoh{$a}{"cellular root"}) {
+
+    print $hoh{$a}{"cellular root"},"\t"; # Print "acellular root" if "superkingdom" is empty
+}
+	elsif (defined $hoh{$a}{"acellular root"}) {
+            print $hoh{$a}{"acellular root"},"\t"; # Print "acellular root" if "superkingdom" is empty
+        }
+	
+}
+        elsif (defined $hoh{$a}{$_})
+        {
+            print $hoh{$a}{$_},"\t";
+        }
+        else
+        {
+            print "-","\t";
+        }
+    }
+print "\n";
+            # 		foreach (@short_header) 
+            # 		{
+            # 			if (defined $hoh{$a}{$_})
+            # 			{
+            # 				print $hoh{$a}{$_},"\t";
+            # 			}
+            # 			else
+            # 			{
+            #                             if ($hoh{$a}
+            # 				print "-","\t";
+            # 			}
+            # 		}
+            # 		print "\n";
 	}	
 	
 }
